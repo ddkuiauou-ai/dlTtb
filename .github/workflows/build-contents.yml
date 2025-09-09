@@ -323,7 +323,7 @@ jobs:
       contents: read
       deployments: write
     env:
-      DISABLE_DB_AT_BUILD: "1"
+      DISABLE_DB_AT_BUILD: "0"
       NEXT_TELEMETRY_DISABLED: "1"
 
     steps:
@@ -350,11 +350,47 @@ jobs:
           name: public-data
           path: public/data
 
-      # Next.js 정적 사이트를 빌드/익스포트합니다. (export를 쓰지 않는다면 out 대신 .next/static 등으로 조정)
+      - name: Check DB ENVs (masked-safe)
+        run: |
+          HOST='${{ secrets.POSTGRES_HOST }}'
+          PORT='${{ secrets.POSTGRES_PORT }}'
+          USER='${{ secrets.POSTGRES_USER }}'
+          PASS='${{ secrets.POSTGRES_PASSWORD }}'
+          DB='${{ secrets.POSTGRES_DB }}'
+
+          missing=0
+          for k in HOST PORT USER PASS DB; do
+            v=$(eval echo \${$k})
+            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          done
+          if [ $missing -ne 0 ]; then exit 1; fi
+
+          echo "All Postgres secrets are set."
+          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
+          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
+          echo "password_len=${#PASS}"
+          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
+
       - name: Build & Export Next.js
+        env:
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          DISABLE_DB_AT_BUILD: ${{ env.DISABLE_DB_AT_BUILD }}
         run: |
           pnpm build
           pnpm export || true
+
+      - name: Build diagnostics (DB at build?)
+        run: |
+          echo "DISABLE_DB_AT_BUILD=${DISABLE_DB_AT_BUILD:-unset}"
+          if [ "${DISABLE_DB_AT_BUILD}" = "1" ]; then
+            echo "App SHOULD NOT connect to DB during build. Ensure generateStaticParams/Metadata are guarded."
+          else
+            echo "App MAY connect to DB during build."
+          fi
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
