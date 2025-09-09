@@ -93,17 +93,9 @@ jobs:
             exit 1
           fi
 
-      - name: Prepare keyword output root
-        if: matrix.task == 'keyword-pages'
-        run: |
-          set -euo pipefail
-          mkdir -p public/data/keywords
-          echo "Prepared $(pwd)/public/data/keywords as CWD for keyword build"
-
       - name: Build all keyword pages
         if: matrix.task == 'keyword-pages'
-        working-directory: public/data/keywords
-        run: pnpm tsx ../../../scripts/build-keyword-json.ts
+        run: pnpm tsx scripts/build-keyword-json.ts
         env:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
@@ -379,25 +371,6 @@ jobs:
             echo "Merging $d -> public/data"
             rsync -a "$d"/ public/data/
           done
-          # Normalize keyword artifacts if uploaded without public/data prefix
-          for kv in artifacts/artifact-singular-keyword-pages/*/v1; do
-            if [ -d "$kv" ]; then
-              echo "Staging keywords -> public/data/keywords (from $kv)"
-              mkdir -p public/data/keywords
-              rsync -a "$kv"/ public/data/keywords/
-            fi
-          done
-          echo ">>> Normalizing post-details artifact if uploaded without public/data prefix..."
-          # Handle artifacts/artifact-singular-post-details/posts/v1 and artifacts/artifact-singular-post-details/v1
-          if [ -d artifacts/artifact-singular-post-details/posts/v1 ]; then
-            echo "Staging posts -> public/data/posts/v1 (from posts/v1)"
-            mkdir -p public/data/posts
-            rsync -a artifacts/artifact-singular-post-details/posts/v1/ public/data/posts/v1/
-          elif [ -d artifacts/artifact-singular-post-details/v1 ]; then
-            echo "Staging posts -> public/data/posts/v1 (from v1)"
-            mkdir -p public/data/posts
-            rsync -a artifacts/artifact-singular-post-details/v1/ public/data/posts/v1/
-          fi
           echo "--- combined public/data tree (top) ---"
           ls -lah public/data || true
           (ls -lah public/data/posts/v1 || true)
