@@ -87,7 +87,7 @@ export function HeaderClient({ sites }: HeaderClientProps) {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
-      <div className="container mx-auto px-4">
+      <div className="w-full max-w-screen-xl mx-auto px-4">
         <div className="flex items-center h-16">
           {/* Left: Logo */}
           <div className="flex-1 flex items-center space-x-4">
@@ -136,7 +136,7 @@ export function HeaderClient({ sites }: HeaderClientProps) {
 
           {/* Right: Search Bar */}
           <div className="flex-1 hidden md:flex items-center justify-end">
-            <div className="w-full max-w-sm">
+            <div className="w-80">
               <SearchBar />
             </div>
           </div>
