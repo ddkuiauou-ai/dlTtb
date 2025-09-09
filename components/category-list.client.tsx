@@ -56,7 +56,7 @@ export function CategoryList() {
             }`}
           >
             {icon ? (
-              <BrandIcon name={icon} useBrandColor className="w-8 h-8" />
+              <BrandIcon name={icon} useBrandColor className="w-6 h-6" />
             ) : (
               <span className="font-semibold text-sm">{label}</span>
             )}

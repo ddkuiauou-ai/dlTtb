@@ -313,7 +313,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: public-data
-          path: public/data
+          path: public/data/**
 
   # 모든 아티팩트를 합친 후 Cloudflare Pages로 배포
   deploy:
@@ -350,6 +350,20 @@ jobs:
           name: public-data
           path: public/data
 
+      - name: Normalize artifact layout
+        run: |
+          set -euo pipefail
+          # If artifact was uploaded as the folder itself, download may produce public/data/public/data/*
+          if [ -d public/data/public/data ]; then
+            echo "Detected nested public/data/public/data. Flattening..."
+            rsync -av public/data/public/data/ public/data/
+            rm -rf public/data/public
+          fi
+          # Show a quick sample after normalization
+          echo "--- normalized public/data ---"
+          ls -lah public/data || true
+          (ls -lah public/data/posts/v1 || true)
+
       - name: Check DB ENVs (masked-safe)
         run: |
           HOST='${{ secrets.POSTGRES_HOST }}'
@@ -380,7 +394,9 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           DISABLE_DB_AT_BUILD: ${{ env.DISABLE_DB_AT_BUILD }}
         run: |
-          pnpm build
+          # Build and static-export Next.js to ./out
+          pnpm next build
+          pnpm next export -o out
 
       - name: Print working dir and tree
         run: |
@@ -401,9 +417,21 @@ jobs:
 
       - name: Sanity check exported assets
         run: |
+          set -e
+          # Verify export root exists
           test -f out/index.html
-          test -f out/data/posts/v1/ab62a55f1dd0d387.json
-          echo "OK: out/ contains JSON"
+          # Verify at least one post JSON exists at the expected path
+          if compgen -G "out/data/posts/v1/*.json" >/dev/null; then
+            echo "OK: found JSON in out/data/posts/v1"
+            ls -lah out/data/posts/v1 | head -n 50 || true
+          else
+            echo "::error::No JSON files found in out/data/posts/v1"
+            echo "Directory listing for troubleshooting:"
+            ls -lah out || true
+            ls -lah out/data || true
+            ls -lah out/data/posts || true
+            exit 1
+          fi
 
       - name: Build diagnostics (DB at build?)
         run: |
