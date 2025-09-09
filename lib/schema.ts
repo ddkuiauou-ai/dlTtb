@@ -39,7 +39,20 @@ export const posts = pgTable("posts", {
   index("posts_site_idx").on(table.site),
   // Composite index for board feed queries (site+board 정렬)
   index("posts_site_board_timestamp_idx").on(table.site, table.board, table.timestamp),
+  // Composite index for isDeleted + timestamp + id (feed queries, partial index not possible in Drizzle)
+  index("posts_is_deleted_timestamp_id_idx").on(table.isDeleted, table.timestamp, table.id),
 ]);
+
+/*
+  ───────────────────────────────────────────────────────────────────────────
+  Manual index (create once in DB): recent non-deleted posts feed
+    - Matches: WHERE is_deleted = FALSE AND timestamp >= ... ORDER BY timestamp DESC, id ASC
+    - Partial index + order (DESC/ASC) significantly reduces sort/scan cost.
+
+  CREATE INDEX IF NOT EXISTS posts_recent_not_deleted_idx
+    ON public.posts (timestamp DESC, id ASC)
+    WHERE is_deleted = FALSE;
+*/
 
 // 2. Post Versions
 export const postVersions = pgTable("post_versions", {
@@ -69,7 +82,15 @@ export const postImages = pgTable("post_images", {
 }, (table) => [
   index("post_images_post_id_idx").on(table.postId),
   unique("post_images_post_id_url_uq").on(table.postId, table.urlHash),
+  // Composite index for pick-largest-width per post (ORDER BY width DESC NULLS LAST, url ASC LIMIT 1)
+  index("post_images_post_width_url_idx").on(table.postId, table.width, table.url),
 ]);
+
+/*
+  Manual index (better ordering for pick-largest width):
+  CREATE INDEX IF NOT EXISTS post_images_pick_idx
+    ON public.post_images (post_id, width DESC, url ASC);
+*/
 
 // 4. Post Embeds
 export const postEmbeds = pgTable("post_embeds", {
@@ -86,7 +107,17 @@ export const postEmbeds = pgTable("post_embeds", {
 }, (table) => [
   index("post_embeds_post_id_idx").on(table.postId),
   unique("post_embeds_post_id_url_uq").on(table.postId, table.urlHash),
+  // Composite index for postId + type
+  index("post_embeds_post_type_idx").on(table.postId, table.type),
+  // Composite index for postId + type + thumbnail
+  index("post_embeds_post_type_thumb_idx").on(table.postId, table.type, table.thumbnail),
 ]);
+
+/*
+  Manual indexes for subselect/exists picks by type and thumbnail nullness:
+  CREATE INDEX IF NOT EXISTS post_embeds_pick_idx
+    ON public.post_embeds (post_id, type, (thumbnail IS NULL), url);
+*/
 
 // 4‑b. Post Enrichment (LLM 결과 저장: 카테고리/키워드)
 export const postEnrichment = pgTable("post_enrichment", {
@@ -212,6 +243,8 @@ export const postComments: any = pgTable("post_comments", {
   index("post_comments_post_id_parent_id_timestamp_idx").on(table.postId, table.parentId, table.timestamp),
   index("post_comments_post_id_root_id_timestamp_idx").on(table.postId, table.rootId, table.timestamp),
   index("post_comments_post_id_path_idx").on(table.postId, table.path),
+  // Composite index for WHERE post_id = $1 AND is_deleted = $2 ORDER BY timestamp DESC
+  index("post_comments_post_is_deleted_ts_idx").on(table.postId, table.isDeleted, table.timestamp),
 ]);
 
 // 6. Post Snapshots (for trend tracking)
@@ -526,4 +559,11 @@ ON public.mv_post_trends_agg (range_label, post_id);
 
 CREATE INDEX IF NOT EXISTS mv_post_trends_agg_hot_idx
 ON public.mv_post_trends_agg (range_label, hot_score DESC, post_id);
+*/
+
+/*
+  DB ops checklist (run once):
+    CREATE INDEX IF NOT EXISTS posts_recent_not_deleted_idx ON public.posts (timestamp DESC, id ASC) WHERE is_deleted = FALSE;
+    CREATE INDEX IF NOT EXISTS post_images_pick_idx ON public.post_images (post_id, width DESC, url ASC);
+    CREATE INDEX IF NOT EXISTS post_embeds_pick_idx ON public.post_embeds (post_id, type, (thumbnail IS NULL), url);
 */
