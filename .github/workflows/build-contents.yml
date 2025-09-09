@@ -1,0 +1,185 @@
+
+# .github/workflows/build-contents.yml
+
+name: Build Static JSON Content
+
+on:
+  # main 브랜치에 push가 있을 때 실행됩니다.
+  push:
+    branches:
+      - main
+  # GitHub Actions 탭에서 수동으로 실행할 수 있도록 합니다.
+  workflow_dispatch:
+
+jobs:
+  # 단일 실행으로 충분한 스크립트들을 실행하는 Job
+  build_singular_scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build search index
+        run: pnpm tsx scripts/build-search-index.ts
+        env:
+          # GitHub 리포지토리의 Settings > Secrets and variables > Actions 에 DATABASE_URL 을 등록해야 합니다.
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Build all post details
+        run: pnpm tsx scripts/build-post-json.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Build all keyword pages
+        run: pnpm tsx scripts/build-keyword-json.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      # 생성된 파일들을 아티팩트로 업로드합니다.
+      - name: Upload singular build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-singular
+          path: |
+            public/data/search-index.json
+            public/data/posts/
+            public/data/keywords/
+
+  # 'main' 페이지들을 병렬로 빌드하는 Job
+  build_main:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        range: ['3h', '6h', '24h', '1w']
+        section: ['fresh', 'trending', 'top', 'ranked']
+      fail-fast: false # 특정 조합이 실패해도 다른 조합은 계속 실행합니다.
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build main pages
+        run: pnpm tsx scripts/build-main-json.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          RANGE: ${{ matrix.range }}
+          SECTION: ${{ matrix.section }}
+      - name: Upload main build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-main-${{ matrix.range }}-${{ matrix.section }}
+          path: public/data/home/v1/${{ matrix.range }}/${{ matrix.section }}/
+
+  # 'category' 페이지들을 병렬로 빌드하는 Job
+  build_categories:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # 참고: 이 목록을 실제 사용하는 카테고리 목록으로 확장해야 합니다.
+        category: ['all', 'video', 'youtube']
+        range: ['3h', '6h', '24h', '1w']
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build category pages
+        run: pnpm tsx scripts/build-category-json.ts ${{ matrix.category }} ${{ matrix.range }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: Upload category artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-category-${{ matrix.category }}-${{ matrix.range }}
+          path: public/data/category/${{ matrix.category }}/v1/${{ matrix.range }}/
+
+  # 'all-posts' 페이지들을 병렬로 빌드하는 Job
+  build_all_posts:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        range: ['3h', '6h', '24h', '1w']
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build all posts pages
+        run: pnpm tsx scripts/build-allposts-json.ts ${{ matrix.range }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: Upload all-posts artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-allposts-${{ matrix.range }}
+          path: public/data/all/v1/${{ matrix.range }}/
+
+  # 모든 빌드 Job이 완료된 후, 결과물들을 하나로 합치는 Job
+  package:
+    runs-on: ubuntu-latest
+    # 위에서 정의한 모든 빌드 Job들이 성공해야 이 Job이 실행됩니다.
+    needs: [build_singular_scripts, build_main, build_categories, build_all_posts]
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          # 모든 아티팩트를 'artifacts' 폴더 아래에 다운로드합니다.
+          path: artifacts
+
+      - name: Combine artifacts
+        run: |
+          mkdir -p public/data
+          # 각 아티팩트 폴더의 내용물을 public/data 로 복사하여 합칩니다.
+          find artifacts -mindepth 1 -maxdepth 1 -type d -exec cp -r {}/. public/data/ \;
+
+      - name: Upload final public-data artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-data
+          path: public/data

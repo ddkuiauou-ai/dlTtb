@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!-- 이 문서에서 발생하는 모든 하위 요청은 no-referrer -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>html,body{margin:0;height:100%} video{width:100%;height:100%;background:#000}</style>
+  </head>
+  <body>
+    <!-- 쿼리로 mp4 URL을 전달받아 재생 -->
+    <video id="v" controls playsinline preload="metadata" autoplay muted></video>
+    <script>
+      const params = new URLSearchParams(location.search);
+      const src = params.get('src');
+      if (src) document.getElementById('v').src = src;
+    </script>
+  </body>
+</html>
