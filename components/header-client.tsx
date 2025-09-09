@@ -21,7 +21,6 @@ export function HeaderClient({ sites }: HeaderClientProps) {
   const [selectedCommunity, setSelectedCommunity] = useState("전체")
   const [selectedIds, setSelectedIds] = useState<string[] | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [showHelper, setShowHelper] = useState(true)
   const [showKeyHint, setShowKeyHint] = useState(false)
 
   // Show the keyboard hint banner once, then hide for a period
@@ -41,11 +40,6 @@ export function HeaderClient({ sites }: HeaderClientProps) {
       setShowKeyHint(true);
     }
   }, []);
-
-  const dismissKeyHint = () => {
-    try { localStorage.setItem(KEYHINT_KEY, String(Date.now())); } catch { }
-    setShowKeyHint(false);
-  };
 
   // Persisted community selection across routes
   const COMM_KEY = 'isshoo:communities:selected:v1';
@@ -94,9 +88,9 @@ export function HeaderClient({ sites }: HeaderClientProps) {
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-4">
+        <div className="flex items-center h-16">
+          {/* Left: Logo */}
+          <div className="flex-1 flex items-center space-x-4">
             <a href="/" className="focus:outline-none">
               <h1 className="text-2xl font-bold text-blue-600 cursor-pointer hover:opacity-80 transition">
                 Isshoo <span className="text-xs text-gray-500 align-top">이슈</span>
@@ -105,8 +99,8 @@ export function HeaderClient({ sites }: HeaderClientProps) {
             <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">인기글 모아보기</span>
           </div>
 
-          {/* Desktop Navigation (Community Multi-select Avatars) */}
-          <div className="hidden md:flex items-center">
+          {/* Center: Community Selector */}
+          <div className="hidden md:flex justify-center">
             <CommunityPresenceSelector
               items={communitiesAll}
               value={selectedIds}
@@ -140,44 +134,20 @@ export function HeaderClient({ sites }: HeaderClientProps) {
             />
           </div>
 
-          {/* Search Bar */}
-          <div className="flex-1 flex justify-end md:justify-center md:px-8 lg:px-16">
-            <div className="w-full max-w-md">
+          {/* Right: Search Bar */}
+          <div className="flex-1 hidden md:flex items-center justify-end">
+            <div className="w-full max-w-sm">
               <SearchBar />
             </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          <div className="md:hidden">
+            <Button variant="ghost" size="sm" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
         </div>
-
-        {/* Info Banner */}
-        {showHelper && (
-          <div className="mt-2 mb-2 rounded-md bg-blue-50 text-blue-800 text-xs px-3 py-2 flex items-start justify-between gap-3">
-            <div>
-              <strong className="mr-1">안내</strong>
-              상단은 선택한 범위에 맞춘 요약/추천 영역입니다. 아래로 더 내리면 ‘최신’ 피드가 계속 이어집니다. 커뮤니티 탭은 <b>화면 필터만</b> 적용되며, 추가 로드는 선택한 범위의 전체 피드를 이어받습니다.
-            </div>
-            <button onClick={() => setShowHelper(false)} className="shrink-0 text-blue-700 hover:text-blue-900" aria-label="닫기">✕</button>
-          </div>
-        )}
-
-        {/* Keyboard Shortcuts Hint (concise) */}
-        {showKeyHint && (
-          <div className="-mt-1 mb-2 flex items-center justify-between rounded-md bg-gray-50 border text-gray-700 px-3 py-1.5 text-[11px]">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-gray-600">단축키</span>
-              <span className="inline-flex items-center gap-1"><span className="border rounded px-1 py-0.5 bg-white">←/→</span><span>이전/다음</span></span>
-              <span className="inline-flex items-center gap-1"><span className="border rounded px-1 py-0.5 bg-white">↑/↓</span><span>스크롤</span></span>
-              <span className="inline-flex items-center gap-1"><span className="border rounded px-1 py-0.5 bg-white">Space</span><span>페이지↓</span></span>
-              <span className="inline-flex items-center gap-1"><span className="border rounded px-1 py-0.5 bg-white">Shift+Space</span><span>페이지↑</span></span>
-              <span className="inline-flex items-center gap-1"><span className="border rounded px-1 py-0.5 bg-white">Enter</span><span>재생/댓글로 이동</span></span>
-            </div>
-            <button onClick={dismissKeyHint} className="shrink-0 text-gray-500 hover:text-gray-700" aria-label="닫기">✕</button>
-          </div>
-        )}
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (

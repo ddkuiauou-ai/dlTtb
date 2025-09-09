@@ -382,6 +382,23 @@ jobs:
         run: |
           pnpm build
 
+      - name: Print working dir and tree
+        run: |
+          set -x
+          echo "PWD:"
+          pwd
+          echo "--- Top level ---"
+          ls -lah || true
+          echo "--- public (pre-build copy result) ---"
+          ls -lah public || true
+          echo "--- public/data sample ---"
+          ls -lah public/data || true
+          ls -lah public/data/posts/v1 || true
+          echo "--- out (exported) ---"
+          ls -lah out || true
+          echo "--- out/data/posts/v1 ---"
+          ls -lah out/data/posts/v1 || true
+
       - name: Sanity check exported assets
         run: |
           test -f out/index.html
