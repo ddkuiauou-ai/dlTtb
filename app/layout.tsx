@@ -6,8 +6,8 @@ import { PostViewerModal } from '@/components/post-viewer-modal'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: '뭔일 있슈?',
+  description: '모든 커뮤니티의 모든 글을 한 곳에서',
   generator: 'v0.dev',
 }
 
@@ -21,7 +21,7 @@ export default function RootLayout({
       <body>
         <Script id="apply-read-state" strategy="afterInteractive">{`(function(){
   try {
-    var KEY = 'readPosts:v1';
+    var KEY = 'readPosts:v2';
 
     // --- Storage caching ---
     var readSet = new Set();
