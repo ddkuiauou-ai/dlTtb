@@ -93,9 +93,17 @@ jobs:
             exit 1
           fi
 
+      - name: Prepare keyword output root
+        if: matrix.task == 'keyword-pages'
+        run: |
+          set -euo pipefail
+          mkdir -p public/data/keywords
+          echo "Prepared $(pwd)/public/data/keywords as CWD for keyword build"
+
       - name: Build all keyword pages
         if: matrix.task == 'keyword-pages'
-        run: pnpm tsx scripts/build-keyword-json.ts
+        working-directory: public/data/keywords
+        run: pnpm tsx ../../scripts/build-keyword-json.ts
         env:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
@@ -358,43 +366,43 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p public/data
-          shopt -s nullglob
-          
-          echo ">>> Detecting unexpected 'v1' directories..."
-          # Allow expected locations under public/data, and also allow keyword artifacts that upload as <artifact>/<keyword>/v1
-          stray=$(find artifacts -type d -name v1 \
-            | grep -Ev '/public/data/(posts/v1|keywords/[^/]+/v1|home/v1|category/[^/]+/v1|all/v1)$|^artifacts/artifact-singular-keyword-pages/[^/]+/v1$' \
-            || true)
+          # Detect stray 'v1' folders not under expected public/data subtrees inside artifacts and fail fast
+          stray=$(find artifacts -type d -name v1 | grep -Ev '/public/data/(posts/v1|keywords/[^/]+/v1|home/v1|category/[^/]+/v1|all/v1)$' || true)
           if [ -n "$stray" ]; then
             echo "::error::Found stray 'v1' directories not under expected locations in artifacts:"
             echo "$stray" | sed 's/^/ - /'
             exit 1
           fi
-          
-          echo ">>> Merging trees that already include public/data as root..."
+          # Merge ONLY the subtrees that live under public/data/
+          shopt -s nullglob
           for d in artifacts/*/public/data artifacts/*/*/public/data artifacts/*/*/*/public/data; do
-            [ -d "$d" ] || continue
             echo "Merging $d -> public/data"
             rsync -a "$d"/ public/data/
           done
-          
-          echo ">>> Normalizing keyword artifacts uploaded without the public/data/keywords prefix..."
-          # Handle artifacts/artifact-singular-keyword-pages/<keyword>/v1
+          # Normalize keyword artifacts if uploaded without public/data prefix
           for kv in artifacts/artifact-singular-keyword-pages/*/v1; do
-            [ -d "$kv" ] || continue
-            kw="$(basename "$(dirname "$kv")")"
-            echo "Staging keyword '$kw' -> public/data/keywords/$kw"
-            mkdir -p "public/data/keywords/$kw"
-            # Copy the whole keyword subtree (including v1 and files) under the canonical location
-            rsync -a "$(dirname "$kv")/"/ "public/data/keywords/$kw/"
+            if [ -d "$kv" ]; then
+              echo "Staging keywords -> public/data/keywords (from $kv)"
+              mkdir -p public/data/keywords
+              rsync -a "$kv"/ public/data/keywords/
+            fi
           done
-          
+          echo ">>> Normalizing post-details artifact if uploaded without public/data prefix..."
+          # Handle artifacts/artifact-singular-post-details/posts/v1 and artifacts/artifact-singular-post-details/v1
+          if [ -d artifacts/artifact-singular-post-details/posts/v1 ]; then
+            echo "Staging posts -> public/data/posts/v1 (from posts/v1)"
+            mkdir -p public/data/posts
+            rsync -a artifacts/artifact-singular-post-details/posts/v1/ public/data/posts/v1/
+          elif [ -d artifacts/artifact-singular-post-details/v1 ]; then
+            echo "Staging posts -> public/data/posts/v1 (from v1)"
+            mkdir -p public/data/posts
+            rsync -a artifacts/artifact-singular-post-details/v1/ public/data/posts/v1/
+          fi
           echo "--- combined public/data tree (top) ---"
           ls -lah public/data || true
-          echo "--- sample posts/v1 ---"
           (ls -lah public/data/posts/v1 || true)
-          echo "--- sample keywords ---"
-          (ls -lah public/data/keywords | head -n 50 || true)
+          echo "--- has posts/v1? ---"
+          (find public/data/posts/v1 -maxdepth 1 -type f -name '*.json' | head -n 5 || true)
 
       - name: Upload final public-data artifact
         uses: actions/upload-artifact@v4
