@@ -965,7 +965,7 @@ useLayoutEffect(() => {
     const estimateRowSize = useCallback(() => {
       const effectiveLayout = cardLayoutOverride ?? layout;
       const isMobile = (containerWidth || (rootRef.current?.clientWidth || 0)) < 768; // md breakpoint
-      const ROW_GAP = isMobile ? 0 : 16;
+      const ROW_GAP = 16;
       if (effectiveLayout === 'grid') {
         const GAP = 16;
         const w = Math.max(0, containerWidth || (rootRef.current?.clientWidth || 0));
@@ -976,7 +976,7 @@ useLayoutEffect(() => {
         return imgH + textH + ROW_GAP;
       }
       // list(썸네일+텍스트) 행 높이도 상향
-      const LIST_ROW_EST = 144;
+      const LIST_ROW_EST = 100;
       return LIST_ROW_EST + ROW_GAP;
     }, [cols, cardLayoutOverride, layout, containerWidth]);
 
@@ -1237,7 +1237,7 @@ useLayoutEffect(() => {
           .post-anchor.restore-glow::after, .post-anchor.restore-glow::before { animation: none !important; opacity: 0 !important; }
         }
       `}</style>
-        <div ref={rootRef} className="grid grid-cols-1 gap-0 md:gap-4">
+        <div ref={rootRef} className="grid grid-cols-1 gap-4">
           <div style={{ height: virtualizer.getTotalSize(), width: '100%', position: 'relative' }}>
             {items.map((vi) => {
               const start = vi.index * cols;
@@ -1251,7 +1251,7 @@ useLayoutEffect(() => {
                   style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translate3d(0, ${vi.start}px, 0)`, willChange: 'transform' }}
                 >
                   <div
-                    className="grid gap-0 md:gap-4"
+                    className="grid gap-4"
                     style={{ gridTemplateColumns: `repeat(${Math.max(1, cols)}, minmax(0, 1fr))` }}
                   >
                     {rowPosts.map((post, i) => (
@@ -1283,8 +1283,8 @@ useLayoutEffect(() => {
                       </div>
                     ))}
                   </div>
-                  {/* spacer between virtual rows: none on mobile, md: 16px */}
-                  <div className="h-0 md:h-4" aria-hidden />
+                  {/* spacer between virtual rows: 16px */}
+                  <div className="h-4" aria-hidden />
                 </div>
               );
             })}
@@ -1332,7 +1332,7 @@ useLayoutEffect(() => {
       `}</style>
       <div
         ref={rootRef}
-        className={"grid gap-0 md:gap-4"}
+        className={"grid gap-4"}
         style={gridColumnsOverride && gridColumnsOverride > 0
           ? { gridTemplateColumns: `repeat(${Math.max(1, Math.floor(gridColumnsOverride))}, minmax(0, 1fr))` }
           : { gridTemplateColumns: `repeat(auto-fit, minmax(min(100%, 22rem), 1fr))` }}
