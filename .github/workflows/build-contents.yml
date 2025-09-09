@@ -381,7 +381,13 @@ jobs:
           DISABLE_DB_AT_BUILD: ${{ env.DISABLE_DB_AT_BUILD }}
         run: |
           pnpm build
-          pnpm export || true
+          pnpm export
+
+      - name: Sanity check exported assets
+        run: |
+          test -f out/index.html
+          test -f out/data/posts/v1/ab62a55f1dd0d387.json
+          echo "OK: out/ contains JSON"
 
       - name: Build diagnostics (DB at build?)
         run: |
