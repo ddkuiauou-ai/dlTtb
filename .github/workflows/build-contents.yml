@@ -117,21 +117,24 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact-singular-search-index
-          path: public/data/search-index.json
+          path: public
+          if-no-files-found: error
 
       - name: Upload singular build artifact (post-details)
         if: matrix.task == 'post-details'
         uses: actions/upload-artifact@v4
         with:
           name: artifact-singular-post-details
-          path: public/data/posts/v1
+          path: public
+          if-no-files-found: error
 
       - name: Upload singular build artifact (keyword-pages)
         if: matrix.task == 'keyword-pages'
         uses: actions/upload-artifact@v4
         with:
           name: artifact-singular-keyword-pages
-          path: public/data/keywords
+          path: public
+          if-no-files-found: error
 
   # 'main' 페이지들을 병렬로 빌드하는 Job
   build_main:
