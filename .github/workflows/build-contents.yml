@@ -124,14 +124,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact-singular-post-details
-          path: public/data/posts/v1/**
+          path: public/data/posts/v1
 
       - name: Upload singular build artifact (keyword-pages)
         if: matrix.task == 'keyword-pages'
         uses: actions/upload-artifact@v4
         with:
           name: artifact-singular-keyword-pages
-          path: public/data/keywords/**
+          path: public/data/keywords
 
   # 'main' 페이지들을 병렬로 빌드하는 Job
   build_main:
@@ -358,10 +358,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p public/data
-          # Detect stray 'v1' folders not under public/data/posts/v1 inside artifacts and fail fast
-          stray=$(find artifacts -type d -name v1 | grep -v '/public/data/posts/v1' || true)
+          # Detect stray 'v1' folders not under expected public/data subtrees inside artifacts and fail fast
+          stray=$(find artifacts -type d -name v1 | grep -Ev '/public/data/(posts/v1|keywords/[^/]+/v1|home/v1|category/[^/]+/v1|all/v1)$' || true)
           if [ -n "$stray" ]; then
-            echo "::error::Found stray 'v1' directories not under public/data/posts/v1 in artifacts:"
+            echo "::error::Found stray 'v1' directories not under expected locations in artifacts:"
             echo "$stray" | sed 's/^/ - /'
             exit 1
           fi
