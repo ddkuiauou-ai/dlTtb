@@ -358,22 +358,43 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p public/data
-          # Detect stray 'v1' folders not under expected public/data subtrees inside artifacts and fail fast
-          stray=$(find artifacts -type d -name v1 | grep -Ev '/public/data/(posts/v1|keywords/[^/]+/v1|home/v1|category/[^/]+/v1|all/v1)$' || true)
+          shopt -s nullglob
+          
+          echo ">>> Detecting unexpected 'v1' directories..."
+          # Allow expected locations under public/data, and also allow keyword artifacts that upload as <artifact>/<keyword>/v1
+          stray=$(find artifacts -type d -name v1 \
+            | grep -Ev '/public/data/(posts/v1|keywords/[^/]+/v1|home/v1|category/[^/]+/v1|all/v1)$|^artifacts/artifact-singular-keyword-pages/[^/]+/v1$' \
+            || true)
           if [ -n "$stray" ]; then
             echo "::error::Found stray 'v1' directories not under expected locations in artifacts:"
             echo "$stray" | sed 's/^/ - /'
             exit 1
           fi
-          # Merge ONLY the subtrees that live under public/data/
-          shopt -s nullglob
+          
+          echo ">>> Merging trees that already include public/data as root..."
           for d in artifacts/*/public/data artifacts/*/*/public/data artifacts/*/*/*/public/data; do
+            [ -d "$d" ] || continue
             echo "Merging $d -> public/data"
             rsync -a "$d"/ public/data/
           done
+          
+          echo ">>> Normalizing keyword artifacts uploaded without the public/data/keywords prefix..."
+          # Handle artifacts/artifact-singular-keyword-pages/<keyword>/v1
+          for kv in artifacts/artifact-singular-keyword-pages/*/v1; do
+            [ -d "$kv" ] || continue
+            kw="$(basename "$(dirname "$kv")")"
+            echo "Staging keyword '$kw' -> public/data/keywords/$kw"
+            mkdir -p "public/data/keywords/$kw"
+            # Copy the whole keyword subtree (including v1 and files) under the canonical location
+            rsync -a "$(dirname "$kv")/"/ "public/data/keywords/$kw/"
+          done
+          
           echo "--- combined public/data tree (top) ---"
           ls -lah public/data || true
+          echo "--- sample posts/v1 ---"
           (ls -lah public/data/posts/v1 || true)
+          echo "--- sample keywords ---"
+          (ls -lah public/data/keywords | head -n 50 || true)
 
       - name: Upload final public-data artifact
         uses: actions/upload-artifact@v4
