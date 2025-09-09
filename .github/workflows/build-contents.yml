@@ -396,7 +396,7 @@ jobs:
         run: |
           # Build and static-export Next.js to ./out
           pnpm next build
-          pnpm next export -o out
+          pnpm next export
 
       - name: Print working dir and tree
         run: |
