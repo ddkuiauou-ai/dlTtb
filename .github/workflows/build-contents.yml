@@ -395,8 +395,7 @@ jobs:
           DISABLE_DB_AT_BUILD: ${{ env.DISABLE_DB_AT_BUILD }}
         run: |
           # Build and static-export Next.js to ./out
-          pnpm next build
-          pnpm next export
+          pnpm run build
 
       - name: Print working dir and tree
         run: |
