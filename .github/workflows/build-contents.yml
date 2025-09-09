@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        task: ['search-index', 'post-details', 'keyword-pages']
+        task: ["search-index", "post-details", "keyword-pages"]
       fail-fast: false
     steps:
       - name: Checkout repository
@@ -28,8 +28,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -111,8 +111,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        range: ['3h', '6h', '24h', '1w']
-        section: ['fresh', 'trending', 'top', 'ranked']
+        range: ["3h", "6h", "24h", "1w"]
+        section: ["fresh", "trending", "top", "ranked"]
       fail-fast: false # 특정 조합이 실패해도 다른 조합은 계속 실행합니다.
 
     steps:
@@ -125,8 +125,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -175,8 +175,8 @@ jobs:
     strategy:
       matrix:
         # 참고: 이 목록을 실제 사용하는 카테고리 목록으로 확장해야 합니다.
-        category: ['all', 'video', 'youtube']
-        range: ['3h', '6h', '24h', '1w']
+        category: ["all", "video", "youtube"]
+        range: ["3h", "6h", "24h", "1w"]
       fail-fast: false
 
     steps:
@@ -189,8 +189,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -236,7 +236,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        range: ['3h', '6h', '24h', '1w']
+        range: ["3h", "6h", "24h", "1w"]
       fail-fast: false
 
     steps:
@@ -249,8 +249,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -322,6 +322,9 @@ jobs:
     permissions:
       contents: read
       deployments: write
+    env:
+      DISABLE_DB_AT_BUILD: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
 
     steps:
       - name: Checkout source
@@ -335,8 +338,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
