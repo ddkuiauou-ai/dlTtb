@@ -309,58 +309,55 @@ jobs:
           # 각 아티팩트 폴더의 내용물을 public/data 로 복사하여 합칩니다.
           find artifacts -mindepth 1 -maxdepth 1 -type d -exec cp -r {}/. public/data/ \;
 
-      - name: Run pnpm build
-        run: pnpm build
-
       - name: Upload final public-data artifact
         uses: actions/upload-artifact@v4
         with:
           name: public-data
           path: public/data
 
-# 모든 아티팩트를 합친 후 Cloudflare Pages로 배포
-deploy:
-  runs-on: ubuntu-latest
-  needs: package
-  permissions:
-    contents: read
-    deployments: write
+  # 모든 아티팩트를 합친 후 Cloudflare Pages로 배포
+  deploy:
+    runs-on: ubuntu-latest
+    needs: package
+    permissions:
+      contents: read
+      deployments: write
 
-  steps:
-    - name: Checkout source
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
 
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v3
-      with:
-        version: 8
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'pnpm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
 
-    - name: Install dependencies
-      run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-    - name: Download final public-data artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: public-data
-        path: public/data
+      - name: Download final public-data artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: public-data
+          path: public/data
 
-    # Next.js 정적 사이트를 빌드/익스포트합니다. (export를 쓰지 않는다면 out 대신 .next/static 등으로 조정)
-    - name: Build & Export Next.js
-      run: |
-        pnpm build
-        pnpm export || true
+      # Next.js 정적 사이트를 빌드/익스포트합니다. (export를 쓰지 않는다면 out 대신 .next/static 등으로 조정)
+      - name: Build & Export Next.js
+        run: |
+          pnpm build
+          pnpm export || true
 
-    - name: Deploy to Cloudflare Pages
-      uses: cloudflare/wrangler-action@v3
-      with:
-        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        # 프로젝트명은 레포 시크릿으로 관리하거나 직접 문자열로 기입하세요.
-        command: pages deploy out --project-name=${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
-        gitHubToken: ${{ secrets.TOKEN_GITHUB_COM }}
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # 프로젝트명은 레포 시크릿으로 관리하거나 직접 문자열로 기입하세요.
+          command: pages deploy out --project-name=${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
+          gitHubToken: ${{ secrets.TOKEN_GITHUB_COM }}
