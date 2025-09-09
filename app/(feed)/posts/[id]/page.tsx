@@ -32,7 +32,7 @@ export default async function PostPage(props: PageProps) {
       <main className="w-full max-w-screen-xl mx-auto px-0 md:px-4 py-6">
         <div className="max-w-4xl mx-auto">
           <PostDetail post={post} />
-          <ReadMarker canonicalId={post.id} routeId={id} />
+          <ReadMarker canonicalId={post.id} routeId={id} title={post.title} />
           {post.clusterId && (
             <section className="mt-6 mb-4 rounded-lg border bg-white p-4 shadow-sm">
               <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">

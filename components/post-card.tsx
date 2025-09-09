@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Badge } from "@/components/ui/badge";
 import { MessageCircle, ThumbsUp, Clock, Eye } from "lucide-react";
 import Image from "next/image";
@@ -13,6 +14,7 @@ import { BrandIcon } from "./brand-icon";
 import { RotatingText } from "@/components/animate-ui/text/rotating";
 import { cn } from "@/lib/utils";
 import { markNavigateToPost } from "@/lib/restore-session";
+import { markPostAsRead } from "@/lib/read-marker";
 
 import { useModal } from "@/context/modal-context";
 import type { Post } from "@/lib/types";
@@ -456,6 +458,9 @@ export function PostCard({ post, layout, page, storageKeyPrefix = "", isNew = fa
     }
 
     e.preventDefault();
+
+    // Mark as read
+    markPostAsRead({ id: post.id, title: post.title });
 
     // Session restoration logic
     if (storageKeyPrefix) {

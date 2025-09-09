@@ -4,6 +4,7 @@ import { getTrendingKeywords, getHomeStats24h } from "@/lib/queries";
 import { CategoryList } from "./category-list.client";
 import { CountingNumber } from "@/components/animate-ui/text/counting-number";
 import { TrendingKeywordList } from "./TrendingKeywordList.client";
+import { ReadPostList } from "./ReadPostList.client";
 
 export const dynamic = "force-static";
 export const revalidate = false;
@@ -103,6 +104,9 @@ export async function Sidebar() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Read Posts */}
+      <ReadPostList />
     </div>
   );
 }
