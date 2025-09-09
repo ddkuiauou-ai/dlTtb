@@ -361,22 +361,40 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p public/data
-          # Detect stray 'v1' folders not under expected public/data subtrees inside artifacts and fail fast
-          stray=$(find artifacts -type d -name v1 | grep -Ev '/public/data/(posts/v1|keywords/[^/]+/v1|home/v1|category/[^/]+/v1|all/v1)$' || true)
+          shopt -s nullglob
+          
+          echo ">>> Detecting unexpected 'v1' directories..."
+          # Allow both layouts: <artifact>/public/data/... and <artifact>/data/...
+          # Accepted subtrees: posts/v1, keywords/<slug>/v1, home/v1, category/<cat>/v1, all/v1
+          stray=$(find artifacts -type d -name v1 \
+            | grep -Ev '/(public/)?data/(posts/v1|keywords/[^/]+/v1|home/v1|category/[^/]+/v1|all/v1)$' \
+            || true)
           if [ -n "$stray" ]; then
             echo "::error::Found stray 'v1' directories not under expected locations in artifacts:"
             echo "$stray" | sed 's/^/ - /'
             exit 1
           fi
-          # Merge ONLY the subtrees that live under public/data/
-          shopt -s nullglob
+          
+          echo ">>> Merging trees that already include public/data as root..."
           for d in artifacts/*/public/data artifacts/*/*/public/data artifacts/*/*/*/public/data; do
+            [ -d "$d" ] || continue
             echo "Merging $d -> public/data"
             rsync -a "$d"/ public/data/
           done
+          
+          echo ">>> Merging trees that have data/ (no public/ root) ..."
+          for d in artifacts/*/data artifacts/*/*/data artifacts/*/*/*/data; do
+            [ -d "$d" ] || continue
+            echo "Merging $d -> public/data"
+            rsync -a "$d"/ public/data/
+          done
+          
           echo "--- combined public/data tree (top) ---"
           ls -lah public/data || true
+          echo "--- sample posts/v1 ---"
           (ls -lah public/data/posts/v1 || true)
+          echo "--- sample keywords ---"
+          (ls -lah public/data/keywords | head -n 50 || true)
           echo "--- has posts/v1? ---"
           (find public/data/posts/v1 -maxdepth 1 -type f -name '*.json' | head -n 5 || true)
 
