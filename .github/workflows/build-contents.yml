@@ -103,7 +103,7 @@ jobs:
       - name: Build all keyword pages
         if: matrix.task == 'keyword-pages'
         working-directory: public/data/keywords
-        run: pnpm tsx ../../scripts/build-keyword-json.ts
+        run: pnpm tsx ../../../scripts/build-keyword-json.ts
         env:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
