@@ -1,5 +1,3 @@
-# .github/workflows/build-contents.yml
-
 name: Build Static JSON Content
 
 on:
@@ -11,9 +9,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  # 단일 실행으로 충분한 스크립트들을 실행하는 Job
-  build_singular_scripts:
+  # 단일 스크립트들도 병렬로 빌드
+  build_singular:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task: ['search-index', 'post-details', 'keyword-pages']
+      fail-fast: false
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -48,15 +50,13 @@ jobs:
           if [ $missing -ne 0 ]; then exit 1; fi
 
           echo "All Postgres secrets are set."
-          # Show masked summary without leaking password
           echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          # Show non-sensitive breakdown
           echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          # Password diagnostics without revealing
           echo "password_len=${#PASS}"
           echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
 
       - name: Build search index
+        if: matrix.task == 'search-index'
         run: pnpm tsx scripts/build-search-index.ts
         env:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
@@ -66,6 +66,7 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
       - name: Build all post details
+        if: matrix.task == 'post-details'
         run: pnpm tsx scripts/build-post-json.ts
         env:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
@@ -75,6 +76,7 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
       - name: Build all keyword pages
+        if: matrix.task == 'keyword-pages'
         run: pnpm tsx scripts/build-keyword-json.ts
         env:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
@@ -83,15 +85,26 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
-      # 생성된 파일들을 아티팩트로 업로드합니다.
-      - name: Upload singular build artifact
+      - name: Upload singular build artifact (search-index)
+        if: matrix.task == 'search-index'
         uses: actions/upload-artifact@v4
         with:
-          name: artifact-singular
-          path: |
-            public/data/search-index.json
-            public/data/posts/
-            public/data/keywords/
+          name: artifact-singular-search-index
+          path: public/data/search-index.json
+
+      - name: Upload singular build artifact (post-details)
+        if: matrix.task == 'post-details'
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-singular-post-details
+          path: public/data/posts/
+
+      - name: Upload singular build artifact (keyword-pages)
+        if: matrix.task == 'keyword-pages'
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-singular-keyword-pages
+          path: public/data/keywords/
 
   # 'main' 페이지들을 병렬로 빌드하는 Job
   build_main:
@@ -282,7 +295,7 @@ jobs:
   package:
     runs-on: ubuntu-latest
     # 위에서 정의한 모든 빌드 Job들이 성공해야 이 Job이 실행됩니다.
-    needs: [build_singular_scripts, build_main, build_categories, build_all_posts]
+    needs: [build_singular, build_main, build_categories, build_all_posts]
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
