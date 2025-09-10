@@ -193,11 +193,6 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           RANGE: ${{ matrix.range }}
           SECTION: ${{ matrix.section }}
-
-      - name: "🐞 DEBUG - List generated files"
-        run: |
-          echo "--- Listing files in public/data/home/v1 ---"
-          find public/data/home/v1 -ls
       - name: Validate output layout
         run: |
           set -euo pipefail
@@ -350,48 +345,15 @@ jobs:
           name: artifact-allposts-${{ matrix.range }}
           path: public/data
 
-  # 모든 빌드 Job이 완료된 후, 결과물들을 하나로 합치는 Job
-  package:
+  # 모든 빌드 Job이 완료된 후, 결과물들을 합치고 배포하는 Job
+  package_and_deploy:
     runs-on: ubuntu-latest
     # 위에서 정의한 모든 빌드 Job들이 성공해야 이 Job이 실행됩니다.
     needs: [build_singular, build_main, build_categories, build_all_posts]
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          # 모든 아티팩트를 'artifacts' 폴더 아래에 다운로드합니다.
-          path: artifacts
-
-      - name: Combine artifacts
-        run: |
-          set -euo pipefail
-          mkdir -p public/data
-          echo "--- Merging all artifact contents into ./public/data ---"
-          # Loop through each downloaded artifact directory and sync its contents into public/data
-          for d in artifacts/*/; do
-            if [ -d "$d" ]; then
-              echo "Merging contents of $d"
-              rsync -av "$d" public/data/
-            fi
-          done
-          echo "--- Final public/data directory tree ---"
-          ls -lR public/data
-
-      - name: Upload final public-data artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: public-data
-          path: public/data/**
-
-  # 모든 아티팩트를 합친 후 Cloudflare Pages로 배포
-  deploy:
-    runs-on: ubuntu-latest
-    needs: package
     permissions:
       contents: read
       deployments: write
     env:
-      DISABLE_DB_AT_BUILD: "0"
       NEXT_TELEMETRY_DISABLED: "1"
 
     steps:
@@ -412,11 +374,25 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Download final public-data artifact
+      - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: public-data
-          path: public/data
+          path: artifacts
+
+      - name: Combine artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p public/data
+          echo "--- Merging all artifact contents into ./public/data ---"
+          # Loop through each downloaded artifact directory and sync its contents into public/data
+          for d in artifacts/*/; do
+            if [ -d "$d" ]; then
+              echo "Merging contents of $d"
+              rsync -av "$d" public/data/
+            fi
+          done
+          echo "--- Final public/data directory tree ---"
+          ls -lR public/data
 
       - name: Check DB ENVs (masked-safe)
         run: |
@@ -428,16 +404,12 @@ jobs:
 
           missing=0
           for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
+            v=$(eval echo \$k)
             if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
 
           echo "All Postgres secrets are set."
-          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          echo "password_len=${#PASS}"
-          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
 
       - name: Build & Export Next.js
         env:
@@ -446,59 +418,13 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          DISABLE_DB_AT_BUILD: ${{ env.DISABLE_DB_AT_BUILD }}
         run: |
           pnpm next build
-
-      - name: Print working dir and tree
-        run: |
-          set -x
-          echo "PWD:"
-          pwd
-          echo "--- Top level ---"
-          ls -lah || true
-          echo "--- public (pre-build copy result) ---"
-          ls -lah public || true
-          echo "--- public/data sample ---"
-          ls -lah public/data || true
-          ls -lah public/data/posts/v1 || true
-          echo "--- out (exported) ---"
-          ls -lah out || true
-          echo "--- out/data/posts/v1 ---"
-          ls -lah out/data/posts/v1 || true
-
-      - name: Sanity check exported assets
-        run: |
-          set -e
-          # Verify export root exists
-          test -f out/index.html
-          # Verify at least one post JSON exists at the expected path
-          if compgen -G "out/data/posts/v1/*.json" >/dev/null; then
-            echo "OK: found JSON in out/data/posts/v1"
-            ls -lah out/data/posts/v1 | head -n 50 || true
-          else
-            echo "::error::No JSON files found in out/data/posts/v1"
-            echo "Directory listing for troubleshooting:"
-            ls -lah out || true
-            ls -lah out/data || true
-            ls -lah out/data/posts || true
-            exit 1
-          fi
-
-      - name: Build diagnostics (DB at build?)
-        run: |
-          echo "DISABLE_DB_AT_BUILD=${DISABLE_DB_AT_BUILD:-unset}"
-          if [ "${DISABLE_DB_AT_BUILD}" = "1" ]; then
-            echo "App SHOULD NOT connect to DB during build. Ensure generateStaticParams/Metadata are guarded."
-          else
-            echo "App MAY connect to DB during build."
-          fi
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # 프로젝트명은 레포 시크릿으로 관리하거나 직접 문자열로 기입하세요.
           command: pages deploy out --project-name=${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
           gitHubToken: ${{ secrets.TOKEN_GITHUB_COM }}

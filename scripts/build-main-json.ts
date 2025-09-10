@@ -27,13 +27,6 @@ const RANGE = (process.env.RANGE ?? "24h").toString();
 const SECTION = (process.env.SECTION ?? "fresh").toString();
 const OUT_DIR = path.join(process.cwd(), "public", "data", "home", "v1", RANGE, SECTION);
 
-console.log('\n[DEBUG] build-main-json.ts');
-console.log(`- ENV.RANGE: ${process.env.RANGE}`);
-console.log(`- ENV.SECTION: ${process.env.SECTION}`);
-console.log(`- Script const RANGE: ${RANGE}`);
-console.log(`- Script const SECTION: ${SECTION}`);
-console.log(`- Calculated OUT_DIR: ${OUT_DIR}`);
-
 
 const RANGE_TO_MIN: Record<string, number> = { "3h": 180, "6h": 360, "24h": 1440, "1w": 10080 };
 const WINDOW_MINUTES = RANGE_TO_MIN[RANGE] ?? 1440;
@@ -391,7 +384,7 @@ async function fetchCategoryPage(category: string, offset: number) {
     .from(posts)
     .leftJoin(sites, sql`${sites.id} = ${posts.site} AND ${sites.board} = ${posts.board}`)
     .leftJoin(postEnrichment, eq(posts.id, postEnrichment.postId))
-    .where(sql`${postEnrichment.categories} ? ${category}`)
+    .where(sql`${postEnrichment.fusedCategories} ? ${category}`)
     .orderBy(desc(posts.timestamp))
     .limit(PAGE_SIZE)
     .offset(offset);
