@@ -367,9 +367,15 @@ jobs:
           set -euo pipefail
           mkdir -p public/data
           echo "--- Merging all artifact contents into ./public/data ---"
-          find artifacts -mindepth 1 -maxdepth 1 -type d -exec rsync -av --remove-source-files {}/ public/ \;
-          echo "--- Final public directory tree ---"
-          ls -lR public
+          # Loop through each downloaded artifact directory and sync its contents into public/data
+          for d in artifacts/*/; do
+            if [ -d "$d" ]; then
+              echo "Merging contents of $d"
+              rsync -av "$d" public/data/
+            fi
+          done
+          echo "--- Final public/data directory tree ---"
+          ls -lR public/data
 
       - name: Upload final public-data artifact
         uses: actions/upload-artifact@v4
