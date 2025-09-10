@@ -137,6 +137,17 @@ export default async function Home() {
               <Suspense fallback={<div>Loading...</div>}>
                 <PostGrid
                   title="최신"
+                  range={selectedRange}
+                  perSiteCap={perSiteCap}
+                  layout="list"
+                  mode="fresh"
+                  initialPosts={fresh}
+                  jsonBase={`/data/home/v1/${selectedRange}/fresh`}
+                  enablePaging={true}
+                  loadAheadRows={1}
+                  virtualOverscan={18}
+                />
+              </Suspense>
 
               {/* TODO: 인기 키워드 섹션은 파이프라인 연결 후 추가 */}
             </div>
