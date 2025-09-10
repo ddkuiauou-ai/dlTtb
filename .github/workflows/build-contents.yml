@@ -193,6 +193,11 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           RANGE: ${{ matrix.range }}
           SECTION: ${{ matrix.section }}
+
+      - name: "🐞 DEBUG - List generated files"
+        run: |
+          echo "--- Listing files in public/data/home/v1 ---"
+          find public/data/home/v1 -ls
       - name: Validate output layout
         run: |
           set -euo pipefail
