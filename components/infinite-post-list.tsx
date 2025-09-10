@@ -1305,6 +1305,11 @@ useLayoutEffect(() => {
   // Grid path
   return (
     <>
+      {DEBUG_IPL && (
+        <div style={{ position: 'fixed', top: '50px', left: '10px', background: 'rgba(255,0,0,0.8)', color: 'white', padding: '5px', zIndex: 9999, fontSize: '12px', borderRadius: '4px' }}>
+          DEBUG: jsonBase=&quot;{jsonBase || 'UNDEFINED'}&quot;
+        </div>
+      )}
       <style jsx global>{`
         /* Restore neon glow effect for the post anchor on return from detail */
         .post-anchor.restore-glow { --restore-ms: 1500ms; }

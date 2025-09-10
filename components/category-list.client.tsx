@@ -12,6 +12,8 @@ const categories = [
   { label: "동영상", slug: "video" },
   { label: "유튜브", slug: "youtube", icon: "youtube" as keyof typeof brands },
   { label: "정보", slug: "info" },
+  { label: "IT", slug: "it" },
+  { label: "스포츠", slug: "sports" },
   { label: "질문", slug: "qna" },
   { label: "후기", slug: "review" },
   { label: "뉴스", slug: "news" },
