@@ -68,34 +68,9 @@ function tx(db: IDBDatabase, mode: IDBTransactionMode, ...stores: string[]) {
 }
 
 function deriveManifestRoot(base: string): { manifestUrl: string; manifestKey: string } {
-  // Known patterns:
-  //  - /data/home/v1/<range>/<section>(/optional-site?) -> manifest at /data/home/v1/<range>/manifest.json
-  //  - /data/category/<slug>/v1 -> manifest at /data/category/<slug>/manifest.json
-  try {
-    const parts = base.split('/').filter(Boolean);
-    const iHome = parts.indexOf('home');
-    if (iHome >= 0) {
-      // .../home/v1/<range>/<section>[/*]
-      const iV1 = parts.indexOf('v1');
-      const range = parts[iV1 + 1];
-      const root = '/' + ['data', 'home', 'v1', range].join('/');
-      return { manifestUrl: `${root}/manifest.json`, manifestKey: root };
-    }
-    const iCategory = parts.indexOf('category');
-    if (iCategory >= 0) {
-      // .../category/<slug>/v1
-      const slug = parts[iCategory + 1];
-      const root = '/' + ['data', 'category', slug].join('/');
-      return { manifestUrl: `${root}/manifest.json`, manifestKey: root };
-    }
-    // Fallback: strip last segment and append manifest.json
-    const lastSlash = base.lastIndexOf('/');
-    const root = lastSlash > 0 ? base.slice(0, lastSlash) : base;
-    return { manifestUrl: `${root}/manifest.json`, manifestKey: root };
-  } catch {
-    const root = base.replace(/\/?$/, '');
-    return { manifestUrl: `${root}/manifest.json`, manifestKey: root };
-  }
+  const parts = (base || '').split('/').filter(Boolean);
+  const root = '/' + parts.join('/');
+  return { manifestUrl: `${root}/manifest.json`, manifestKey: root };
 }
 
 export async function getManifest(base: string): Promise<Manifest | null> {
