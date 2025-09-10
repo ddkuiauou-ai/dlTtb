@@ -528,9 +528,8 @@ async function main() {
   }
 
 
-  const baseUrlForJson = path.join("/data/home", "v1", RANGE, SECTION);
-  const manifestOut = manifestFsPathForBaseFromPublic(baseUrlForJson, path.join(process.cwd(), 'public'));
-  atomicWriteJson(manifestOut, {
+  const manifestPath = path.join(OUT_DIR, 'manifest.json');
+  atomicWriteJson(manifestPath, {
     generatedAt: new Date().toISOString(),
     pageSize: PAGE_SIZE,
     maxPages: MAX_PAGES,
