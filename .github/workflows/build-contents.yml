@@ -117,7 +117,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact-singular-search-index
-          path: public
+          path: public/data
           if-no-files-found: error
 
       - name: Upload singular build artifact (post-details)
@@ -125,7 +125,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact-singular-post-details
-          path: public
+          path: public/data
           if-no-files-found: error
 
       - name: Upload singular build artifact (keyword-pages)
@@ -133,7 +133,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact-singular-keyword-pages
-          path: public
+          path: public/data
           if-no-files-found: error
 
   # 'main' 페이지들을 병렬로 빌드하는 Job
@@ -210,7 +210,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact-main-${{ matrix.range }}-${{ matrix.section }}
-          path: public/data/home/v1/${{ matrix.range }}/${{ matrix.section }}/
+          path: public/data
 
   # 'category' 페이지들을 병렬로 빌드하는 Job
   build_categories:
@@ -280,7 +280,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact-category-${{ matrix.category }}-${{ matrix.range }}
-          path: public/data/category/${{ matrix.category }}/v1/${{ matrix.range }}/
+          path: public/data
 
   # 'all-posts' 페이지들을 병렬로 빌드하는 Job
   build_all_posts:
@@ -348,7 +348,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact-allposts-${{ matrix.range }}
-          path: public/data/all/v1/${{ matrix.range }}/
+          path: public/data
 
   # 모든 빌드 Job이 완료된 후, 결과물들을 하나로 합치는 Job
   package:
@@ -366,14 +366,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p public/data
-          echo "--- Finding and merging all artifact content... ---"
-          find artifacts -type d -name "public" -exec rsync -av {}/ ./public/ \;
-          echo "--- Final public/data tree (top) ---"
-          ls -lah public/data || true
-          echo "--- Sample posts/v1 ---"
-          (ls -lah public/data/posts/v1 || true)
-          echo "--- Sample home/v1/24h/fresh ---"
-          (ls -lah public/data/home/v1/24h/fresh || true)
+          echo "--- Merging all artifact contents into ./public/data ---"
+          find artifacts -mindepth 1 -maxdepth 1 -type d -exec rsync -av --remove-source-files {}/ public/ \;
+          echo "--- Final public directory tree ---"
+          ls -lR public
 
       - name: Upload final public-data artifact
         uses: actions/upload-artifact@v4
