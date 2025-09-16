@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback, useMemo, useLayoutEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { PostCard } from "@/components/post-card";
-export type { Post as CardPost } from "@/lib/types";
+import type { Post } from "@/lib/types";
 import { onCommunity, onCommunities } from "@/lib/communityFilter";
 import { getManifest as cacheGetManifest, readPage as cacheReadPage, writePage as cacheWritePage } from "@/lib/idb-cache";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
@@ -33,7 +33,7 @@ const dlog = (...args: any[]) => {
 
 // --- Types ---
 type LoadStatus = "ok-new" | "ok-dup" | "missing" | "error";
-type LoadResult = { status: LoadStatus; newPosts: CardPost[] };
+type LoadResult = { status: LoadStatus; newPosts: Post[] };
 
 // --- Restore Hook (extract) ---
 function useRestoreFromDetail(params: {
@@ -45,7 +45,7 @@ function useRestoreFromDetail(params: {
   hasMoreRef: React.MutableRefObject<boolean>;
   pageRef: React.MutableRefObject<number>;
   colsReadyRef: React.MutableRefObject<boolean>;
-  visiblePostsRef: React.MutableRefObject<CardPost[]>;
+  visiblePostsRef: React.MutableRefObject<Post[]>;
   seenIdsRef: React.MutableRefObject<Set<string>>;
   postIdToPageNumRef: React.MutableRefObject<Map<string, number>>;
   rootRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -307,7 +307,7 @@ const getReadSet = (): Set<string> => {
 };
 
 interface InfinitePostListProps {
-  initialPosts: CardPost[];
+  initialPosts: Post[];
   initialPage?: number;
   layout?: "list" | "grid";
   jsonBase?: string;
@@ -402,7 +402,7 @@ export default function InfinitePostList({
   }, []);
 
   // --- State & Refs ---
-  const [posts, setPosts] = useState<CardPost[]>(initialPosts);
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(true);
   // --- Live postsRef for up-to-date list ---
@@ -509,7 +509,7 @@ export default function InfinitePostList({
           if (cached && cached.length >= 0) {
             const uniques = cached.filter((p: any) => !seenIdsRef.current.has(p.id));
             dlog("loadPage:cache-hit", { pageNum, cachedCount: cached.length, uniques: uniques.length });
-            return { status: uniques.length > 0 ? "ok-new" : "ok-dup", newPosts: uniques as CardPost[] };
+            return { status: uniques.length > 0 ? "ok-new" : "ok-dup", newPosts: uniques as Post[] };
           }
         } catch { /* ignore */ }
       }
@@ -526,13 +526,13 @@ export default function InfinitePostList({
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
           const data = await res.json();
-          const incomingRaw = (Array.isArray(data.posts) ? data.posts : []) as CardPost[];
+          const incomingRaw = (Array.isArray(data.posts) ? data.posts : []) as Post[];
           // Normalize community fields for filtering/display
           const incoming = incomingRaw.map((p: any) => ({
             ...p,
             communityId: p.communityId || p.community || p.site || undefined,
             communityLabel: p.communityLabel || p.community || p.site || undefined,
-          })) as CardPost[];
+          })) as Post[];
           // Write-through to cache (best-effort)
           try {
             const ver = manifestRef.current?.generatedAt || (await cacheGetManifest(base))?.generatedAt;
@@ -549,12 +549,12 @@ export default function InfinitePostList({
                   const r = await fetch(`${base}/page-${next}.json`, { cache: 'no-store' });
                   if (r.ok) {
                     const d = await r.json();
-                    const arr = (Array.isArray(d.posts) ? d.posts : []) as CardPost[];
+                    const arr = (Array.isArray(d.posts) ? d.posts : []) as Post[];
                     const norm = arr.map((p: any) => ({
                       ...p,
                       communityId: p.communityId || p.community || p.site || undefined,
                       communityLabel: p.communityLabel || p.community || p.site || undefined,
-                    })) as CardPost[];
+                    })) as Post[];
                     const ver2 = manifestRef.current?.generatedAt || (await cacheGetManifest(base))?.generatedAt;
                     if (ver2) await cacheWritePage(base, next, ver2, norm as any);
                   }
@@ -624,11 +624,11 @@ export default function InfinitePostList({
     const myToken = ++fetchTokenRef.current;
 
     let currentPage = pageRef.current;
-    let collected: CardPost[] = [];
+    let collected: Post[] = [];
     let appendedCount = 0;
     let lastSuccessfulPage = currentPage;
     let pagesTried = 0;
-    let collectedPairs: { post: CardPost; pageNum: number }[] = [];
+    let collectedPairs: { post: Post; pageNum: number }[] = [];
     let hadError = false;
 
     while (pagesTried < MAX_PAGES_PER_CALL && hasMoreRef.current) {
@@ -818,7 +818,7 @@ export default function InfinitePostList({
     });
   }, [communityFilteredPosts, readFilter, readPostIds]);
   // Keep a ref to always point to the latest visiblePosts
-  const visiblePostsRef = useRef<CardPost[]>(visiblePosts);
+  const visiblePostsRef = useRef<Post[]>(visiblePosts);
   useEffect(() => { visiblePostsRef.current = visiblePosts; }, [visiblePosts]);
 
   // --- Feed metrics (read/unread counts) broadcast ---
@@ -1085,7 +1085,7 @@ useLayoutEffect(() => {
       // read from current URL (avoid reacting to our own replaceState)
       const pStr = (typeof window !== 'undefined'
         ? new URL(window.location.href).searchParams.get('page')
-        : null;
+        : null);
       const target = pStr ? Math.max(1, parseInt(pStr, 10) || 1) : 1;
       if (target <= 1) return; // 기본값
 

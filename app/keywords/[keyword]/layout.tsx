@@ -19,7 +19,7 @@ export default function KeywordLayout({
     <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="w-full max-w-screen-xl mx-auto px-0 md:px-4 py-6">
-        <div className="flex gap-6">
+        <div className="flex xl:gap-6">
           <div className="flex-1">
             {children}
           </div>

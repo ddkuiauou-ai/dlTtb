@@ -71,7 +71,7 @@ export default async function Home() {
       <TopRefreshOnScroll />
       <Header />
       <main className="w-full max-w-screen-xl mx-auto px-0 md:px-4 py-6">
-        <div className="flex gap-6">
+        <div className="flex xl:gap-6">
           <div className="flex-1">
             <div className="space-y-10">
               {/* 섹션별 목적에 맞는 고정/연동 + 교차 중복 제거 */}

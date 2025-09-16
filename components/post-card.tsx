@@ -1,9 +1,17 @@
 "use client";
-import * as React from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Badge } from "@/components/ui/badge";
+import * as React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { MessageCircle, ThumbsUp, Clock, Eye } from "lucide-react";
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/nextjs'
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   HoverCard,
   HoverCardTrigger,
@@ -20,11 +28,41 @@ import { markPostAsRead } from "@/lib/read-marker";
 import { useModal } from "@/context/modal-context";
 import { usePostList } from "@/context/post-list-context";
 import { usePostCache } from "@/context/post-cache-context";
-
-// List thumbnail sizing constants
-const LIST_THUMB_SIZE = 60; // 고정 크기
+import type { Post } from "@/lib/types";
 
 // Compact time for list layout (ko-KR locale strings like "2025년 8월 24일 오후 06:52")
+function formatPostTime(s: string): { display: string, full: string } {
+  if (!s) return { display: s, full: s };
+  const m = s.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일\s*(오전|오후)\s*(\d{1,2}):(\d{2})/);
+  if (!m) return { display: s, full: s };
+  const [, yStr, moStr, dStr, ampm, hStr, min] = m;
+  const Y = parseInt(yStr, 10), M = parseInt(moStr, 10), D = parseInt(dStr, 10);
+  let h = parseInt(hStr, 10);
+  // convert to 24h
+  if (ampm === "오전") { if (h === 12) h = 0; } 
+  else { if (h < 12) h += 12; }
+  const hh = String(h).padStart(2, "0");
+  
+  const now = new Date();
+  const sameDay = (now.getFullYear() === Y && (now.getMonth() + 1) === M && now.getDate() === D);
+  
+  if (sameDay) {
+    const time = `${hh}:${min}`;
+    return { display: time, full: time };
+  }
+  
+  if (now.getFullYear() === Y) {
+    const full = `${M}/${D} ${hh}:${min}`;
+    const display = `${M}/${D}`;
+    return { display, full };
+  }
+  
+  const YY = String(Y).slice(-2);
+  const full = `${YY}/${M}/${D} ${hh}:${min}`;
+  const display = `${YY}/${M}/${D}`;
+  return { display, full };
+}
+
 function compactKoTime(s: string): string {
   if (!s) return s;
   const m = s.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일\s*(오전|오후)\s*(\d{1,2}):(\d{2})/);
@@ -47,6 +85,30 @@ function compactKoTime(s: string): string {
   return `${YY}/${M}/${D} ${hh}:${min}`;
 }
 
+function formatViewCount(n: number): string {
+  if (n === undefined || n === null) return '0';
+  if (n < 10000) {
+    return n.toLocaleString();
+  }
+  if (n < 100000) {
+    return `${(n / 10000).toFixed(1).replace('.0', '')}만`;
+  }
+  return `${Math.floor(n / 10000)}만`;
+}
+
+function getVisualLength(s: string): number {
+  let len = 0;
+  for (let i = 0; i < s.length; i++) {
+    // Characters outside the ASCII range are treated as wide characters
+    if (s.charCodeAt(i) > 127) {
+      len += 2;
+    } else {
+      len += 1;
+    }
+  }
+  return len;
+}
+
 // Split long titles into rotating segments so we can keep a single-line layout
 function toRotatingSegments(title: string, maxChars: number): string[] {
   const t = (title || "").trim();
@@ -62,8 +124,12 @@ function toRotatingSegments(title: string, maxChars: number): string[] {
       let buf = "";
       for (const p of parts) {
         if (!buf) { buf = p; continue; }
-        if ((buf + sep + p).length <= maxChars) { buf = buf + sep + p; }
-        else { merged.push(buf); buf = p; }
+        if (getVisualLength(buf + sep + p) <= maxChars) { 
+          buf = buf + sep + p; 
+        } else { 
+          merged.push(buf); 
+          buf = p; 
+        }
       }
       if (buf) merged.push(buf);
       return merged.length > 1 ? merged : [t];
@@ -76,8 +142,12 @@ function toRotatingSegments(title: string, maxChars: number): string[] {
   let cur = "";
   for (const w of words) {
     if (!cur) { cur = w; continue; }
-    if ((cur + " " + w).length <= maxChars) cur = cur + " " + w;
-    else { chunks.push(cur); cur = w; }
+    if (getVisualLength(cur + " " + w) <= maxChars) { 
+      cur = cur + " " + w;
+    } else { 
+      chunks.push(cur); 
+      cur = w; 
+    }
   }
   if (cur) chunks.push(cur);
   return chunks.length > 1 ? chunks : [t];
@@ -85,7 +155,7 @@ function toRotatingSegments(title: string, maxChars: number): string[] {
 
 function useTitleSegments(title: string, isMobile: boolean) {
   // Conservative limits so one line fits across typical list/grid widths
-  const maxChars = isMobile ? 26 : 38; // tweak as needed
+  const maxChars = isMobile ? 30 : 44; // tweak as needed
   return toRotatingSegments(title, maxChars);
 }
 
@@ -171,7 +241,7 @@ function TitleRotator({ title, className }: { title: string; className?: string 
   // 컨테이너 래퍼: 실제 폭 측정용 + 회전/정적 컨텐츠 담는 그릇
   // 높이를 고정해 레이아웃 점프 방지
   return (
-    <span ref={containerRef} className="inline-block overflow-hidden h-[1.25em] align-middle w-full">
+    <span ref={containerRef} className="inline-block overflow-hidden h-[1.4em] align-middle w-full">
       {/* 측정 전용: 화면에 보이지 않지만 동일 스타일로 폭 계산 */}
       <span ref={measureRef} className={`pointer-events-none absolute -z-10 opacity-0 ${innerClass}`} aria-hidden>
         {title}
@@ -185,7 +255,7 @@ function TitleRotator({ title, className }: { title: string; className?: string 
       ) : (
         <RotatingText
           key={tickKey}
-          containerClassName="overflow-hidden h-[1.25em]"
+          containerClassName="overflow-hidden h-[1.4em]"
           className={innerClass}
           duration={segDurations[idx] || 2000}
           text={[segments[idx], segments[(idx + 1) % segments.length]]}
@@ -194,7 +264,6 @@ function TitleRotator({ title, className }: { title: string; className?: string 
     </span>
   );
 }
-
 
 
 interface PostCardProps {
@@ -211,7 +280,7 @@ const communityColors: Record<string, string> = {
   뽐뿌: "bg-green-100 text-green-800",
   인벤: "bg-purple-100 text-purple-800",
   MLBpark: "bg-orange-100 text-orange-800",
-  디시인사이드: "bg-red-100 text-red-800",
+  "디시인사이드": "bg-red-100 text-red-800",
   루리웹: "bg-yellow-100 text-yellow-800",
   보배드림: "bg-indigo-100 text-indigo-800",
   펨코: "bg-indigo-100 text-indigo-800",
@@ -222,14 +291,16 @@ export const PostCard = React.memo(
   const { openModal } = useModal();
   const { postIds } = usePostList();
   const { posts } = usePostCache();
-  const post = posts.get(postId);
+  const post = posts.get(postId) as Post;
   const isMobile = useIsMobile();
 
   if (!post) {
     return null; // Or a loading skeleton
   }
 
-  const Extras = () => (
+  const timeInfo = formatPostTime(post.timeAgo);
+  
+  const GridExtras = () => (
     <div className="flex items-center gap-2">
       {typeof post.clusterSize === "number" && post.clusterSize > 1 && (
         <Badge
@@ -255,14 +326,54 @@ export const PostCard = React.memo(
     </div>
   );
 
+  const Badges = () => {
+    const isClustered = typeof post.clusterSize === "number" && post.clusterSize > 1;
+    return (
+      <div className="flex items-center gap-2 flex-shrink-0">
+        {isClustered && (
+          <Badge variant="secondary" className="bg-amber-100 text-amber-800 border-0">
+            통합 +{post.clusterSize - 1}
+          </Badge>
+        )}
+        {!isClustered && (
+          <Badge
+            variant="secondary"
+            className={cn(
+              communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800",
+              "hidden @[10rem]:inline-flex"
+            )}
+          >
+            {post.communityLabel || post.community}
+          </Badge>
+        )}
+        {post.hasYouTube && (
+          <span title="YouTube 임베드" className="hidden @[10rem]:inline-flex items-center">
+            <BrandIcon name="youtube" useBrandColor className="h-3.5 w-3.5" />
+          </span>
+        )}
+        {post.hasX && (
+          <span title="X 임베드" className="hidden @[10rem]:inline-flex items-center">
+            <BrandIcon name="X" useBrandColor className="h-3.5 w-3.5" />
+          </span>
+        )}
+        {post.hoverPlayerKind === 'mp4' && (
+          <Badge variant="secondary" className="hidden @[12rem]:inline-flex bg-gray-100 text-gray-800 border-0">
+              MP4
+          </Badge>
+        )}
+      </div>
+    );
+  };
+
+
   const SignedInCardContent = () => (
     layout === "list"
       ? (
-        <CardContent className="p-3 md:p-4">
-          <div className="flex gap-3">
+        <CardContent className="flex p-0 h-24">
+          <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
             <HoverCard openDelay={1000}>
               <HoverCardTrigger asChild>
-                <div className="relative rounded-none md:rounded-lg overflow-hidden flex-shrink-0" style={{ width: LIST_THUMB_SIZE, height: LIST_THUMB_SIZE }}>
+                <div className="absolute inset-0">
                   {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
                     <iframe
                       src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
@@ -276,7 +387,7 @@ export const PostCard = React.memo(
                       src={post.thumbnail || "/placeholder.svg"}
                       alt=""
                       fill
-                      sizes={`${LIST_THUMB_SIZE}px`}
+                      sizes="(max-width: 768px) 64px, 80px"
                       className="object-cover"
                       priority={isPriority}
                       referrerPolicy="no-referrer"
@@ -289,30 +400,45 @@ export const PostCard = React.memo(
                 </HoverCardContent>
               )}
             </HoverCard>
-            <div className="flex-1 min-w-0">
-              <h3
-                title={post.title}
-                className="post-title font-semibold text-gray-900 overflow-hidden mb-2"
-              >
-                {<TitleRotator title={post.title} className="align-middle" />}
-              </h3>
-              <div className="flex items-center justify-between w-full">
-                <Badge
-                  variant="secondary"
-                  className={communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"}
+          </div>
+          <div className="flex-1 min-w-0 p-3 md:p-4">
+            <div className="flex flex-col justify-between h-full">
+                <h3
+                    title={post.title}
+                    className="post-title font-semibold text-gray-900 overflow-hidden mb-2"
                 >
-                  {post.communityLabel || post.community}
-                </Badge>
-                <div className="flex items-center gap-3">
-                  <Extras />
-                  <div className="flex items-center gap-3 text-sm text-gray-500">
-                    <div className="flex items-center gap-1"><Eye className="h-3 w-3" /><span>{post.viewCount}</span></div>
-                    <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
-                    <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
-                    <div className="flex items-center gap-1"><Clock className="h-3 w-3" /><span>{compactKoTime(post.timeAgo)}</span></div>
-                  </div>
+                    {<TitleRotator title={post.title} className="align-middle" />}
+                </h3>
+                <div className="@container flex items-center justify-between w-full">
+                    <Badges />
+                    <TooltipProvider>
+                      <div className="flex items-center gap-3 text-sm text-gray-500">
+                          <div className="flex items-center gap-1"><Eye className="h-3 w-3" />
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                <span>{formatViewCount(post.viewCount)}</span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                <p>{post.viewCount.toLocaleString()}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                          </div>
+                          <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
+                          <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <span>{timeInfo.display}</span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{timeInfo.full}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                          </div>
+                      </div>
+                    </TooltipProvider>
                 </div>
-              </div>
             </div>
           </div>
         </CardContent>
@@ -373,13 +499,13 @@ export const PostCard = React.memo(
                 >
                   {post.communityLabel || post.community}
                 </Badge>
-                <Extras />
+                <GridExtras />
               </div>
               <div className="flex items-center justify-between text-gray-500 pt-1">
                 <div className="flex items-center gap-3 text-sm">
-                  <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount}</span></div>
-                  <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments}</span></div>
-                  <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes}</span></div>
+                  <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount.toLocaleString()}</span></div>
+                  <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments.toLocaleString()}</span></div>
+                  <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes.toLocaleString()}</span></div>
                 </div>
                 <span className="text-xs">{compactKoTime(post.timeAgo)}</span>
               </div>
@@ -392,44 +518,65 @@ export const PostCard = React.memo(
   const SignedOutCardContent = () => (
     layout === "list"
       ? (
-        <CardContent className="p-3 md:p-4">
-          <div className="flex gap-3">
-            <div className="relative rounded-none md:rounded-lg overflow-hidden flex-shrink-0" style={{ width: LIST_THUMB_SIZE, height: LIST_THUMB_SIZE }}>
-              {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
+        <CardContent className="flex p-0 h-24">
+            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
+                {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
                 <iframe
-                  src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover"
-                  style={{ border: 0 }}
-                  allow="encrypted-media; picture-in-picture"
+                    src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ border: 0 }}
+                    allow="encrypted-media; picture-in-picture"
                 />
-              ) : (
-                <Image src={post.thumbnail || "/placeholder.svg"} alt="" fill sizes={`${LIST_THUMB_SIZE}px`} className="object-cover" priority={isPriority} referrerPolicy="no-referrer" />
-              )}
+                ) : (
+                <Image
+                    src={post.thumbnail || "/placeholder.svg"}
+                    alt=""
+                    fill
+                    sizes="(max-width: 768px) 64px, 80px"
+                    className="object-cover"
+                    priority={isPriority}
+                    referrerPolicy="no-referrer"
+                />
+                )}
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 title={post.title} className="post-title font-semibold text-gray-900 overflow-hidden mb-2">
-                {<TitleRotator title={post.title} className="align-middle" />}
-              </h3>
-              <div className="flex items-center justify-between w-full">
-                <Badge
-                  variant="secondary"
-                  className={communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"}
-                >
-                  {post.communityLabel || post.community}
-                </Badge>
-                <div className="flex items-center gap-3">
-                  <Extras />
-                  <div className="flex items-center gap-3 text-sm text-gray-500">
-                    <div className="flex items-center gap-1"><Eye className="h-3 w-3" /><span>{post.viewCount}</span></div>
-                    <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
-                    <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
-                    <div className="flex items-center gap-1"><Clock className="h-3 w-3" /><span>{compactKoTime(post.timeAgo)}</span></div>
-                  </div>
+            <div className="flex-1 min-w-0 p-3 md:p-4">
+                <div className="flex flex-col justify-between h-full">
+                    <h3 title={post.title} className="post-title font-semibold text-gray-900 overflow-hidden mb-2">
+                        {<TitleRotator title={post.title} className="align-middle" />}
+                    </h3>
+                    <div className="@container flex items-center justify-between w-full">
+                        <Badges />
+                        <TooltipProvider>
+                          <div className="flex items-center gap-3 text-sm text-gray-500">
+                              <div className="flex items-center gap-1"><Eye className="h-3 w-3" />
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                    <span>{formatViewCount(post.viewCount)}</span>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                    <p>{post.viewCount.toLocaleString()}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                              </div>
+                              <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
+                              <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <span>{timeInfo.display}</span>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{timeInfo.full}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                              </div>
+                          </div>
+                        </TooltipProvider>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </CardContent>
       )
       : (
@@ -459,13 +606,13 @@ export const PostCard = React.memo(
                 >
                   {post.communityLabel || post.community}
                 </Badge>
-                <Extras />
+                <GridExtras />
               </div>
               <div className="flex items-center justify-between text-gray-500 pt-1">
                 <div className="flex items-center gap-3 text-sm">
-                  <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount}</span></div>
-                  <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments}</span></div>
-                  <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes}</span></div>
+                  <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount.toLocaleString()}</span></div>
+                  <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments.toLocaleString()}</span></div>
+                  <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes.toLocaleString()}</span></div>
                 </div>
                 <span className="text-xs">{compactKoTime(post.timeAgo)}</span>
               </div>

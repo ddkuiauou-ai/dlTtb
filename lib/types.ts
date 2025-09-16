@@ -1,7 +1,7 @@
 export type Post = {
   id: string;
   url: string;
-  title: string | null;
+  title: string;
   community: string;
   communityId: string;
   communityLabel: string;
