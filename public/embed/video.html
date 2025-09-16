@@ -9,7 +9,7 @@
   </head>
   <body>
     <!-- 쿼리로 mp4 URL을 전달받아 재생 -->
-    <video id="v" controls playsinline preload="metadata" autoplay muted></video>
+    <video id="v" controls playsinline preload="metadata" autoplay muted loop></video>
     <script>
       const params = new URLSearchParams(location.search);
       const src = params.get('src');

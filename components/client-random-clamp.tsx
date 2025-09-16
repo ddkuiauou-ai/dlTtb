@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import InfinitePostList from "@/components/infinite-post-list";
+import { PostListProvider } from "@/context/post-list-context";
 
 function SkeletonCard() {
     return (
@@ -185,17 +186,19 @@ export default function ClientRandomClamp({
 
     return (
         <div ref={containerRef} className="relative">
-            <InfinitePostList
-                key={`${storageKeyPrefix}-${finalCols}-${seed}-${sampleMax}`}
-                initialPosts={toShow}
-                community={community}
-                layout={layout}
-                jsonBase={jsonBase}
-                enablePaging={false}
-                storageKeyPrefix={storageKeyPrefix}
-                onColsChange={(n) => setCols((prev) => (prev === n ? prev : n))}
-                gridColumnsOverride={finalCols}
-            />
+            <PostListProvider postIds={toShow.map(p => p.id)}>
+                <InfinitePostList
+                    key={`${storageKeyPrefix}-${finalCols}-${seed}-${sampleMax}`}
+                    initialPosts={toShow}
+                    community={community}
+                    layout={layout}
+                    jsonBase={jsonBase}
+                    enablePaging={false}
+                    storageKeyPrefix={storageKeyPrefix}
+                    onColsChange={(n) => setCols((prev) => (prev === n ? prev : n))}
+                    gridColumnsOverride={finalCols}
+                />
+            </PostListProvider>
         </div>
     );
 }

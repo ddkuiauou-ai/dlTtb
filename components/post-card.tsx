@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Badge } from "@/components/ui/badge";
 import { MessageCircle, ThumbsUp, Clock, Eye } from "lucide-react";
+import { ClerkProvider, SignedIn, SignedOut } from '@clerk/nextjs'
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -17,7 +18,8 @@ import { markNavigateToPost } from "@/lib/restore-session";
 import { markPostAsRead } from "@/lib/read-marker";
 
 import { useModal } from "@/context/modal-context";
-import type { Post } from "@/lib/types";
+import { usePostList } from "@/context/post-list-context";
+import { usePostCache } from "@/context/post-cache-context";
 
 // List thumbnail sizing constants
 const LIST_THUMB_SIZE = 60; // 고정 크기
@@ -60,7 +62,7 @@ function toRotatingSegments(title: string, maxChars: number): string[] {
       let buf = "";
       for (const p of parts) {
         if (!buf) { buf = p; continue; }
-        if ((buf + sep + p).length <= maxChars) { buf = buf + sep + p; } 
+        if ((buf + sep + p).length <= maxChars) { buf = buf + sep + p; }
         else { merged.push(buf); buf = p; }
       }
       if (buf) merged.push(buf);
@@ -196,13 +198,12 @@ function TitleRotator({ title, className }: { title: string; className?: string 
 
 
 interface PostCardProps {
-  post: Post;
+  postId: string;
   layout: "list" | "grid";
   page?: number;
   storageKeyPrefix?: string;
   isNew?: boolean;
   isPriority?: boolean;
-  allPostIds?: string[];
 }
 
 const communityColors: Record<string, string> = {
@@ -216,10 +217,18 @@ const communityColors: Record<string, string> = {
   펨코: "bg-indigo-100 text-indigo-800",
 };
 
-export function PostCard({ post, layout, page, storageKeyPrefix = "", isNew = false, isPriority = false, allPostIds = [] }: PostCardProps) {
+export const PostCard = React.memo(
+  function PostCard({ postId, layout, page, storageKeyPrefix = "", isNew = false, isPriority = false }: PostCardProps) {
   const { openModal } = useModal();
-  // console.log('PostCard received:', post);
+  const { postIds } = usePostList();
+  const { posts } = usePostCache();
+  const post = posts.get(postId);
   const isMobile = useIsMobile();
+
+  if (!post) {
+    return null; // Or a loading skeleton
+  }
+
   const Extras = () => (
     <div className="flex items-center gap-2">
       {typeof post.clusterSize === "number" && post.clusterSize > 1 && (
@@ -246,17 +255,14 @@ export function PostCard({ post, layout, page, storageKeyPrefix = "", isNew = fa
     </div>
   );
 
-  const cardContent =
+  const SignedInCardContent = () => (
     layout === "list"
       ? (
         <CardContent className="p-3 md:p-4">
           <div className="flex gap-3">
             <HoverCard openDelay={1000}>
               <HoverCardTrigger asChild>
-                <div
-                  className="relative rounded-none md:rounded-lg overflow-hidden flex-shrink-0"
-                  style={{ width: LIST_THUMB_SIZE, height: LIST_THUMB_SIZE }}
-                >
+                <div className="relative rounded-none md:rounded-lg overflow-hidden flex-shrink-0" style={{ width: LIST_THUMB_SIZE, height: LIST_THUMB_SIZE }}>
                   {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
                     <iframe
                       src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
@@ -279,20 +285,7 @@ export function PostCard({ post, layout, page, storageKeyPrefix = "", isNew = fa
                 </div>
               </HoverCardTrigger>
               {(post.thumbnail || post.hoverPlayerUrl) && (
-                <HoverCardContent className={(function () {
-                  const text = (post.content || '').replace(/\u00a0/g, ' ').trim();
-                  const nl = (text.match(/\n/g) || []).length;
-                  const isShort = text.length <= 60 && nl === 0;
-                  const isYouTube = post.hoverPlayerKind === 'youtube';
-                  // YouTube: 컨텐츠 폭을 명시적으로 부여해 축소 방지
-                  // - 기본: w-[min(90vw,720px)]
-                  // - 아주 짧은 본문: w-[min(95vw,1024px)]
-                  return cn(
-                    'w-auto',
-                    isYouTube ? (isShort ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]') : (isShort ? 'max-w-2xl' : 'max-w-xl')
-                  );
-                })()}>
-                  <PostHoverCard post={post} />
+                <HoverCardContent className={cn('w-auto', post.hoverPlayerKind === 'youtube' ? ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]' : ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'max-w-2xl' : 'max-w-xl')}>                  <PostHoverCard post={post} />
                 </HoverCardContent>
               )}
             </HoverCard>
@@ -313,22 +306,10 @@ export function PostCard({ post, layout, page, storageKeyPrefix = "", isNew = fa
                 <div className="flex items-center gap-3">
                   <Extras />
                   <div className="flex items-center gap-3 text-sm text-gray-500">
-                    <div className="flex items-center gap-1">
-                      <Eye className="h-3 w-3" />
-                      <span>{post.viewCount}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MessageCircle className="h-3 w-3" />
-                      <span>{post.comments}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <ThumbsUp className="h-3 w-3" />
-                      <span>{post.upvotes}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      <span>{compactKoTime(post.timeAgo)}</span>
-                    </div>
+                    <div className="flex items-center gap-1"><Eye className="h-3 w-3" /><span>{post.viewCount}</span></div>
+                    <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
+                    <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
+                    <div className="flex items-center gap-1"><Clock className="h-3 w-3" /><span>{compactKoTime(post.timeAgo)}</span></div>
                   </div>
                 </div>
               </div>
@@ -364,20 +345,7 @@ export function PostCard({ post, layout, page, storageKeyPrefix = "", isNew = fa
                     )}
                   </div>
                 </HoverCardTrigger>
-                <HoverCardContent className={(function () {
-                  const text = (post.content || '').replace(/\u00a0/g, ' ').trim();
-                  const nl = (text.match(/\n/g) || []).length;
-                  const isShort = text.length <= 60 && nl === 0;
-                  const isYouTube = post.hoverPlayerKind === 'youtube';
-                  // YouTube: 컨텐츠 폭을 명시적으로 부여해 축소 방지
-                  // - 기본: w-[min(90vw,720px)]
-                  // - 아주 짧은 본문: w-[min(95vw,1024px)]
-                  return cn(
-                    'w-auto',
-                    isYouTube ? (isShort ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]') : (isShort ? 'max-w-2xl' : 'max-w-xl')
-                  );
-                })()}>
-                  <PostHoverCard post={post} />
+                <HoverCardContent className={cn('w-auto', post.hoverPlayerKind === 'youtube' ? ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]' : ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'max-w-2xl' : 'max-w-xl')}>                  <PostHoverCard post={post} />
                 </HoverCardContent>
               </HoverCard>
             ) : (
@@ -401,68 +369,116 @@ export function PostCard({ post, layout, page, storageKeyPrefix = "", isNew = fa
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge
                   variant="secondary"
-                  className={
-                    communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"
-                  }
+                  className={communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"}
                 >
                   {post.communityLabel || post.community}
                 </Badge>
-                {typeof post.clusterSize === "number" && post.clusterSize > 1 && (
-                  <Badge
-                    variant="secondary"
-                    className="bg-amber-100 text-amber-800 border-0"
-                  >
-                    통합 +{post.clusterSize - 1}
-                  </Badge>
-                )}
-                {post.hasYouTube && (
-                  <span title="YouTube 임베드" className="inline-flex items-center">
-                    <BrandIcon name="youtube" useBrandColor className="h-3.5 w-3.5" />
-                  </span>
-                )}
-                {post.hoverPlayerKind === 'mp4' && (
-                  <Badge variant="secondary" className="bg-gray-100 text-gray-800 border-0">MP4</Badge>
-                )}
-                {post.hasX && (
-                  <span title="X 임베드" className="inline-flex items-center">
-                    <BrandIcon name="X" useBrandColor className="h-3.5 w-3.5" />
-                  </span>
-                )}
+                <Extras />
               </div>
               <div className="flex items-center justify-between text-gray-500 pt-1">
                 <div className="flex items-center gap-3 text-sm">
-                  <div className="flex items-center gap-1">
-                    <Eye className="h-4 w-4" />
-                    <span>{post.viewCount}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <MessageCircle className="h-4 w-4" />
-                    <span>{post.comments}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <ThumbsUp className="h-4 w-4" />
-                    <span>{post.upvotes}</span>
-                  </div>
+                  <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount}</span></div>
+                  <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments}</span></div>
+                  <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes}</span></div>
                 </div>
                 <span className="text-xs">{compactKoTime(post.timeAgo)}</span>
               </div>
             </div>
           </div>
         </CardContent>
-      );
+      )
+  );
+
+  const SignedOutCardContent = () => (
+    layout === "list"
+      ? (
+        <CardContent className="p-3 md:p-4">
+          <div className="flex gap-3">
+            <div className="relative rounded-none md:rounded-lg overflow-hidden flex-shrink-0" style={{ width: LIST_THUMB_SIZE, height: LIST_THUMB_SIZE }}>
+              {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
+                <iframe
+                  src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                  style={{ border: 0 }}
+                  allow="encrypted-media; picture-in-picture"
+                />
+              ) : (
+                <Image src={post.thumbnail || "/placeholder.svg"} alt="" fill sizes={`${LIST_THUMB_SIZE}px`} className="object-cover" priority={isPriority} referrerPolicy="no-referrer" />
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 title={post.title} className="post-title font-semibold text-gray-900 overflow-hidden mb-2">
+                {<TitleRotator title={post.title} className="align-middle" />}
+              </h3>
+              <div className="flex items-center justify-between w-full">
+                <Badge
+                  variant="secondary"
+                  className={communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"}
+                >
+                  {post.communityLabel || post.community}
+                </Badge>
+                <div className="flex items-center gap-3">
+                  <Extras />
+                  <div className="flex items-center gap-3 text-sm text-gray-500">
+                    <div className="flex items-center gap-1"><Eye className="h-3 w-3" /><span>{post.viewCount}</span></div>
+                    <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
+                    <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
+                    <div className="flex items-center gap-1"><Clock className="h-3 w-3" /><span>{compactKoTime(post.timeAgo)}</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      )
+      : (
+        <CardContent className="p-3 md:p-4">
+          <div className="space-y-3">
+            <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
+              {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
+                <iframe
+                  src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ border: 0 }}
+                  allow="encrypted-media; picture-in-picture"
+                />
+              ) : (
+                <Image src={post.thumbnail || "/placeholder.svg"} alt="" fill sizes="480px" className="object-cover" priority={isPriority} referrerPolicy="no-referrer" />
+              )}
+            </div>
+            <div className="space-y-2 min-h-[72px] md:min-h-[92px]">
+              <h3 title={post.title} className="post-title font-semibold text-gray-900 overflow-hidden">
+                {<TitleRotator title={post.title} className="align-middle" />}
+              </h3>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge
+                  variant="secondary"
+                  className={communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"}
+                >
+                  {post.communityLabel || post.community}
+                </Badge>
+                <Extras />
+              </div>
+              <div className="flex items-center justify-between text-gray-500 pt-1">
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount}</span></div>
+                  <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments}</span></div>
+                  <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes}</span></div>
+                </div>
+                <span className="text-xs">{compactKoTime(post.timeAgo)}</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      )
+  );
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Don't intercept middle-click or clicks with modifier keys
-    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
-      return;
-    }
-
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
-
-    // Mark as read
     markPostAsRead({ id: post.id, title: post.title });
-
-    // Session restoration logic
     if (storageKeyPrefix) {
       try {
         markNavigateToPost(storageKeyPrefix, {
@@ -470,24 +486,40 @@ export function PostCard({ post, layout, page, storageKeyPrefix = "", isNew = fa
           anchorPage: page,
           sourceUrl: window.location.pathname + window.location.search,
         });
-      } catch { } 
+      } catch {} 
     }
-
-    // Open the modal
-    openModal(post.id, allPostIds);
+    openModal(post.id, postIds);
   };
 
   return (
-    <Link
-      id={`post-${post.id}`}
-      href={`/posts/${post.id}`}
-      prefetch={!isMobile}
-      className={`block ${isNew ? 'fade-in' : ''}`}
-      onClick={handleClick}
-    >
-      <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
-        {cardContent}
-      </Card>
-    </Link >
+    <>
+      <SignedIn>
+        <Link
+          id={`post-${post.id}`}
+          href={`/posts/${post.id}`}
+          prefetch={!isMobile}
+          className={`block ${isNew ? 'fade-in' : ''}`}
+          onClick={handleClick}
+        >
+          <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
+            <SignedInCardContent />
+          </Card>
+        </Link>
+      </SignedIn>
+      <SignedOut>
+        <a
+          id={`post-${post.id}`}
+          href={post.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`block ${isNew ? 'fade-in' : ''}`}
+          onClick={() => markPostAsRead({ id: post.id, title: post.title })}
+        >
+          <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
+            <SignedOutCardContent />
+          </Card>
+        </a>
+      </SignedOut>
+    </>
   );
-}
+});

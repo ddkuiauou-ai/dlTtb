@@ -2,7 +2,7 @@ import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { Footer } from "@/components/footer";
 
-const CATEGORIES = ['news', 'humor', 'info', 'qna', 'review', 'debate', 'back', 'zzal', 'politics', 'shopping', 'etc', 'video', 'youtube', 'all'];
+const CATEGORIES = ['news', 'humor', 'info', 'qna', 'review', 'debate', 'back', 'zzal', 'politics', 'shopping', 'etc', 'video', 'youtube', 'it', 'sports', 'game', 'all'];
 
 export async function generateStaticParams() {
   return CATEGORIES.map((category) => ({

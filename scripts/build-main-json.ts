@@ -275,6 +275,7 @@ function mapToClientPost(
 
   return {
     id: row.id,
+    url: row.url,
     title: row.title ?? "",
     community: row.site ?? "unknown",
     communityId: row.site ?? "unknown",
@@ -323,6 +324,7 @@ async function fetchClusterPage(offset: number) {
   const postsRows = await db
     .select({
       id: posts.id,
+      url: posts.url,
       title: posts.title,
       site: posts.site,
       siteName: sites.name,
@@ -349,6 +351,7 @@ async function fetchPage(offset: number, whereClause: any) {
   const rows = await db
     .select({
       id: posts.id,
+      url: posts.url,
       title: posts.title,
       site: posts.site,
       siteName: sites.name,
@@ -372,6 +375,7 @@ async function fetchCategoryPage(category: string, offset: number) {
   const rows = await db
     .select({
       id: posts.id,
+      url: posts.url,
       title: posts.title,
       site: posts.site,
       siteName: sites.name,
@@ -398,7 +402,7 @@ async function fetchFreshScorePage(offset: number, siteId?: string) {
   const whereSite = siteId ? `AND p.site = '${siteId.replace(/'/g, "''")}'` : "";
   const q = `
     WITH base AS (
-      SELECT p.id, p.title, p.site, p.comment_count AS "commentCount", p.like_count AS "likeCount",
+      SELECT p.id, p.url, p.title, p.site, p.comment_count AS "commentCount", p.like_count AS "likeCount",
              p.view_count AS "viewCount", p.timestamp, p.content,
              s.name AS "siteName",
              COALESCE(m.hot_score, 0) AS hot30,

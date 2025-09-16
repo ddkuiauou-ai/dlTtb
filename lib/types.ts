@@ -1,13 +1,6 @@
-import type { posts } from './schema';
-
-export type Post = typeof posts.$inferSelect;
-
-export type TimeRange = "3h" | "6h" | "24h" | "1w";
-
-export const ALL_TIME_RANGES: TimeRange[] = ["3h", "6h", "24h", "1w"];
-
-export type HydratedPost = {
+export type Post = {
   id: string;
+  url: string;
   title: string | null;
   community: string;
   communityId: string;
@@ -28,3 +21,7 @@ export type HydratedPost = {
   clusterId: string | null;
   clusterSize: number | null;
 };
+
+export type TimeRange = "3h" | "6h" | "24h" | "1w";
+
+export const ALL_TIME_RANGES: TimeRange[] = ["3h", "6h", "24h", "1w"];

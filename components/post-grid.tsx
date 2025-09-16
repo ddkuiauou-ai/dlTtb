@@ -2,6 +2,7 @@ import InfinitePostList from "@/components/infinite-post-list";
 import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ClientRandomClamp from "@/components/client-random-clamp";
+import { PostListProvider } from "@/context/post-list-context";
 
 interface PostGridProps {
   title: string;
@@ -124,20 +125,22 @@ export default function PostGrid({
           randomizeOnEachMount={!!randomizeOnEachMount}
         />
       ) : (
-        <InfinitePostList
-          initialPosts={mapped}
-          community={community}
-          layout={layout}
-          jsonBase={base}
-          enablePaging={enablePaging}
-          storageKeyPrefix={storageKey}
-          listColumns={listColumns}
-          cardLayoutOverride={cardLayoutOverride}
-          threeColAt={threeColAt}
-          loadAheadRows={loadAheadRows}
-          virtualOverscan={virtualOverscan}
-          readFilter={readFilter}
-        />
+        <PostListProvider postIds={mapped.map(p => p.id)}>
+          <InfinitePostList
+            initialPosts={mapped}
+            community={community}
+            layout={layout}
+            jsonBase={base}
+            enablePaging={enablePaging}
+            storageKeyPrefix={storageKey}
+            listColumns={listColumns}
+            cardLayoutOverride={cardLayoutOverride}
+            threeColAt={threeColAt}
+            loadAheadRows={loadAheadRows}
+            virtualOverscan={virtualOverscan}
+            readFilter={readFilter}
+          />
+        </PostListProvider>
       )}
     </div>
   );

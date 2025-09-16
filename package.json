@@ -29,6 +29,7 @@
     "build:categories": "pnpm build:category:news && pnpm build:category:humor && pnpm build:category:video && pnpm build:category:youtube && pnpm build:category:info && pnpm build:category:qna && pnpm build:category:review && pnpm build:category:debate && pnpm build:category:back && pnpm build:category:zzal && pnpm build:category:politics && pnpm build:category:shopping && pnpm build:category:etc && pnpm build:category:all"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.32.0",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",

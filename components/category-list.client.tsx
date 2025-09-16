@@ -14,6 +14,7 @@ const categories = [
   { label: "정보", slug: "info" },
   { label: "IT", slug: "it" },
   { label: "스포츠", slug: "sports" },
+  { label: "게임", slug: "game" },
   { label: "질문", slug: "qna" },
   { label: "후기", slug: "review" },
   { label: "뉴스", slug: "news" },
@@ -51,11 +52,10 @@ export function CategoryList() {
             type="button"
             key={slug}
             onClick={() => handleCategoryClick(slug)}
-            className={`flex items-center justify-center p-2 rounded-md transition-colors text-left ${
-              isActive
+            className={`flex items-center justify-center p-2 rounded-md transition-colors text-left ${isActive
                 ? "bg-primary text-primary-foreground"
                 : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
-            }`}
+              }`}
           >
             {icon ? (
               <BrandIcon name={icon} useBrandColor className="w-6 h-6" />

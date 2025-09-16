@@ -366,7 +366,7 @@ const CLUSTER_ROTATION_CONSEC_RESET_MINUTES = 20;
 
 async function recordClusterRotation(
   range: "3h" | "6h" | "24h" | "1w",
-  selections: Array<{ clusterId: string, score: number }>,
+  selections: Array<{ clusterId: string, score: number } >,
 ) {
   if (!selections?.length) return;
   for (const s of selections) {
@@ -530,13 +530,13 @@ export async function getPostDetail(id: string) {
   let processedContentHtml = row.contentHtml;
   if (process.env.NODE_ENV === 'development' && imageEnrichments.length > 0) {
     const enrichmentMap = new Map(imageEnrichments.map(e => [e.imageUrl, e]));
-    processedContentHtml = (row.contentHtml || '').replace(/<img[^>]+src="([^"]+)"[^>]*>/g, (match, src) => {
+    processedContentHtml = (row.contentHtml || '').replace(/<img[^>]+src=\"([^\"]+)\"[^>]*>/g, (match, src) => {
       const enrichment = enrichmentMap.get(src);
       if (enrichment) {
-        const details = `<details style="margin: 8px 0; border: 1px solid #ddd; padding: 8px; border-radius: 4px;">
-          <summary style="cursor: pointer; font-weight: bold;">VLLM Enrichment (Dev Only)</summary>
-          <pre style="white-space: pre-wrap; word-wrap: break-word; font-size: 12px; background: #f7f7f7; padding: 8px; border-radius: 4px; margin-top: 8px;">
-${JSON.stringify({ 
+        const details = `<details style=\"margin: 8px 0; border: 1px solid #ddd; padding: 8px; border-radius: 4px;">
+          <summary style=\"cursor: pointer; font-weight: bold;">VLLM Enrichment (Dev Only)</summary>
+          <pre style=\"white-space: pre-wrap; word-wrap: break-word; font-size: 12px; background: #f7f7f7; padding: 8px; border-radius: 4px; margin-top: 8px;">
+${JSON.stringify({
   caption: enrichment.caption,
   labels: enrichment.labels,
   ocrText: enrichment.ocrText,
@@ -683,6 +683,7 @@ export async function hydratePosts(ids: string[]) {
   const rows = await db
     .select({
       id: posts.id,
+      url: posts.url,
       title: posts.title,
       site: posts.site,
       commentCount: posts.commentCount,
@@ -721,6 +722,7 @@ export async function hydratePosts(ids: string[]) {
       const hoverPlayerUrl = r.yt_url || r.x_url || r.mp4_url || null;
       return {
         id: r.id,
+        url: r.url,
         title: r.title,
         community: r.site, // for PostCard
         communityId: r.site, // for filtering
@@ -997,7 +999,7 @@ export async function getClusterTopPosts({
   pageSize = 30,
   perSiteCap = 6,
   excludeIds = [],
-}: {
+}: { 
   range?: "3h" | "6h" | "24h" | "1w";
   pageSize?: number;
   perSiteCap?: number;

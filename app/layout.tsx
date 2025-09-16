@@ -2,8 +2,17 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Script from 'next/script'
 import { ModalProvider } from '@/context/modal-context'
+import { PostCacheProvider } from '@/context/post-cache-context'
 import { PostViewerModal } from '@/components/post-viewer-modal'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 
 export const metadata: Metadata = {
   title: '뭔일 있슈?',
@@ -17,9 +26,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <body>
-        <Script id="apply-read-state" strategy="afterInteractive">{`(function(){
+    <ClerkProvider>
+      <html lang="ko">
+        <body>
+          <Script id="apply-read-state" strategy="afterInteractive">{`(function(){
   try {
     var KEY = 'readPosts:v2';
 
@@ -100,12 +110,15 @@ export default function RootLayout({
     }
   } catch (e) { /* no-op */ }
 })();`}</Script>
-        <ModalProvider>
-          {children}
-          <PostViewerModal />
-        </ModalProvider>
-        <TailwindIndicator />
-      </body>
-    </html>
+          <PostCacheProvider>
+            <ModalProvider>
+              {children}
+              <PostViewerModal />
+            </ModalProvider>
+          </PostCacheProvider>
+          <TailwindIndicator />
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }

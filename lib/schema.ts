@@ -158,7 +158,7 @@ export const postImageEnrichment = pgTable("post_image_enrichment", {
   version: integer("version").default(1),
   caption: text("caption"),
   labels: jsonb("labels").default(sql`'[]'::jsonb`),
-  ocrText: text("ocr_text"),
+  ocrLines: jsonb("ocr_lines").default(sql`'[]'::jsonb`),
   safety: jsonb("safety").default(sql`'{}'::jsonb`),
   objects: jsonb("objects").default(sql`'[]'::jsonb`),
   colors: jsonb("colors").default(sql`'[]'::jsonb`),

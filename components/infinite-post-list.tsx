@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState, useCallback, useMemo, useLayoutEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { PostCard } from "@/components/post-card";
-import type { Post as CardPost } from "@/components/post-card";
+export type { Post as CardPost } from "@/lib/types";
 import { onCommunity, onCommunities } from "@/lib/communityFilter";
 import { getManifest as cacheGetManifest, readPage as cacheReadPage, writePage as cacheWritePage } from "@/lib/idb-cache";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { readAndClearRestore } from "@/lib/restore-session";
+import { usePostCache } from "@/context/post-cache-context";
 
 // --- Constants ---
 const MISSING_LIMIT = 2;
@@ -359,9 +360,10 @@ export default function InfinitePostList({
   threeColAt = 'lg',
   gridColumnsOverride,
   loadAheadRows = 2,
-  virtualOverscan = 22,
+  virtualOverscan = 44, // 비디오 재시작을 줄이기 위해 기본값을 높게 설정 (메모리 사용량 증가)
   readFilter = 'all',
 }: InfinitePostListProps) {
+  const { addPosts } = usePostCache();
   const searchParams = useSearchParams();
   // --- Column change observer (for grid layout) ---
   const prevColsRef = useRef<number>(0);
@@ -710,6 +712,7 @@ export default function InfinitePostList({
     }
     dlog("loadMore:loop-end", { appendedCount, lastSuccessfulPage, prevPage: pageRef.current });
     if (appendedCount > 0) {
+      addPosts(collected);
       // Commit visibility before rendering
       collectedPairs.forEach(({ post, pageNum }) => {
         seenIdsRef.current.add(post.id);
@@ -764,7 +767,7 @@ export default function InfinitePostList({
     } catch {
       // no-op
     }
-  }, [loadPage]);
+  }, [loadPage, addPosts]);
 
   const ensureBelowBufferRows = useCallback(async (anchorId: string) => {
     const BELOW_BUFFER = 12; // 앵커 아래 최소 확보할 행 수
@@ -1080,7 +1083,7 @@ useLayoutEffect(() => {
       urlBootstrapDoneRef.current = true;
 
       // read from current URL (avoid reacting to our own replaceState)
-      const pStr = (typeof window !== 'undefined')
+      const pStr = (typeof window !== 'undefined'
         ? new URL(window.location.href).searchParams.get('page')
         : null;
       const target = pStr ? Math.max(1, parseInt(pStr, 10) || 1) : 1;
@@ -1272,13 +1275,12 @@ useLayoutEffect(() => {
                           ) : null;
                         })()}
                         <PostCard
-                          post={post}
+                          postId={post.id}
                           layout={cardLayoutOverride ?? layout}
                           page={postIdToPageNumRef.current.get(post.id) || initialPage}
                           storageKeyPrefix={storageKeyPrefix}
                           isNew={(start + i) >= initialPosts.length}
                           isPriority={(start + i) < 5}
-                          allPostIds={visiblePosts.map(p => p.id)}
                         />
                       </div>
                     ))}
@@ -1354,13 +1356,12 @@ useLayoutEffect(() => {
               ) : null;
             })()}
             <PostCard
-              post={post}
+              postId={post.id}
               layout={layout}
               page={postIdToPageNumRef.current.get(post.id) || initialPage}
               storageKeyPrefix={storageKeyPrefix}
               isNew={index >= initialPosts.length}
               isPriority={index < 10}
-              allPostIds={visiblePosts.map(p => p.id)}
             />
           </div>
         ))}

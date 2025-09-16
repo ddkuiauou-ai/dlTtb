@@ -1,5 +1,9 @@
 import InfinitePostList from "@/components/infinite-post-list";
-import type { Post } from "@/components/post-card";
+import type { Post } from "@/lib/types";
+import { PostListProvider } from "@/context/post-list-context";
+import { usePostCache } from "@/context/post-cache-context";
+import { useEffect } from "react";
+import type { Post as CardPost } from "@/components/infinite-post-list";
 
 interface CategoryFeedProps {
   title: string;
@@ -12,8 +16,9 @@ export default function CategoryFeed({
   category,
   initialPosts,
 }: CategoryFeedProps) {
+  const { addPosts } = usePostCache();
 
-  const mapped = initialPosts.map((post: any) => ({
+  const mapped: CardPost[] = initialPosts.map((post: Post) => ({
     id: post.id,
     title: post.title,
     community: post.site,
@@ -44,18 +49,27 @@ export default function CategoryFeed({
     hoverPlayerUrl: post.hoverPlayerUrl ?? null,
     clusterId: post.clusterId,
     clusterSize: post.clusterSize,
+    hasYouTube: post.hasYouTube,
+    hasX: post.hasX,
+    url: post.url,
   }));
+
+  useEffect(() => {
+    addPosts(mapped);
+  }, [mapped, addPosts]);
 
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
-      <InfinitePostList
-        initialPosts={mapped}
-        layout="list"
-        jsonBase={`/data/category/${category}/v1`}
-        storageKeyPrefix={`category-${category}`}
-        enablePaging={true}
-      />
+      <PostListProvider postIds={mapped.map(p => p.id)}>
+        <InfinitePostList
+          initialPosts={mapped}
+          layout="list"
+          jsonBase={`/data/category/${category}/v1`}
+          storageKeyPrefix={`category-${category}`}
+          enablePaging={true}
+        />
+      </PostListProvider>
     </div>
   );
 }
