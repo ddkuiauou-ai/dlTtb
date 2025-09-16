@@ -22,6 +22,15 @@ export type Post = {
   clusterSize: number | null;
 };
 
+/**
+ * Server-side hydrated posts share the same core shape as client posts.
+ * The difference is that `embed` is guaranteed to align with the hover
+ * player metadata we derive during hydration.
+ */
+export type HydratedPost = Post & {
+  embed?: { type: "youtube" | "x" | "mp4"; url: string };
+};
+
 export type TimeRange = "3h" | "6h" | "24h" | "1w";
 
 export const ALL_TIME_RANGES: TimeRange[] = ["3h", "6h", "24h", "1w"];
