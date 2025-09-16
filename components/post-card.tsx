@@ -3,7 +3,7 @@ import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle, ThumbsUp, Clock, Eye } from "lucide-react";
-import { ClerkProvider, SignedIn, SignedOut } from '@clerk/nextjs'
+import { SignedIn, SignedOut } from '@clerk/nextjs'
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -39,24 +39,24 @@ function formatPostTime(s: string): { display: string, full: string } {
   const Y = parseInt(yStr, 10), M = parseInt(moStr, 10), D = parseInt(dStr, 10);
   let h = parseInt(hStr, 10);
   // convert to 24h
-  if (ampm === "오전") { if (h === 12) h = 0; } 
+  if (ampm === "오전") { if (h === 12) h = 0; }
   else { if (h < 12) h += 12; }
   const hh = String(h).padStart(2, "0");
-  
+
   const now = new Date();
   const sameDay = (now.getFullYear() === Y && (now.getMonth() + 1) === M && now.getDate() === D);
-  
+
   if (sameDay) {
     const time = `${hh}:${min}`;
     return { display: time, full: time };
   }
-  
+
   if (now.getFullYear() === Y) {
     const full = `${M}/${D} ${hh}:${min}`;
     const display = `${M}/${D}`;
     return { display, full };
   }
-  
+
   const YY = String(Y).slice(-2);
   const full = `${YY}/${M}/${D} ${hh}:${min}`;
   const display = `${YY}/${M}/${D}`;
@@ -71,7 +71,7 @@ function compactKoTime(s: string): string {
   const Y = parseInt(yStr, 10), M = parseInt(moStr, 10), D = parseInt(dStr, 10);
   let h = parseInt(hStr, 10);
   // convert to 24h
-  if (ampm === "오전") { if (h === 12) h = 0; } 
+  if (ampm === "오전") { if (h === 12) h = 0; }
   else { if (h < 12) h += 12; }
   const hh = String(h).padStart(2, "0");
   // if same day, show HH:MM only
@@ -124,11 +124,11 @@ function toRotatingSegments(title: string, maxChars: number): string[] {
       let buf = "";
       for (const p of parts) {
         if (!buf) { buf = p; continue; }
-        if (getVisualLength(buf + sep + p) <= maxChars) { 
-          buf = buf + sep + p; 
-        } else { 
-          merged.push(buf); 
-          buf = p; 
+        if (getVisualLength(buf + sep + p) <= maxChars) {
+          buf = buf + sep + p;
+        } else {
+          merged.push(buf);
+          buf = p;
         }
       }
       if (buf) merged.push(buf);
@@ -142,11 +142,11 @@ function toRotatingSegments(title: string, maxChars: number): string[] {
   let cur = "";
   for (const w of words) {
     if (!cur) { cur = w; continue; }
-    if (getVisualLength(cur + " " + w) <= maxChars) { 
+    if (getVisualLength(cur + " " + w) <= maxChars) {
       cur = cur + " " + w;
-    } else { 
-      chunks.push(cur); 
-      cur = w; 
+    } else {
+      chunks.push(cur);
+      cur = w;
     }
   }
   if (cur) chunks.push(cur);
@@ -189,7 +189,7 @@ function TitleRotator({ title, className }: { title: string; className?: string 
         // scrollWidth는 실제 내용 폭, clientWidth는 가용 폭
         const ok = m.scrollWidth <= c.clientWidth + 0.5; // 여유 버퍼
         setFits((prev) => (prev === ok ? prev : ok));
-      } catch { } 
+      } catch { }
     };
     const onResize = () => {
       if (raf) cancelAnimationFrame(raf);
@@ -236,7 +236,7 @@ function TitleRotator({ title, className }: { title: string; className?: string 
     loop();
     return () => { cancelled = true; if (timer) clearTimeout(timer); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, segments.join('\u0001'), segDurations.map(String).join(',')] );
+  }, [ready, segments.join('\u0001'), segDurations.map(String).join(',')]);
 
   // 컨테이너 래퍼: 실제 폭 측정용 + 회전/정적 컨텐츠 담는 그릇
   // 높이를 고정해 레이아웃 점프 방지
@@ -288,173 +288,97 @@ const communityColors: Record<string, string> = {
 
 export const PostCard = React.memo(
   function PostCard({ postId, layout, page, storageKeyPrefix = "", isNew = false, isPriority = false }: PostCardProps) {
-  const { openModal } = useModal();
-  const { postIds } = usePostList();
-  const { posts } = usePostCache();
-  const post = posts.get(postId) as Post;
-  const isMobile = useIsMobile();
+    const { openModal } = useModal();
+    const { postIds } = usePostList();
+    const { posts } = usePostCache();
+    const post = posts.get(postId) as Post;
+    const isMobile = useIsMobile();
 
-  if (!post) {
-    return null; // Or a loading skeleton
-  }
+    if (!post) {
+      return null; // Or a loading skeleton
+    }
 
-  const timeInfo = formatPostTime(post.timeAgo);
-  
-  const GridExtras = () => (
-    <div className="flex items-center gap-2">
-      {typeof post.clusterSize === "number" && post.clusterSize > 1 && (
-        <Badge
-          variant="secondary"
-          className="bg-amber-100 text-amber-800 border-0"
-        >
-          통합 +{post.clusterSize - 1}
-        </Badge>
-      )}
-      {post.hasYouTube && (
-        <span title="YouTube 임베드" className="inline-flex items-center">
-          <BrandIcon name="youtube" useBrandColor className="h-3.5 w-3.5" />
-        </span>
-      )}
-      {post.hoverPlayerKind === 'mp4' && (
-        <Badge variant="secondary" className="bg-gray-100 text-gray-800 border-0">MP4</Badge>
-      )}
-      {post.hasX && (
-        <span title="X 임베드" className="inline-flex items-center">
-          <BrandIcon name="X" useBrandColor className="h-3.5 w-3.5" />
-        </span>
-      )}
-    </div>
-  );
+    const timeInfo = formatPostTime(post.timeAgo);
 
-  const Badges = () => {
-    const isClustered = typeof post.clusterSize === "number" && post.clusterSize > 1;
-    return (
-      <div className="flex items-center gap-2 flex-shrink-0">
-        {isClustered && (
-          <Badge variant="secondary" className="bg-amber-100 text-amber-800 border-0">
+    const GridExtras = () => (
+      <div className="flex items-center gap-2">
+        {typeof post.clusterSize === "number" && post.clusterSize > 1 && (
+          <Badge
+            variant="secondary"
+            className="bg-amber-100 text-amber-800 border-0"
+          >
             통합 +{post.clusterSize - 1}
           </Badge>
         )}
-        {!isClustered && (
-          <Badge
-            variant="secondary"
-            className={cn(
-              communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800",
-              "hidden @[10rem]:inline-flex"
-            )}
-          >
-            {post.communityLabel || post.community}
-          </Badge>
-        )}
         {post.hasYouTube && (
-          <span title="YouTube 임베드" className="hidden @[10rem]:inline-flex items-center">
+          <span title="YouTube 임베드" className="inline-flex items-center">
             <BrandIcon name="youtube" useBrandColor className="h-3.5 w-3.5" />
           </span>
         )}
+        {post.hoverPlayerKind === 'mp4' && (
+          <Badge variant="secondary" className="bg-gray-100 text-gray-800 border-0">MP4</Badge>
+        )}
         {post.hasX && (
-          <span title="X 임베드" className="hidden @[10rem]:inline-flex items-center">
+          <span title="X 임베드" className="inline-flex items-center">
             <BrandIcon name="X" useBrandColor className="h-3.5 w-3.5" />
           </span>
         )}
-        {post.hoverPlayerKind === 'mp4' && (
-          <Badge variant="secondary" className="hidden @[12rem]:inline-flex bg-gray-100 text-gray-800 border-0">
-              MP4
-          </Badge>
-        )}
       </div>
     );
-  };
 
-
-  const SignedInCardContent = () => (
-    layout === "list"
-      ? (
-        <CardContent className="flex p-0 h-24">
-          <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
-            <HoverCard openDelay={1000}>
-              <HoverCardTrigger asChild>
-                <div className="absolute inset-0">
-                  {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
-                    <iframe
-                      src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover"
-                      style={{ border: 0 }}
-                      allow="encrypted-media; picture-in-picture"
-                    />
-                  ) : (
-                    <Image
-                      src={post.thumbnail || "/placeholder.svg"}
-                      alt=""
-                      fill
-                      sizes="(max-width: 768px) 64px, 80px"
-                      className="object-cover"
-                      priority={isPriority}
-                      referrerPolicy="no-referrer"
-                    />
-                  )}
-                </div>
-              </HoverCardTrigger>
-              {(post.thumbnail || post.hoverPlayerUrl) && (
-                <HoverCardContent className={cn('w-auto', post.hoverPlayerKind === 'youtube' ? ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]' : ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'max-w-2xl' : 'max-w-xl')}>                  <PostHoverCard post={post} />
-                </HoverCardContent>
+    const Badges = () => {
+      const isClustered = typeof post.clusterSize === "number" && post.clusterSize > 1;
+      return (
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {isClustered && (
+            <Badge variant="secondary" className="bg-amber-100 text-amber-800 border-0">
+              통합 +{post.clusterSize - 1}
+            </Badge>
+          )}
+          {!isClustered && (
+            <Badge
+              variant="secondary"
+              className={cn(
+                communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800",
+                "hidden @[10rem]:inline-flex"
               )}
-            </HoverCard>
-          </div>
-          <div className="flex-1 min-w-0 p-3 md:p-4">
-            <div className="flex flex-col justify-between h-full">
-                <h3
-                    title={post.title}
-                    className="post-title font-semibold text-gray-900 overflow-hidden mb-2"
-                >
-                    {<TitleRotator title={post.title} className="align-middle" />}
-                </h3>
-                <div className="@container flex items-center justify-between w-full">
-                    <Badges />
-                    <TooltipProvider>
-                      <div className="flex items-center gap-3 text-sm text-gray-500">
-                          <div className="flex items-center gap-1"><Eye className="h-3 w-3" />
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                <span>{formatViewCount(post.viewCount)}</span>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                <p>{post.viewCount.toLocaleString()}</p>
-                                </TooltipContent>
-                            </Tooltip>
-                          </div>
-                          <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
-                          <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <span>{timeInfo.display}</span>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>{timeInfo.full}</p>
-                                </TooltipContent>
-                            </Tooltip>
-                          </div>
-                      </div>
-                    </TooltipProvider>
-                </div>
-            </div>
-          </div>
-        </CardContent>
-      )
-      : (
-        <CardContent className="p-3 md:p-4">
-          <div className="space-y-3">
-            {(post.thumbnail || post.hoverPlayerUrl) ? (
+            >
+              {post.communityLabel || post.community}
+            </Badge>
+          )}
+          {post.hasYouTube && (
+            <span title="YouTube 임베드" className="hidden @[10rem]:inline-flex items-center">
+              <BrandIcon name="youtube" useBrandColor className="h-3.5 w-3.5" />
+            </span>
+          )}
+          {post.hasX && (
+            <span title="X 임베드" className="hidden @[10rem]:inline-flex items-center">
+              <BrandIcon name="X" useBrandColor className="h-3.5 w-3.5" />
+            </span>
+          )}
+          {post.hoverPlayerKind === 'mp4' && (
+            <Badge variant="secondary" className="hidden @[12rem]:inline-flex bg-gray-100 text-gray-800 border-0">
+              MP4
+            </Badge>
+          )}
+        </div>
+      );
+    };
+
+
+    const SignedInCardContent = () => (
+      layout === "list"
+        ? (
+          <CardContent className="flex p-0 h-24">
+            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
               <HoverCard openDelay={1000}>
                 <HoverCardTrigger asChild>
-                  <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
+                  <div className="absolute inset-0">
                     {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
                       <iframe
                         src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
                         referrerPolicy="no-referrer"
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="w-full h-full object-cover"
                         style={{ border: 0 }}
                         allow="encrypted-media; picture-in-picture"
                       />
@@ -463,7 +387,7 @@ export const PostCard = React.memo(
                         src={post.thumbnail || "/placeholder.svg"}
                         alt=""
                         fill
-                        sizes="480px"
+                        sizes="(max-width: 768px) 64px, 80px"
                         className="object-cover"
                         priority={isPriority}
                         referrerPolicy="no-referrer"
@@ -471,118 +395,131 @@ export const PostCard = React.memo(
                     )}
                   </div>
                 </HoverCardTrigger>
-                <HoverCardContent className={cn('w-auto', post.hoverPlayerKind === 'youtube' ? ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]' : ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'max-w-2xl' : 'max-w-xl')}>                  <PostHoverCard post={post} />
-                </HoverCardContent>
-              </HoverCard>
-            ) : (
-              <Image
-                src={post.thumbnail || "/placeholder.svg"}
-                alt=""
-                width={300}
-                height={160}
-                className="w-full aspect-[3/2] object-cover rounded-none md:rounded-lg"
-                priority={isPriority}
-                referrerPolicy="no-referrer"
-              />
-            )}
-            <div className="space-y-2 min-h-[72px] md:min-h-[92px]">
-              <h3
-                title={post.title}
-                className="post-title font-semibold text-gray-900 overflow-hidden"
-              >
-                {<TitleRotator title={post.title} className="align-middle" />}
-              </h3>
-              <div className="flex items-center gap-2 flex-wrap">
-                <Badge
-                  variant="secondary"
-                  className={communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"}
-                >
-                  {post.communityLabel || post.community}
-                </Badge>
-                <GridExtras />
-              </div>
-              <div className="flex items-center justify-between text-gray-500 pt-1">
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount.toLocaleString()}</span></div>
-                  <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments.toLocaleString()}</span></div>
-                  <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes.toLocaleString()}</span></div>
-                </div>
-                <span className="text-xs">{compactKoTime(post.timeAgo)}</span>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      )
-  );
-
-  const SignedOutCardContent = () => (
-    layout === "list"
-      ? (
-        <CardContent className="flex p-0 h-24">
-            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
-                {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
-                <iframe
-                    src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
-                    referrerPolicy="no-referrer"
-                    className="absolute inset-0 w-full h-full object-cover"
-                    style={{ border: 0 }}
-                    allow="encrypted-media; picture-in-picture"
-                />
-                ) : (
-                <Image
-                    src={post.thumbnail || "/placeholder.svg"}
-                    alt=""
-                    fill
-                    sizes="(max-width: 768px) 64px, 80px"
-                    className="object-cover"
-                    priority={isPriority}
-                    referrerPolicy="no-referrer"
-                />
+                {(post.thumbnail || post.hoverPlayerUrl) && (
+                  <HoverCardContent className={cn('w-auto', post.hoverPlayerKind === 'youtube' ? ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]' : ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'max-w-2xl' : 'max-w-xl')}>                  <PostHoverCard post={post} />
+                  </HoverCardContent>
                 )}
+              </HoverCard>
             </div>
             <div className="flex-1 min-w-0 p-3 md:p-4">
-                <div className="flex flex-col justify-between h-full">
-                    <h3 title={post.title} className="post-title font-semibold text-gray-900 overflow-hidden mb-2">
-                        {<TitleRotator title={post.title} className="align-middle" />}
-                    </h3>
-                    <div className="@container flex items-center justify-between w-full">
-                        <Badges />
-                        <TooltipProvider>
-                          <div className="flex items-center gap-3 text-sm text-gray-500">
-                              <div className="flex items-center gap-1"><Eye className="h-3 w-3" />
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                    <span>{formatViewCount(post.viewCount)}</span>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                    <p>{post.viewCount.toLocaleString()}</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                              </div>
-                              <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
-                              <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
-                              <div className="flex items-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <span>{timeInfo.display}</span>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>{timeInfo.full}</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                              </div>
-                          </div>
-                        </TooltipProvider>
+              <div className="flex flex-col justify-between h-full">
+                <h3
+                  title={post.title}
+                  className="post-title font-semibold text-gray-900 overflow-hidden mb-2"
+                >
+                  {<TitleRotator title={post.title} className="align-middle" />}
+                </h3>
+                <div className="@container flex items-center justify-between w-full">
+                  <Badges />
+                  <TooltipProvider>
+                    <div className="flex items-center gap-3 text-sm text-gray-500">
+                      <div className="flex items-center gap-1"><Eye className="h-3 w-3" />
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span>{formatViewCount(post.viewCount)}</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{post.viewCount.toLocaleString()}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
+                      <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span>{timeInfo.display}</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{timeInfo.full}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
                     </div>
+                  </TooltipProvider>
                 </div>
+              </div>
             </div>
-        </CardContent>
-      )
-      : (
-        <CardContent className="p-3 md:p-4">
-          <div className="space-y-3">
-            <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
+          </CardContent>
+        )
+        : (
+          <CardContent className="p-3 md:p-4">
+            <div className="space-y-3">
+              {(post.thumbnail || post.hoverPlayerUrl) ? (
+                <HoverCard openDelay={1000}>
+                  <HoverCardTrigger asChild>
+                    <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
+                      {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
+                        <iframe
+                          src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
+                          referrerPolicy="no-referrer"
+                          className="absolute inset-0 w-full h-full object-cover"
+                          style={{ border: 0 }}
+                          allow="encrypted-media; picture-in-picture"
+                        />
+                      ) : (
+                        <Image
+                          src={post.thumbnail || "/placeholder.svg"}
+                          alt=""
+                          fill
+                          sizes="480px"
+                          className="object-cover"
+                          priority={isPriority}
+                          referrerPolicy="no-referrer"
+                        />
+                      )}
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent className={cn('w-auto', post.hoverPlayerKind === 'youtube' ? ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]' : ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'max-w-2xl' : 'max-w-xl')}>                  <PostHoverCard post={post} />
+                  </HoverCardContent>
+                </HoverCard>
+              ) : (
+                <Image
+                  src={post.thumbnail || "/placeholder.svg"}
+                  alt=""
+                  width={300}
+                  height={160}
+                  className="w-full aspect-[3/2] object-cover rounded-none md:rounded-lg"
+                  priority={isPriority}
+                  referrerPolicy="no-referrer"
+                />
+              )}
+              <div className="space-y-2 min-h-[72px] md:min-h-[92px]">
+                <h3
+                  title={post.title}
+                  className="post-title font-semibold text-gray-900 overflow-hidden"
+                >
+                  {<TitleRotator title={post.title} className="align-middle" />}
+                </h3>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge
+                    variant="secondary"
+                    className={communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"}
+                  >
+                    {post.communityLabel || post.community}
+                  </Badge>
+                  <GridExtras />
+                </div>
+                <div className="flex items-center justify-between text-gray-500 pt-1">
+                  <div className="flex items-center gap-3 text-sm">
+                    <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount.toLocaleString()}</span></div>
+                    <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments.toLocaleString()}</span></div>
+                    <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes.toLocaleString()}</span></div>
+                  </div>
+                  <span className="text-xs">{compactKoTime(post.timeAgo)}</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        )
+    );
+
+    const SignedOutCardContent = () => (
+      layout === "list"
+        ? (
+          <CardContent className="flex p-0 h-24">
+            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
               {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
                 <iframe
                   src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
@@ -592,81 +529,144 @@ export const PostCard = React.memo(
                   allow="encrypted-media; picture-in-picture"
                 />
               ) : (
-                <Image src={post.thumbnail || "/placeholder.svg"} alt="" fill sizes="480px" className="object-cover" priority={isPriority} referrerPolicy="no-referrer" />
+                <Image
+                  src={post.thumbnail || "/placeholder.svg"}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 64px, 80px"
+                  className="object-cover"
+                  priority={isPriority}
+                  referrerPolicy="no-referrer"
+                />
               )}
             </div>
-            <div className="space-y-2 min-h-[72px] md:min-h-[92px]">
-              <h3 title={post.title} className="post-title font-semibold text-gray-900 overflow-hidden">
-                {<TitleRotator title={post.title} className="align-middle" />}
-              </h3>
-              <div className="flex items-center gap-2 flex-wrap">
-                <Badge
-                  variant="secondary"
-                  className={communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"}
-                >
-                  {post.communityLabel || post.community}
-                </Badge>
-                <GridExtras />
-              </div>
-              <div className="flex items-center justify-between text-gray-500 pt-1">
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount.toLocaleString()}</span></div>
-                  <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments.toLocaleString()}</span></div>
-                  <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes.toLocaleString()}</span></div>
+            <div className="flex-1 min-w-0 p-3 md:p-4">
+              <div className="flex flex-col justify-between h-full">
+                <h3 title={post.title} className="post-title font-semibold text-gray-900 overflow-hidden mb-2">
+                  {<TitleRotator title={post.title} className="align-middle" />}
+                </h3>
+                <div className="@container flex items-center justify-between w-full">
+                  <Badges />
+                  <TooltipProvider>
+                    <div className="flex items-center gap-3 text-sm text-gray-500">
+                      <div className="flex items-center gap-1"><Eye className="h-3 w-3" />
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span>{formatViewCount(post.viewCount)}</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{post.viewCount.toLocaleString()}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <div className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /><span>{post.comments}</span></div>
+                      <div className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /><span>{post.upvotes}</span></div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span>{timeInfo.display}</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{timeInfo.full}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                    </div>
+                  </TooltipProvider>
                 </div>
-                <span className="text-xs">{compactKoTime(post.timeAgo)}</span>
               </div>
             </div>
-          </div>
-        </CardContent>
-      )
-  );
+          </CardContent>
+        )
+        : (
+          <CardContent className="p-3 md:p-4">
+            <div className="space-y-3">
+              <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
+                {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
+                  <iframe
+                    src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ border: 0 }}
+                    allow="encrypted-media; picture-in-picture"
+                  />
+                ) : (
+                  <Image src={post.thumbnail || "/placeholder.svg"} alt="" fill sizes="480px" className="object-cover" priority={isPriority} referrerPolicy="no-referrer" />
+                )}
+              </div>
+              <div className="space-y-2 min-h-[72px] md:min-h-[92px]">
+                <h3 title={post.title} className="post-title font-semibold text-gray-900 overflow-hidden">
+                  {<TitleRotator title={post.title} className="align-middle" />}
+                </h3>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge
+                    variant="secondary"
+                    className={communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800"}
+                  >
+                    {post.communityLabel || post.community}
+                  </Badge>
+                  <GridExtras />
+                </div>
+                <div className="flex items-center justify-between text-gray-500 pt-1">
+                  <div className="flex items-center gap-3 text-sm">
+                    <div className="flex items-center gap-1"><Eye className="h-4 w-4" /><span>{post.viewCount.toLocaleString()}</span></div>
+                    <div className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /><span>{post.comments.toLocaleString()}</span></div>
+                    <div className="flex items-center gap-1"><ThumbsUp className="h-4 w-4" /><span>{post.upvotes.toLocaleString()}</span></div>
+                  </div>
+                  <span className="text-xs">{compactKoTime(post.timeAgo)}</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        )
+    );
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    e.preventDefault();
-    markPostAsRead({ id: post.id, title: post.title });
-    if (storageKeyPrefix) {
-      try {
-        markNavigateToPost(storageKeyPrefix, {
-          anchorPostId: post.id,
-          anchorPage: page,
-          sourceUrl: window.location.pathname + window.location.search,
-        });
-      } catch {} 
-    }
-    openModal(post.id, postIds);
-  };
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      markPostAsRead({ id: post.id, title: post.title });
+      if (storageKeyPrefix) {
+        try {
+          markNavigateToPost(storageKeyPrefix, {
+            anchorPostId: post.id,
+            anchorPage: page,
+            sourceUrl: window.location.pathname + window.location.search,
+          });
+        } catch { }
+      }
+      openModal(post.id, postIds);
+    };
 
-  return (
-    <>
-      <SignedIn>
-        <Link
-          id={`post-${post.id}`}
-          href={`/posts/${post.id}`}
-          prefetch={!isMobile}
-          className={`block ${isNew ? 'fade-in' : ''}`}
-          onClick={handleClick}
-        >
-          <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
-            <SignedInCardContent />
-          </Card>
-        </Link>
-      </SignedIn>
-      <SignedOut>
-        <a
-          id={`post-${post.id}`}
-          href={post.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`block ${isNew ? 'fade-in' : ''}`}
-          onClick={() => markPostAsRead({ id: post.id, title: post.title })}
-        >
-          <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
-            <SignedOutCardContent />
-          </Card>
-        </a>
-      </SignedOut>
-    </>
-  );
-});
+    return (
+      <>
+        <SignedIn>
+          <Link
+            id={`post-${post.id}`}
+            href={`/posts/${post.id}`}
+            prefetch={!isMobile}
+            className={`block ${isNew ? 'fade-in' : ''}`}
+            onClick={handleClick}
+          >
+            <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
+              <SignedInCardContent />
+            </Card>
+          </Link>
+        </SignedIn>
+        <SignedOut>
+          <a
+            id={`post-${post.id}`}
+            href={post.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`block ${isNew ? 'fade-in' : ''}`}
+            onClick={() => markPostAsRead({ id: post.id, title: post.title })}
+          >
+            <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
+              <SignedOutCardContent />
+            </Card>
+          </a>
+        </SignedOut>
+      </>
+    );
+  });

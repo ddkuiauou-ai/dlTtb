@@ -50,6 +50,7 @@ function isUnchanged(existing: any, incoming: any): boolean {
     ["commentCount", "commentCount"],
     ["likeCount", "likeCount"],
     ["viewCount", "viewCount"],
+    ["imageEnrichmentUpdatedAt", "imageEnrichmentUpdatedAt"],
   ] as const;
 
   let comparableFound = false;

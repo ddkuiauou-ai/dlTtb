@@ -6,7 +6,6 @@ import { Footer } from "@/components/footer"
 import { notFound } from "next/navigation"
 import { PostDetail } from "@/components/post-detail"
 import Link from "next/link"
-import Script from "next/script"
 import { ReadMarker } from "./ReadMarker.client";
 
 interface PageProps {

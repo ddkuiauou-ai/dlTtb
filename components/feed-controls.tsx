@@ -7,7 +7,6 @@ import { LayoutGrid, List, Clock as ClockIcon, CircleDot, Circle } from "lucide-
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import type { Range, ViewMode, ReadFilter } from "@/lib/feed-prefs";
 import { useIsMobile } from "@/components/ui/use-mobile";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CountingNumber } from "@/components/animate-ui/text/counting-number";
 
 /** 기본 라벨(원하는 값으로 오버라이드 가능) */

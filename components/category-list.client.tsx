@@ -2,7 +2,6 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { getScopedRange } from "@/lib/feed-prefs";
-import type { Range } from "@/lib/feed-prefs";
 import { BrandIcon } from "./brand-icon";
 import { brands } from "@/lib/brands";
 
@@ -53,8 +52,8 @@ export function CategoryList() {
             key={slug}
             onClick={() => handleCategoryClick(slug)}
             className={`flex items-center justify-center p-2 rounded-md transition-colors text-left ${isActive
-                ? "bg-primary text-primary-foreground"
-                : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+              ? "bg-primary text-primary-foreground"
+              : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
               }`}
           >
             {icon ? (

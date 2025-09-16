@@ -6,6 +6,7 @@ import { PostCard } from "@/components/post-card";
 import type { Post } from "@/lib/types";
 import { onCommunity, onCommunities } from "@/lib/communityFilter";
 import { getManifest as cacheGetManifest, readPage as cacheReadPage, writePage as cacheWritePage } from "@/lib/idb-cache";
+import type { ClientPost } from "@/lib/idb-cache";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { readAndClearRestore } from "@/lib/restore-session";
 import { usePostCache } from "@/context/post-cache-context";
@@ -22,7 +23,7 @@ const FIRST_JSON_PAGE = 2; // page-1.json은 존재하지 않음. SSR(DB) 결과
 
 // --- Debug ---
 const DEBUG_IPL = process.env.NODE_ENV !== 'production';
-const dlog = (...args: any[]) => {
+const dlog = (...args: unknown[]) => {
   if (DEBUG_IPL) {
     // Prefix with component tag and timestamp for easier tracing
     const ts = new Date().toISOString();
@@ -34,6 +35,18 @@ const dlog = (...args: any[]) => {
 // --- Types ---
 type LoadStatus = "ok-new" | "ok-dup" | "missing" | "error";
 type LoadResult = { status: LoadStatus; newPosts: Post[] };
+
+type FeedNavigationApi = {
+  getIds: () => string[];
+  hasMore: () => boolean;
+  requestLoadMore: () => void;
+};
+
+declare global {
+  interface Window {
+    __FEED_NAV__?: Map<string, FeedNavigationApi>;
+  }
+}
 
 // --- Restore Hook (extract) ---
 function useRestoreFromDetail(params: {
@@ -176,7 +189,7 @@ function useRestoreFromDetail(params: {
           const idx = visiblePostsRef.current.findIndex((p) => p.id === anchorId);
           if (idx >= 0) {
             const rowIndex = Math.floor(idx / Math.max(1, cols));
-            try { virtualizer.scrollToIndex(rowIndex, { align: 'start' } as any); } catch { /* ignore */ }
+            try { virtualizer.scrollToIndex(rowIndex, { align: 'start' } as Parameters<typeof virtualizer.scrollToIndex>[1]); } catch { /* ignore */ }
             await waitFrames(2);
           }
 
@@ -184,7 +197,7 @@ function useRestoreFromDetail(params: {
           const el2 = await waitForAnchorStable(anchorId);
           if (el2) {
             const off = computeScrollOffset();
-            (el2.style as any).scrollMarginTop = `${off}px`;
+            el2.style.scrollMarginTop = `${off}px`;
             el2.scrollIntoView({ behavior: 'auto', block: 'start' });
             // post-correct on the next frame if we still ended up too high/low
             await waitFrames(1);
@@ -305,6 +318,421 @@ const getReadSet = (): Set<string> => {
     return new Set();
   }
 };
+
+interface ListVirtualizedFeedProps {
+  initialPosts: Post[];
+  visiblePosts: Post[];
+  layout: 'list' | 'grid';
+  cardLayoutOverride?: 'grid' | 'list';
+  listColumns: 'auto-2' | '3-2-1';
+  threeColAt: 'lg' | 'xl';
+  virtualOverscan: number;
+  loadAheadRows: number;
+  rootRef: React.MutableRefObject<HTMLDivElement | null>;
+  loaderRef: React.MutableRefObject<HTMLDivElement | null>;
+  colsReadyRef: React.MutableRefObject<boolean>;
+  visiblePostsRef: React.MutableRefObject<Post[]>;
+  postIdToPageNumRef: React.MutableRefObject<Map<string, number>>;
+  hasMoreRef: React.MutableRefObject<boolean>;
+  pageRef: React.MutableRefObject<number>;
+  seenIdsRef: React.MutableRefObject<Set<string>>;
+  restoringRef: React.MutableRefObject<boolean>;
+  ensureBelowBufferRows: (anchorId: string) => Promise<void>;
+  loadMore: () => Promise<void>;
+  hasMore: boolean;
+  isFetching: boolean;
+  enablePaging: boolean;
+  initialPage: number;
+  storageKeyPrefix: string;
+  urlBootstrapDoneRef: React.MutableRefObject<boolean>;
+  lastLoadTriggerRef: React.MutableRefObject<{ rowCount: number; page: number }>;
+  isFetchingRef: React.MutableRefObject<boolean>;
+}
+
+function ListVirtualizedFeed({
+  initialPosts,
+  visiblePosts,
+  layout,
+  cardLayoutOverride,
+  listColumns,
+  threeColAt,
+  virtualOverscan,
+  loadAheadRows,
+  rootRef,
+  loaderRef,
+  colsReadyRef,
+  visiblePostsRef,
+  postIdToPageNumRef,
+  hasMoreRef,
+  pageRef,
+  seenIdsRef,
+  restoringRef,
+  ensureBelowBufferRows,
+  loadMore,
+  hasMore,
+  isFetching,
+  enablePaging,
+  initialPage,
+  storageKeyPrefix,
+  urlBootstrapDoneRef,
+  lastLoadTriggerRef,
+  isFetchingRef,
+}: ListVirtualizedFeedProps) {
+  const [cols, setCols] = useState(1);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => { setHasMounted(true); }, []);
+
+  useEffect(() => {
+    if (!hasMounted) return;
+    const el = rootRef.current;
+    if (!el) return;
+    let raf = 0;
+    const mqlWide = typeof window !== 'undefined'
+      ? window.matchMedia(`(min-width: ${threeColAt === 'xl' ? 1280 : 1024}px)`)
+      : null;
+    const compute = () => {
+      try {
+        const w = el.clientWidth || 0;
+        setContainerWidth((prev) => (prev === w ? prev : w));
+        const GAP = 16; // gap-4
+        const MIN_ITEM = 22 * 16; // 22rem
+        const maxCols = listColumns === '3-2-1' ? 3 : 2;
+        let c = Math.max(1, Math.floor((w + GAP) / (MIN_ITEM + GAP)));
+        c = Math.min(c, maxCols);
+        if (c >= 3 && listColumns === '3-2-1' && mqlWide && !mqlWide.matches) c = 2;
+        if (c !== cols) setCols(c);
+        colsReadyRef.current = true;
+      } catch { /* noop */ }
+    };
+    const onResize = () => { if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(compute); };
+    const ro = new ResizeObserver(onResize);
+    ro.observe(el);
+    compute();
+    return () => { ro.disconnect(); if (raf) cancelAnimationFrame(raf); };
+  }, [hasMounted, listColumns, threeColAt, cols, rootRef, colsReadyRef]);
+
+  const rowCount = Math.ceil(visiblePosts.length / Math.max(1, cols));
+  const estimateRowSize = useCallback(() => {
+    const effectiveLayout = cardLayoutOverride ?? layout;
+    const ROW_GAP = 16;
+    if (effectiveLayout === 'grid') {
+      const GAP = 16;
+      const w = Math.max(0, containerWidth || (rootRef.current?.clientWidth || 0));
+      const c = Math.max(1, cols);
+      const cardW = c > 0 ? (w - (c - 1) * GAP) / c : w;
+      const imgH = Math.max(120, Math.round(cardW * 2 / 3));
+      const textH = c >= 3 ? 140 : c === 2 ? 146 : 152;
+      return imgH + textH + ROW_GAP;
+    }
+    const LIST_ROW_EST = 100;
+    return LIST_ROW_EST + ROW_GAP;
+  }, [cols, cardLayoutOverride, layout, containerWidth, rootRef]);
+
+  const scrollToFn = useCallback((offset: number) => {
+    try {
+      const y = Math.max(0, Math.round(offset));
+      window.scrollTo({ top: y, behavior: 'auto' });
+    } catch {
+      window.scrollTo({ top: Math.max(0, Math.round(offset)), behavior: 'auto' as ScrollBehavior });
+    }
+  }, []);
+
+  const virtualizer = useWindowVirtualizer({
+    count: rowCount,
+    estimateSize: estimateRowSize,
+    overscan: virtualOverscan,
+    scrollToFn,
+    getItemKey: (row) => {
+      const idx0 = row * cols;
+      return visiblePosts[idx0]?.id ?? row;
+    },
+  });
+
+  useEffect(() => {
+    if (!DEBUG_IPL) return;
+    try {
+      const w = window as typeof window & { __VLIST__?: { scrollToIndex: (index: number) => void }; __LIST_COLS__?: string };
+      w.__VLIST__ = { scrollToIndex: (i: number) => virtualizer.scrollToIndex(i) };
+      w.__LIST_COLS__ = String(cols);
+    } catch { /* no-op */ }
+  }, [virtualizer, cols]);
+
+  const items = virtualizer.getVirtualItems();
+
+  useEffect(() => {
+    virtualizer.measure();
+  }, [cols, containerWidth, virtualizer, visiblePosts]);
+
+  useEffect(() => {
+    if (restoringRef.current) return;
+    if (!enablePaging || !hasMoreRef.current) return;
+    const last = items[items.length - 1];
+    if (!last) return;
+    const threshold = Math.max(0, rowCount - Math.max(1, Math.floor(loadAheadRows)));
+    const inTail = last.index >= threshold;
+    if (!inTail) return;
+
+    const prev = lastLoadTriggerRef.current;
+    const cur = { rowCount, page: pageRef.current };
+    if (prev.rowCount === cur.rowCount && prev.page === cur.page) {
+      return;
+    }
+    lastLoadTriggerRef.current = cur;
+
+    if (!isFetchingRef.current) {
+      loadMore();
+    }
+  }, [items, rowCount, enablePaging, loadMore, loadAheadRows, restoringRef, hasMoreRef, pageRef, lastLoadTriggerRef, isFetchingRef]);
+
+  useEffect(() => {
+    let prev: ScrollRestoration | null = null;
+    try {
+      const history = window.history as History & { scrollRestoration?: ScrollRestoration };
+      prev = history.scrollRestoration ?? null;
+      history.scrollRestoration = 'manual';
+    } catch { /* ignore */ }
+    return () => {
+      try {
+        const history = window.history as History & { scrollRestoration?: ScrollRestoration };
+        history.scrollRestoration = prev ?? 'auto';
+      } catch { /* ignore */ }
+    };
+  }, []);
+
+  useRestoreFromDetail({
+    storageKeyPrefix,
+    initialPage,
+    cols,
+    virtualizer,
+    loadMore,
+    hasMoreRef,
+    pageRef,
+    colsReadyRef,
+    visiblePostsRef,
+    seenIdsRef,
+    postIdToPageNumRef,
+    rootRef,
+    restoringRef,
+    ensureBelowBufferRows,
+  });
+
+  useEffect(() => {
+    if (!enablePaging) return;
+    if (restoringRef.current) return;
+    if (urlBootstrapDoneRef.current) return;
+    urlBootstrapDoneRef.current = true;
+
+    const pStr = typeof window !== 'undefined'
+      ? new URL(window.location.href).searchParams.get('page')
+      : null;
+    const target = pStr ? Math.max(1, parseInt(pStr, 10) || 1) : 1;
+    if (target <= 1) return;
+
+    let cancelled = false;
+    const waitFrames = (n: number) => new Promise<void>((res) => {
+      let i = 0;
+      const step = () => {
+        if (cancelled) return;
+        if (++i >= n) return res();
+        requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+
+    const run = async () => {
+      const prevScrollBehavior = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+
+      while (pageRef.current < target && hasMoreRef.current && !cancelled) {
+        await loadMore();
+        await waitFrames(1);
+      }
+
+      const findAnchorOnTarget = () => {
+        const list = visiblePostsRef.current;
+        for (let i = 0; i < list.length; i++) {
+          const id = list[i].id;
+          const pn = postIdToPageNumRef.current.get(id);
+          if ((pn ?? 1) === target) return id;
+        }
+        for (let i = 0; i < list.length; i++) {
+          const id = list[i].id;
+          const pn = postIdToPageNumRef.current.get(id) ?? 1;
+          if (pn > target) return id;
+        }
+        for (let i = list.length - 1; i >= 0; i--) {
+          const id = list[i].id;
+          const pn = postIdToPageNumRef.current.get(id) ?? 1;
+          if (pn < target) return id;
+        }
+        return list[0]?.id ?? null;
+      };
+
+      let anchorId: string | null = findAnchorOnTarget();
+      let guard = 0;
+      while (!anchorId && hasMoreRef.current && guard < 4 && !cancelled) {
+        guard++;
+        await loadMore();
+        await waitFrames(1);
+        anchorId = findAnchorOnTarget();
+      }
+
+      if (anchorId) {
+        const idx = visiblePostsRef.current.findIndex((p) => p.id === anchorId);
+        if (idx >= 0) {
+          const rowIndex = Math.floor(idx / Math.max(1, cols));
+          try {
+            virtualizer.scrollToIndex(rowIndex, { align: 'start' } as Parameters<typeof virtualizer.scrollToIndex>[1]);
+          } catch { /* ignore */ }
+          await waitFrames(1);
+        }
+        const el = document.getElementById(`post-${anchorId}`) as HTMLElement | null;
+        if (el) {
+          el.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+        await ensureBelowBufferRows(anchorId);
+      }
+
+      try {
+        const setPageInUrl = (n: number) => {
+          const u = new URL(window.location.href);
+          if (n <= 1) u.searchParams.delete('page'); else u.searchParams.set('page', String(n));
+          const qs = u.searchParams.toString();
+          window.history.replaceState(null, '', u.pathname + (qs ? `?${qs}` : '') + u.hash);
+        };
+        if (anchorId) {
+          const n = postIdToPageNumRef.current.get(anchorId);
+          if (typeof n === 'number' && Number.isFinite(n)) setPageInUrl(n);
+          else setPageInUrl(target);
+        } else {
+          setPageInUrl(target);
+        }
+      } catch { /* ignore */ }
+      finally {
+        document.documentElement.style.scrollBehavior = prevScrollBehavior || '';
+        restoringRef.current = false;
+      }
+    };
+
+    run();
+    return () => { cancelled = true; };
+  }, [enablePaging, loadMore, cols, virtualizer, restoringRef, urlBootstrapDoneRef, pageRef, hasMoreRef, ensureBelowBufferRows, postIdToPageNumRef, visiblePostsRef]);
+
+  return (
+    <>
+      <style jsx global>{`
+        /* Restore neon glow effect for the post anchor on return from detail */
+        .post-anchor.restore-glow { --restore-ms: 850ms; }
+        .post-anchor { position: relative; }
+        .post-anchor.restore-glow::after,
+        .post-anchor.restore-glow::before { content: ""; position: absolute; inset: 0; border-radius: 12px; pointer-events: none; }
+
+        /* Dim the content briefly so the neon ring pops on light backgrounds */
+        .post-anchor.restore-glow::before {
+          background: #000;
+          opacity: 0;
+          z-index: 2; /* above children */
+          animation: restore-dim var(--restore-ms) ease-out forwards;
+        }
+
+        /* Rainbow neon ring that swirls once around the card and fades out */
+        .post-anchor.restore-glow::after {
+          z-index: 3; /* top-most */
+          padding: 2px; /* ring thickness */
+          border-radius: 14px; /* slightly larger than card corners */
+          background: conic-gradient(
+            from 0turn,
+            #ff0066, #ff8a00, #ffdc00, #00e676, #00b0ff, #8e24aa, #ff0066
+          );
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+          filter: saturate(1.6) brightness(1.2) blur(0.2px);
+          box-shadow: 0 0 18px rgba(255,255,255,0.18);
+          will-change: filter, opacity;
+          animation: hue-spin var(--restore-ms) linear forwards,
+                     ring-fade var(--restore-ms) ease-out forwards;
+        }
+
+        @keyframes hue-spin { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
+        @keyframes ring-fade { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes restore-dim {
+          0% { opacity: 0; }
+          10% { opacity: .32; }
+          30% { opacity: .18; }
+          55% { opacity: .26; }
+          100% { opacity: 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .post-anchor.restore-glow::after, .post-anchor.restore-glow::before { animation: none !important; opacity: 0 !important; }
+        }
+      `}</style>
+      <div ref={rootRef}>
+        <div style={{ height: virtualizer.getTotalSize(), width: '100%', position: 'relative' }}>
+          {items.map((vi) => {
+            const start = vi.index * cols;
+            const rowPosts = visiblePosts.slice(start, start + cols);
+            if (rowPosts.length === 0) return null;
+            return (
+              <div
+                key={`row-${vi.index}-${rowPosts[0].id}`}
+                ref={virtualizer.measureElement}
+                data-index={vi.index}
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translate3d(0, ${vi.start}px, 0)`, willChange: 'transform' }}
+              >
+                <div
+                  className="grid gap-4"
+                  style={{ gridTemplateColumns: `repeat(${Math.max(1, cols)}, minmax(0, 1fr))` }}
+                >
+                  {rowPosts.map((post, i) => (
+                    <div
+                      key={post.id}
+                      id={`post-${post.id}`}
+                      className="post-anchor relative isolate"
+                      style={{ scrollMarginTop: 'var(--sticky-top, 0px)' }}
+                    >
+                      {(() => {
+                        const indexGlobal = start + i;
+                        const pageNum = postIdToPageNumRef.current.get(post.id) || initialPage;
+                        const prevId = visiblePosts[indexGlobal - 1]?.id;
+                        const prevPage = prevId ? postIdToPageNumRef.current.get(prevId) : undefined;
+                        const isPageStart = indexGlobal === 0 || pageNum !== prevPage;
+                        return isPageStart ? (
+                          <div data-page-sentinel={pageNum} aria-hidden="true" style={{ display: 'block', height: 1 }} />
+                        ) : null;
+                      })()}
+                      <PostCard
+                        postId={post.id}
+                        layout={cardLayoutOverride ?? layout}
+                        page={postIdToPageNumRef.current.get(post.id) || initialPage}
+                        storageKeyPrefix={storageKeyPrefix}
+                        isNew={(start + i) >= initialPosts.length}
+                        isPriority={(start + i) < 5}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="h-4" aria-hidden />
+              </div>
+            );
+          })}
+        </div>
+
+        {enablePaging && <div ref={loaderRef} aria-label="infinite-loader" className="h-1" />}
+        {isFetching && hasMore && (
+          <div className="text-center text-gray-400 py-4">불러오는 중...</div>
+        )}
+        {!hasMore && (
+          <div className="text-center text-gray-400 py-4">더 이상 글이 없습니다.</div>
+        )}
+      </div>
+    </>
+  );
+}
 
 interface InfinitePostListProps {
   initialPosts: Post[];
@@ -453,7 +881,7 @@ export default function InfinitePostList({
   const prefetchingRef = useRef<Set<string>>(new Set());
   // Expose minimal navigation API for modal to query sequence and request more
   const navRegistryKey = jsonBase || storageKeyPrefix || "__default__";
-  const navApiRef = useRef<{ getIds: () => string[]; hasMore: () => boolean; requestLoadMore: () => void } | null>(null);
+  const navApiRef = useRef<FeedNavigationApi | null>(null);
 
   useEffect(() => {
     if (community !== undefined) {
@@ -494,7 +922,11 @@ export default function InfinitePostList({
       if (!manifestRef.current) {
         const m = await cacheGetManifest(base);
         if (m?.generatedAt) {
-          manifestRef.current = { generatedAt: m.generatedAt, lastPage: (m as any).lastPage };
+          const maybeLastPage = (m as Record<string, unknown>)?.lastPage;
+          manifestRef.current = {
+            generatedAt: m.generatedAt,
+            lastPage: typeof maybeLastPage === 'number' ? maybeLastPage : undefined,
+          };
         }
       }
 
@@ -507,9 +939,9 @@ export default function InfinitePostList({
         try {
           const cached = await cacheReadPage(base, pageNum, manifestRef.current.generatedAt);
           if (cached && cached.length >= 0) {
-            const uniques = cached.filter((p: any) => !seenIdsRef.current.has(p.id));
+            const uniques = cached.filter((p) => !seenIdsRef.current.has(p.id));
             dlog("loadPage:cache-hit", { pageNum, cachedCount: cached.length, uniques: uniques.length });
-            return { status: uniques.length > 0 ? "ok-new" : "ok-dup", newPosts: uniques as Post[] };
+            return { status: uniques.length > 0 ? "ok-new" : "ok-dup", newPosts: uniques as unknown as Post[] };
           }
         } catch { /* ignore */ }
       }
@@ -536,7 +968,7 @@ export default function InfinitePostList({
           // Write-through to cache (best-effort)
           try {
             const ver = manifestRef.current?.generatedAt || (await cacheGetManifest(base))?.generatedAt;
-            if (ver) await cacheWritePage(base, pageNum, ver, incoming as any);
+            if (ver) await cacheWritePage(base, pageNum, ver, incoming as unknown as ClientPost[]);
           } catch { /* ignore */ }
           // Prefetch next page in background
           try {
@@ -556,7 +988,7 @@ export default function InfinitePostList({
                       communityLabel: p.communityLabel || p.community || p.site || undefined,
                     })) as Post[];
                     const ver2 = manifestRef.current?.generatedAt || (await cacheGetManifest(base))?.generatedAt;
-                    if (ver2) await cacheWritePage(base, next, ver2, norm as any);
+                    if (ver2) await cacheWritePage(base, next, ver2, norm as unknown as ClientPost[]);
                   }
                 } catch { /* ignore */ }
                 finally { prefetchingRef.current.delete(key); }
@@ -575,8 +1007,9 @@ export default function InfinitePostList({
             status: uniques.length > 0 ? "ok-new" : "ok-dup",
             newPosts: uniques,
           };
-        } catch (e: any) {
-          dlog("loadPage:error", { pageNum, attempt: i, message: (e as Error)?.message, aborted: signal?.aborted });
+        } catch (e: unknown) {
+          const message = e instanceof Error ? e.message : String(e);
+          dlog("loadPage:error", { pageNum, attempt: i, message, aborted: signal?.aborted });
           if (signal?.aborted) {
             recentFailRef.current.set(pageNum, Date.now());
             return { status: "error", newPosts: [] };
@@ -603,7 +1036,11 @@ export default function InfinitePostList({
       if (base) {
         const m = await cacheGetManifest(base);
         if (m?.generatedAt) {
-          manifestRef.current = { generatedAt: m.generatedAt, lastPage: (m as any).lastPage };
+          const maybeLastPage = (m as Record<string, unknown>)?.lastPage;
+          manifestRef.current = {
+            generatedAt: m.generatedAt,
+            lastPage: typeof maybeLastPage === 'number' ? maybeLastPage : undefined,
+          };
         } else {
           setHasMore(false);
           return;
@@ -767,7 +1204,7 @@ export default function InfinitePostList({
     } catch {
       // no-op
     }
-  }, [loadPage, addPosts]);
+  }, [loadPage, addPosts, jsonBase]);
 
   const ensureBelowBufferRows = useCallback(async (anchorId: string) => {
     const BELOW_BUFFER = 12; // 앵커 아래 최소 확보할 행 수
@@ -796,10 +1233,10 @@ export default function InfinitePostList({
   // --- Rendering ---
   const communityFilteredPosts = (
     activeCommunities && activeCommunities.length > 0
-      ? posts.filter((p: any) => activeCommunities.includes(p.communityId || p.community))
+      ? posts.filter((p) => activeCommunities.includes(p.communityId || p.community))
       : (activeCommunity === "전체"
         ? posts
-        : posts.filter((p: any) => (p.communityId || p.community) === activeCommunity))
+        : posts.filter((p) => (p.communityId || p.community) === activeCommunity))
   );
 
   const visiblePosts = useMemo(() => {
@@ -840,7 +1277,7 @@ const emitMetrics = useCallback(() => {
     lastMetricsRef.current = { total, read, unread };
 
     const detail: FeedMetrics = { key: navRegistryKey, total, read, unread };
-    window.dispatchEvent(new CustomEvent<FeedMetrics>('feed:metrics', { detail } as any));
+    window.dispatchEvent(new CustomEvent<FeedMetrics>('feed:metrics', { detail } satisfies CustomEventInit<FeedMetrics>));
   } catch { /* no-op */ }
 }, [communityFilteredPosts, readPostIds, navRegistryKey]);
 
@@ -861,10 +1298,10 @@ useLayoutEffect(() => {
 
   // Register feed order + loadMore hook for modal navigation while dialog is open
   useEffect(() => {
-    const w = typeof window !== 'undefined' ? (window as any) : null;
+    const w = typeof window !== 'undefined' ? window : null;
     if (!w) return;
-    if (!w.__FEED_NAV__) w.__FEED_NAV__ = new Map<string, any>();
-    const map: Map<string, any> = w.__FEED_NAV__;
+    if (!w.__FEED_NAV__) w.__FEED_NAV__ = new Map<string, FeedNavigationApi>();
+    const map = w.__FEED_NAV__;
     navApiRef.current = {
       getIds: () => visiblePosts.map((p) => p.id),
       hasMore: () => hasMore,
@@ -893,7 +1330,7 @@ useLayoutEffect(() => {
           for (const e of entries) {
             if (!e.isIntersecting) continue;
             const el = e.target as HTMLElement;
-            const n = Number((el.dataset as any).pageSentinel);
+            const n = Number(el.dataset.pageSentinel ?? NaN);
             if (!Number.isFinite(n)) continue;
             const rect = el.getBoundingClientRect();
             // Only consider sentinels within the top 60% of the viewport to reduce jitter
@@ -927,380 +1364,37 @@ useLayoutEffect(() => {
     return () => { io.disconnect(); if (raf) cancelAnimationFrame(raf); };
   }, [enablePaging, visiblePosts]);
 
-  // Virtualized list rendering (responsive 1→2 columns at md breakpoint)
   if (layout === 'list') {
-    // (removed) suppressAnimRef
-    const [cols, setCols] = useState(1);
-    const [containerWidth, setContainerWidth] = useState(0);
-    useEffect(() => {
-      const el = rootRef.current;
-      if (!el) return;
-      let raf = 0;
-      const mqlWide = typeof window !== 'undefined'
-        ? window.matchMedia(`(min-width: ${threeColAt === 'xl' ? 1280 : 1024}px)`)
-        : null;
-      const compute = () => {
-        try {
-          const w = el.clientWidth || 0;
-          setContainerWidth((prev) => (prev === w ? prev : w));
-          const GAP = 16; // gap-4
-          const MIN_ITEM = 22 * 16; // 22rem
-          const maxCols = listColumns === '3-2-1' ? 3 : 2;
-          let c = Math.max(1, Math.floor((w + GAP) / (MIN_ITEM + GAP)));
-          c = Math.min(c, maxCols);
-          // Gate 3 columns by requested breakpoint
-          if (c >= 3 && listColumns === '3-2-1' && mqlWide && !mqlWide.matches) c = 2;
-          if (c !== cols) setCols(c);
-          // mark columns as measured at least once
-          colsReadyRef.current = true;
-        } catch { /* noop */ }
-      };
-      const onResize = () => { if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(compute); };
-      const ro = new ResizeObserver(onResize);
-      ro.observe(el);
-      compute();
-      return () => { ro.disconnect(); if (raf) cancelAnimationFrame(raf); };
-    }, [listColumns, threeColAt, cols]);
-
-    // (removed) container debug logs
-
-    const rowCount = Math.ceil(visiblePosts.length / cols);
-    const estimateRowSize = useCallback(() => {
-      const effectiveLayout = cardLayoutOverride ?? layout;
-      const isMobile = (containerWidth || (rootRef.current?.clientWidth || 0)) < 768; // md breakpoint
-      const ROW_GAP = 16;
-      if (effectiveLayout === 'grid') {
-        const GAP = 16;
-        const w = Math.max(0, containerWidth || (rootRef.current?.clientWidth || 0));
-        const c = Math.max(1, cols);
-        const cardW = c > 0 ? (w - (c - 1) * GAP) / c : w;
-        const imgH = Math.max(120, Math.round(cardW * 2 / 3)); // 3:2
-        const textH = c >= 3 ? 140 : c === 2 ? 146 : 152;      // 텍스트/패딩 반영해 상향
-        return imgH + textH + ROW_GAP;
-      }
-      // list(썸네일+텍스트) 행 높이도 상향
-      const LIST_ROW_EST = 100;
-      return LIST_ROW_EST + ROW_GAP;
-    }, [cols, cardLayoutOverride, layout, containerWidth]);
-
-    // Instant window scroll (no easing). Animation is suppressed during restore to avoid jank.
-    const scrollToFn = useCallback((offset: number) => {
-      try {
-        const y = Math.max(0, Math.round(offset));
-        // We intentionally do not animate here. All programmatic jumps should be instant.
-        window.scrollTo({ top: y, behavior: 'auto' });
-      } catch {
-        // Fallback (older browsers)
-        window.scrollTo({ top: Math.max(0, Math.round(offset)), behavior: 'auto' as ScrollBehavior });
-      }
-    }, []);
-
-    const virtualizer = useWindowVirtualizer({
-      count: rowCount,
-      estimateSize: estimateRowSize,
-      overscan: virtualOverscan,
-      scrollToFn,
-      getItemKey: (row) => {
-        const idx0 = row * cols;
-        return visiblePosts[idx0]?.id ?? row;
-      },
-    });
-    // Expose virtualizer + current column count for restore effect
-    useEffect(() => {
-      if (!DEBUG_IPL) return;
-      try {
-        const w: any = window;
-        w.__VLIST__ = { scrollToIndex: (i: number) => virtualizer.scrollToIndex(i) };
-        w.__LIST_COLS__ = String(cols);
-      } catch { /* no-op */ }
-    }, [virtualizer, cols]);
-
-    const items = virtualizer.getVirtualItems();
-    // When column count changes, remeasure to prevent transient overlaps
-    useEffect(() => { virtualizer.measure(); }, [cols, containerWidth, virtualizer]);
-    // (removed) first-item debug logs
-
-    // Virtualizer-based load-more: when the last virtual row comes into view (gated)
-    useEffect(() => {
-      if (restoringRef.current) return;
-      if (!enablePaging || !hasMoreRef.current) return;
-      const last = items[items.length - 1];
-      if (!last) return;
-      const threshold = Math.max(0, rowCount - Math.max(1, Math.floor(loadAheadRows))); // within last N rows
-      const inTail = last.index >= threshold;
-      if (!inTail) return;
-
-      // Avoid retriggering for the same (rowCount, page) state
-      const prev = lastLoadTriggerRef.current;
-      const cur = { rowCount, page: pageRef.current };
-      if (prev.rowCount === cur.rowCount && prev.page === cur.page) {
-        return;
-      }
-      lastLoadTriggerRef.current = cur;
-
-      if (!isFetchingRef.current) {
-        loadMore();
-      }
-    }, [items, rowCount, enablePaging, loadMore, loadAheadRows]);
-
-    // Ensure the browser doesn't fight our programmatic restoration
-    useEffect(() => {
-      let prev: string | null = null;
-      try {
-        // Some browsers may throw if not supported; guard with try/catch
-        prev = (window.history as any).scrollRestoration || null;
-        (window.history as any).scrollRestoration = 'manual';
-      } catch { /* ignore */ }
-      return () => {
-        try {
-          (window.history as any).scrollRestoration = prev || 'auto';
-        } catch { /* ignore */ }
-      };
-    }, []);
-
-    useRestoreFromDetail({
-      storageKeyPrefix,
-      initialPage,
-      cols,
-      virtualizer,
-      loadMore,
-      hasMoreRef,
-      pageRef,
-      colsReadyRef,
-      visiblePostsRef,
-      seenIdsRef,
-      postIdToPageNumRef,
-      rootRef,
-      restoringRef,
-      ensureBelowBufferRows,
-    });
-
-    // URL ?page= 부트스트랩 (세션 복귀 중이 아닐 때만)
-    useEffect(() => {
-      if (!enablePaging) return;
-      if (restoringRef.current) return;
-      if (urlBootstrapDoneRef.current) return; // run only once
-      urlBootstrapDoneRef.current = true;
-
-      // read from current URL (avoid reacting to our own replaceState)
-      const pStr = (typeof window !== 'undefined'
-        ? new URL(window.location.href).searchParams.get('page')
-        : null);
-      const target = pStr ? Math.max(1, parseInt(pStr, 10) || 1) : 1;
-      if (target <= 1) return; // 기본값
-
-      let cancelled = false;
-      const waitFrames = (n: number) => new Promise<void>((res) => {
-        let i = 0; const step = () => { if (cancelled) return; if (++i >= n) return res(); requestAnimationFrame(step); };
-        requestAnimationFrame(step);
-      });
-
-      const run = async () => {
-        const prevScrollBehavior = document.documentElement.style.scrollBehavior;
-        document.documentElement.style.scrollBehavior = 'auto';
-
-        const waitFrames = (n: number) => new Promise<void>((res) => {
-          let i = 0; const step = () => { if (++i >= n) return res(); requestAnimationFrame(step); };
-          requestAnimationFrame(step);
-        });
-
-        // Ensure target page is loaded and pick an anchor id on that page
-        while (pageRef.current < target && hasMoreRef.current && !cancelled) {
-          await loadMore();
-          await waitFrames(1);
-        }
-
-        const findAnchorOnTarget = () => {
-          const list = visiblePostsRef.current;
-          // Prefer the first post exactly on the target page
-          for (let i = 0; i < list.length; i++) {
-            const id = list[i].id;
-            const pn = postIdToPageNumRef.current.get(id);
-            if ((pn ?? 1) === target) return id;
-          }
-          // Fallback 1: first post after target page
-          for (let i = 0; i < list.length; i++) {
-            const id = list[i].id;
-            const pn = postIdToPageNumRef.current.get(id) ?? 1;
-            if (pn > target) return id;
-          }
-          // Fallback 2: last post before target page
-          for (let i = list.length - 1; i >= 0; i--) {
-            const id = list[i].id;
-            const pn = postIdToPageNumRef.current.get(id) ?? 1;
-            if (pn < target) return id;
-          }
-          // Final fallback: first visible post, or null if none
-          return list[0]?.id ?? null;
-        };
-
-        let anchorId: string | null = findAnchorOnTarget();
-        // Try a few more loads if we still couldn't pick an anchor on/near the target
-        {
-          let guard = 0;
-          while (!anchorId && hasMoreRef.current && guard < 4 && !cancelled) {
-            guard++;
-            await loadMore();
-            await waitFrames(1);
-            anchorId = findAnchorOnTarget();
-          }
-        }
-
-        // Scroll to the anchor if found
-        if (anchorId) {
-          const idx = visiblePostsRef.current.findIndex((p) => p.id === anchorId);
-          if (idx >= 0) {
-            const rowIndex = Math.floor(idx / Math.max(1, cols));
-            try { virtualizer.scrollToIndex(rowIndex, { align: 'start' } as any); } catch { }
-            await waitFrames(1);
-          }
-          const el = document.getElementById(`post-${anchorId}`) as HTMLElement | null;
-          if (el) {
-            el.scrollIntoView({ behavior: 'auto', block: 'start' });
-          }
-          await ensureBelowBufferRows(anchorId);
-        }
-
-        // 5) URL 페이지 정규화
-        try {
-          const setPageInUrl = (n: number) => {
-            const u = new URL(window.location.href);
-            if (n <= 1) u.searchParams.delete('page'); else u.searchParams.set('page', String(n));
-            const qs = u.searchParams.toString();
-            window.history.replaceState(null, '', u.pathname + (qs ? `?${qs}` : '') + u.hash);
-          };
-          if (anchorId) {
-            const n = postIdToPageNumRef.current.get(anchorId);
-            if (typeof n === 'number' && Number.isFinite(n)) setPageInUrl(n);
-            else setPageInUrl(target);
-          } else {
-            setPageInUrl(target);
-          }
-        } catch { /* ignore */ }
-        finally {
-          document.documentElement.style.scrollBehavior = prevScrollBehavior || '';
-          restoringRef.current = false;
-        }
-      };
-
-      run();
-      return () => { cancelled = true; };
-    }, [enablePaging, loadMore, cols, virtualizer]);
-
     return (
-      <>
-        <style jsx global>{`
-        /* Restore neon glow effect for the post anchor on return from detail */
-        .post-anchor.restore-glow { --restore-ms: 850ms; }
-        .post-anchor { position: relative; }
-        .post-anchor.restore-glow::after,
-        .post-anchor.restore-glow::before { content: ""; position: absolute; inset: 0; border-radius: 12px; pointer-events: none; }
-
-        /* Dim the content briefly so the neon ring pops on light backgrounds */
-        .post-anchor.restore-glow::before {
-          background: #000;
-          opacity: 0;
-          z-index: 2; /* above children */
-          animation: restore-dim var(--restore-ms) ease-out forwards;
-        }
-
-        /* Rainbow neon ring that swirls once around the card and fades out */
-        .post-anchor.restore-glow::after {
-          z-index: 3; /* top-most */
-          /* Draw only the border using CSS masking */
-          padding: 2px; /* ring thickness */
-          border-radius: 14px; /* slightly larger than card corners */
-          background: conic-gradient(
-            from 0turn,
-            #ff0066, #ff8a00, #ffdc00, #00e676, #00b0ff, #8e24aa, #ff0066
-          );
-          /* Mask to keep only the ring */
-          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          -webkit-mask-composite: xor;
-          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          mask-composite: exclude;
-          filter: saturate(1.6) brightness(1.2) blur(0.2px);
-          box-shadow: 0 0 18px rgba(255,255,255,0.18);
-          will-change: filter, opacity;
-          animation: hue-spin var(--restore-ms) linear forwards,
-                     ring-fade var(--restore-ms) ease-out forwards;
-        }
-
-        @keyframes hue-spin { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
-        @keyframes ring-fade { from { opacity: 1; } to { opacity: 0; } }
-        @keyframes restore-dim {
-          0% { opacity: 0; }
-          10% { opacity: .32; }
-          30% { opacity: .18; }
-          55% { opacity: .26; }
-          100% { opacity: 0; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .post-anchor.restore-glow::after, .post-anchor.restore-glow::before { animation: none !important; opacity: 0 !important; }
-        }
-      `}</style>
-        <div ref={rootRef} className="grid grid-cols-1 gap-4">
-          <div style={{ height: virtualizer.getTotalSize(), width: '100%', position: 'relative' }}>
-            {items.map((vi) => {
-              const start = vi.index * cols;
-              const rowPosts = visiblePosts.slice(start, start + cols);
-              if (rowPosts.length === 0) return null;
-              return (
-                <div
-                  key={`row-${vi.index}-${rowPosts[0].id}`}
-                  ref={virtualizer.measureElement}
-                  data-index={vi.index}
-                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translate3d(0, ${vi.start}px, 0)`, willChange: 'transform' }}
-                >
-                  <div
-                    className="grid gap-4"
-                    style={{ gridTemplateColumns: `repeat(${Math.max(1, cols)}, minmax(0, 1fr))` }}
-                  >
-                    {rowPosts.map((post, i) => (
-                      <div
-                        key={post.id}
-                        id={`post-${post.id}`}
-                        className="post-anchor relative isolate"
-                        style={{ scrollMarginTop: 'var(--sticky-top, 0px)' }}
-                      >
-                        {(() => {
-                          const indexGlobal = start + i;
-                          const pageNum = postIdToPageNumRef.current.get(post.id) || initialPage;
-                          const prevId = visiblePosts[indexGlobal - 1]?.id;
-                          const prevPage = prevId ? postIdToPageNumRef.current.get(prevId) : undefined;
-                          const isPageStart = indexGlobal === 0 || pageNum !== prevPage;
-                          return isPageStart ? (
-                            <div data-page-sentinel={pageNum} aria-hidden="true" style={{ display: 'block', height: 1 }} />
-                          ) : null;
-                        })()}
-                        <PostCard
-                          postId={post.id}
-                          layout={cardLayoutOverride ?? layout}
-                          page={postIdToPageNumRef.current.get(post.id) || initialPage}
-                          storageKeyPrefix={storageKeyPrefix}
-                          isNew={(start + i) >= initialPosts.length}
-                          isPriority={(start + i) < 5}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  {/* spacer between virtual rows: 16px */}
-                  <div className="h-4" aria-hidden />
-                </div>
-              );
-            })}
-          </div>
-
-          {enablePaging && <div ref={loaderRef} aria-label="infinite-loader" className="col-span-full h-1" />}
-          {isFetching && hasMore && (
-            <div className="text-center text-gray-400 py-4 col-span-full">불러오는 중...</div>
-          )}
-          {!hasMore && (
-            <div className="text-center text-gray-400 py-4 col-span-full">더 이상 글이 없습니다.</div>
-          )}
-        </div>
-      </>
+      <ListVirtualizedFeed
+        initialPosts={initialPosts}
+        visiblePosts={visiblePosts}
+        layout={layout}
+        cardLayoutOverride={cardLayoutOverride}
+        listColumns={listColumns}
+        threeColAt={threeColAt}
+        virtualOverscan={virtualOverscan}
+        loadAheadRows={loadAheadRows}
+        rootRef={rootRef}
+        loaderRef={loaderRef}
+        colsReadyRef={colsReadyRef}
+        visiblePostsRef={visiblePostsRef}
+        postIdToPageNumRef={postIdToPageNumRef}
+        hasMoreRef={hasMoreRef}
+        pageRef={pageRef}
+        seenIdsRef={seenIdsRef}
+        restoringRef={restoringRef}
+        ensureBelowBufferRows={ensureBelowBufferRows}
+        loadMore={loadMore}
+        hasMore={hasMore}
+        isFetching={isFetching}
+        enablePaging={enablePaging}
+        initialPage={initialPage}
+        storageKeyPrefix={storageKeyPrefix}
+        urlBootstrapDoneRef={urlBootstrapDoneRef}
+        lastLoadTriggerRef={lastLoadTriggerRef}
+        isFetchingRef={isFetchingRef}
+      />
     );
   }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import MiniSearch, { type SearchResult } from 'minisearch';
 import Link from 'next/link';
@@ -17,7 +17,7 @@ interface Doc {
 export default function SearchPageClient() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
-  
+
   const [miniSearch, setMiniSearch] = useState<MiniSearch<Doc> | null>(null);
   const [results, setResults] = useState<SearchResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,9 +56,9 @@ export default function SearchPageClient() {
     if (isLoading) {
       return (
         <div className="space-y-4">
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
         </div>
       )
     }

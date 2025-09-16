@@ -7,7 +7,6 @@ import TopRefreshOnScroll from "@/components/top-refresh-on-scroll";
 import { getMainPagePosts, getClusterTopPosts } from "@/lib/queries";
 
 type Range = "3h" | "6h" | "24h" | "1w";
-const ALLOWED: Range[] = ["3h", "6h", "24h", "1w"];
 
 export default async function Home() {
   const selectedRange: Range = "24h";

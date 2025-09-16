@@ -527,30 +527,22 @@ export async function getPostDetail(id: string) {
 
   const imageEnrichments = await db.select().from(postImageEnrichment).where(eq(postImageEnrichment.postId, id));
 
-  let processedContentHtml = row.contentHtml;
-  if (process.env.NODE_ENV === 'development' && imageEnrichments.length > 0) {
-    const enrichmentMap = new Map(imageEnrichments.map(e => [e.imageUrl, e]));
-    processedContentHtml = (row.contentHtml || '').replace(/<img[^>]+src=\"([^\"]+)\"[^>]*>/g, (match, src) => {
-      const enrichment = enrichmentMap.get(src);
-      if (enrichment) {
-        const details = `<details style=\"margin: 8px 0; border: 1px solid #ddd; padding: 8px; border-radius: 4px;">
-          <summary style=\"cursor: pointer; font-weight: bold;">VLLM Enrichment (Dev Only)</summary>
-          <pre style=\"white-space: pre-wrap; word-wrap: break-word; font-size: 12px; background: #f7f7f7; padding: 8px; border-radius: 4px; margin-top: 8px;">
-${JSON.stringify({
-  caption: enrichment.caption,
-  labels: enrichment.labels,
-  ocrText: enrichment.ocrText,
-  safety: enrichment.safety,
-  objects: enrichment.objects,
-  colors: enrichment.colors,
-}, null, 2)}
-          </pre>
-        </details>`;
-        return match + details;
-      }
-      return match;
-    });
-  }
+  const processedContentHtml = row.contentHtml;
+
+  const safeImageEnrichments = imageEnrichments.map((item: any) => ({
+    ...item,
+    embedding: null,
+    enrichedAt: typeof item?.enrichedAt === 'string'
+      ? item.enrichedAt
+      : item?.enrichedAt?.toISOString?.() ?? null,
+  }));
+
+  const imageEnrichmentUpdatedAt = safeImageEnrichments.reduce<string | null>((latest, item) => {
+    const ts = typeof item?.enrichedAt === 'string' ? item.enrichedAt : null;
+    if (!ts) return latest;
+    if (!latest) return ts;
+    return ts > latest ? ts : latest;
+  }, null);
 
   const formattedComments = comments.map((c) => ({
     id: c.id,
@@ -621,7 +613,8 @@ ${JSON.stringify({
     keywords: safePost.keywords ?? [],
     clusterId,
     clusterMembers,
-    imageEnrichments,
+    imageEnrichments: safeImageEnrichments,
+    imageEnrichmentUpdatedAt,
   };
 }
 

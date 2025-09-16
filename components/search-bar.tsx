@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import MiniSearch, { type SearchResult } from 'minisearch';
 import { Button } from '@/components/ui/button';
 import { DialogTitle } from "@/components/ui/dialog";
-import { Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
+import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
 import { File } from 'lucide-react';
 
 // Define the structure of the documents we stored in the index
@@ -99,7 +99,7 @@ export function SearchBar() {
           {loading && <CommandEmpty>인덱스를 불러오는 중...</CommandEmpty>}
           {!loading && results.length === 0 && search.length > 1 && <CommandEmpty>검색 결과가 없습니다.</CommandEmpty>}
           <CommandGroup heading="게시물">
-            {results.map(({ id, title, score, image }) => (
+            {results.map(({ id, title, image }) => (
               <CommandItem
                 key={id}
                 value={`${title}-${id}`}

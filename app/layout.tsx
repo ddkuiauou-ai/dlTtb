@@ -7,11 +7,6 @@ import { PostViewerModal } from '@/components/post-viewer-modal'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import {
   ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from '@clerk/nextjs'
 
 export const metadata: Metadata = {

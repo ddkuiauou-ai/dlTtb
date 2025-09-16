@@ -1,6 +1,5 @@
 import { getPostsByKeyword, getTopKeywords } from '@/lib/queries';
 import KeywordFeed from '@/components/KeywordFeed.client';
-import { HydratedPost, TimeRange } from '@/lib/types';
 
 export const dynamic = 'force-static';
 // export const dynamicParams = false;

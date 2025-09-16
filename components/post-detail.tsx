@@ -173,6 +173,228 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
     });
   }, [post.id]);
 
+  useEffect(() => {
+    const el = contentRef.current;
+    const enrichments = Array.isArray(post.imageEnrichments) ? post.imageEnrichments : [];
+    if (!el || enrichments.length === 0) return;
+
+    const normalizeUrl = (raw: string) => {
+      if (!raw) return '';
+      try {
+        const url = new URL(raw, typeof window !== 'undefined' ? window.location.href : 'https://example.invalid');
+        if (url.protocol === 'http:') url.protocol = 'https:';
+        return url.href;
+      } catch {
+        return raw;
+      }
+    };
+
+    const enrichmentMap = new Map<string, (typeof enrichments)[number]>();
+    for (const item of enrichments) {
+      if (!item?.imageUrl) continue;
+      const full = normalizeUrl(item.imageUrl);
+      const noHash = full.split('#')[0] ?? full;
+      const noQuery = noHash.split('?')[0] ?? noHash;
+      for (const key of [full, noHash, noQuery]) {
+        if (key && !enrichmentMap.has(key)) enrichmentMap.set(key, item);
+      }
+    }
+
+    const ensureFigure = (img: HTMLImageElement) => {
+      const existing = img.closest('figure');
+      if (existing) {
+        existing.classList.add('reader-ai-figure');
+        return existing as HTMLElement;
+      }
+
+      const wrapper = document.createElement('figure');
+      wrapper.classList.add('reader-ai-figure');
+      wrapper.dataset.aiWrapper = '1';
+
+      const anchor = img.closest('a');
+      const parent = anchor?.parentElement ?? img.parentElement;
+      if (!parent) return null;
+
+      if (anchor && anchor.contains(img) && anchor.querySelectorAll('img').length === 1 && anchor.textContent?.trim() === '') {
+        parent.insertBefore(wrapper, anchor);
+        wrapper.appendChild(anchor);
+      } else {
+        parent.insertBefore(wrapper, img);
+        wrapper.appendChild(img);
+      }
+
+      return wrapper;
+    };
+
+    const buildCaption = (item: (typeof enrichments)[number]) => {
+      const caption = document.createElement('figcaption');
+      caption.classList.add('ai-figcaption');
+
+      const titleRow = document.createElement('div');
+      titleRow.classList.add('ai-figcaption-title');
+      titleRow.textContent = 'AI 이미지 설명';
+      caption.appendChild(titleRow);
+
+      const captionText = document.createElement('p');
+      captionText.classList.add('ai-figcaption-text');
+      captionText.textContent = item.caption?.trim() || '설명을 가져오지 못했습니다.';
+      caption.appendChild(captionText);
+
+      const detailsContent: HTMLElement[] = [];
+
+      if (Array.isArray(item.labels) && item.labels.length > 0) {
+        const dd = document.createElement('dd');
+        dd.textContent = item.labels.map((label: unknown) => String(label)).join(', ');
+        const dt = document.createElement('dt');
+        dt.textContent = '키워드';
+        detailsContent.push(dt, dd);
+      }
+
+      if (Array.isArray(item.ocrLines)) {
+        const lines = item.ocrLines.map((line: unknown) => String(line).trim()).filter(Boolean);
+        if (lines.length > 0) {
+          const dt = document.createElement('dt');
+          dt.textContent = 'OCR';
+          const dd = document.createElement('dd');
+          lines.forEach((line, idx) => {
+            const span = document.createElement('span');
+            span.textContent = line;
+            dd.appendChild(span);
+            if (idx < lines.length - 1) dd.appendChild(document.createElement('br'));
+          });
+          detailsContent.push(dt, dd);
+        }
+      }
+
+      if (Array.isArray(item.objects) && item.objects.length > 0) {
+        const formatted = item.objects.map((obj: any) => {
+          const parts = [String(obj?.name ?? '')];
+          if (typeof obj?.count === 'number' && obj.count > 0) parts.push(`x${obj.count}`);
+          if (typeof obj?.confidence === 'number') parts.push(`${Math.round(obj.confidence * 100)}%`);
+          return parts.filter(Boolean).join(' ');
+        }).filter(Boolean);
+        if (formatted.length > 0) {
+          const dt = document.createElement('dt');
+          dt.textContent = '감지 객체';
+          const dd = document.createElement('dd');
+          dd.textContent = formatted.join(', ');
+          detailsContent.push(dt, dd);
+        }
+      }
+
+      if (item.safety && typeof item.safety === 'object') {
+        const safetyEntries = Object.entries(item.safety as Record<string, unknown>)
+          .filter(([, value]) => typeof value === 'number');
+        if (safetyEntries.length > 0) {
+          const dt = document.createElement('dt');
+          dt.textContent = '안전성';
+          const dd = document.createElement('dd');
+          dd.textContent = safetyEntries
+            .map(([key, value]) => `${key}: ${(value as number).toFixed(2)}`)
+            .join(', ');
+          detailsContent.push(dt, dd);
+        }
+      }
+
+      if (item.model) {
+        const dt = document.createElement('dt');
+        dt.textContent = '모델';
+        const dd = document.createElement('dd');
+        dd.textContent = String(item.model);
+        detailsContent.push(dt, dd);
+      }
+
+      if (item.enrichedAt) {
+        try {
+          const dt = document.createElement('dt');
+          dt.textContent = '생성 시간';
+          const dd = document.createElement('dd');
+          const date = new Date(String(item.enrichedAt));
+          dd.textContent = Number.isNaN(date.valueOf())
+            ? String(item.enrichedAt)
+            : date.toLocaleString('ko-KR', { dateStyle: 'medium', timeStyle: 'short' });
+          detailsContent.push(dt, dd);
+        } catch {
+          /* ignore date parse errors */
+        }
+      }
+
+      if (detailsContent.length > 0) {
+        const details = document.createElement('details');
+        details.classList.add('ai-figcaption-details');
+        const summary = document.createElement('summary');
+        summary.textContent = '추가 정보 보기';
+        details.appendChild(summary);
+
+        const dl = document.createElement('dl');
+        dl.classList.add('ai-figcaption-meta');
+        detailsContent.forEach((node) => dl.appendChild(node));
+        details.appendChild(dl);
+        caption.appendChild(details);
+      }
+
+      return caption;
+    };
+
+    const applyCaptions = () => {
+      const images = Array.from(el.querySelectorAll<HTMLImageElement>('img'));
+      images.forEach((img) => {
+        const srcAttr = img.getAttribute('src') || img.currentSrc || img.src;
+        if (!srcAttr) return;
+        const normalizedSrc = normalizeUrl(srcAttr);
+        const lookupKeys = [
+          normalizedSrc,
+          normalizedSrc.split('#')[0] ?? normalizedSrc,
+          normalizedSrc.split('?')[0] ?? normalizedSrc,
+        ];
+
+        let data: (typeof enrichments)[number] | undefined;
+        for (const key of lookupKeys) {
+          if (!key) continue;
+          data = enrichmentMap.get(key);
+          if (data) break;
+        }
+
+        if (!data) return;
+
+        const figure = ensureFigure(img);
+        if (!figure) return;
+
+        const signature = JSON.stringify({
+          caption: data.caption ?? '',
+          labels: Array.isArray(data.labels) ? data.labels : [],
+          ocr: Array.isArray(data.ocrLines) ? data.ocrLines : [],
+          model: data.model ?? '',
+          safety: data.safety ?? null,
+          enrichedAt: data.enrichedAt ?? '',
+        });
+
+        if (figure.dataset.aiCaptionKey === signature && figure.querySelector('.ai-figcaption')) {
+          return;
+        }
+
+        figure.querySelectorAll('.ai-figcaption').forEach((node) => node.remove());
+        const caption = buildCaption(data);
+        figure.appendChild(caption);
+        figure.dataset.aiCaptionKey = signature;
+      });
+    };
+
+    // Initial pass once content is ready
+    applyCaptions();
+
+    // Observe future changes (lazy image loading, ads stripped, etc.)
+    const observer = new MutationObserver(() => {
+      // Run in next frame to batch rapid mutations
+      requestAnimationFrame(applyCaptions);
+    });
+    observer.observe(el, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [post.id, post.imageEnrichmentUpdatedAt]);
+
   // Note: previous dev-only overflow logger and runtime image normalization were removed
   // to reduce complexity. Server-side HTML normalization + CSS handle layout now.
 

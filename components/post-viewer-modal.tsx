@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useModal } from '@/context/modal-context';
 import type { Post } from '@/lib/types';
 import { PostDetail } from '@/components/post-detail';
@@ -101,7 +101,7 @@ export function PostViewerModal() {
         e.preventDefault();
         navigateToPost('prev');
         return;
-      } 
+      }
       if (e.key === 'ArrowRight') {
         e.preventDefault();
         navigateToPost('next');
@@ -174,7 +174,7 @@ export function PostViewerModal() {
           <DialogTitle>{post?.title || "Loading..."}</DialogTitle>
           <DialogDescription>Post content</DialogDescription>
         </DialogHeader>
-        
+
         <ScrollProgress ref={contentRef} className="flex-1 p-0">
           {isLoading && <PostDetailSkeleton />}
           {!isLoading && post && <PostDetail post={post} inDialog={true} />}
