@@ -141,6 +141,8 @@ export default function TopRefreshOnScroll({
     topThreshold,
     enableScrollTopTrigger,
     scrollUpDistanceThreshold,
+    showSpinner,
+    spinnerDurationMs,
   ]);
 
   return showSpinner ? (
