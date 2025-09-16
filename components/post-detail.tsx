@@ -393,7 +393,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
     return () => {
       observer.disconnect();
     };
-  }, [post.id, post.imageEnrichmentUpdatedAt]);
+  }, [post.id, post.imageEnrichments, post.imageEnrichmentUpdatedAt]);
 
   // Note: previous dev-only overflow logger and runtime image normalization were removed
   // to reduce complexity. Server-side HTML normalization + CSS handle layout now.
