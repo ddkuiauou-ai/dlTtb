@@ -163,6 +163,8 @@ function TitleRotator({ title, className }: { title: string; className?: string 
   const isMobile = useIsMobile();
   const segments = useTitleSegments(title, isMobile);
   const innerClass = `${className ?? ''} whitespace-nowrap leading-[1.2]`;
+  const segmentsKey = React.useMemo(() => segments.join("\u0001"), [segments]);
+  const segmentsLength = segments.length;
 
   // Hooks must be called unconditionally in the same order.
   // 준비/로테이션 관련 훅은 항상 선언하고, 내부에서 조건으로 동작을 가드한다.
@@ -172,10 +174,10 @@ function TitleRotator({ title, className }: { title: string; className?: string 
   const [ready, setReady] = React.useState(false);
   const startDelay = React.useMemo(() => Math.floor(Math.random() * 1200), []);
   React.useEffect(() => {
-    if (segments.length <= 1) return; // 단일 세그먼트면 타이머 불필요
+    if (segmentsLength <= 1) return; // 단일 세그먼트면 타이머 불필요
     const t = setTimeout(() => setReady(true), startDelay);
     return () => clearTimeout(t);
-  }, [startDelay, segments.length]);
+  }, [startDelay, segmentsLength]);
 
   // 실제 컨테이너 폭에서 원제목이 한 줄로 들어가는지 측정
   React.useEffect(() => {
@@ -199,7 +201,7 @@ function TitleRotator({ title, className }: { title: string; className?: string 
     ro.observe(c);
     compute();
     return () => { if (raf) cancelAnimationFrame(raf); ro.disconnect(); };
-  }, [title, segments.join('\u0001')]);
+  }, [title, segmentsKey]);
 
   const segDurations = React.useMemo(() => {
     const perChar = isMobile ? 120 : 100; // ms per non-space char
@@ -211,6 +213,7 @@ function TitleRotator({ title, className }: { title: string; className?: string 
       return Math.min(max, Math.max(min, Math.round(d)));
     });
   }, [segments, isMobile]);
+  const segDurationsKey = React.useMemo(() => segDurations.join(','), [segDurations]);
 
   const [idx, setIdx] = React.useState(0);
   const [tickKey, setTickKey] = React.useState(0);
@@ -236,7 +239,7 @@ function TitleRotator({ title, className }: { title: string; className?: string 
     loop();
     return () => { cancelled = true; if (timer) clearTimeout(timer); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, segments.join('\u0001'), segDurations.map(String).join(',')]);
+  }, [ready, segmentsKey, segDurationsKey]);
 
   // 컨테이너 래퍼: 실제 폭 측정용 + 회전/정적 컨텐츠 담는 그릇
   // 높이를 고정해 레이아웃 점프 방지
