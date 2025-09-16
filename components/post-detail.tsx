@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,6 @@ import {
 import Link from "next/link";
 
 import type { getPostDetail } from "@/lib/queries";
-import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { useKeywordManifest } from "@/hooks/use-keyword-manifest";
 
@@ -88,6 +87,10 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
   // Normalize enrichment arrays
   const categories = Array.isArray(post.categories) ? post.categories : [];
   const tags = Array.isArray(post.keywords) ? post.keywords : [];
+  const imageEnrichments = useMemo(
+    () => (Array.isArray(post.imageEnrichments) ? post.imageEnrichments : []),
+    [post.imageEnrichments],
+  );
   const hasYouTube = post.embeds.some((e) => e.type === 'youtube');
   const hasX = post.embeds.some((e) => e.type === 'X');
 
@@ -175,7 +178,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
 
   useEffect(() => {
     const el = contentRef.current;
-    const enrichments = Array.isArray(post.imageEnrichments) ? post.imageEnrichments : [];
+    const enrichments = imageEnrichments;
     if (!el || enrichments.length === 0) return;
 
     const normalizeUrl = (raw: string) => {
@@ -393,7 +396,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
     return () => {
       observer.disconnect();
     };
-  }, [post.id, post.imageEnrichmentUpdatedAt]);
+  }, [post.id, post.imageEnrichmentUpdatedAt, imageEnrichments]);
 
   // Note: previous dev-only overflow logger and runtime image normalization were removed
   // to reduce complexity. Server-side HTML normalization + CSS handle layout now.
