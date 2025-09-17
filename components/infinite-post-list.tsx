@@ -788,7 +788,7 @@ export default function InfinitePostList({
   threeColAt = 'lg',
   gridColumnsOverride,
   loadAheadRows = 2,
-  virtualOverscan = 44, // 비디오 재시작을 줄이기 위해 기본값을 높게 설정 (메모리 사용량 증가)
+  virtualOverscan = 22, // 비디오 재시작을 줄이기 위해 기본값을 높게 설정 (메모리 사용량 증가)
   readFilter = 'all',
 }: InfinitePostListProps) {
   const { addPosts } = usePostCache();
@@ -1262,42 +1262,42 @@ export default function InfinitePostList({
   useEffect(() => { visiblePostsRef.current = visiblePosts; }, [visiblePosts]);
 
   // --- Feed metrics (read/unread counts) broadcast ---
-type FeedMetrics = { key: string; total: number; read: number; unread: number };
-const lastMetricsRef = useRef<{ total: number; read: number; unread: number } | null>(null);
-const metricsRafRef = useRef<number | null>(null);
-const emitMetrics = useCallback(() => {
-  try {
-    const list = communityFilteredPosts; // before readFilter applied
-    const total = list.length;
-    let read = 0;
-    for (const p of list) { if (readPostIds.has(p.id)) read++; }
-    const unread = Math.max(0, total - read);
+  type FeedMetrics = { key: string; total: number; read: number; unread: number };
+  const lastMetricsRef = useRef<{ total: number; read: number; unread: number } | null>(null);
+  const metricsRafRef = useRef<number | null>(null);
+  const emitMetrics = useCallback(() => {
+    try {
+      const list = communityFilteredPosts; // before readFilter applied
+      const total = list.length;
+      let read = 0;
+      for (const p of list) { if (readPostIds.has(p.id)) read++; }
+      const unread = Math.max(0, total - read);
 
-    const prev = lastMetricsRef.current;
-    if (prev && prev.total === total && prev.read === read && prev.unread === unread) {
-      return; // no change -> skip dispatch
-    }
-    lastMetricsRef.current = { total, read, unread };
+      const prev = lastMetricsRef.current;
+      if (prev && prev.total === total && prev.read === read && prev.unread === unread) {
+        return; // no change -> skip dispatch
+      }
+      lastMetricsRef.current = { total, read, unread };
 
-    const detail: FeedMetrics = { key: navRegistryKey, total, read, unread };
-    window.dispatchEvent(new CustomEvent<FeedMetrics>('feed:metrics', { detail } satisfies CustomEventInit<FeedMetrics>));
-  } catch { /* no-op */ }
-}, [communityFilteredPosts, readPostIds, navRegistryKey]);
+      const detail: FeedMetrics = { key: navRegistryKey, total, read, unread };
+      window.dispatchEvent(new CustomEvent<FeedMetrics>('feed:metrics', { detail } satisfies CustomEventInit<FeedMetrics>));
+    } catch { /* no-op */ }
+  }, [communityFilteredPosts, readPostIds, navRegistryKey]);
 
-// Emit on initial mount and whenever list or read set changes (coalesced to next frame)
-useLayoutEffect(() => {
-  if (metricsRafRef.current != null) cancelAnimationFrame(metricsRafRef.current);
-  metricsRafRef.current = requestAnimationFrame(() => {
-    metricsRafRef.current = null;
-    emitMetrics();
-  });
-  return () => {
-    if (metricsRafRef.current != null) {
-      cancelAnimationFrame(metricsRafRef.current);
+  // Emit on initial mount and whenever list or read set changes (coalesced to next frame)
+  useLayoutEffect(() => {
+    if (metricsRafRef.current != null) cancelAnimationFrame(metricsRafRef.current);
+    metricsRafRef.current = requestAnimationFrame(() => {
       metricsRafRef.current = null;
-    }
-  };
-}, [emitMetrics]);
+      emitMetrics();
+    });
+    return () => {
+      if (metricsRafRef.current != null) {
+        cancelAnimationFrame(metricsRafRef.current);
+        metricsRafRef.current = null;
+      }
+    };
+  }, [emitMetrics]);
 
   // Register feed order + loadMore hook for modal navigation while dialog is open
   useEffect(() => {
