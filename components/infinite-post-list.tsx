@@ -310,20 +310,28 @@ function useRestoreFromDetail(params: {
 // --- Read Status Helpers ---
 type ReadMarker = { ts: number; title: string };
 
-const getReadSet = (): Set<string> => {
-  if (typeof window === 'undefined') return new Set();
+const readMarkersFromStorage = (): Record<string, ReadMarker> => {
+  if (typeof window === 'undefined') return {};
   try {
     const raw = localStorage.getItem(READ_POSTS_KEY);
-    const obj = raw ? (JSON.parse(raw) as unknown) : {};
-    const record =
-      obj && typeof obj === 'object' && !Array.isArray(obj)
-        ? (obj as Record<string, ReadMarker>)
-        : {};
-    return new Set(Object.keys(record));
-  } catch (e) {
-    return new Set();
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as unknown;
+    if (!parsed || typeof parsed !== 'object') return {};
+
+    const entries = Object.entries(parsed as Record<string, unknown>);
+    const valid = entries.filter(([, value]) => {
+      if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+      const marker = value as Partial<ReadMarker>;
+      return typeof marker.ts === 'number' && typeof marker.title === 'string';
+    }) as [string, ReadMarker][];
+
+    return Object.fromEntries(valid);
+  } catch {
+    return {};
   }
 };
+
+const getReadSet = (): Set<string> => new Set(Object.keys(readMarkersFromStorage()));
 
 interface ListVirtualizedFeedProps {
   initialPosts: Post[];
@@ -718,6 +726,7 @@ function ListVirtualizedFeed({
                         storageKeyPrefix={storageKeyPrefix}
                         isNew={(start + i) >= initialPosts.length}
                         isPriority={(start + i) < 5}
+                        isRead={readPostIds.has(post.id)}
                       />
                     </div>
                   ))}
@@ -1465,6 +1474,7 @@ export default function InfinitePostList({
               storageKeyPrefix={storageKeyPrefix}
               isNew={index >= initialPosts.length}
               isPriority={index < 10}
+              isRead={readPostIds.has(post.id)}
             />
           </div>
         ))}
