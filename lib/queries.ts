@@ -24,7 +24,7 @@
  */
 import { db } from "./db";
 import { normalizeCrawledHtml } from "./html-normalize";
-import { HydratedPost } from "./types";
+import { Post } from "./types";
 import {
   posts,
   postImages,
@@ -205,10 +205,10 @@ function interleaveProportionalCap<T extends { site: string; score?: number }>(r
   const sites = [...postsBySite.keys()];
   const siteWeights = new Map(sites.map(site => [site, postsBySite.get(site)!.length]));
   const totalWeight = sites.reduce((sum, site) => sum + (siteWeights.get(site) || 0), 0) || 1;
-  
+
   // 각 사이트의 목표 비율
   const desiredProportions = new Map(sites.map(site => [site, (siteWeights.get(site) || 0) / totalWeight]));
-  
+
   // 각 사이트에서 이미 선택된 게시물 수
   const itemsTakenPerSite = new Map<string, number>(sites.map(site => [site, 0]));
   // 각 사이트의 다음 게시물을 가리키는 커서
@@ -248,18 +248,18 @@ function interleaveProportionalCap<T extends { site: string; score?: number }>(r
 
     const postIndex = cursors.get(bestSite)!;
     interleaved.push(postsBySite.get(bestSite)![postIndex]);
-    
+
     // 커서와 선택된 카운트를 업데이트합니다.
     cursors.set(bestSite, postIndex + 1);
     itemsTakenPerSite.set(bestSite, itemsTakenPerSite.get(bestSite)! + 1);
 
     // 모든 사이트가 게시물을 소진했거나 한도에 도달했는지 확인합니다.
-    const allSitesExhausted = sites.every(s => 
-        (cursors.get(s)! >= postsBySite.get(s)!.length) || (itemsTakenPerSite.get(s)! >= perSiteCap)
+    const allSitesExhausted = sites.every(s =>
+      (cursors.get(s)! >= postsBySite.get(s)!.length) || (itemsTakenPerSite.get(s)! >= perSiteCap)
     );
     if (allSitesExhausted) break;
   }
-  
+
   return interleaved;
 }
 
@@ -366,7 +366,7 @@ const CLUSTER_ROTATION_CONSEC_RESET_MINUTES = 20;
 
 async function recordClusterRotation(
   range: "3h" | "6h" | "24h" | "1w",
-  selections: Array<{ clusterId: string, score: number } >,
+  selections: Array<{ clusterId: string, score: number }>,
 ) {
   if (!selections?.length) return;
   for (const s of selections) {
@@ -404,8 +404,7 @@ async function recordClusterRotation(
  * - consecutive_hits increments if the previous show was within POST_ROTATION_CONSEC_RESET_MINUTES; otherwise resets to 1
  * - when hits >= POST_ROTATION_MAX_CONSECUTIVE, apply cooldown ≈ POST_ROTATION_COOLDOWN_HOURS
  */
-async function recordPostRotation(range: "3h" | "6h" | "24h" | "1w", selections: Array<{ id: string, score: number }>)
-{
+async function recordPostRotation(range: "3h" | "6h" | "24h" | "1w", selections: Array<{ id: string, score: number }>) {
   if (!selections?.length) return;
   for (const s of selections) {
     const q = sql`
@@ -706,45 +705,48 @@ export async function hydratePosts(ids: string[]) {
   const hmap = new Map(rows.map((r) => [r.id, r]));
 
   // inArray doesn't preserve order, so we map back to the original order
-  return ids
-    .map((id) => {
-      const r = hmap.get(id);
-      if (!r) return null;
-      const image = r.yt_thumb || r.x_thumb || r.img_url || null;
-      const hoverPlayerKind = r.yt_url ? "youtube" : r.x_url ? "x" : r.mp4_url ? "mp4" : null;
-      const hoverPlayerUrl = r.yt_url || r.x_url || r.mp4_url || null;
-      return {
-        id: r.id,
-        url: r.url,
-        title: r.title,
-        community: r.site, // for PostCard
-        communityId: r.site, // for filtering
-        communityLabel: r.siteName || r.site,
-        boardLabel: r.boardName,
-        comments: r.commentCount ?? 0,
-        upvotes: r.likeCount ?? 0,
-        viewCount: r.viewCount ?? 0,
-        timestamp: typeof r.timestamp === "string" ? r.timestamp : r.timestamp?.toISOString?.() ?? "",
-        timeAgo:
-          typeof r.timestamp === "string"
-            ? new Date(r.timestamp).toLocaleString("ko-KR", {
-                year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit",
-              })
-            : r.timestamp?.toLocaleString?.("ko-KR", {
-                year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit",
-              }) ?? "",
-        thumbnail: image,
-        content: r.content,
-        embed: hoverPlayerKind && hoverPlayerUrl ? { type: hoverPlayerKind, url: hoverPlayerUrl } : undefined,
-        hasYouTube: r.hasYouTube,
-        hasX: r.hasX,
-        hoverPlayerKind,
-        hoverPlayerUrl,
-        clusterId: r.clusterId ?? null,
-        clusterSize: r.clusterSize ?? null,
-      };
-    })
-    .filter((p): p is HydratedPost => p !== null);
+  const hydrated: Post[] = [];
+  for (const id of ids) {
+    const r = hmap.get(id);
+    if (!r) continue;
+
+    const image = r.yt_thumb || r.x_thumb || r.img_url || null;
+    const hoverPlayerKind = r.yt_url ? "youtube" : r.x_url ? "x" : r.mp4_url ? "mp4" : null;
+    const hoverPlayerUrl = r.yt_url || r.x_url || r.mp4_url || null;
+
+    hydrated.push({
+      id: r.id,
+      url: r.url ?? "",
+      title: r.title ?? "",
+      community: r.site,
+      communityId: r.site,
+      communityLabel: r.siteName || r.site,
+      boardLabel: r.boardName ?? null,
+      comments: r.commentCount ?? 0,
+      upvotes: r.likeCount ?? 0,
+      viewCount: r.viewCount ?? 0,
+      timestamp: typeof r.timestamp === "string" ? r.timestamp : r.timestamp?.toISOString?.() ?? "",
+      timeAgo:
+        typeof r.timestamp === "string"
+          ? new Date(r.timestamp).toLocaleString("ko-KR", {
+            year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit",
+          })
+          : r.timestamp?.toLocaleString?.("ko-KR", {
+            year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit",
+          }) ?? "",
+      thumbnail: image,
+      content: r.content ?? null,
+      embed: hoverPlayerKind && hoverPlayerUrl ? { type: hoverPlayerKind, url: hoverPlayerUrl } : undefined,
+      hasYouTube: r.hasYouTube,
+      hasX: r.hasX,
+      hoverPlayerKind,
+      hoverPlayerUrl,
+      clusterId: r.clusterId ?? null,
+      clusterSize: r.clusterSize ?? null,
+    });
+  }
+
+  return hydrated;
 }
 
 // ======================================================================================
@@ -847,11 +849,16 @@ async function _getMainPagePostsRanked({
   // 5) 선택된 게시물에 대한 로테이션 기록
   const selIds = selected.map((r) => r.id);
   const selMap = await loadClusterMap(selIds);
-  const clusterSelections = selIds
-    .map((id, i) => ({ meta: selMap.get(id), score: selected[i]?.score ?? 0 }))
-    .filter((item): item is { meta: { clusterId: string }; score: number } => !!item.meta?.clusterId)
-    .map(item => ({ clusterId: item.meta.clusterId, score: item.score }));
-  
+  const clusterSelections: Array<{ clusterId: string; score: number }> = [];
+  selIds.forEach((id, index) => {
+    const meta = selMap.get(id);
+    if (!meta?.clusterId) return;
+    clusterSelections.push({
+      clusterId: meta.clusterId,
+      score: selected[index]?.score ?? 0,
+    });
+  });
+
   await recordClusterRotation(range, clusterSelections);
   await recordPostRotation(range, selected.map((r) => ({ id: r.id, score: r.score })));
 
@@ -992,7 +999,7 @@ export async function getClusterTopPosts({
   pageSize = 30,
   perSiteCap = 6,
   excludeIds = [],
-}: { 
+}: {
   range?: "3h" | "6h" | "24h" | "1w";
   pageSize?: number;
   perSiteCap?: number;
@@ -1233,7 +1240,8 @@ export async function getPostsByCategory(
   options: { page: number; pageSize: number; range?: "3h" | "6h" | "24h" | "1w" },
 ) {
   const base = (category || '').toLowerCase();
-  const aliasMap: Record<string, string[]> = { 'news': ['news', '뉴스'], 'humor': ['humor', '유머'], 'info': ['info', '정보'],
+  const aliasMap: Record<string, string[]> = {
+    'news': ['news', '뉴스'], 'humor': ['humor', '유머'], 'info': ['info', '정보'],
     'qna': ['question', '질문'], 'review': ['review', '후기'], 'debate': ['debate', '토론'],
     'back': ['back', '후방'], 'zzal': ['zzal', '짤'], 'politics': ['politics', '정치'],
     'shopping': ['shopping', '쇼핑'], 'etc': ['etc', '기타'],
