@@ -1341,6 +1341,7 @@ export default function InfinitePostList({
       if (!changed && metricsRafRef.current === null) {
         return;
       }
+
       if (metricsRafRef.current != null) {
         cancelAnimationFrame(metricsRafRef.current);
       }
