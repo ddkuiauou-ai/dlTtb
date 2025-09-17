@@ -7,6 +7,15 @@ import {
 } from "@clerk/clerk-react";
 
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+if (process.env.NODE_ENV === "production") {
+  const redactedKey = publishableKey
+    ? `${publishableKey.slice(0, 6)}… (len=${publishableKey.length})`
+    : "<undefined>";
+  console.log(
+    `[Clerk] NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${redactedKey}. NODE_ENV=${process.env.NODE_ENV}`,
+  );
+}
 let missingKeyWarningLogged = false;
 
 export function ClientClerkProvider({ children }: PropsWithChildren): JSX.Element {
