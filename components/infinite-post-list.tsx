@@ -16,7 +16,7 @@ const MISSING_LIMIT = 2;
 const RETRY_BACKOFFS = [200, 400, 800];
 const FAILED_PAGE_RETRY_WINDOW = 10000; // 10s
 const MAX_PAGES_PER_CALL = 2;
-const READ_POSTS_KEY = 'readPosts:v1';
+const READ_POSTS_KEY = 'readPosts:v2';
 
 const MISSING_LOOKAHEAD = 4; // pages to probe ahead before declaring no more content (slightly more tolerant of sparse tails)
 const FIRST_JSON_PAGE = 2; // page-1.json은 존재하지 않음. SSR(DB) 결과가 논리적 1페이지.
@@ -308,16 +308,30 @@ function useRestoreFromDetail(params: {
 }
 
 // --- Read Status Helpers ---
-const getReadSet = (): Set<string> => {
-  if (typeof window === 'undefined') return new Set();
+type ReadMarker = { ts: number; title: string };
+
+const readMarkersFromStorage = (): Record<string, ReadMarker> => {
+  if (typeof window === 'undefined') return {};
   try {
     const raw = localStorage.getItem(READ_POSTS_KEY);
-    const obj = raw ? JSON.parse(raw) : {};
-    return new Set(Object.keys(obj));
-  } catch (e) {
-    return new Set();
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as unknown;
+    if (!parsed || typeof parsed !== 'object') return {};
+
+    const entries = Object.entries(parsed as Record<string, unknown>);
+    const valid = entries.filter(([, value]) => {
+      if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+      const marker = value as Partial<ReadMarker>;
+      return typeof marker.ts === 'number' && typeof marker.title === 'string';
+    }) as [string, ReadMarker][];
+
+    return Object.fromEntries(valid);
+  } catch {
+    return {};
   }
 };
+
+const getReadSet = (): Set<string> => new Set(Object.keys(readMarkersFromStorage()));
 
 interface ListVirtualizedFeedProps {
   initialPosts: Post[];
@@ -712,6 +726,7 @@ function ListVirtualizedFeed({
                         storageKeyPrefix={storageKeyPrefix}
                         isNew={(start + i) >= initialPosts.length}
                         isPriority={(start + i) < 5}
+                        isRead={readPostIds.has(post.id)}
                       />
                     </div>
                   ))}
@@ -1459,6 +1474,7 @@ export default function InfinitePostList({
               storageKeyPrefix={storageKeyPrefix}
               isNew={index >= initialPosts.length}
               isPriority={index < 10}
+              isRead={readPostIds.has(post.id)}
             />
           </div>
         ))}
