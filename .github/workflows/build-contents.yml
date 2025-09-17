@@ -411,6 +411,18 @@ jobs:
 
           echo "All Postgres secrets are set."
 
+      - name: Check Clerk publishable key (masked-safe)
+        run: |
+          KEY='${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}'
+          if [ -z "$KEY" ]; then
+            echo "::error::NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY secret is empty."
+            exit 1
+          fi
+
+          echo "Clerk publishable key is set."
+          echo "length=${#KEY}"
+          echo "sha256=$(printf '%s' "$KEY" | sha256sum | cut -d' ' -f1)"
+
       - name: Build & Export Next.js
         env:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
@@ -418,6 +430,7 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
         run: |
           pnpm next build
 
