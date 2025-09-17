@@ -2,15 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
 
 interface ReadRecord {
   ts: number;
   title: string;
+  url?: string;
 }
 
 interface ReadPost extends ReadRecord {
   id: string;
 }
+
+const linkClassName = "text-sm text-gray-600 hover:text-black truncate block";
 
 export function ReadPostList() {
   const [readPosts, setReadPosts] = useState<ReadPost[]>([]);
@@ -19,10 +23,25 @@ export function ReadPostList() {
     try {
       const KEY = "readPosts:v2";
       const raw = localStorage.getItem(KEY);
-      const data: Record<string, ReadRecord> = raw ? JSON.parse(raw) : {};
+      const parsed = raw ? JSON.parse(raw) : {};
+      if (!parsed || typeof parsed !== "object") {
+        setReadPosts([]);
+        return;
+      }
 
-      const sortedPosts = Object.entries(data)
-        .map(([id, record]) => ({ id, ...record }))
+      const sortedPosts = Object.entries(parsed as Record<string, unknown>)
+        .reduce<ReadPost[]>((acc, [id, value]) => {
+          if (!value || typeof value !== "object" || Array.isArray(value)) {
+            return acc;
+          }
+          const record = value as Partial<ReadRecord>;
+          if (typeof record.ts !== "number" || typeof record.title !== "string") {
+            return acc;
+          }
+          const url = typeof record.url === "string" ? record.url : undefined;
+          acc.push({ id, ts: record.ts, title: record.title, url });
+          return acc;
+        }, [])
         .sort((a, b) => b.ts - a.ts)
         .slice(0, 20); // Show top 20 most recent
 
@@ -50,9 +69,26 @@ export function ReadPostList() {
       <ul className="space-y-2">
         {readPosts.map(post => (
           <li key={post.id}>
-            <Link href={`/posts/${post.id}`} className="text-sm text-gray-600 hover:text-black truncate block" title={post.title}>
-              {post.title}
-            </Link>
+            <SignedIn>
+              <Link
+                href={`/posts/${post.id}`}
+                className={linkClassName}
+                title={post.title}
+              >
+                {post.title}
+              </Link>
+            </SignedIn>
+            <SignedOut>
+              <a
+                href={post.url ?? `/posts/${post.id}`}
+                className={linkClassName}
+                title={post.title}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {post.title}
+              </a>
+            </SignedOut>
           </li>
         ))}
       </ul>

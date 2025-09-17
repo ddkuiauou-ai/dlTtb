@@ -276,6 +276,7 @@ interface PostCardProps {
   storageKeyPrefix?: string;
   isNew?: boolean;
   isPriority?: boolean;
+  isRead?: boolean;
 }
 
 const communityColors: Record<string, string> = {
@@ -290,7 +291,7 @@ const communityColors: Record<string, string> = {
 };
 
 export const PostCard = React.memo(
-  function PostCard({ postId, layout, page, storageKeyPrefix = "", isNew = false, isPriority = false }: PostCardProps) {
+  function PostCard({ postId, layout, page, storageKeyPrefix = "", isNew = false, isPriority = false, isRead = false }: PostCardProps) {
     const { openModal } = useModal();
     const { postIds } = usePostList();
     const { posts } = usePostCache();
@@ -628,7 +629,7 @@ export const PostCard = React.memo(
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
-      markPostAsRead({ id: post.id, title: post.title });
+      markPostAsRead({ id: post.id, title: post.title, url: post.url });
       if (storageKeyPrefix) {
         try {
           markNavigateToPost(storageKeyPrefix, {
@@ -648,7 +649,8 @@ export const PostCard = React.memo(
             id={`post-${post.id}`}
             href={`/posts/${post.id}`}
             prefetch={!isMobile}
-            className={`block ${isNew ? 'fade-in' : ''}`}
+            className={cn(`block ${isNew ? 'fade-in' : ''}`, isRead && 'is-read')}
+            data-read={isRead ? '1' : undefined}
             onClick={handleClick}
           >
             <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
@@ -662,8 +664,9 @@ export const PostCard = React.memo(
             href={post.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`block ${isNew ? 'fade-in' : ''}`}
-            onClick={() => markPostAsRead({ id: post.id, title: post.title })}
+            className={cn(`block ${isNew ? 'fade-in' : ''}`, isRead && 'is-read')}
+            data-read={isRead ? '1' : undefined}
+            onClick={() => markPostAsRead({ id: post.id, title: post.title, url: post.url })}
           >
             <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
               <SignedOutCardContent />
