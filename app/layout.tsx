@@ -1,5 +1,3 @@
-'use client';
-
 import type { Metadata } from 'next'
 import './globals.css'
 import Script from 'next/script'
@@ -7,15 +5,15 @@ import { ModalProvider } from '@/context/modal-context'
 import { PostCacheProvider } from '@/context/post-cache-context'
 import { PostViewerModal } from '@/components/post-viewer-modal'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
-// import {
-//   ClerkProvider,
-// } from '@clerk/nextjs'
+import {
+  ClerkProvider,
+} from '@clerk/nextjs'
 
-// export const metadata: Metadata = {
-//   title: '뭔일 있슈?',
-//   description: '모든 커뮤니티의 모든 글을 한 곳에서',
-//   generator: 'v0.dev',
-// }
+export const metadata: Metadata = {
+  title: '뭔일 있슈?',
+  description: '모든 커뮤니티의 모든 글을 한 곳에서',
+  generator: 'v0.dev',
+}
 
 export default function RootLayout({
   children,
@@ -23,10 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // <ClerkProvider>
-    <html lang="ko">
-      <body>
-        <Script id="apply-read-state" strategy="afterInteractive">{`(function(){
+    <ClerkProvider>
+      <html lang="ko">
+        <body>
+          <Script id="apply-read-state" strategy="afterInteractive">{`(function(){
   try {
     var KEY = 'readPosts:v2';
 
@@ -107,15 +105,15 @@ export default function RootLayout({
     }
   } catch (e) { /* no-op */ }
 })();`}</Script>
-        <PostCacheProvider>
-          <ModalProvider>
-            {children}
-            <PostViewerModal />
-          </ModalProvider>
-        </PostCacheProvider>
-        <TailwindIndicator />
-      </body>
-    </html>
-    // </ClerkProvider>
+          <PostCacheProvider>
+            <ModalProvider>
+              {children}
+              <PostViewerModal />
+            </ModalProvider>
+          </PostCacheProvider>
+          <TailwindIndicator />
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }
