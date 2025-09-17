@@ -308,7 +308,7 @@ function useRestoreFromDetail(params: {
 }
 
 // --- Read Status Helpers ---
-type ReadMarker = { ts: number; title: string };
+type ReadMarker = { ts: number; title: string; url?: string };
 
 const readMarkersFromStorage = (): Record<string, ReadMarker> => {
   if (typeof window === 'undefined') return {};
@@ -322,7 +322,9 @@ const readMarkersFromStorage = (): Record<string, ReadMarker> => {
     const valid = entries.filter(([, value]) => {
       if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
       const marker = value as Partial<ReadMarker>;
-      return typeof marker.ts === 'number' && typeof marker.title === 'string';
+      if (typeof marker.ts !== 'number' || typeof marker.title !== 'string') return false;
+      if (marker.url !== undefined && typeof marker.url !== 'string') return false;
+      return true;
     }) as [string, ReadMarker][];
 
     const normalized: Record<string, ReadMarker> = {};
@@ -333,6 +335,7 @@ const readMarkersFromStorage = (): Record<string, ReadMarker> => {
   } catch {
     return {};
   }
+  return true;
 };
 
 const getReadSet = (): Set<string> => new Set(Object.keys(readMarkersFromStorage()));
@@ -1341,7 +1344,6 @@ export default function InfinitePostList({
       if (!changed && metricsRafRef.current === null) {
         return;
       }
-
       if (metricsRafRef.current != null) {
         cancelAnimationFrame(metricsRafRef.current);
       }

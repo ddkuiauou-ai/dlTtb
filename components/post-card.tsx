@@ -629,7 +629,7 @@ export const PostCard = React.memo(
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
-      markPostAsRead({ id: post.id, title: post.title });
+      markPostAsRead({ id: post.id, title: post.title, url: post.url });
       if (storageKeyPrefix) {
         try {
           markNavigateToPost(storageKeyPrefix, {
@@ -666,7 +666,7 @@ export const PostCard = React.memo(
             rel="noopener noreferrer"
             className={cn(`block ${isNew ? 'fade-in' : ''}`, isRead && 'is-read')}
             data-read={isRead ? '1' : undefined}
-            onClick={() => markPostAsRead({ id: post.id, title: post.title })}
+            onClick={() => markPostAsRead({ id: post.id, title: post.title, url: post.url })}
           >
             <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
               <SignedOutCardContent />

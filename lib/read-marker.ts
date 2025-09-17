@@ -1,11 +1,17 @@
 interface PostInfo {
   id: string;
   title: string;
+  url?: string | null;
 }
 
 interface ReadRecord {
   ts: number;
   title: string;
+  url?: string;
+}
+
+function coerceUrl(candidate: unknown): string | undefined {
+  return typeof candidate === "string" && candidate.trim() ? candidate : undefined;
 }
 
 export function markPostAsRead(post: PostInfo) {
@@ -17,8 +23,11 @@ export function markPostAsRead(post: PostInfo) {
         const data: Record<string, ReadRecord> = raw ? JSON.parse(raw) : {};
         const now = Date.now();
 
+        const previous = data[post.id];
+        const url = coerceUrl(post.url) ?? coerceUrl(previous?.url);
+
         // Add new record
-        data[post.id] = { ts: now, title: post.title };
+        data[post.id] = url ? { ts: now, title: post.title, url } : { ts: now, title: post.title };
 
         // Prune old entries
         const MAX_AGE_DAYS = 30;
@@ -27,9 +36,18 @@ export function markPostAsRead(post: PostInfo) {
 
         const pruned = Object.fromEntries(
             Object.entries(data)
+                .filter(([, record]) => record && typeof record.ts === "number" && typeof record.title === "string")
                 .filter(([, record]) => (now - record.ts) < maxAgeMs)
                 .sort(([, a], [, b]) => b.ts - a.ts) // Sort by timestamp descending
                 .slice(0, MAX_ITEMS) // Keep most recent N
+                .map(([id, record]) => {
+                    const normalized: ReadRecord = { ts: record.ts, title: record.title };
+                    const normalizedUrl = coerceUrl(record.url);
+                    if (normalizedUrl) {
+                        normalized.url = normalizedUrl;
+                    }
+                    return [id, normalized] as const;
+                })
         );
 
         localStorage.setItem(KEY, JSON.stringify(pruned));
