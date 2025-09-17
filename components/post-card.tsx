@@ -3,7 +3,7 @@ import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle, ThumbsUp, Clock, Eye } from "lucide-react";
-import { SignedIn, SignedOut } from '@clerk/nextjs'
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import Image from "next/image";
 import Link from "next/link";
 import {

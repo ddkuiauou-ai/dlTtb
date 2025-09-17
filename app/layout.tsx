@@ -5,9 +5,7 @@ import { ModalProvider } from '@/context/modal-context'
 import { PostCacheProvider } from '@/context/post-cache-context'
 import { PostViewerModal } from '@/components/post-viewer-modal'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
-import {
-  ClerkProvider,
-} from '@clerk/nextjs'
+import { ClientClerkProvider } from '@/components/clerk-provider'
 
 export const metadata: Metadata = {
   title: '뭔일 있슈?',
@@ -21,9 +19,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="ko">
-        <body>
+    <html lang="ko">
+      <body>
+        <ClientClerkProvider>
           <Script id="apply-read-state" strategy="afterInteractive">{`(function(){
   try {
     var KEY = 'readPosts:v2';
@@ -112,8 +110,8 @@ export default function RootLayout({
             </ModalProvider>
           </PostCacheProvider>
           <TailwindIndicator />
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClientClerkProvider>
+      </body>
+    </html>
   )
 }
