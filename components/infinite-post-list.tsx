@@ -884,11 +884,6 @@ export default function InfinitePostList({
   const [activeCommunity, setActiveCommunity] = useState<string>(community ?? "전체");
   const [activeCommunities, setActiveCommunities] = useState<string[] | null>(null); // null => 전체
   const [readPostIds, setReadPostIds] = useState(() => getReadSet());
-  useEffect(() => {
-    const onReadUpdated = () => setReadPostIds(getReadSet());
-    window.addEventListener("readPosts:updated", onReadUpdated);
-    return () => window.removeEventListener("readPosts:updated", onReadUpdated);
-  }, []);
 
   // Community filtering is view-only; section reset is keyed only by base.
   const sectionKey = useMemo(
@@ -1300,6 +1295,8 @@ export default function InfinitePostList({
       window.dispatchEvent(new CustomEvent<FeedMetrics>('feed:metrics', { detail } satisfies CustomEventInit<FeedMetrics>));
     } catch { /* no-op */ }
   }, [communityFilteredPosts, readPostIds, navRegistryKey]);
+  const emitMetricsRef = useRef(emitMetrics);
+  useEffect(() => { emitMetricsRef.current = emitMetrics; }, [emitMetrics]);
 
   // Emit on initial mount and whenever list or read set changes (coalesced to next frame)
   useLayoutEffect(() => {
@@ -1315,6 +1312,24 @@ export default function InfinitePostList({
       }
     };
   }, [emitMetrics]);
+
+  useEffect(() => {
+    const onReadUpdated = () => {
+      setReadPostIds(getReadSet());
+      if (metricsRafRef.current != null) {
+        cancelAnimationFrame(metricsRafRef.current);
+      }
+      metricsRafRef.current = requestAnimationFrame(() => {
+        metricsRafRef.current = null;
+        emitMetricsRef.current();
+      });
+    };
+
+    window.addEventListener("readPosts:updated", onReadUpdated);
+    return () => {
+      window.removeEventListener("readPosts:updated", onReadUpdated);
+    };
+  }, []);
 
   // Register feed order + loadMore hook for modal navigation while dialog is open
   useEffect(() => {
