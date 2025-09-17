@@ -335,6 +335,7 @@ const readMarkersFromStorage = (): Record<string, ReadMarker> => {
   } catch {
     return {};
   }
+  return true;
 };
 
 const getReadSet = (): Set<string> => new Set(Object.keys(readMarkersFromStorage()));
