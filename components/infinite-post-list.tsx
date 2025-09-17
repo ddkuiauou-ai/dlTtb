@@ -325,13 +325,26 @@ const readMarkersFromStorage = (): Record<string, ReadMarker> => {
       return typeof marker.ts === 'number' && typeof marker.title === 'string';
     }) as [string, ReadMarker][];
 
-    return Object.fromEntries(valid);
+    const normalized: Record<string, ReadMarker> = {};
+    for (const [id, marker] of valid) {
+      normalized[id] = marker;
+    }
+    return normalized;
   } catch {
     return {};
   }
 };
 
 const getReadSet = (): Set<string> => new Set(Object.keys(readMarkersFromStorage()));
+
+const areSetsEqual = (a: ReadonlySet<string>, b: ReadonlySet<string>): boolean => {
+  if (a === b) return true;
+  if (a.size !== b.size) return false;
+  for (const value of a) {
+    if (!b.has(value)) return false;
+  }
+  return true;
+};
 
 interface ListVirtualizedFeedProps {
   initialPosts: Post[];
@@ -1246,13 +1259,16 @@ export default function InfinitePostList({
   // --- Rendering ---
 
   // --- Rendering ---
-  const communityFilteredPosts = (
-    activeCommunities && activeCommunities.length > 0
-      ? posts.filter((p) => activeCommunities.includes(p.communityId || p.community))
-      : (activeCommunity === "전체"
-        ? posts
-        : posts.filter((p) => (p.communityId || p.community) === activeCommunity))
-  );
+  const communityFilteredPosts = useMemo(() => {
+    if (activeCommunities && activeCommunities.length > 0) {
+      const allowed = new Set(activeCommunities);
+      return posts.filter((p) => allowed.has(p.communityId || p.community));
+    }
+    if (activeCommunity === "전체") {
+      return posts;
+    }
+    return posts.filter((p) => (p.communityId || p.community) === activeCommunity);
+  }, [posts, activeCommunity, activeCommunities]);
 
   const visiblePosts = useMemo(() => {
     if (readFilter === 'all') {
@@ -1315,7 +1331,17 @@ export default function InfinitePostList({
 
   useEffect(() => {
     const onReadUpdated = () => {
-      setReadPostIds(getReadSet());
+      const next = getReadSet();
+      let changed = false;
+      setReadPostIds((prev) => {
+        if (areSetsEqual(prev, next)) return prev;
+        changed = true;
+        return next;
+      });
+      if (!changed && metricsRafRef.current === null) {
+        return;
+      }
+
       if (metricsRafRef.current != null) {
         cancelAnimationFrame(metricsRafRef.current);
       }
