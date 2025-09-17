@@ -16,7 +16,7 @@ const MISSING_LIMIT = 2;
 const RETRY_BACKOFFS = [200, 400, 800];
 const FAILED_PAGE_RETRY_WINDOW = 10000; // 10s
 const MAX_PAGES_PER_CALL = 2;
-const READ_POSTS_KEY = 'readPosts:v1';
+const READ_POSTS_KEY = 'readPosts:v2';
 
 const MISSING_LOOKAHEAD = 4; // pages to probe ahead before declaring no more content (slightly more tolerant of sparse tails)
 const FIRST_JSON_PAGE = 2; // page-1.json은 존재하지 않음. SSR(DB) 결과가 논리적 1페이지.
@@ -308,12 +308,18 @@ function useRestoreFromDetail(params: {
 }
 
 // --- Read Status Helpers ---
+type ReadMarker = { ts: number; title: string };
+
 const getReadSet = (): Set<string> => {
   if (typeof window === 'undefined') return new Set();
   try {
     const raw = localStorage.getItem(READ_POSTS_KEY);
-    const obj = raw ? JSON.parse(raw) : {};
-    return new Set(Object.keys(obj));
+    const obj = raw ? (JSON.parse(raw) as unknown) : {};
+    const record =
+      obj && typeof obj === 'object' && !Array.isArray(obj)
+        ? (obj as Record<string, ReadMarker>)
+        : {};
+    return new Set(Object.keys(record));
   } catch (e) {
     return new Set();
   }
