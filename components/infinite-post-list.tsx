@@ -831,6 +831,9 @@ export default function InfinitePostList({
 
   // --- State & Refs ---
   const [posts, setPosts] = useState<Post[]>(initialPosts);
+  useEffect(() => {
+    addPosts(posts);
+  }, [addPosts, posts]);
   const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(true);
   // --- Live postsRef for up-to-date list ---
