@@ -16,7 +16,7 @@ const MISSING_LIMIT = 2;
 const RETRY_BACKOFFS = [200, 400, 800];
 const FAILED_PAGE_RETRY_WINDOW = 10000; // 10s
 const MAX_PAGES_PER_CALL = 2;
-const READ_POSTS_KEY = 'readPosts:v1';
+const READ_POSTS_KEY = 'readPosts:v2';
 
 const MISSING_LOOKAHEAD = 4; // pages to probe ahead before declaring no more content (slightly more tolerant of sparse tails)
 const FIRST_JSON_PAGE = 2; // page-1.json은 존재하지 않음. SSR(DB) 결과가 논리적 1페이지.
@@ -308,15 +308,42 @@ function useRestoreFromDetail(params: {
 }
 
 // --- Read Status Helpers ---
-const getReadSet = (): Set<string> => {
-  if (typeof window === 'undefined') return new Set();
+type ReadMarker = { ts: number; title: string };
+
+const readMarkersFromStorage = (): Record<string, ReadMarker> => {
+  if (typeof window === 'undefined') return {};
   try {
     const raw = localStorage.getItem(READ_POSTS_KEY);
-    const obj = raw ? JSON.parse(raw) : {};
-    return new Set(Object.keys(obj));
-  } catch (e) {
-    return new Set();
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as unknown;
+    if (!parsed || typeof parsed !== 'object') return {};
+
+    const entries = Object.entries(parsed as Record<string, unknown>);
+    const valid = entries.filter(([, value]) => {
+      if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+      const marker = value as Partial<ReadMarker>;
+      return typeof marker.ts === 'number' && typeof marker.title === 'string';
+    }) as [string, ReadMarker][];
+
+    const normalized: Record<string, ReadMarker> = {};
+    for (const [id, marker] of valid) {
+      normalized[id] = marker;
+    }
+    return normalized;
+  } catch {
+    return {};
   }
+};
+
+const getReadSet = (): Set<string> => new Set(Object.keys(readMarkersFromStorage()));
+
+const areSetsEqual = (a: ReadonlySet<string>, b: ReadonlySet<string>): boolean => {
+  if (a === b) return true;
+  if (a.size !== b.size) return false;
+  for (const value of a) {
+    if (!b.has(value)) return false;
+  }
+  return true;
 };
 
 interface ListVirtualizedFeedProps {
@@ -324,6 +351,7 @@ interface ListVirtualizedFeedProps {
   visiblePosts: Post[];
   layout: 'list' | 'grid';
   cardLayoutOverride?: 'grid' | 'list';
+  readPostIds: ReadonlySet<string>;
   listColumns: 'auto-2' | '3-2-1';
   threeColAt: 'lg' | 'xl';
   virtualOverscan: number;
@@ -354,6 +382,7 @@ function ListVirtualizedFeed({
   visiblePosts,
   layout,
   cardLayoutOverride,
+  readPostIds,
   listColumns,
   threeColAt,
   virtualOverscan,
@@ -712,6 +741,7 @@ function ListVirtualizedFeed({
                         storageKeyPrefix={storageKeyPrefix}
                         isNew={(start + i) >= initialPosts.length}
                         isPriority={(start + i) < 5}
+                        isRead={readPostIds.has(post.id)}
                       />
                     </div>
                   ))}
@@ -867,11 +897,6 @@ export default function InfinitePostList({
   const [activeCommunity, setActiveCommunity] = useState<string>(community ?? "전체");
   const [activeCommunities, setActiveCommunities] = useState<string[] | null>(null); // null => 전체
   const [readPostIds, setReadPostIds] = useState(() => getReadSet());
-  useEffect(() => {
-    const onReadUpdated = () => setReadPostIds(getReadSet());
-    window.addEventListener("readPosts:updated", onReadUpdated);
-    return () => window.removeEventListener("readPosts:updated", onReadUpdated);
-  }, []);
 
   // Community filtering is view-only; section reset is keyed only by base.
   const sectionKey = useMemo(
@@ -1234,13 +1259,16 @@ export default function InfinitePostList({
   // --- Rendering ---
 
   // --- Rendering ---
-  const communityFilteredPosts = (
-    activeCommunities && activeCommunities.length > 0
-      ? posts.filter((p) => activeCommunities.includes(p.communityId || p.community))
-      : (activeCommunity === "전체"
-        ? posts
-        : posts.filter((p) => (p.communityId || p.community) === activeCommunity))
-  );
+  const communityFilteredPosts = useMemo(() => {
+    if (activeCommunities && activeCommunities.length > 0) {
+      const allowed = new Set(activeCommunities);
+      return posts.filter((p) => allowed.has(p.communityId || p.community));
+    }
+    if (activeCommunity === "전체") {
+      return posts;
+    }
+    return posts.filter((p) => (p.communityId || p.community) === activeCommunity);
+  }, [posts, activeCommunity, activeCommunities]);
 
   const visiblePosts = useMemo(() => {
     if (readFilter === 'all') {
@@ -1283,6 +1311,8 @@ export default function InfinitePostList({
       window.dispatchEvent(new CustomEvent<FeedMetrics>('feed:metrics', { detail } satisfies CustomEventInit<FeedMetrics>));
     } catch { /* no-op */ }
   }, [communityFilteredPosts, readPostIds, navRegistryKey]);
+  const emitMetricsRef = useRef(emitMetrics);
+  useEffect(() => { emitMetricsRef.current = emitMetrics; }, [emitMetrics]);
 
   // Emit on initial mount and whenever list or read set changes (coalesced to next frame)
   useLayoutEffect(() => {
@@ -1298,6 +1328,33 @@ export default function InfinitePostList({
       }
     };
   }, [emitMetrics]);
+
+  useEffect(() => {
+    const onReadUpdated = () => {
+      const next = getReadSet();
+      let changed = false;
+      setReadPostIds((prev) => {
+        if (areSetsEqual(prev, next)) return prev;
+        changed = true;
+        return next;
+      });
+      if (!changed && metricsRafRef.current === null) {
+        return;
+      }
+      if (metricsRafRef.current != null) {
+        cancelAnimationFrame(metricsRafRef.current);
+      }
+      metricsRafRef.current = requestAnimationFrame(() => {
+        metricsRafRef.current = null;
+        emitMetricsRef.current();
+      });
+    };
+
+    window.addEventListener("readPosts:updated", onReadUpdated);
+    return () => {
+      window.removeEventListener("readPosts:updated", onReadUpdated);
+    };
+  }, []);
 
   // Register feed order + loadMore hook for modal navigation while dialog is open
   useEffect(() => {
@@ -1397,6 +1454,7 @@ export default function InfinitePostList({
         urlBootstrapDoneRef={urlBootstrapDoneRef}
         lastLoadTriggerRef={lastLoadTriggerRef}
         isFetchingRef={isFetchingRef}
+        readPostIds={readPostIds}
       />
     );
   }
@@ -1459,6 +1517,7 @@ export default function InfinitePostList({
               storageKeyPrefix={storageKeyPrefix}
               isNew={index >= initialPosts.length}
               isPriority={index < 10}
+              isRead={readPostIds.has(post.id)}
             />
           </div>
         ))}
