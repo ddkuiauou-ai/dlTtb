@@ -508,13 +508,13 @@ export const PostCard = React.memo(
       layout === "list"
         ? (
           <CardContent className="flex p-0 h-24">
-            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden rounded-l-lg">
+            <div className="relative flex-shrink-0 w-20 overflow-hidden rounded-l-lg">
               <HoverCard openDelay={1000}>
                 <HoverCardTrigger asChild>
                   <InlinePreviewMedia
                     post={post}
                     priority={isPriority}
-                    sizes="(max-width: 768px) 64px, 80px"
+                    sizes="80px"
                     className="absolute inset-0"
                   />
                 </HoverCardTrigger>
@@ -629,11 +629,11 @@ export const PostCard = React.memo(
       layout === "list"
         ? (
           <CardContent className="flex p-0 h-24">
-            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden rounded-l-lg">
+            <div className="relative flex-shrink-0 w-20 overflow-hidden rounded-l-lg">
               <InlinePreviewMedia
                 post={post}
                 priority={isPriority}
-                sizes="(max-width: 768px) 64px, 80px"
+                sizes="80px"
                 className="absolute inset-0"
               />
             </div>
