@@ -93,3 +93,10 @@ export default function PostList() {
   );
 }
 ```
+
+## 3. InfinitePostList 가상 버퍼 계산
+
+- `components/infinite-post-list.tsx` 는 각 행의 예상 높이(`estimateRowSize`)와 현재 `window.innerHeight` 값을 기반으로 버퍼를 계산합니다.
+- `deriveVirtualBufferSizing` 헬퍼는 뷰포트의 절반(0.5 × viewport)을 픽셀 단위로 확보하도록 행 수를 산출하고, 동일한 수의 행을 앞/뒤에 대칭으로 오버스캔합니다.
+- 실제 로딩 트리거 역시 위/아래 버퍼를 모두 고려하여 데이터가 부족해지기 전에 다음 페이지를 미리 가져오므로, 사용자는 최소한 반 화면 분량의 콘텐츠가 항상 사전 로드된 상태를 유지하게 됩니다.
+- 별도의 `virtualOverscan`/`loadAheadRows` 값을 넘기지 않으면 위의 규칙이 기본 동작이므로, 커스텀 튜닝이 필요한 경우에만 override 값을 전달하면 됩니다.

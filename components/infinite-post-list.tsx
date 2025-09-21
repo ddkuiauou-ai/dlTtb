@@ -19,6 +19,61 @@ const FAILED_PAGE_RETRY_WINDOW = 10000; // 10s
 const MAX_PAGES_PER_CALL = 2;
 const READ_POSTS_KEY = 'readPosts:v2';
 
+const FALLBACK_VIEWPORT_HEIGHT = 900;
+const FALLBACK_ROW_ESTIMATE = 200;
+const HALF_VIEWPORT_BUFFER_RATIO = 0.5;
+const MIN_BUFFER_ROWS = 4;
+const MAX_BUFFER_ROWS = 64;
+
+export type VirtualBufferSizing = {
+  overscanRows: number;
+  loadAheadRows: number;
+  estimatedRowHeight: number;
+  viewportHeight: number;
+};
+
+export function deriveVirtualBufferSizing({
+  estimatedRowHeight,
+  viewportHeight,
+  ratio = HALF_VIEWPORT_BUFFER_RATIO,
+  minRows = MIN_BUFFER_ROWS,
+  maxRows = MAX_BUFFER_ROWS,
+  overscanOverride,
+  loadAheadOverride,
+}: {
+  estimatedRowHeight: number;
+  viewportHeight: number;
+  ratio?: number;
+  minRows?: number;
+  maxRows?: number;
+  overscanOverride?: number;
+  loadAheadOverride?: number;
+}): VirtualBufferSizing {
+  const safeEstimate = Number.isFinite(estimatedRowHeight) && estimatedRowHeight > 0
+    ? Math.round(estimatedRowHeight)
+    : FALLBACK_ROW_ESTIMATE;
+  const safeViewport = Number.isFinite(viewportHeight) && viewportHeight > 0
+    ? Math.round(viewportHeight)
+    : FALLBACK_VIEWPORT_HEIGHT;
+
+  const derived = Math.ceil(((safeViewport * ratio) || 0) / safeEstimate);
+  const clampedOverscan = overscanOverride != null
+    ? Math.max(minRows, Math.min(maxRows, Math.round(overscanOverride)))
+    : Math.max(minRows, Math.min(maxRows, derived || minRows));
+
+  const loadAheadBase = loadAheadOverride != null
+    ? Math.max(1, Math.round(loadAheadOverride))
+    : clampedOverscan * 2;
+  const clampedLoadAhead = Math.max(clampedOverscan, Math.min(maxRows * 2, loadAheadBase));
+
+  return {
+    overscanRows: clampedOverscan,
+    loadAheadRows: clampedLoadAhead,
+    estimatedRowHeight: safeEstimate,
+    viewportHeight: safeViewport,
+  };
+}
+
 const MISSING_LOOKAHEAD = 4; // pages to probe ahead before declaring no more content (slightly more tolerant of sparse tails)
 const FIRST_JSON_PAGE = 2; // page-1.json은 존재하지 않음. SSR(DB) 결과가 논리적 1페이지.
 
@@ -358,8 +413,9 @@ interface ListVirtualizedFeedProps {
   readPostIds: ReadonlySet<string>;
   listColumns: 'auto-2' | '3-2-1';
   threeColAt: 'lg' | 'xl';
-  virtualOverscan: number;
-  loadAheadRows: number;
+  virtualOverscanOverride?: number;
+  loadAheadRowsOverride?: number;
+  onBufferSizeChange?: (metrics: VirtualBufferSizing) => void;
   rootRef: React.MutableRefObject<HTMLDivElement | null>;
   loaderRef: React.MutableRefObject<HTMLDivElement | null>;
   colsReadyRef: React.MutableRefObject<boolean>;
@@ -389,8 +445,9 @@ function ListVirtualizedFeed({
   readPostIds,
   listColumns,
   threeColAt,
-  virtualOverscan,
-  loadAheadRows,
+  virtualOverscanOverride,
+  loadAheadRowsOverride,
+  onBufferSizeChange,
   rootRef,
   loaderRef,
   colsReadyRef,
@@ -415,10 +472,38 @@ function ListVirtualizedFeed({
   const colsRef = useRef(cols);
   const [containerWidth, setContainerWidth] = useState(0);
   const [hasMounted, setHasMounted] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(() => {
+    if (typeof window === 'undefined') return FALLBACK_VIEWPORT_HEIGHT;
+    const initial = Math.round(window.innerHeight || FALLBACK_VIEWPORT_HEIGHT);
+    return initial > 0 ? initial : FALLBACK_VIEWPORT_HEIGHT;
+  });
 
   useEffect(() => { colsRef.current = cols; }, [cols]);
 
   useEffect(() => { setHasMounted(true); }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    let raf = 0;
+    const update = () => {
+      const next = Math.round(window.innerHeight || 0);
+      if (next <= 0) {
+        setViewportHeight((prev) => (prev > 0 ? prev : FALLBACK_VIEWPORT_HEIGHT));
+        return;
+      }
+      setViewportHeight((prev) => (prev === next ? prev : next));
+    };
+    update();
+    const onResize = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = window.requestAnimationFrame(update);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   const estimateCacheRef = useRef<Record<string, number>>({});
   const highestMeasuredRowRef = useRef(-1);
@@ -492,6 +577,23 @@ function ListVirtualizedFeed({
     return LIST_ROW_BASE + ROW_GAP;
   }, [cardLayoutOverride, cols, containerWidth, getEstimateKey, layout, rootRef]);
 
+  const bufferMetrics = useMemo(
+    () => {
+      const estimated = Number(estimateRowSize());
+      return deriveVirtualBufferSizing({
+        estimatedRowHeight: estimated,
+        viewportHeight,
+        overscanOverride: virtualOverscanOverride,
+        loadAheadOverride: loadAheadRowsOverride,
+      });
+    },
+    [estimateRowSize, viewportHeight, virtualOverscanOverride, loadAheadRowsOverride],
+  );
+
+  useEffect(() => {
+    onBufferSizeChange?.(bufferMetrics);
+  }, [bufferMetrics, onBufferSizeChange]);
+
   const readEntryHeight = useCallback((entry: ResizeObserverEntry | undefined): number | null => {
     if (!entry) return null;
     const borderSize = Array.isArray(entry.borderBoxSize) ? entry.borderBoxSize[0] : entry.borderBoxSize;
@@ -551,7 +653,7 @@ function ListVirtualizedFeed({
   const virtualizer = useWindowVirtualizer({
     count: rowCount,
     estimateSize: estimateRowSize,
-    overscan: virtualOverscan,
+    overscan: bufferMetrics.overscanRows,
     scrollToFn,
     measureElement: measureRow,
     getItemKey: (row) => {
@@ -563,11 +665,16 @@ function ListVirtualizedFeed({
   useEffect(() => {
     if (!DEBUG_IPL) return;
     try {
-      const w = window as typeof window & { __VLIST__?: { scrollToIndex: (index: number) => void }; __LIST_COLS__?: string };
+      const w = window as typeof window & {
+        __VLIST__?: { scrollToIndex: (index: number) => void };
+        __LIST_COLS__?: string;
+        __VLIST_BUFFERS__?: VirtualBufferSizing;
+      };
       w.__VLIST__ = { scrollToIndex: (i: number) => virtualizer.scrollToIndex(i) };
       w.__LIST_COLS__ = String(cols);
+      w.__VLIST_BUFFERS__ = bufferMetrics;
     } catch { /* no-op */ }
-  }, [virtualizer, cols]);
+  }, [virtualizer, cols, bufferMetrics]);
 
   const items = virtualizer.getVirtualItems();
 
@@ -626,8 +733,15 @@ function ListVirtualizedFeed({
     if (!enablePaging || !hasMoreRef.current) return;
     const last = items[items.length - 1];
     if (!last) return;
-    const threshold = Math.max(0, rowCount - Math.max(1, Math.floor(loadAheadRows)));
-    const inTail = last.index >= threshold;
+    const range = virtualizer.range;
+    const viewportStart = Math.max(0, range?.startIndex ?? items[0]?.index ?? 0);
+    const viewportEnd = Math.max(viewportStart, range?.endIndex ?? last.index);
+    const backwardBuffer = Math.min(bufferMetrics.overscanRows, viewportStart);
+    const forwardBuffer = bufferMetrics.overscanRows;
+    const manualTail = loadAheadRowsOverride != null ? Math.max(1, Math.round(loadAheadRowsOverride)) : null;
+    const desiredTail = manualTail ?? (forwardBuffer + backwardBuffer);
+    const threshold = Math.max(0, rowCount - Math.max(1, Math.floor(desiredTail)));
+    const inTail = viewportEnd >= threshold;
     if (!inTail) return;
 
     const prev = lastLoadTriggerRef.current;
@@ -640,7 +754,20 @@ function ListVirtualizedFeed({
     if (!isFetchingRef.current) {
       loadMore();
     }
-  }, [items, rowCount, enablePaging, loadMore, loadAheadRows, restoringRef, hasMoreRef, pageRef, lastLoadTriggerRef, isFetchingRef]);
+  }, [
+    items,
+    rowCount,
+    enablePaging,
+    loadMore,
+    loadAheadRowsOverride,
+    restoringRef,
+    hasMoreRef,
+    pageRef,
+    lastLoadTriggerRef,
+    isFetchingRef,
+    virtualizer,
+    bufferMetrics.overscanRows,
+  ]);
 
   useEffect(() => {
     let prev: ScrollRestoration | null = null;
@@ -921,12 +1048,15 @@ interface InfinitePostListProps {
    */
   gridColumnsOverride?: number;
   /**
-   * Virtualizer tuning: how many rows before the end to trigger loadMore (list layout).
-   * Smaller = 바닥 더 가까이에서 로드, Larger = 더 일찍 로드. Default 2.
+   * Optional override for the derived tail buffer. The list now derives a
+   * symmetric ~0.5 viewport warmup automatically, so manual overrides are
+   * rarely necessary.
    */
   loadAheadRows?: number;
   /**
-   * Virtualizer overscan rows. Larger = 더 미리 렌더해서 부드럽지만 메모리/연산 증가. Default 22.
+   * Optional override for the derived overscan rows. When omitted the list
+   * keeps roughly half a viewport of posts rendered before and after the
+   * window.
    */
   virtualOverscan?: number;
 }
@@ -944,8 +1074,8 @@ export default function InfinitePostList({
   cardLayoutOverride,
   threeColAt = 'lg',
   gridColumnsOverride,
-  loadAheadRows = 2,
-  virtualOverscan = 22, // 비디오 재시작을 줄이기 위해 기본값을 높게 설정 (메모리 사용량 증가)
+  loadAheadRows,
+  virtualOverscan,
   readFilter = 'all',
 }: InfinitePostListProps) {
   const { addPosts } = usePostCache();
@@ -1013,6 +1143,12 @@ export default function InfinitePostList({
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const isFetchingRef = useRef(false);
   const fetchTokenRef = useRef(0);
+  const bufferMetricsRef = useRef<VirtualBufferSizing>(
+    deriveVirtualBufferSizing({ estimatedRowHeight: FALLBACK_ROW_ESTIMATE, viewportHeight: FALLBACK_VIEWPORT_HEIGHT }),
+  );
+  const handleBufferSizeChange = useCallback((metrics: VirtualBufferSizing) => {
+    bufferMetricsRef.current = metrics;
+  }, []);
   const seenIdsRef = useRef<Set<string>>(new Set(initialPosts.map((p) => p.id)));
   const postIdToPageNumRef = useRef<Map<string, number>>(
     new Map(initialPosts.map((p) => [p.id, initialPage]))
@@ -1433,7 +1569,8 @@ export default function InfinitePostList({
   }, [loadPage, addPosts, jsonBase]);
 
   const ensureBelowBufferRows = useCallback(async (anchorId: string) => {
-    const BELOW_BUFFER = 12; // 앵커 아래 최소 확보할 행 수
+    const metrics = bufferMetricsRef.current;
+    const BELOW_BUFFER = Math.max(6, Math.round(metrics?.overscanRows ?? 12));
     let guard = 0;
     while (guard < 5 && hasMoreRef.current) {
       const list = postsRef.current;
@@ -1631,8 +1768,9 @@ export default function InfinitePostList({
         cardLayoutOverride={cardLayoutOverride}
         listColumns={listColumns}
         threeColAt={threeColAt}
-        virtualOverscan={virtualOverscan}
-        loadAheadRows={loadAheadRows}
+        virtualOverscanOverride={virtualOverscan}
+        loadAheadRowsOverride={loadAheadRows}
+        onBufferSizeChange={handleBufferSizeChange}
         rootRef={rootRef}
         loaderRef={loaderRef}
         colsReadyRef={colsReadyRef}

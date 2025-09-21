@@ -28,9 +28,6 @@ interface PostGridProps {
   listColumns?: 'auto-2' | '3-2-1';
   cardLayoutOverride?: 'grid' | 'list';
   threeColAt?: 'lg' | 'xl';
-  // Virtualizer + motion knobs
-  loadAheadRows?: number;
-  virtualOverscan?: number;
   readFilter?: string;
 }
 
@@ -52,8 +49,6 @@ export default function PostGrid({
   listColumns,
   cardLayoutOverride,
   threeColAt,
-  loadAheadRows,
-  virtualOverscan,
   readFilter,
 }: PostGridProps) {
   // For the "최신" section, enforce fresh mode; for both "최신" and "지금 주목" display range in the title.
@@ -136,8 +131,6 @@ export default function PostGrid({
             listColumns={listColumns}
             cardLayoutOverride={cardLayoutOverride}
             threeColAt={threeColAt}
-            loadAheadRows={loadAheadRows}
-            virtualOverscan={virtualOverscan}
             readFilter={readFilter}
           />
         </PostListProvider>
