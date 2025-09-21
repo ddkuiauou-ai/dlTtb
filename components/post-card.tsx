@@ -289,6 +289,8 @@ function usePrefersReducedMotion(): boolean {
   return prefers;
 }
 
+const activatedHoverPreviewIds = new Set<string>();
+
 interface InlinePreviewMediaProps {
   post: Post;
   priority?: boolean;
@@ -300,10 +302,19 @@ interface InlinePreviewMediaProps {
 const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaProps>(
   ({ post, priority = false, sizes, className, mediaClassName }, forwardedRef) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
+    const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
     const warmupLinksRef = React.useRef<HTMLLinkElement[]>([]);
     const prefersReducedMotion = usePrefersReducedMotion();
-    const [prefetched, setPrefetched] = React.useState(false);
+    const initialActivated = React.useMemo(
+      () => activatedHoverPreviewIds.has(post.id),
+      [post.id]
+    );
+    const [prefetched, setPrefetched] = React.useState(initialActivated);
+    const [hasActivated, setHasActivated] = React.useState(initialActivated);
     const [isVisible, setIsVisible] = React.useState(false);
+    const [iframeLoaded, setIframeLoaded] = React.useState(false);
+    const pendingCommandRef = React.useRef<"play" | "pause" | null>(null);
+    const lastPostedCommandRef = React.useRef<"play" | "pause" | null>(null);
 
     const enablePreview = React.useMemo(
       () =>
@@ -326,6 +337,20 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
       [forwardedRef]
     );
 
+    const postCommandToIframe = React.useCallback(
+      (command: "play" | "pause") => {
+        if (typeof window === "undefined") return;
+        const iframeNode = iframeRef.current;
+        if (!iframeNode) return;
+        try {
+          iframeNode.contentWindow?.postMessage({ type: command }, window.location.origin);
+        } catch {
+          // Swallow cross-origin or detached frame errors
+        }
+      },
+      []
+    );
+
     const activate = React.useCallback(() => {
       if (!enablePreview) return;
       setPrefetched(true);
@@ -333,9 +358,23 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
     }, [enablePreview]);
 
     React.useEffect(() => {
+      const activated = activatedHoverPreviewIds.has(post.id);
+      setPrefetched(activated);
+      setHasActivated(activated);
+      setIsVisible(false);
+      setIframeLoaded(false);
+      pendingCommandRef.current = null;
+      lastPostedCommandRef.current = null;
+    }, [post.id]);
+
+    React.useEffect(() => {
       if (!enablePreview) {
         setPrefetched(false);
         setIsVisible(false);
+        setHasActivated(false);
+        activatedHoverPreviewIds.delete(post.id);
+        pendingCommandRef.current = null;
+        lastPostedCommandRef.current = null;
         return;
       }
 
@@ -381,7 +420,15 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
         prefetchObserver.disconnect();
         visibilityObserver.disconnect();
       };
-    }, [enablePreview]);
+    }, [enablePreview, post.id]);
+
+    React.useEffect(() => {
+      if (!enablePreview) return;
+      if (!prefetched) return;
+      if (hasActivated) return;
+      setHasActivated(true);
+      activatedHoverPreviewIds.add(post.id);
+    }, [enablePreview, prefetched, hasActivated, post.id]);
 
     React.useEffect(() => {
       if (!prefetched) return;
@@ -440,44 +487,91 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
       };
     }, []);
 
-    const shouldShowPreview = enablePreview && isVisible;
-    const allowAutoplay = shouldShowPreview && !prefersReducedMotion;
+    const handleIframeLoad = React.useCallback(() => {
+      setIframeLoaded(true);
+      const command = pendingCommandRef.current;
+      if (!command) return;
+      postCommandToIframe(command);
+      lastPostedCommandRef.current = command;
+    }, [postCommandToIframe]);
+
+    React.useEffect(() => {
+      if (!enablePreview) return;
+      if (!hasActivated) return;
+
+      const desiredCommand: "play" | "pause" =
+        !prefersReducedMotion && isVisible ? "play" : "pause";
+
+      if (pendingCommandRef.current !== desiredCommand) {
+        pendingCommandRef.current = desiredCommand;
+      }
+
+      if (!iframeLoaded) return;
+      if (lastPostedCommandRef.current === desiredCommand) return;
+
+      postCommandToIframe(desiredCommand);
+      lastPostedCommandRef.current = desiredCommand;
+    }, [
+      enablePreview,
+      hasActivated,
+      iframeLoaded,
+      isVisible,
+      postCommandToIframe,
+      prefersReducedMotion,
+    ]);
+
     const iframeSrc = React.useMemo(() => {
       if (!post.hoverPlayerUrl) return undefined;
-      const base = `/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl)}`;
-      return allowAutoplay ? `${base}&autoplay=1` : base;
-    }, [allowAutoplay, post.hoverPlayerUrl]);
+      return `/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl)}`;
+    }, [post.hoverPlayerUrl]);
 
-    const mediaClasses = cn("w-full h-full object-cover", mediaClassName);
+    const showIframe = enablePreview && hasActivated && Boolean(iframeSrc);
+    const videoIsViewable = showIframe && !prefersReducedMotion && isVisible;
+    const showThumbnail = !showIframe || !iframeLoaded || !videoIsViewable;
+
+    const baseMediaClasses = cn(
+      "absolute inset-0 w-full h-full object-cover",
+      mediaClassName
+    );
 
     return (
       <div
         ref={setRefs}
-        className={className}
+        className={cn("relative", className)}
         onMouseEnter={activate}
         onFocus={activate}
         onTouchStart={activate}
       >
-        {shouldShowPreview && iframeSrc ? (
+        <Image
+          src={post.thumbnail || "/placeholder.svg"}
+          alt=""
+          fill
+          sizes={sizes}
+          className={cn(
+            baseMediaClasses,
+            "transition-opacity duration-200",
+            showThumbnail ? "opacity-100" : "opacity-0 pointer-events-none"
+          )}
+          priority={priority}
+          referrerPolicy="no-referrer"
+        />
+        {showIframe && iframeSrc ? (
           <iframe
+            ref={iframeRef}
             src={iframeSrc}
             loading="lazy"
             referrerPolicy="no-referrer"
-            className={mediaClasses}
+            className={cn(
+              baseMediaClasses,
+              "transition-opacity duration-200",
+              videoIsViewable ? "opacity-100" : "opacity-0 pointer-events-none"
+            )}
             style={{ border: 0 }}
             allow="autoplay; encrypted-media; picture-in-picture"
+            onLoad={handleIframeLoad}
+            aria-hidden={!videoIsViewable}
           />
-        ) : (
-          <Image
-            src={post.thumbnail || "/placeholder.svg"}
-            alt=""
-            fill
-            sizes={sizes}
-            className={mediaClasses}
-            priority={priority}
-            referrerPolicy="no-referrer"
-          />
-        )}
+        ) : null}
       </div>
     );
   }
