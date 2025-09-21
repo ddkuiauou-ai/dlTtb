@@ -7,7 +7,8 @@ import type { Post } from "@/lib/types";
 import { onCommunity, onCommunities } from "@/lib/communityFilter";
 import { getManifest as cacheGetManifest, readPage as cacheReadPage, writePage as cacheWritePage } from "@/lib/idb-cache";
 import type { ClientPost } from "@/lib/idb-cache";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { measureElement as defaultMeasureElement, useWindowVirtualizer } from "@tanstack/react-virtual";
+import type { Virtualizer } from "@tanstack/react-virtual";
 import { readAndClearRestore } from "@/lib/restore-session";
 import { usePostCache } from "@/context/post-cache-context";
 
@@ -411,10 +412,23 @@ function ListVirtualizedFeed({
   isFetchingRef,
 }: ListVirtualizedFeedProps) {
   const [cols, setCols] = useState(1);
+  const colsRef = useRef(cols);
   const [containerWidth, setContainerWidth] = useState(0);
   const [hasMounted, setHasMounted] = useState(false);
 
+  useEffect(() => { colsRef.current = cols; }, [cols]);
+
   useEffect(() => { setHasMounted(true); }, []);
+
+  const estimateCacheRef = useRef<Record<string, number>>({});
+  const getEstimateKey = useCallback(
+    (colCount: number) => `${cardLayoutOverride ?? layout}|${Math.max(1, colCount)}`,
+    [cardLayoutOverride, layout],
+  );
+
+  useEffect(() => {
+    estimateCacheRef.current = {};
+  }, [cardLayoutOverride, layout]);
 
   useEffect(() => {
     if (!hasMounted) return;
@@ -446,21 +460,49 @@ function ListVirtualizedFeed({
   }, [hasMounted, listColumns, threeColAt, cols, rootRef, colsReadyRef]);
 
   const rowCount = Math.ceil(visiblePosts.length / Math.max(1, cols));
+  const visibleCount = visiblePosts.length;
   const estimateRowSize = useCallback(() => {
-    const effectiveLayout = cardLayoutOverride ?? layout;
+    const key = getEstimateKey(cols);
+    const cached = estimateCacheRef.current[key];
+    if (cached && cached > 0) {
+      return cached;
+    }
+
     const ROW_GAP = 16;
+    const effectiveLayout = cardLayoutOverride ?? layout;
     if (effectiveLayout === 'grid') {
-      const GAP = 16;
       const w = Math.max(0, containerWidth || (rootRef.current?.clientWidth || 0));
       const c = Math.max(1, cols);
-      const cardW = c > 0 ? (w - (c - 1) * GAP) / c : w;
-      const imgH = Math.max(120, Math.round(cardW * 2 / 3));
-      const textH = c >= 3 ? 140 : c === 2 ? 146 : 152;
-      return imgH + textH + ROW_GAP;
+      const gapTotal = (c - 1) * ROW_GAP;
+      const cardW = c > 0 ? (w - gapTotal) / c : w;
+      const imgH = Math.max(120, Math.round((cardW * 2) / 3));
+      const textBlock = 144;
+      return imgH + textBlock + ROW_GAP;
     }
-    const LIST_ROW_EST = 100;
-    return LIST_ROW_EST + ROW_GAP;
-  }, [cols, cardLayoutOverride, layout, containerWidth, rootRef]);
+
+    const LIST_ROW_BASE = 120;
+    return LIST_ROW_BASE + ROW_GAP;
+  }, [cardLayoutOverride, cols, containerWidth, getEstimateKey, layout, rootRef]);
+
+  const measureRow = useCallback(
+    (
+      element: Element,
+      entry: ResizeObserverEntry | undefined,
+      instance: Virtualizer<Window, Element>,
+    ) => {
+      const size = defaultMeasureElement(element, entry, instance);
+      if (typeof size === 'number' && Number.isFinite(size) && size > 0) {
+        const key = getEstimateKey(colsRef.current);
+        const prev = estimateCacheRef.current[key];
+        const next = prev ? Math.round(prev * 0.6 + size * 0.4) : Math.round(size);
+        if (!prev || Math.abs(prev - next) > 1) {
+          estimateCacheRef.current[key] = next;
+        }
+      }
+      return size;
+    },
+    [getEstimateKey],
+  );
 
   const scrollToFn = useCallback((offset: number) => {
     try {
@@ -476,6 +518,7 @@ function ListVirtualizedFeed({
     estimateSize: estimateRowSize,
     overscan: virtualOverscan,
     scrollToFn,
+    measureElement: measureRow,
     getItemKey: (row) => {
       const idx0 = row * cols;
       return visiblePosts[idx0]?.id ?? row;
@@ -495,7 +538,7 @@ function ListVirtualizedFeed({
 
   useEffect(() => {
     virtualizer.measure();
-  }, [cols, containerWidth, virtualizer, visiblePosts]);
+  }, [cols, containerWidth, virtualizer, visibleCount]);
 
   useEffect(() => {
     if (restoringRef.current) return;
