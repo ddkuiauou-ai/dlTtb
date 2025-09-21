@@ -537,12 +537,7 @@ export const PostCard = React.memo(
           </span>
         )}
         {post.hoverPlayerKind === 'mp4' && (
-          <Badge
-            variant="secondary"
-            className="hidden sm:inline-flex bg-gray-100 text-gray-800 border-0"
-          >
-            MP4
-          </Badge>
+          <Badge variant="secondary" className="bg-gray-100 text-gray-800 border-0">MP4</Badge>
         )}
         {post.hasX && (
           <span title="X 임베드" className="inline-flex items-center">
@@ -585,7 +580,7 @@ export const PostCard = React.memo(
           {post.hoverPlayerKind === 'mp4' && (
             <Badge
               variant="secondary"
-              className="hidden sm:@[12rem]:inline-flex bg-gray-100 text-gray-800 border-0"
+              className="hidden md:@[12rem]:inline-flex bg-gray-100 text-gray-800 border-0"
             >
               MP4
             </Badge>
