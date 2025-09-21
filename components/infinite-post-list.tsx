@@ -7,10 +7,15 @@ import type { Post } from "@/lib/types";
 import { onCommunity, onCommunities } from "@/lib/communityFilter";
 import { getManifest as cacheGetManifest, readPage as cacheReadPage, writePage as cacheWritePage } from "@/lib/idb-cache";
 import type { ClientPost } from "@/lib/idb-cache";
-import { measureElement as defaultMeasureElement, useWindowVirtualizer } from "@tanstack/react-virtual";
-import type { Virtualizer } from "@tanstack/react-virtual";
+import {
+  defaultRangeExtractor,
+  measureElement as defaultMeasureElement,
+  useWindowVirtualizer,
+} from "@tanstack/react-virtual";
+import type { Range, Virtualizer } from "@tanstack/react-virtual";
 import { readAndClearRestore } from "@/lib/restore-session";
 import { usePostCache } from "@/context/post-cache-context";
+import { subscribeToPreviewActivations } from "@/lib/preview-activation-store";
 
 // --- Constants ---
 const MISSING_LIMIT = 2;
@@ -479,10 +484,18 @@ function ListVirtualizedFeed({
     const initial = Math.round(window.innerHeight || FALLBACK_VIEWPORT_HEIGHT);
     return initial > 0 ? initial : FALLBACK_VIEWPORT_HEIGHT;
   });
+  const [activePreviewIds, setActivePreviewIds] = useState<Set<string>>(() => new Set());
 
   useEffect(() => { colsRef.current = cols; }, [cols]);
 
   useEffect(() => { setHasMounted(true); }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToPreviewActivations((ids) => {
+      setActivePreviewIds((prev) => (areSetsEqual(prev, ids) ? prev : new Set(ids)));
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -556,6 +569,27 @@ function ListVirtualizedFeed({
   }, [hasMounted, listColumns, threeColAt, cols, rootRef, colsReadyRef]);
 
   const rowCount = Math.ceil(visiblePosts.length / Math.max(1, cols));
+  const idToIndex = useMemo(() => {
+    const map = new Map<string, number>();
+    for (let i = 0; i < visiblePosts.length; i++) {
+      map.set(visiblePosts[i].id, i);
+    }
+    return map;
+  }, [visiblePosts]);
+
+  const activePreviewRowIndexes = useMemo(() => {
+    if (activePreviewIds.size === 0) return [] as number[];
+    const colCount = Math.max(1, cols);
+    const rows = new Set<number>();
+    activePreviewIds.forEach((id) => {
+      const idx = idToIndex.get(id);
+      if (idx != null) {
+        rows.add(Math.floor(idx / colCount));
+      }
+    });
+    if (rows.size === 0) return [] as number[];
+    return Array.from(rows).sort((a, b) => a - b);
+  }, [activePreviewIds, idToIndex, cols]);
   const estimateRowSize = useCallback(() => {
     const key = getEstimateKey(cols);
     const cached = estimateCacheRef.current[key];
@@ -652,6 +686,26 @@ function ListVirtualizedFeed({
     }
   }, []);
 
+  const rangeExtractor = useCallback(
+    (range: Range) => {
+      const base = defaultRangeExtractor(range);
+      if (activePreviewRowIndexes.length === 0) {
+        return base;
+      }
+      const merged = new Set(base);
+      for (const rowIndex of activePreviewRowIndexes) {
+        if (rowIndex >= 0 && rowIndex < range.count) {
+          merged.add(rowIndex);
+        }
+      }
+      if (merged.size === base.length) {
+        return base;
+      }
+      return Array.from(merged).sort((a, b) => a - b);
+    },
+    [activePreviewRowIndexes],
+  );
+
   const virtualizer = useWindowVirtualizer({
     count: rowCount,
     estimateSize: estimateRowSize,
@@ -662,6 +716,7 @@ function ListVirtualizedFeed({
       const idx0 = row * cols;
       return visiblePosts[idx0]?.id ?? row;
     },
+    rangeExtractor,
   });
 
   useEffect(() => {

@@ -24,6 +24,10 @@ import { RotatingText } from "@/components/animate-ui/text/rotating";
 import { cn } from "@/lib/utils";
 import { markNavigateToPost } from "@/lib/restore-session";
 import { markPostAsRead } from "@/lib/read-marker";
+import {
+  markPreviewActive,
+  markPreviewInactive,
+} from "@/lib/preview-activation-store";
 
 import { useModal } from "@/context/modal-context";
 import { usePostList } from "@/context/post-list-context";
@@ -289,7 +293,55 @@ function usePrefersReducedMotion(): boolean {
   return prefers;
 }
 
+type PreviewActivationReason = "hover" | "focus" | "touch" | "hovercard";
+
 const activatedHoverPreviewIds = new Set<string>();
+
+function usePreviewActivationTracker(postId: string) {
+  const activeReasonsRef = React.useRef<Set<PreviewActivationReason>>(new Set());
+  const isActiveRef = React.useRef(false);
+
+  const updateGlobalState = React.useCallback(() => {
+    const nextActive = activeReasonsRef.current.size > 0;
+    if (isActiveRef.current === nextActive) return;
+    isActiveRef.current = nextActive;
+    if (nextActive) {
+      markPreviewActive(postId);
+    } else {
+      markPreviewInactive(postId);
+    }
+  }, [postId]);
+
+  const setReasonActive = React.useCallback(
+    (reason: PreviewActivationReason, active: boolean) => {
+      const reasons = activeReasonsRef.current;
+      if (active) {
+        if (!reasons.has(reason)) {
+          reasons.add(reason);
+          updateGlobalState();
+        }
+        return;
+      }
+      if (reasons.delete(reason)) {
+        updateGlobalState();
+      }
+    },
+    [updateGlobalState],
+  );
+
+  React.useEffect(() => {
+    const reasons = activeReasonsRef.current;
+    return () => {
+      reasons.clear();
+      if (isActiveRef.current) {
+        isActiveRef.current = false;
+        markPreviewInactive(postId);
+      }
+    };
+  }, [postId]);
+
+  return { setReasonActive } as const;
+}
 
 interface InlinePreviewMediaProps {
   post: Post;
@@ -297,10 +349,18 @@ interface InlinePreviewMediaProps {
   sizes: string;
   className?: string;
   mediaClassName?: string;
+  onActivationChange?: (reason: PreviewActivationReason, active: boolean) => void;
 }
 
 const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaProps>(
-  ({ post, priority = false, sizes, className, mediaClassName }, forwardedRef) => {
+  ({
+    post,
+    priority = false,
+    sizes,
+    className,
+    mediaClassName,
+    onActivationChange,
+  }, forwardedRef) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
     const warmupLinksRef = React.useRef<HTMLLinkElement[]>([]);
@@ -351,11 +411,57 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
       []
     );
 
-    const activate = React.useCallback(() => {
-      if (!enablePreview) return;
-      setPrefetched(true);
-      setIsVisible(true);
-    }, [enablePreview]);
+    const notifyActivation = React.useCallback(
+      (reason: PreviewActivationReason, active: boolean) => {
+        onActivationChange?.(reason, active);
+      },
+      [onActivationChange],
+    );
+
+    const activate = React.useCallback(
+      (reason: PreviewActivationReason) => {
+        if (!enablePreview) return;
+        setPrefetched(true);
+        setIsVisible(true);
+        notifyActivation(reason, true);
+      },
+      [enablePreview, notifyActivation],
+    );
+
+    const deactivate = React.useCallback(
+      (reason: PreviewActivationReason) => {
+        notifyActivation(reason, false);
+      },
+      [notifyActivation],
+    );
+
+    const handleMouseEnter = React.useCallback(() => {
+      activate("hover");
+    }, [activate]);
+
+    const handleMouseLeave = React.useCallback(() => {
+      deactivate("hover");
+    }, [deactivate]);
+
+    const handleFocus = React.useCallback(() => {
+      activate("focus");
+    }, [activate]);
+
+    const handleBlur = React.useCallback(() => {
+      deactivate("focus");
+    }, [deactivate]);
+
+    const handleTouchStart = React.useCallback(() => {
+      activate("touch");
+    }, [activate]);
+
+    const handleTouchEnd = React.useCallback(() => {
+      deactivate("touch");
+    }, [deactivate]);
+
+    const handleTouchCancel = React.useCallback(() => {
+      deactivate("touch");
+    }, [deactivate]);
 
     React.useEffect(() => {
       const activated = activatedHoverPreviewIds.has(post.id);
@@ -375,6 +481,9 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
         activatedHoverPreviewIds.delete(post.id);
         pendingCommandRef.current = null;
         lastPostedCommandRef.current = null;
+        notifyActivation("hover", false);
+        notifyActivation("focus", false);
+        notifyActivation("touch", false);
         return;
       }
 
@@ -420,7 +529,7 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
         prefetchObserver.disconnect();
         visibilityObserver.disconnect();
       };
-    }, [enablePreview, post.id]);
+    }, [enablePreview, notifyActivation, post.id]);
 
     React.useEffect(() => {
       if (!enablePreview) return;
@@ -538,9 +647,13 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
       <div
         ref={setRefs}
         className={cn("relative", className)}
-        onMouseEnter={activate}
-        onFocus={activate}
-        onTouchStart={activate}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchCancel}
       >
         <Image
           src={post.thumbnail || "/placeholder.svg"}
@@ -607,6 +720,13 @@ export const PostCard = React.memo(
     const { postIds } = usePostList();
     const { posts } = usePostCache();
     const post = posts.get(postId) as Post;
+    const { setReasonActive: setPreviewActivationReason } = usePreviewActivationTracker(postId);
+    const handleHoverCardOpenChange = React.useCallback(
+      (open: boolean) => {
+        setPreviewActivationReason("hovercard", open);
+      },
+      [setPreviewActivationReason],
+    );
     const isMobile = useIsMobile();
 
     if (!post) {
@@ -689,13 +809,14 @@ export const PostCard = React.memo(
         ? (
           <CardContent className="flex p-0 h-24">
             <div className="relative flex-shrink-0 w-20 overflow-hidden rounded-l-lg">
-              <HoverCard openDelay={1000}>
+              <HoverCard openDelay={1000} onOpenChange={handleHoverCardOpenChange}>
                 <HoverCardTrigger asChild>
                   <InlinePreviewMedia
                     post={post}
                     priority={isPriority}
                     sizes="80px"
                     className="absolute inset-0"
+                    onActivationChange={setPreviewActivationReason}
                   />
                 </HoverCardTrigger>
                 {(post.thumbnail || post.hoverPlayerUrl) && (
@@ -750,7 +871,7 @@ export const PostCard = React.memo(
           <CardContent className="p-3 md:p-4">
             <div className="space-y-3">
               {(post.thumbnail || post.hoverPlayerUrl) ? (
-                <HoverCard openDelay={1000}>
+                <HoverCard openDelay={1000} onOpenChange={handleHoverCardOpenChange}>
                   <HoverCardTrigger asChild>
                     <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
                       <InlinePreviewMedia
@@ -758,6 +879,7 @@ export const PostCard = React.memo(
                         priority={isPriority}
                         sizes="480px"
                         className="absolute inset-0"
+                        onActivationChange={setPreviewActivationReason}
                       />
                     </div>
                   </HoverCardTrigger>
@@ -815,6 +937,7 @@ export const PostCard = React.memo(
                 priority={isPriority}
                 sizes="80px"
                 className="absolute inset-0"
+                onActivationChange={setPreviewActivationReason}
               />
             </div>
             <div className="flex-1 min-w-0 p-3 md:p-4">
@@ -865,6 +988,7 @@ export const PostCard = React.memo(
                   priority={isPriority}
                   sizes="480px"
                   className="absolute inset-0"
+                  onActivationChange={setPreviewActivationReason}
                 />
               </div>
               <div className="space-y-2 min-h-[72px] md:min-h-[92px]">
