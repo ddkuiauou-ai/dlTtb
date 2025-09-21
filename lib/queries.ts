@@ -1244,7 +1244,7 @@ export async function getPostsByCategory(
     'news': ['news', '뉴스'], 'humor': ['humor', '유머'], 'info': ['info', '정보'],
     'qna': ['question', '질문'], 'review': ['review', '후기'], 'debate': ['debate', '토론'],
     'back': ['back', '후방'], 'zzal': ['zzal', '짤'], 'politics': ['politics', '정치'],
-    'shopping': ['shopping', '쇼핑'], 'etc': ['etc', '기타'],
+    'shopping': ['shopping', '쇼핑'], 'etc': ['etc', '기타'], 'sports': ['sports', 'sport', '스포츠'],
   };
   const tokens = aliasMap[base] ?? [base];
   const likeTokens = tokens.map(t => `${t}%`);
