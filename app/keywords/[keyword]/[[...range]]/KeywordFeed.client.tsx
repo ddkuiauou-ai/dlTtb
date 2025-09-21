@@ -54,8 +54,6 @@ export default function KeywordFeed({ initialPosts, keyword, initialRange }: Key
         listColumns={viewMode === "grid" ? "3-2-1" : "auto-2"}
         cardLayoutOverride={viewMode === "grid" ? "grid" : "list"}
         threeColAt="xl"
-        loadAheadRows={viewMode === "list" ? 1 : 0}
-        virtualOverscan={viewMode === "list" ? 18 : 10}
         jsonBase={jsonBase}
         range={range as any}
         readFilter={readFilter}

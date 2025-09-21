@@ -143,8 +143,6 @@ export default async function Home() {
                   initialPosts={fresh}
                   jsonBase={`/data/home/v1/${selectedRange}/fresh`}
                   enablePaging={true}
-                  loadAheadRows={1}
-                  virtualOverscan={18}
                 />
               </Suspense>
 
