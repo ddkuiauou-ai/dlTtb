@@ -910,6 +910,77 @@ export default function InfinitePostList({
   const currentAbortRef = useRef<AbortController | null>(null);
   const manifestRef = useRef<{ generatedAt: string; lastPage?: number } | null>(null);
   const prefetchingRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!enablePaging || !jsonBase) return;
+
+    const key = `prime|${jsonBase}`;
+    const warmSet = prefetchingRef.current;
+    if (warmSet.has(key)) return;
+
+    const abortController = new AbortController();
+    const { signal } = abortController;
+    warmSet.add(key);
+
+    (async () => {
+      try {
+        const manifest = await cacheGetManifest(jsonBase);
+        if (signal.aborted) return;
+
+        if (manifest?.generatedAt) {
+          const maybeLastPage = (manifest as Record<string, unknown>)?.lastPage;
+          manifestRef.current = {
+            generatedAt: manifest.generatedAt,
+            lastPage: typeof maybeLastPage === "number" ? maybeLastPage : undefined,
+          };
+
+          let cached: ClientPost[] | null = null;
+          try {
+            cached = await cacheReadPage(jsonBase, FIRST_JSON_PAGE, manifest.generatedAt);
+          } catch {
+            cached = null;
+          }
+          if (signal.aborted) return;
+
+          if (!cached || cached.length === 0) {
+            try {
+              const res = await fetch(`${jsonBase}/page-${FIRST_JSON_PAGE}.json`, { signal });
+              if (!res.ok || signal.aborted) return;
+
+              const data = await res.json();
+              if (signal.aborted) return;
+
+              const arr = (Array.isArray(data.posts) ? data.posts : []) as Post[];
+              const normalized = arr.map((p: any) => ({
+                ...p,
+                communityId: p.communityId || p.community || p.site || undefined,
+                communityLabel: p.communityLabel || p.community || p.site || undefined,
+              })) as Post[];
+
+              if (signal.aborted) return;
+              await cacheWritePage(
+                jsonBase,
+                FIRST_JSON_PAGE,
+                manifest.generatedAt,
+                normalized as unknown as ClientPost[]
+              );
+            } catch {
+              /* ignore */
+            }
+          }
+        }
+      } catch {
+        /* ignore */
+      } finally {
+        warmSet.delete(key);
+      }
+    })();
+
+    return () => {
+      abortController.abort();
+      warmSet.delete(key);
+    };
+  }, [enablePaging, jsonBase]);
   // Expose minimal navigation API for modal to query sequence and request more
   const navRegistryKey = jsonBase || storageKeyPrefix || "__default__";
   const navApiRef = useRef<FeedNavigationApi | null>(null);
