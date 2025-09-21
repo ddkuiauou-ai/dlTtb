@@ -508,7 +508,7 @@ export const PostCard = React.memo(
       layout === "list"
         ? (
           <CardContent className="flex p-0 h-24">
-            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
+            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden rounded-l-lg">
               <HoverCard openDelay={1000}>
                 <HoverCardTrigger asChild>
                   <InlinePreviewMedia
@@ -590,7 +590,7 @@ export const PostCard = React.memo(
                   alt=""
                   width={300}
                   height={160}
-                  className="w-full aspect-[3/2] object-cover rounded-none md:rounded-lg"
+                  className="w-full aspect-[3/2] object-cover rounded-lg"
                   priority={isPriority}
                   referrerPolicy="no-referrer"
                 />
@@ -629,7 +629,7 @@ export const PostCard = React.memo(
       layout === "list"
         ? (
           <CardContent className="flex p-0 h-24">
-            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
+            <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden rounded-l-lg">
               <InlinePreviewMedia
                 post={post}
                 priority={isPriority}
@@ -741,7 +741,7 @@ export const PostCard = React.memo(
             data-read={isRead ? '1' : undefined}
             onClick={handleClick}
           >
-            <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
+            <Card className="transition-shadow cursor-pointer hover:shadow-md">
               <SignedInCardContent />
             </Card>
           </Link>
@@ -756,7 +756,7 @@ export const PostCard = React.memo(
             data-read={isRead ? '1' : undefined}
             onClick={() => markPostAsRead({ id: post.id, title: post.title, url: post.url })}
           >
-            <Card className="rounded-none shadow-none border-x-0 border-b md:rounded-lg md:shadow-sm md:border hover:shadow-none md:hover:shadow-md transition-shadow cursor-pointer">
+            <Card className="transition-shadow cursor-pointer hover:shadow-md">
               <SignedOutCardContent />
             </Card>
           </a>
