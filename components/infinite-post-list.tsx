@@ -30,6 +30,7 @@ const HALF_VIEWPORT_BUFFER_RATIO = 0.5;
 const MIN_BUFFER_ROWS = 4;
 const MAX_BUFFER_ROWS = 64;
 const LOAD_AHEAD_VIEWPORT_MULTIPLIER = 1.5;
+const MANIFEST_TTL_MS = 5000;
 
 export type VirtualBufferSizing = {
   overscanRows: number;
@@ -98,6 +99,7 @@ const dlog = (...args: unknown[]) => {
 // --- Types ---
 type LoadStatus = "ok-new" | "ok-dup" | "missing" | "error";
 type LoadResult = { status: LoadStatus; newPosts: Post[] };
+type ManifestSnapshot = { generatedAt: string; lastPage?: number; fetchedAt: number };
 
 type FeedNavigationApi = {
   getIds: () => string[];
@@ -1221,8 +1223,45 @@ export default function InfinitePostList({
   );
   const prevSectionKeyRef = useRef(sectionKey);
   const currentAbortRef = useRef<AbortController | null>(null);
-  const manifestRef = useRef<{ generatedAt: string; lastPage?: number } | null>(null);
+  const manifestRef = useRef<ManifestSnapshot | null>(null);
+  const manifestFetchTimeRef = useRef<number | null>(null);
   const prefetchingRef = useRef<Set<string>>(new Set());
+
+  const maybeRefreshManifest = useCallback(
+    async (base: string | null | undefined) => {
+      if (!base) {
+        return { manifest: manifestRef.current, versionChanged: false };
+      }
+
+      const now = Date.now();
+      const prev = manifestRef.current;
+      const lastFetchedAt = prev?.fetchedAt ?? manifestFetchTimeRef.current;
+      if (lastFetchedAt && now - lastFetchedAt < MANIFEST_TTL_MS) {
+        return { manifest: prev, versionChanged: false };
+      }
+
+      const manifest = await cacheGetManifest(base);
+      const fetchedAt = Date.now();
+      manifestFetchTimeRef.current = fetchedAt;
+      const maybeLastPage = (manifest as Record<string, unknown>)?.lastPage;
+
+      if (manifest?.generatedAt) {
+        const next = {
+          generatedAt: manifest.generatedAt,
+          lastPage: typeof maybeLastPage === "number" ? maybeLastPage : undefined,
+          fetchedAt,
+        };
+        const versionChanged = !prev || prev.generatedAt !== next.generatedAt;
+        manifestRef.current = next;
+        return { manifest: next, versionChanged };
+      }
+
+      const versionChanged = Boolean(prev?.generatedAt);
+      manifestRef.current = null;
+      return { manifest: null, versionChanged };
+    },
+    [],
+  );
 
   useEffect(() => {
     replacePosts(initialPosts);
@@ -1246,6 +1285,7 @@ export default function InfinitePostList({
     fetchTokenRef.current += 1;
 
     manifestRef.current = null;
+    manifestFetchTimeRef.current = null;
     prefetchingRef.current = new Set();
     recentFailRef.current = new Map();
     missingStreakRef.current = 0;
@@ -1292,21 +1332,17 @@ export default function InfinitePostList({
 
     (async () => {
       try {
-        const manifest = await cacheGetManifest(jsonBase);
+        const { manifest, versionChanged } = await maybeRefreshManifest(jsonBase);
         if (signal.aborted) return;
 
         if (manifest?.generatedAt) {
-          const maybeLastPage = (manifest as Record<string, unknown>)?.lastPage;
-          manifestRef.current = {
-            generatedAt: manifest.generatedAt,
-            lastPage: typeof maybeLastPage === "number" ? maybeLastPage : undefined,
-          };
-
           let cached: ClientPost[] | null = null;
-          try {
-            cached = await cacheReadPage(jsonBase, FIRST_JSON_PAGE, manifest.generatedAt);
-          } catch {
-            cached = null;
+          if (!versionChanged) {
+            try {
+              cached = await cacheReadPage(jsonBase, FIRST_JSON_PAGE, manifest.generatedAt);
+            } catch {
+              cached = null;
+            }
           }
           if (signal.aborted) return;
 
@@ -1348,7 +1384,7 @@ export default function InfinitePostList({
       abortController.abort();
       warmSet.delete(key);
     };
-  }, [enablePaging, jsonBase]);
+  }, [enablePaging, jsonBase, maybeRefreshManifest]);
   // Expose minimal navigation API for modal to query sequence and request more
   const navRegistryKey = jsonBase || storageKeyPrefix || "__default__";
   const navApiRef = useRef<FeedNavigationApi | null>(null);
@@ -1388,24 +1424,14 @@ export default function InfinitePostList({
 
       const url = `${base}/page-${pageNum}.json`;
 
-      // Manifest (version) — fetch once per section
-      if (!manifestRef.current) {
-        const m = await cacheGetManifest(base);
-        if (m?.generatedAt) {
-          const maybeLastPage = (m as Record<string, unknown>)?.lastPage;
-          manifestRef.current = {
-            generatedAt: m.generatedAt,
-            lastPage: typeof maybeLastPage === 'number' ? maybeLastPage : undefined,
-          };
-        }
-      }
+      const { versionChanged } = await maybeRefreshManifest(base);
 
       if (Date.now() - (recentFailRef.current.get(pageNum) ?? 0) < FAILED_PAGE_RETRY_WINDOW) {
         return { status: "error", newPosts: [] };
       }
 
       // 1) Try IndexedDB cache (if manifest/version available)
-      if (manifestRef.current?.generatedAt) {
+      if (manifestRef.current?.generatedAt && !versionChanged) {
         try {
           const cached = await cacheReadPage(base, pageNum, manifestRef.current.generatedAt);
           if (cached && cached.length >= 0) {
@@ -1437,7 +1463,8 @@ export default function InfinitePostList({
           })) as Post[];
           // Write-through to cache (best-effort)
           try {
-            const ver = manifestRef.current?.generatedAt || (await cacheGetManifest(base))?.generatedAt;
+            const ver = manifestRef.current?.generatedAt
+              || (await maybeRefreshManifest(base)).manifest?.generatedAt;
             if (ver) await cacheWritePage(base, pageNum, ver, incoming as unknown as ClientPost[]);
           } catch { /* ignore */ }
           // Prefetch next page in background
@@ -1448,6 +1475,7 @@ export default function InfinitePostList({
               prefetchingRef.current.add(key);
               (async () => {
                 try {
+                  await maybeRefreshManifest(base);
                   const r = await fetch(`${base}/page-${next}.json`, { cache: 'no-store' });
                   if (r.ok) {
                     const d = await r.json();
@@ -1457,7 +1485,8 @@ export default function InfinitePostList({
                       communityId: p.communityId || p.community || p.site || undefined,
                       communityLabel: p.communityLabel || p.community || p.site || undefined,
                     })) as Post[];
-                    const ver2 = manifestRef.current?.generatedAt || (await cacheGetManifest(base))?.generatedAt;
+                    const ver2 = manifestRef.current?.generatedAt
+                      || (await maybeRefreshManifest(base)).manifest?.generatedAt;
                     if (ver2) await cacheWritePage(base, next, ver2, norm as unknown as ClientPost[]);
                   }
                 } catch { /* ignore */ }
@@ -1494,7 +1523,7 @@ export default function InfinitePostList({
       }
       return { status: "error", newPosts: [] };
     },
-    [jsonBase]
+    [jsonBase, maybeRefreshManifest]
   );
 
   const loadMore = useCallback(async () => {
@@ -1504,13 +1533,9 @@ export default function InfinitePostList({
     if (!manifestRef.current) {
       const base = jsonBase;
       if (base) {
-        const m = await cacheGetManifest(base);
-        if (m?.generatedAt) {
-          const maybeLastPage = (m as Record<string, unknown>)?.lastPage;
-          manifestRef.current = {
-            generatedAt: m.generatedAt,
-            lastPage: typeof maybeLastPage === 'number' ? maybeLastPage : undefined,
-          };
+        const { manifest } = await maybeRefreshManifest(base);
+        if (manifest?.generatedAt) {
+          // manifestRef updated by helper
         } else {
           setHasMore(false);
           return;
@@ -1670,7 +1695,7 @@ export default function InfinitePostList({
     } catch {
       // no-op
     }
-  }, [loadPage, addPosts, jsonBase]);
+  }, [loadPage, addPosts, jsonBase, maybeRefreshManifest]);
 
   const ensureBelowBufferRows = useCallback(async (anchorId: string) => {
     const metrics = bufferMetricsRef.current;
