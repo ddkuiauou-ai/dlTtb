@@ -24,6 +24,7 @@ const FALLBACK_ROW_ESTIMATE = 200;
 const HALF_VIEWPORT_BUFFER_RATIO = 0.5;
 const MIN_BUFFER_ROWS = 4;
 const MAX_BUFFER_ROWS = 64;
+const LOAD_AHEAD_VIEWPORT_MULTIPLIER = 1.5;
 
 export type VirtualBufferSizing = {
   overscanRows: number;
@@ -56,6 +57,7 @@ export function deriveVirtualBufferSizing({
     ? Math.round(viewportHeight)
     : FALLBACK_VIEWPORT_HEIGHT;
 
+  const estimatedViewportRows = Math.max(1, Math.round(safeViewport / safeEstimate));
   const derived = Math.ceil(((safeViewport * ratio) || 0) / safeEstimate);
   const clampedOverscan = overscanOverride != null
     ? Math.max(minRows, Math.min(maxRows, Math.round(overscanOverride)))
@@ -63,7 +65,7 @@ export function deriveVirtualBufferSizing({
 
   const loadAheadBase = loadAheadOverride != null
     ? Math.max(1, Math.round(loadAheadOverride))
-    : clampedOverscan * 2;
+    : Math.max(1, Math.round(estimatedViewportRows * LOAD_AHEAD_VIEWPORT_MULTIPLIER));
   const clampedLoadAhead = Math.max(clampedOverscan, Math.min(maxRows * 2, loadAheadBase));
 
   return {
@@ -736,10 +738,9 @@ function ListVirtualizedFeed({
     const range = virtualizer.range;
     const viewportStart = Math.max(0, range?.startIndex ?? items[0]?.index ?? 0);
     const viewportEnd = Math.max(viewportStart, range?.endIndex ?? last.index);
-    const backwardBuffer = Math.min(bufferMetrics.overscanRows, viewportStart);
-    const forwardBuffer = bufferMetrics.overscanRows;
     const manualTail = loadAheadRowsOverride != null ? Math.max(1, Math.round(loadAheadRowsOverride)) : null;
-    const desiredTail = manualTail ?? (forwardBuffer + backwardBuffer);
+    const derivedTail = Math.max(1, bufferMetrics.loadAheadRows);
+    const desiredTail = manualTail ?? derivedTail;
     const threshold = Math.max(0, rowCount - Math.max(1, Math.floor(desiredTail)));
     const inTail = viewportEnd >= threshold;
     if (!inTail) return;
@@ -766,7 +767,7 @@ function ListVirtualizedFeed({
     lastLoadTriggerRef,
     isFetchingRef,
     virtualizer,
-    bufferMetrics.overscanRows,
+    bufferMetrics.loadAheadRows,
   ]);
 
   useEffect(() => {
