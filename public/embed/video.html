@@ -14,27 +14,68 @@
       const params = new URLSearchParams(location.search);
       const src = params.get('src');
       const autoplay = params.get('autoplay') === '1';
-      const el = document.getElementById('v');
-      if (autoplay) {
-        el.setAttribute('autoplay', '');
-      } else {
-        el.removeAttribute('autoplay');
-      }
+      const video = document.getElementById('v');
+      const origin = location.origin;
+
       if (src) {
-        el.src = src;
+        video.src = src;
       }
-      if (autoplay) {
-        const tryPlay = () => {
-          el.play().catch(() => {});
-        };
-        if (el.readyState >= 2) {
-          tryPlay();
-        } else {
-          el.addEventListener('canplay', tryPlay, { once: true });
+
+      let pendingCanPlayHandler = null;
+      let lastRequested = autoplay ? 'play' : 'pause';
+
+      const clearPending = () => {
+        if (pendingCanPlayHandler) {
+          video.removeEventListener('canplay', pendingCanPlayHandler);
+          pendingCanPlayHandler = null;
         }
-      } else {
-        el.pause();
-      }
+      };
+
+      const requestPlay = () => {
+        clearPending();
+        const attempt = () => {
+          const result = video.play();
+          if (result && typeof result.catch === 'function') {
+            result.catch(() => {});
+          }
+        };
+        if (video.readyState >= 2) {
+          attempt();
+        } else {
+          pendingCanPlayHandler = () => {
+            pendingCanPlayHandler = null;
+            if (lastRequested === 'play') {
+              attempt();
+            }
+          };
+          video.addEventListener('canplay', pendingCanPlayHandler, { once: true });
+        }
+      };
+
+      const applyState = () => {
+        if (lastRequested === 'play') {
+          video.setAttribute('autoplay', '');
+          requestPlay();
+        } else {
+          video.removeAttribute('autoplay');
+          clearPending();
+          video.pause();
+        }
+      };
+
+      applyState();
+
+      window.addEventListener('message', (event) => {
+        if (event.origin && event.origin !== origin) return;
+        const data = event.data;
+        if (!data || typeof data !== 'object') return;
+        const { type } = data;
+        if (type === 'play' || type === 'pause') {
+          if (lastRequested === type) return;
+          lastRequested = type;
+          applyState();
+        }
+      });
     </script>
   </body>
 </html>
