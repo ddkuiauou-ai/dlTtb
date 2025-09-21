@@ -572,7 +572,7 @@ export const PostCard = React.memo(
               {(post.thumbnail || post.hoverPlayerUrl) ? (
                 <HoverCard openDelay={1000}>
                   <HoverCardTrigger asChild>
-                    <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
+                    <div className="relative w-full aspect-[3/2] overflow-hidden md:rounded-lg">
                       <InlinePreviewMedia
                         post={post}
                         priority={isPriority}
@@ -679,7 +679,7 @@ export const PostCard = React.memo(
         : (
           <CardContent className="p-3 md:p-4">
             <div className="space-y-3">
-              <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
+              <div className="relative w-full aspect-[3/2] overflow-hidden md:rounded-lg">
                 <InlinePreviewMedia
                   post={post}
                   priority={isPriority}

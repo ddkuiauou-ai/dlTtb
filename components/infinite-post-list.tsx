@@ -412,6 +412,10 @@ function ListVirtualizedFeed({
 }: ListVirtualizedFeedProps) {
   const [cols, setCols] = useState(1);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [gapPx, setGapPx] = useState(() => {
+    if (typeof window === 'undefined') return 16;
+    return window.matchMedia('(max-width: 639px)').matches ? 0 : 16;
+  });
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => { setHasMounted(true); }, []);
@@ -428,7 +432,9 @@ function ListVirtualizedFeed({
       try {
         const w = el.clientWidth || 0;
         setContainerWidth((prev) => (prev === w ? prev : w));
-        const GAP = 16; // gap-4
+        const nextGap = typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches ? 0 : 16;
+        setGapPx((prev) => (prev === nextGap ? prev : nextGap));
+        const GAP = nextGap; // sync with rendered gap
         const MIN_ITEM = 22 * 16; // 22rem
         const maxCols = listColumns === '3-2-1' ? 3 : 2;
         let c = Math.max(1, Math.floor((w + GAP) / (MIN_ITEM + GAP)));
@@ -448,9 +454,9 @@ function ListVirtualizedFeed({
   const rowCount = Math.ceil(visiblePosts.length / Math.max(1, cols));
   const estimateRowSize = useCallback(() => {
     const effectiveLayout = cardLayoutOverride ?? layout;
-    const ROW_GAP = 16;
+    const ROW_GAP = gapPx;
     if (effectiveLayout === 'grid') {
-      const GAP = 16;
+      const GAP = gapPx;
       const w = Math.max(0, containerWidth || (rootRef.current?.clientWidth || 0));
       const c = Math.max(1, cols);
       const cardW = c > 0 ? (w - (c - 1) * GAP) / c : w;
@@ -460,7 +466,7 @@ function ListVirtualizedFeed({
     }
     const LIST_ROW_EST = 100;
     return LIST_ROW_EST + ROW_GAP;
-  }, [cols, cardLayoutOverride, layout, containerWidth, rootRef]);
+  }, [cols, cardLayoutOverride, layout, containerWidth, rootRef, gapPx]);
 
   const scrollToFn = useCallback((offset: number) => {
     try {
@@ -495,7 +501,7 @@ function ListVirtualizedFeed({
 
   useEffect(() => {
     virtualizer.measure();
-  }, [cols, containerWidth, virtualizer, visiblePosts]);
+  }, [cols, containerWidth, virtualizer, visiblePosts, gapPx]);
 
   useEffect(() => {
     if (restoringRef.current) return;
@@ -702,6 +708,11 @@ function ListVirtualizedFeed({
         @media (prefers-reduced-motion: reduce) {
           .post-anchor.restore-glow::after, .post-anchor.restore-glow::before { animation: none !important; opacity: 0 !important; }
         }
+
+        @media (max-width: 639px) {
+          .post-anchor.restore-glow::after,
+          .post-anchor.restore-glow::before { border-radius: 0; }
+        }
       `}</style>
       <div ref={rootRef}>
         <div style={{ height: virtualizer.getTotalSize(), width: '100%', position: 'relative' }}>
@@ -717,8 +728,11 @@ function ListVirtualizedFeed({
                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translate3d(0, ${vi.start}px, 0)`, willChange: 'transform' }}
               >
                 <div
-                  className="grid gap-4"
-                  style={{ gridTemplateColumns: `repeat(${Math.max(1, cols)}, minmax(0, 1fr))` }}
+                  className="grid"
+                  style={{
+                    gridTemplateColumns: `repeat(${Math.max(1, cols)}, minmax(0, 1fr))`,
+                    gap: `${gapPx}px`,
+                  }}
                 >
                   {rowPosts.map((post, i) => (
                     <div
@@ -749,7 +763,10 @@ function ListVirtualizedFeed({
                     </div>
                   ))}
                 </div>
-                <div className="h-4" aria-hidden />
+                <div
+                  aria-hidden
+                  style={{ height: `${gapPx}px` }}
+                />
               </div>
             );
           })}
