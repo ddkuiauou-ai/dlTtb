@@ -268,6 +268,140 @@ function TitleRotator({ title, className }: { title: string; className?: string 
   );
 }
 
+function usePrefersReducedMotion(): boolean {
+  const [prefers, setPrefers] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setPrefers(mq.matches);
+
+    update();
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", update);
+      return () => mq.removeEventListener("change", update);
+    }
+
+    mq.addListener(update);
+    return () => mq.removeListener(update);
+  }, []);
+
+  return prefers;
+}
+
+interface InlinePreviewMediaProps {
+  post: Post;
+  priority?: boolean;
+  sizes: string;
+  className?: string;
+  mediaClassName?: string;
+}
+
+const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaProps>(
+  ({ post, priority = false, sizes, className, mediaClassName }, forwardedRef) => {
+    const containerRef = React.useRef<HTMLDivElement | null>(null);
+    const prefersReducedMotion = usePrefersReducedMotion();
+    const [isActive, setIsActive] = React.useState(false);
+
+    const enablePreview = React.useMemo(
+      () =>
+        post.hoverPlayerKind === "mp4" &&
+        !post.hasYouTube &&
+        !post.hasX &&
+        Boolean(post.hoverPlayerUrl),
+      [post.hasX, post.hasYouTube, post.hoverPlayerKind, post.hoverPlayerUrl]
+    );
+
+    const setRefs = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        containerRef.current = node;
+        if (typeof forwardedRef === "function") {
+          forwardedRef(node);
+        } else if (forwardedRef) {
+          (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }
+      },
+      [forwardedRef]
+    );
+
+    const activate = React.useCallback(() => {
+      if (!enablePreview) return;
+      setIsActive((prev) => (prev ? prev : true));
+    }, [enablePreview]);
+
+    React.useEffect(() => {
+      if (!enablePreview || isActive) return;
+      const node = containerRef.current;
+      if (!node) return;
+      if (typeof window === "undefined") {
+        return;
+      }
+      if (!("IntersectionObserver" in window)) {
+        setIsActive(true);
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              setIsActive(true);
+              break;
+            }
+          }
+        },
+        { rootMargin: "0px 0px 160px 0px" }
+      );
+
+      observer.observe(node);
+      return () => observer.disconnect();
+    }, [enablePreview, isActive]);
+
+    const shouldShowPreview = enablePreview && isActive;
+    const allowAutoplay = shouldShowPreview && !prefersReducedMotion;
+    const iframeSrc = React.useMemo(() => {
+      if (!post.hoverPlayerUrl) return undefined;
+      const base = `/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl)}`;
+      return allowAutoplay ? `${base}&autoplay=1` : base;
+    }, [allowAutoplay, post.hoverPlayerUrl]);
+
+    const mediaClasses = cn("w-full h-full object-cover", mediaClassName);
+
+    return (
+      <div
+        ref={setRefs}
+        className={className}
+        onMouseEnter={activate}
+        onFocus={activate}
+        onTouchStart={activate}
+      >
+        {shouldShowPreview && iframeSrc ? (
+          <iframe
+            src={iframeSrc}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            className={mediaClasses}
+            style={{ border: 0 }}
+            allow="autoplay; encrypted-media; picture-in-picture"
+          />
+        ) : (
+          <Image
+            src={post.thumbnail || "/placeholder.svg"}
+            alt=""
+            fill
+            sizes={sizes}
+            className={mediaClasses}
+            priority={priority}
+            referrerPolicy="no-referrer"
+          />
+        )}
+      </div>
+    );
+  }
+);
+
+InlinePreviewMedia.displayName = "InlinePreviewMedia";
+
 
 interface PostCardProps {
   postId: string;
@@ -377,27 +511,12 @@ export const PostCard = React.memo(
             <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
               <HoverCard openDelay={1000}>
                 <HoverCardTrigger asChild>
-                  <div className="absolute inset-0">
-                    {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
-                      <iframe
-                        src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover"
-                        style={{ border: 0 }}
-                        allow="encrypted-media; picture-in-picture"
-                      />
-                    ) : (
-                      <Image
-                        src={post.thumbnail || "/placeholder.svg"}
-                        alt=""
-                        fill
-                        sizes="(max-width: 768px) 64px, 80px"
-                        className="object-cover"
-                        priority={isPriority}
-                        referrerPolicy="no-referrer"
-                      />
-                    )}
-                  </div>
+                  <InlinePreviewMedia
+                    post={post}
+                    priority={isPriority}
+                    sizes="(max-width: 768px) 64px, 80px"
+                    className="absolute inset-0"
+                  />
                 </HoverCardTrigger>
                 {(post.thumbnail || post.hoverPlayerUrl) && (
                   <HoverCardContent className={cn('w-auto', post.hoverPlayerKind === 'youtube' ? ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]' : ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'max-w-2xl' : 'max-w-xl')}>                  <PostHoverCard post={post} />
@@ -454,25 +573,12 @@ export const PostCard = React.memo(
                 <HoverCard openDelay={1000}>
                   <HoverCardTrigger asChild>
                     <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
-                      {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
-                        <iframe
-                          src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
-                          referrerPolicy="no-referrer"
-                          className="absolute inset-0 w-full h-full object-cover"
-                          style={{ border: 0 }}
-                          allow="encrypted-media; picture-in-picture"
-                        />
-                      ) : (
-                        <Image
-                          src={post.thumbnail || "/placeholder.svg"}
-                          alt=""
-                          fill
-                          sizes="480px"
-                          className="object-cover"
-                          priority={isPriority}
-                          referrerPolicy="no-referrer"
-                        />
-                      )}
+                      <InlinePreviewMedia
+                        post={post}
+                        priority={isPriority}
+                        sizes="480px"
+                        className="absolute inset-0"
+                      />
                     </div>
                   </HoverCardTrigger>
                   <HoverCardContent className={cn('w-auto', post.hoverPlayerKind === 'youtube' ? ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'w-[min(95vw,1024px)]' : 'w-[min(90vw,720px)]' : ((post.content || '').replace(/\u00a0/g, ' ').trim().length <= 60 && (post.content || '').match(/\n/g) || []).length === 0 ? 'max-w-2xl' : 'max-w-xl')}>                  <PostHoverCard post={post} />
@@ -524,25 +630,12 @@ export const PostCard = React.memo(
         ? (
           <CardContent className="flex p-0 h-24">
             <div className="relative flex-shrink-0 w-16 md:w-20 overflow-hidden md:rounded-l-lg">
-              {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
-                <iframe
-                  src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
-                  referrerPolicy="no-referrer"
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{ border: 0 }}
-                  allow="encrypted-media; picture-in-picture"
-                />
-              ) : (
-                <Image
-                  src={post.thumbnail || "/placeholder.svg"}
-                  alt=""
-                  fill
-                  sizes="(max-width: 768px) 64px, 80px"
-                  className="object-cover"
-                  priority={isPriority}
-                  referrerPolicy="no-referrer"
-                />
-              )}
+              <InlinePreviewMedia
+                post={post}
+                priority={isPriority}
+                sizes="(max-width: 768px) 64px, 80px"
+                className="absolute inset-0"
+              />
             </div>
             <div className="flex-1 min-w-0 p-3 md:p-4">
               <div className="flex flex-col justify-between h-full">
@@ -587,17 +680,12 @@ export const PostCard = React.memo(
           <CardContent className="p-3 md:p-4">
             <div className="space-y-3">
               <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden">
-                {post.hoverPlayerKind === 'mp4' && !post.hasYouTube && !post.hasX ? (
-                  <iframe
-                    src={`/embed/video.html?src=${encodeURIComponent(post.hoverPlayerUrl || '')}`}
-                    referrerPolicy="no-referrer"
-                    className="absolute inset-0 w-full h-full object-cover"
-                    style={{ border: 0 }}
-                    allow="encrypted-media; picture-in-picture"
-                  />
-                ) : (
-                  <Image src={post.thumbnail || "/placeholder.svg"} alt="" fill sizes="480px" className="object-cover" priority={isPriority} referrerPolicy="no-referrer" />
-                )}
+                <InlinePreviewMedia
+                  post={post}
+                  priority={isPriority}
+                  sizes="480px"
+                  className="absolute inset-0"
+                />
               </div>
               <div className="space-y-2 min-h-[72px] md:min-h-[92px]">
                 <h3 title={post.title} className="post-title font-semibold text-gray-900 overflow-hidden">

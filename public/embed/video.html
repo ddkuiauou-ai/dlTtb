@@ -9,11 +9,32 @@
   </head>
   <body>
     <!-- 쿼리로 mp4 URL을 전달받아 재생 -->
-    <video id="v" controls playsinline preload="metadata" autoplay muted loop></video>
+    <video id="v" controls playsinline preload="metadata" muted loop></video>
     <script>
       const params = new URLSearchParams(location.search);
       const src = params.get('src');
-      if (src) document.getElementById('v').src = src;
+      const autoplay = params.get('autoplay') === '1';
+      const el = document.getElementById('v');
+      if (autoplay) {
+        el.setAttribute('autoplay', '');
+      } else {
+        el.removeAttribute('autoplay');
+      }
+      if (src) {
+        el.src = src;
+      }
+      if (autoplay) {
+        const tryPlay = () => {
+          el.play().catch(() => {});
+        };
+        if (el.readyState >= 2) {
+          tryPlay();
+        } else {
+          el.addEventListener('canplay', tryPlay, { once: true });
+        }
+      } else {
+        el.pause();
+      }
     </script>
   </body>
 </html>
