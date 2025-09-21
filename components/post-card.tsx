@@ -300,8 +300,10 @@ interface InlinePreviewMediaProps {
 const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaProps>(
   ({ post, priority = false, sizes, className, mediaClassName }, forwardedRef) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
+    const warmupLinksRef = React.useRef<HTMLLinkElement[]>([]);
     const prefersReducedMotion = usePrefersReducedMotion();
-    const [isActive, setIsActive] = React.useState(false);
+    const [prefetched, setPrefetched] = React.useState(false);
+    const [isVisible, setIsVisible] = React.useState(false);
 
     const enablePreview = React.useMemo(
       () =>
@@ -326,38 +328,119 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
 
     const activate = React.useCallback(() => {
       if (!enablePreview) return;
-      setIsActive((prev) => (prev ? prev : true));
+      setPrefetched(true);
+      setIsVisible(true);
     }, [enablePreview]);
 
     React.useEffect(() => {
-      if (!enablePreview || isActive) return;
-      const node = containerRef.current;
-      if (!node) return;
-      if (typeof window === "undefined") {
-        return;
-      }
-      if (!("IntersectionObserver" in window)) {
-        setIsActive(true);
+      if (!enablePreview) {
+        setPrefetched(false);
+        setIsVisible(false);
         return;
       }
 
-      const observer = new IntersectionObserver(
+      const node = containerRef.current;
+      if (!node) return;
+      if (typeof window === "undefined") {
+        setPrefetched(true);
+        setIsVisible(true);
+        return;
+      }
+
+      if (!("IntersectionObserver" in window)) {
+        setPrefetched(true);
+        setIsVisible(true);
+        return;
+      }
+
+      const prefetchObserver = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
-              setIsActive(true);
+              setPrefetched(true);
               break;
             }
           }
         },
-        { rootMargin: "0px 0px 160px 0px" }
+        { rootMargin: "50% 0px 50% 0px" }
       );
 
-      observer.observe(node);
-      return () => observer.disconnect();
-    }, [enablePreview, isActive]);
+      const visibilityObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            setIsVisible(entry.isIntersecting);
+          }
+        },
+        { rootMargin: "5% 0px 5% 0px", threshold: 0.25 }
+      );
 
-    const shouldShowPreview = enablePreview && isActive;
+      prefetchObserver.observe(node);
+      visibilityObserver.observe(node);
+
+      return () => {
+        prefetchObserver.disconnect();
+        visibilityObserver.disconnect();
+      };
+    }, [enablePreview]);
+
+    React.useEffect(() => {
+      if (!prefetched) return;
+      if (!post.hoverPlayerUrl) return;
+      if (typeof document === "undefined") return;
+      if (warmupLinksRef.current.length > 0) return;
+
+      const links: HTMLLinkElement[] = [];
+
+      try {
+        const targetUrl = new URL(post.hoverPlayerUrl);
+        const origin = targetUrl.origin;
+
+        const preconnect = document.createElement("link");
+        preconnect.rel = "preconnect";
+        preconnect.href = origin;
+        preconnect.crossOrigin = "anonymous";
+        document.head.appendChild(preconnect);
+        links.push(preconnect);
+
+        const dnsPrefetch = document.createElement("link");
+        dnsPrefetch.rel = "dns-prefetch";
+        dnsPrefetch.href = origin;
+        document.head.appendChild(dnsPrefetch);
+        links.push(dnsPrefetch);
+      } catch {
+        // ignore URL parsing issues
+      }
+
+      const prefetch = document.createElement("link");
+      prefetch.rel = "prefetch";
+      prefetch.href = post.hoverPlayerUrl;
+      prefetch.as = "document";
+      prefetch.crossOrigin = "anonymous";
+      document.head.appendChild(prefetch);
+      links.push(prefetch);
+
+      warmupLinksRef.current = links;
+
+      return () => {
+        for (const link of links) {
+          link.remove();
+        }
+        warmupLinksRef.current = [];
+      };
+    }, [prefetched, post.hoverPlayerUrl]);
+
+    React.useEffect(() => {
+      return () => {
+        if (warmupLinksRef.current.length > 0) {
+          for (const link of warmupLinksRef.current) {
+            link.remove();
+          }
+          warmupLinksRef.current = [];
+        }
+      };
+    }, []);
+
+    const shouldShowPreview = enablePreview && isVisible;
     const allowAutoplay = shouldShowPreview && !prefersReducedMotion;
     const iframeSrc = React.useMemo(() => {
       if (!post.hoverPlayerUrl) return undefined;
