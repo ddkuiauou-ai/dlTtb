@@ -421,14 +421,23 @@ function ListVirtualizedFeed({
   useEffect(() => { setHasMounted(true); }, []);
 
   const estimateCacheRef = useRef<Record<string, number>>({});
+  const highestMeasuredRowRef = useRef(-1);
+  const lastMeasuredColsRef = useRef(cols);
+  const lastCacheResetKeyRef = useRef<{ cols: number; width: number } | null>(null);
   const getEstimateKey = useCallback(
     (colCount: number) => `${cardLayoutOverride ?? layout}|${Math.max(1, colCount)}`,
     [cardLayoutOverride, layout],
   );
 
   useEffect(() => {
-    estimateCacheRef.current = {};
-  }, [cardLayoutOverride, layout]);
+    const widthKey = Math.round(containerWidth || 0);
+    const prev = lastCacheResetKeyRef.current;
+    if (!prev || prev.cols !== cols || prev.width !== widthKey) {
+      lastCacheResetKeyRef.current = { cols, width: widthKey };
+      estimateCacheRef.current = {};
+      highestMeasuredRowRef.current = -1;
+    }
+  }, [cols, containerWidth]);
 
   useEffect(() => {
     if (!hasMounted) return;
@@ -460,7 +469,6 @@ function ListVirtualizedFeed({
   }, [hasMounted, listColumns, threeColAt, cols, rootRef, colsReadyRef]);
 
   const rowCount = Math.ceil(visiblePosts.length / Math.max(1, cols));
-  const visibleCount = visiblePosts.length;
   const estimateRowSize = useCallback(() => {
     const key = getEstimateKey(cols);
     const cached = estimateCacheRef.current[key];
@@ -484,15 +492,42 @@ function ListVirtualizedFeed({
     return LIST_ROW_BASE + ROW_GAP;
   }, [cardLayoutOverride, cols, containerWidth, getEstimateKey, layout, rootRef]);
 
+  const readEntryHeight = useCallback((entry: ResizeObserverEntry | undefined): number | null => {
+    if (!entry) return null;
+    const borderSize = Array.isArray(entry.borderBoxSize) ? entry.borderBoxSize[0] : entry.borderBoxSize;
+    if (borderSize && typeof borderSize === 'object' && 'blockSize' in borderSize) {
+      const blockSize = Number(borderSize.blockSize);
+      if (Number.isFinite(blockSize) && blockSize > 0) return blockSize;
+    }
+    const height = Number(entry.contentRect?.height ?? 0);
+    return Number.isFinite(height) && height > 0 ? height : null;
+  }, []);
+
   const measureRow = useCallback(
     (
       element: Element,
       entry: ResizeObserverEntry | undefined,
       instance: Virtualizer<Window, Element>,
     ) => {
-      const size = defaultMeasureElement(element, entry, instance);
+      const key = getEstimateKey(colsRef.current);
+      const cached = estimateCacheRef.current[key];
+      const entryHeight = readEntryHeight(entry);
+      const TOLERANCE = 4;
+
+      let size: ReturnType<typeof defaultMeasureElement>;
+      if (
+        typeof cached === 'number'
+        && Number.isFinite(cached)
+        && cached > 0
+        && typeof entryHeight === 'number'
+        && Math.abs(entryHeight - cached) <= TOLERANCE
+      ) {
+        size = entryHeight;
+      } else {
+        size = defaultMeasureElement(element, entry, instance);
+      }
+
       if (typeof size === 'number' && Number.isFinite(size) && size > 0) {
-        const key = getEstimateKey(colsRef.current);
         const prev = estimateCacheRef.current[key];
         const next = prev ? Math.round(prev * 0.6 + size * 0.4) : Math.round(size);
         if (!prev || Math.abs(prev - next) > 1) {
@@ -501,7 +536,7 @@ function ListVirtualizedFeed({
       }
       return size;
     },
-    [getEstimateKey],
+    [getEstimateKey, readEntryHeight],
   );
 
   const scrollToFn = useCallback((offset: number) => {
@@ -537,8 +572,54 @@ function ListVirtualizedFeed({
   const items = virtualizer.getVirtualItems();
 
   useEffect(() => {
-    virtualizer.measure();
-  }, [cols, containerWidth, virtualizer, visibleCount]);
+    const prevCols = lastMeasuredColsRef.current;
+    const maxIndex = rowCount - 1;
+    if (maxIndex < 0) {
+      highestMeasuredRowRef.current = -1;
+      lastMeasuredColsRef.current = cols;
+      return;
+    }
+
+    const needsFullMeasure = prevCols !== cols;
+    const lastMeasured = needsFullMeasure ? -1 : highestMeasuredRowRef.current;
+
+    const runMeasureRange = (start: number, end: number) => {
+      const maybeMeasureRange = (virtualizer as typeof virtualizer & {
+        measureRange?: (range: { start: number; end: number }) => void;
+      }).measureRange;
+      if (typeof maybeMeasureRange === 'function') {
+        maybeMeasureRange.call(virtualizer, { start, end });
+      } else {
+        virtualizer.measure();
+      }
+    };
+
+    if (needsFullMeasure) {
+      highestMeasuredRowRef.current = -1;
+      lastMeasuredColsRef.current = cols;
+      try {
+        // Column changes can shift anchor positions; keep the restore flow accurate by
+        // forcing a full re-measure so scroll restoration stays aligned.
+        runMeasureRange(0, maxIndex);
+        highestMeasuredRowRef.current = maxIndex;
+      } catch { /* ignore */ }
+      return;
+    }
+
+    if (lastMeasured >= maxIndex) {
+      highestMeasuredRowRef.current = maxIndex;
+      return;
+    }
+
+    const start = lastMeasured + 1;
+    const end = maxIndex;
+    if (start <= end) {
+      try {
+        runMeasureRange(start, end);
+        highestMeasuredRowRef.current = end;
+      } catch { /* ignore */ }
+    }
+  }, [rowCount, cols, virtualizer]);
 
   useEffect(() => {
     if (restoringRef.current) return;
