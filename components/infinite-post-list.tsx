@@ -1078,7 +1078,7 @@ export default function InfinitePostList({
   virtualOverscan,
   readFilter = 'all',
 }: InfinitePostListProps) {
-  const { addPosts } = usePostCache();
+  const { addPosts, replacePosts } = usePostCache();
   const searchParams = useSearchParams();
   // --- Column change observer (for grid layout) ---
   const prevColsRef = useRef<number>(0);
@@ -1118,9 +1118,6 @@ export default function InfinitePostList({
 
   // --- State & Refs ---
   const [posts, setPosts] = useState<Post[]>(initialPosts);
-  useEffect(() => {
-    addPosts(posts);
-  }, [addPosts, posts]);
   const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(true);
   // --- Live postsRef for up-to-date list ---
@@ -1170,6 +1167,61 @@ export default function InfinitePostList({
   const currentAbortRef = useRef<AbortController | null>(null);
   const manifestRef = useRef<{ generatedAt: string; lastPage?: number } | null>(null);
   const prefetchingRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    replacePosts(initialPosts);
+
+    const prevKey = prevSectionKeyRef.current;
+    if (prevKey === sectionKey) {
+      return;
+    }
+
+    prevSectionKeyRef.current = sectionKey;
+
+    dlog("section-change", {
+      from: prevKey,
+      to: sectionKey,
+      initialPage,
+      initialCount: initialPosts.length,
+    });
+
+    currentAbortRef.current?.abort();
+    currentAbortRef.current = null;
+    fetchTokenRef.current += 1;
+
+    manifestRef.current = null;
+    prefetchingRef.current = new Set();
+    recentFailRef.current = new Map();
+    missingStreakRef.current = 0;
+
+    const baselinePosts = [...initialPosts];
+    postsRef.current = baselinePosts;
+    setPosts(baselinePosts);
+
+    const baselinePage = initialPage;
+    pageRef.current = baselinePage;
+    setPage(baselinePage);
+
+    const nextHasMore = Boolean(enablePaging && jsonBase);
+    hasMoreRef.current = nextHasMore;
+    setHasMore(nextHasMore);
+
+    seenIdsRef.current = new Set(initialPosts.map((p) => p.id));
+    postIdToPageNumRef.current = new Map(initialPosts.map((p) => [p.id, baselinePage]));
+
+    isFetchingRef.current = false;
+    setIsFetching(false);
+
+    lastLoadTriggerRef.current = { rowCount: -1, page: -1 };
+    urlBootstrapDoneRef.current = false;
+  }, [
+    enablePaging,
+    initialPage,
+    initialPosts,
+    jsonBase,
+    replacePosts,
+    sectionKey,
+  ]);
 
   useEffect(() => {
     if (!enablePaging || !jsonBase) return;
@@ -1423,11 +1475,11 @@ export default function InfinitePostList({
     const myToken = ++fetchTokenRef.current;
 
     let currentPage = pageRef.current;
-    let collected: Post[] = [];
+    const collected: Post[] = [];
     let appendedCount = 0;
     let lastSuccessfulPage = currentPage;
     let pagesTried = 0;
-    let collectedPairs: { post: Post; pageNum: number }[] = [];
+    const collectedPairs: { post: Post; pageNum: number }[] = [];
     let hadError = false;
 
     while (pagesTried < MAX_PAGES_PER_CALL && hasMoreRef.current) {
@@ -1510,7 +1562,7 @@ export default function InfinitePostList({
       }
     }
     dlog("loadMore:loop-end", { appendedCount, lastSuccessfulPage, prevPage: pageRef.current });
-    if (appendedCount > 0) {
+    if (collected.length > 0) {
       addPosts(collected);
       // Commit visibility before rendering
       collectedPairs.forEach(({ post, pageNum }) => {
@@ -1518,10 +1570,6 @@ export default function InfinitePostList({
         postIdToPageNumRef.current.set(post.id, pageNum);
       });
       setPosts((prev) => [...prev, ...collected]);
-    } else if (pagesTried > 0) {
-      // We tried fetching but got no new posts (all duplicates or missing)
-      // so stop trying.
-      setHasMore(false);
     } else if (pagesTried > 0) {
       // We tried fetching but got no new posts (all duplicates or missing)
       // so stop trying.

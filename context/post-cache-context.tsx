@@ -6,6 +6,7 @@ import type { Post } from '@/lib/types';
 interface PostCacheContextType {
   posts: Map<string, Post>;
   addPosts: (posts: Post[]) => void;
+  replacePosts: (posts: Post[]) => void;
 }
 
 const PostCacheContext = createContext<PostCacheContextType | undefined>(undefined);
@@ -23,8 +24,18 @@ export function PostCacheProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const replacePosts = useCallback((newPosts: Post[]) => {
+    setPosts(() => {
+      const next = new Map<string, Post>();
+      newPosts.forEach(post => {
+        next.set(post.id, post);
+      });
+      return next;
+    });
+  }, []);
+
   return (
-    <PostCacheContext.Provider value={{ posts, addPosts }}>
+    <PostCacheContext.Provider value={{ posts, addPosts, replacePosts }}>
       {children}
     </PostCacheContext.Provider>
   );
