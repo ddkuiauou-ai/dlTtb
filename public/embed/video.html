@@ -35,6 +35,30 @@
       } else {
         el.pause();
       }
+
+      const handleMessage = (event) => {
+        if (!event || typeof event.data !== 'object' || event.data === null) return;
+        if (event.origin && event.origin !== window.location.origin) return;
+        const { type } = event.data;
+        if (type === 'pause') {
+          try {
+            el.pause();
+          } catch {
+            /* ignore */
+          }
+        } else if (type === 'play') {
+          try {
+            const maybePromise = el.play();
+            if (maybePromise && typeof maybePromise.catch === 'function') {
+              maybePromise.catch(() => {});
+            }
+          } catch {
+            /* ignore */
+          }
+        }
+      };
+
+      window.addEventListener('message', handleMessage);
     </script>
   </body>
 </html>

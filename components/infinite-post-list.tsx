@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback, useMemo, useLayoutEffect } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo, useLayoutEffect, useSyncExternalStore } from "react";
 import { useSearchParams } from "next/navigation";
 import { PostCard } from "@/components/post-card";
 import type { Post } from "@/lib/types";
@@ -11,6 +11,7 @@ import { measureElement as defaultMeasureElement, useWindowVirtualizer } from "@
 import type { Virtualizer } from "@tanstack/react-virtual";
 import { readAndClearRestore } from "@/lib/restore-session";
 import { usePostCache } from "@/context/post-cache-context";
+import { getActivatedPreviewSnapshot, subscribeToPreviewActivation } from "@/lib/post-preview-activation";
 
 // --- Constants ---
 const MISSING_LIMIT = 2;
@@ -18,6 +19,7 @@ const RETRY_BACKOFFS = [200, 400, 800];
 const FAILED_PAGE_RETRY_WINDOW = 10000; // 10s
 const MAX_PAGES_PER_CALL = 2;
 const READ_POSTS_KEY = 'readPosts:v2';
+const ACTIVE_MEDIA_ROW_HOLD = 6;
 
 const MISSING_LOOKAHEAD = 4; // pages to probe ahead before declaring no more content (slightly more tolerant of sparse tails)
 const FIRST_JSON_PAGE = 2; // page-1.json은 존재하지 않음. SSR(DB) 결과가 논리적 1페이지.
@@ -379,6 +381,7 @@ interface ListVirtualizedFeedProps {
   urlBootstrapDoneRef: React.MutableRefObject<boolean>;
   lastLoadTriggerRef: React.MutableRefObject<{ rowCount: number; page: number }>;
   isFetchingRef: React.MutableRefObject<boolean>;
+  activatedRows: number[];
 }
 
 function ListVirtualizedFeed({
@@ -410,15 +413,21 @@ function ListVirtualizedFeed({
   urlBootstrapDoneRef,
   lastLoadTriggerRef,
   isFetchingRef,
+  activatedRows,
 }: ListVirtualizedFeedProps) {
   const [cols, setCols] = useState(1);
   const colsRef = useRef(cols);
   const [containerWidth, setContainerWidth] = useState(0);
   const [hasMounted, setHasMounted] = useState(false);
+  const activatedRowSetRef = useRef<Set<number>>(new Set());
 
   useEffect(() => { colsRef.current = cols; }, [cols]);
 
   useEffect(() => { setHasMounted(true); }, []);
+
+  useEffect(() => {
+    activatedRowSetRef.current = new Set(activatedRows);
+  }, [activatedRows]);
 
   const estimateCacheRef = useRef<Record<string, number>>({});
   const highestMeasuredRowRef = useRef(-1);
@@ -469,6 +478,42 @@ function ListVirtualizedFeed({
   }, [hasMounted, listColumns, threeColAt, cols, rootRef, colsReadyRef]);
 
   const rowCount = Math.ceil(visiblePosts.length / Math.max(1, cols));
+  const rangeExtractor = useCallback(
+    (range: { start: number; end: number }) => {
+      const maxIndex = rowCount - 1;
+      if (maxIndex < 0) {
+        return [];
+      }
+
+      const start = Math.max(0, Math.min(range.start, maxIndex));
+      const end = Math.max(start, Math.min(range.end, maxIndex));
+      const base: number[] = [];
+      for (let i = start; i <= end; i++) {
+        base.push(i);
+      }
+
+      const activeRows = activatedRowSetRef.current;
+      if (!activeRows || activeRows.size === 0) {
+        return base;
+      }
+
+      const extended = new Set(base);
+      const minHold = Math.max(0, start - ACTIVE_MEDIA_ROW_HOLD);
+      const maxHold = Math.min(maxIndex, end + ACTIVE_MEDIA_ROW_HOLD);
+
+      for (const row of activeRows) {
+        if (row < minHold || row > maxHold) continue;
+        const from = Math.max(0, row - 1);
+        const to = Math.min(maxIndex, row + 1);
+        for (let i = from; i <= to; i++) {
+          extended.add(i);
+        }
+      }
+
+      return Array.from(extended).sort((a, b) => a - b);
+    },
+    [rowCount]
+  );
   const estimateRowSize = useCallback(() => {
     const key = getEstimateKey(cols);
     const cached = estimateCacheRef.current[key];
@@ -554,6 +599,7 @@ function ListVirtualizedFeed({
     overscan: virtualOverscan,
     scrollToFn,
     measureElement: measureRow,
+    rangeExtractor,
     getItemKey: (row) => {
       const idx0 = row * cols;
       return visiblePosts[idx0]?.id ?? row;
@@ -1487,6 +1533,34 @@ export default function InfinitePostList({
   const visiblePostsRef = useRef<Post[]>(visiblePosts);
   useEffect(() => { visiblePostsRef.current = visiblePosts; }, [visiblePosts]);
 
+  const activatedPreviewIds = useSyncExternalStore(
+    subscribeToPreviewActivation,
+    getActivatedPreviewSnapshot,
+    getActivatedPreviewSnapshot
+  );
+
+  const idToVisibleIndex = useMemo(() => {
+    const map = new Map<string, number>();
+    visiblePosts.forEach((post, index) => {
+      map.set(post.id, index);
+    });
+    return map;
+  }, [visiblePosts]);
+
+  const activatedRowList = useMemo(() => {
+    if (!activatedPreviewIds || activatedPreviewIds.length === 0) {
+      return [] as number[];
+    }
+    const rows = new Set<number>();
+    const colCount = Math.max(1, cols);
+    for (const id of activatedPreviewIds) {
+      const idx = idToVisibleIndex.get(id);
+      if (idx == null) continue;
+      rows.add(Math.floor(idx / colCount));
+    }
+    return Array.from(rows).sort((a, b) => a - b);
+  }, [activatedPreviewIds, idToVisibleIndex, cols]);
+
   // --- Feed metrics (read/unread counts) broadcast ---
   type FeedMetrics = { key: string; total: number; read: number; unread: number };
   const lastMetricsRef = useRef<{ total: number; read: number; unread: number } | null>(null);
@@ -1653,6 +1727,7 @@ export default function InfinitePostList({
         lastLoadTriggerRef={lastLoadTriggerRef}
         isFetchingRef={isFetchingRef}
         readPostIds={readPostIds}
+        activatedRows={activatedRowList}
       />
     );
   }
