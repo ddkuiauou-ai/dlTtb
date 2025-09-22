@@ -75,11 +75,6 @@ export default function PostGrid({
     : undefined;
   // Make restoration keys distinct per section/mode/range to avoid bleed across range changes
   const storageKey = `${title} [${defaultSection}|${effectiveRange}]`;
-  const shouldAutoWindowScrollMargin = Boolean(
-    enablePaging &&
-    isLatestTimeline &&
-    (base?.startsWith('/data/home/v1/') ?? false)
-  );
   console.log(`11111 [${defaultSection}|${effectiveRange}] ${title}`)
   return (
     <div className="space-y-4">
@@ -137,7 +132,6 @@ export default function PostGrid({
             cardLayoutOverride={cardLayoutOverride}
             threeColAt={threeColAt}
             readFilter={readFilter}
-            windowScrollMargin={shouldAutoWindowScrollMargin ? 'auto' : undefined}
           />
         </PostListProvider>
       )}
