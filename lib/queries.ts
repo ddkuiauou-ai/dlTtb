@@ -72,31 +72,32 @@ type RankedRow = { id: string; site: string; title: string | null; comment_count
  * Filters: drop items in post_rotation with active suppression for the range.
  * Output : base candidates with `score`; web layer applies site-cap interleaving & hydration.
  */
-async function fetchRankedCandidates(
+export function buildRankedCandidatesQuery(
   intervalLiteral: string,
   limit: number,
   rangeLabel: "3h" | "6h" | "24h" | "1w",
-): Promise<RankedRow[]> {
+) {
   const epochInSeconds = (RANGE_TO_HOURS[rangeLabel] ?? 24) * 3600;
 
-  const q = sql`
+  return sql`
     WITH agg AS (
-      SELECT a.post_id, p.site, p.timestamp,
+      SELECT a.post_id, p.site,
+             a.window_end AS activity_ts,
              a.view_delta, a.comment_delta, a.like_delta
       FROM mv_post_trends_agg a
       JOIN posts p ON p.id = a.post_id
       WHERE a.range_label = ${rangeLabel}
-        AND p.timestamp >= NOW() - INTERVAL \'${sql.raw(intervalLiteral)}\'
+        AND a.window_end >= NOW() - INTERVAL '${sql.raw(intervalLiteral)}'
     ),
     rate AS (
-      SELECT site, post_id, timestamp,
+      SELECT site, post_id, activity_ts,
              (view_delta    / NULLIF(${epochInSeconds},0)) * 60.0 AS view_rate,
              (comment_delta / NULLIF(${epochInSeconds},0)) * 60.0 AS comment_rate,
              (like_delta    / NULLIF(${epochInSeconds},0)) * 60.0 AS like_rate
       FROM agg
     ),
     xr AS (
-      SELECT site, post_id, timestamp,
+      SELECT site, post_id, activity_ts,
              LN(1+GREATEST(view_rate,0))    AS x_view,
              LN(1+GREATEST(comment_rate,0)) AS x_comment,
              LN(1+GREATEST(like_rate,0))    AS x_like
@@ -116,7 +117,7 @@ async function fetchRankedCandidates(
       FROM xr GROUP BY site
     ),
     dev AS (
-      SELECT r.site, r.post_id, r.timestamp,
+      SELECT r.site, r.post_id, r.activity_ts,
              LEAST(GREATEST(r.x_view,    m.p05_v), m.p95_v)    - m.med_v AS d_view,
              LEAST(GREATEST(r.x_comment, m.p05_c), m.p95_c)    - m.med_c AS d_comment,
              LEAST(GREATEST(r.x_like,    m.p05_l), m.p95_l)    - m.med_l AS d_like
@@ -130,23 +131,23 @@ async function fetchRankedCandidates(
       FROM dev GROUP BY site
     ),
     z AS (
-      SELECT d.post_id, d.site, d.timestamp,
+      SELECT d.post_id, d.site, d.activity_ts,
              d.d_view    / NULLIF(GREATEST(m.mad_v*1.4826, 0.001),0.001)   AS z_view,
              d.d_comment / NULLIF(GREATEST(m.mad_c*1.4826, 0.001),0.001)   AS z_comment,
              d.d_like    / NULLIF(GREATEST(m.mad_l*1.4826, 0.001),0.001)   AS z_like
       FROM dev d JOIN mad m USING(site)
     ),
     score AS (
-      SELECT z.post_id,
+      SELECT z.post_id, z.activity_ts,
              (1.0*LEAST(GREATEST(z_view,   -5), 5)
             + 2.0*LEAST(GREATEST(z_comment,-5), 5)
             + 1.5*LEAST(GREATEST(z_like,   -5), 5))*
-           EXP(- EXTRACT(EPOCH FROM (NOW()-z.timestamp))/3600.0 / 6.0) AS base
+           EXP(- EXTRACT(EPOCH FROM (NOW()-z.activity_ts))/3600.0 / 6.0) AS base
       FROM z
     ),
     penalty AS (
       SELECT pc.post_id,
-             CASE WHEN MAX(pc.depth) FILTER (WHERE pc.timestamp >= NOW() - INTERVAL \'${sql.raw(intervalLiteral)}\') >= 3
+             CASE WHEN MAX(pc.depth) FILTER (WHERE pc.timestamp >= NOW() - INTERVAL '${sql.raw(intervalLiteral)}') >= 3
                   THEN 0.9 ELSE 1.0 END AS depth_penalty
       FROM post_comments pc
       GROUP BY pc.post_id
@@ -168,9 +169,18 @@ async function fetchRankedCandidates(
     ORDER BY score DESC
     LIMIT ${limit}
   `;
+}
+
+async function fetchRankedCandidates(
+  intervalLiteral: string,
+  limit: number,
+  rangeLabel: "3h" | "6h" | "24h" | "1w",
+): Promise<RankedRow[]> {
+  const q = buildRankedCandidatesQuery(intervalLiteral, limit, rangeLabel);
   const res: any = await db.execute(q);
   return (res?.rows ?? res) as RankedRow[];
 }
+
 
 /**
  * 주어진 게시물 목록을 사이트별 비율에 따라 인터리빙합니다.
