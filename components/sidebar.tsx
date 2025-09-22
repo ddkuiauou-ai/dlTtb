@@ -54,7 +54,7 @@ export async function Sidebar() {
         <CardHeader className="pb-3">
           <CardTitle className="text-lg">오늘의 통계</CardTitle>
           <div className="text-xs text-gray-500">
-            지난 24시간 내 · 빌드 {builtLabel} · 다음 빌드 전까지 숨 쉬듯 증가
+            지난 24시간 내 · 빌드 {builtLabel}
           </div>
         </CardHeader>
         <CardContent>
