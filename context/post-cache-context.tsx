@@ -1,50 +1,76 @@
 'use client';
 
-import { createContext, useContext, ReactNode, useState, useCallback } from 'react';
+import { createContext, useContext, ReactNode, useState, useCallback, useMemo } from 'react';
 import type { Post } from '@/lib/types';
 
 interface PostCacheContextType {
-  posts: Map<string, Post>;
-  addPosts: (posts: Post[]) => void;
-  replacePosts: (posts: Post[]) => void;
+  postsBySection: Map<string, Map<string, Post>>;
+  addPostsToSection: (sectionKey: string, posts: Post[]) => void;
+  replacePostsForSection: (sectionKey: string, posts: Post[]) => void;
 }
 
 const PostCacheContext = createContext<PostCacheContextType | undefined>(undefined);
 
 export function PostCacheProvider({ children }: { children: ReactNode }) {
-  const [posts, setPosts] = useState<Map<string, Post>>(new Map());
+  const [postsBySection, setPostsBySection] = useState<Map<string, Map<string, Post>>>(new Map());
 
-  const addPosts = useCallback((newPosts: Post[]) => {
-    setPosts(prevPosts => {
-      const newPostsMap = new Map(prevPosts);
+  const addPostsToSection = useCallback((sectionKey: string, newPosts: Post[]) => {
+    setPostsBySection(prevPosts => {
+      const next = new Map(prevPosts);
+      const existing = next.get(sectionKey);
+      const bucket = existing ? new Map(existing) : new Map<string, Post>();
       newPosts.forEach(post => {
-        newPostsMap.set(post.id, post);
+        bucket.set(post.id, post);
       });
-      return newPostsMap;
+      next.set(sectionKey, bucket);
+      return next;
     });
   }, []);
 
-  const replacePosts = useCallback((newPosts: Post[]) => {
-    setPosts(() => {
-      const next = new Map<string, Post>();
+  const replacePostsForSection = useCallback((sectionKey: string, newPosts: Post[]) => {
+    setPostsBySection(prevPosts => {
+      const next = new Map(prevPosts);
+      const bucket = new Map<string, Post>();
       newPosts.forEach(post => {
-        next.set(post.id, post);
+        bucket.set(post.id, post);
       });
+      next.set(sectionKey, bucket);
       return next;
     });
   }, []);
 
   return (
-    <PostCacheContext.Provider value={{ posts, addPosts, replacePosts }}>
+    <PostCacheContext.Provider value={{ postsBySection, addPostsToSection, replacePostsForSection }}>
       {children}
     </PostCacheContext.Provider>
   );
 }
 
-export function usePostCache() {
+const EMPTY_POST_MAP = new Map<string, Post>();
+
+export function usePostCache(sectionKey?: string) {
   const context = useContext(PostCacheContext);
   if (context === undefined) {
     throw new Error('usePostCache must be used within a PostCacheProvider');
   }
-  return context;
+  const { postsBySection, addPostsToSection, replacePostsForSection } = context;
+  const aggregatedPosts = useMemo(() => {
+    const merged = new Map<string, Post>();
+    postsBySection.forEach(bucket => {
+      bucket.forEach((post, id) => {
+        merged.set(id, post);
+      });
+    });
+    return merged;
+  }, [postsBySection]);
+  const posts = sectionKey ? (postsBySection.get(sectionKey) ?? EMPTY_POST_MAP) : aggregatedPosts;
+  const getPostsForSection = (key: string) => postsBySection.get(key) ?? EMPTY_POST_MAP;
+
+  return {
+    posts,
+    postsBySection,
+    addPostsToSection,
+    replacePostsForSection,
+    getPostsForSection,
+  } as const;
 }

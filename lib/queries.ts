@@ -1077,17 +1077,41 @@ export async function getClusterTopPosts({
   const res: any = await db.execute(q);
   const rows: Array<{ id: string; title: string | null; site: string; commentCount: number | null; likeCount: number | null; timestamp: string; siteName: string | null; score: number; cluster_id: string; cluster_size: number; }> = (res?.rows ?? res) as any;
 
-  if (!rows?.length) return [];
+  if (!rows?.length) {
+    try {
+      console.log(`[getClusterTopPosts][${range}] base=0 (no clusters returned)`);
+    } catch {
+      // ignore
+    }
+    return [];
+  }
 
   // 교차 섹션 중복 제거 후, 사이트 비례 인터리빙
-  const filtered = rows
-    .filter((r) => !excludeSet.has(r.id))
-    .map((r: any) => ({
-      ...r,
-      clusterId: r.cluster_id,
-      clusterSize: r.cluster_size,
-    }));
+  const filteredRows = rows.filter((r) => !excludeSet.has(r.id));
+  const droppedByExclude = rows.length - filteredRows.length;
+
+  try {
+    console.log(
+      `[getClusterTopPosts][${range}] base=${rows.length} excludeSet=${excludeSet.size} dropped=${droppedByExclude}`
+    );
+  } catch {
+    // ignore
+  }
+
+  const filtered = filteredRows.map((r: any) => ({
+    ...r,
+    clusterId: r.cluster_id,
+    clusterSize: r.cluster_size,
+  }));
   const picked = interleaveProportionalCap(filtered, pageSize, perSiteCap);
+
+  try {
+    console.log(
+      `[getClusterTopPosts][${range}] filtered=${filtered.length} picked=${picked.length} pageSize=${pageSize} perSiteCap=${perSiteCap}`
+    );
+  } catch {
+    // ignore
+  }
 
   const ids = picked.map((r: any) => r.id);
   if (ids.length === 0) return [];

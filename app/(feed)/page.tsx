@@ -17,6 +17,22 @@ export default async function Home() {
   const pageSize = perSiteCap * 12;
   const used = new Set<string>();
 
+  const logSection = (label: string, posts: Array<{ id: string }>) => {
+    try {
+      let duplicates = 0;
+      for (const post of posts) {
+        if (used.has(post.id)) duplicates += 1;
+      }
+      const prevUsed = used.size;
+      const newUnique = posts.length - duplicates;
+      console.log(
+        `[Home][${label}] posts=${posts.length} newUnique=${newUnique} duplicates=${duplicates} usedBefore=${prevUsed}`
+      );
+    } catch {
+      // ignore logging errors
+    }
+  };
+
   // 1) 급상승: 3시간 정규화 랭킹
   const rising = await getMainPagePosts({
     range: "3h",
@@ -25,6 +41,7 @@ export default async function Home() {
     mode: "ranked",
     excludeIds: [],
   });
+  logSection("rising", rising);
   rising.forEach((p) => used.add(p.id));
 
   // 2) 지금 주목: 사용자 선택 range, 급상승에서 제외된 것 위주
@@ -35,6 +52,7 @@ export default async function Home() {
     mode: "ranked",
     excludeIds: Array.from(used),
   });
+  logSection("spotlight", spotlight);
   spotlight.forEach((p) => used.add(p.id));
 
   // 3) 오늘의 이슈: 24시간 클러스터 상위 (대표글만), 이전 섹션 제외
@@ -44,6 +62,7 @@ export default async function Home() {
     pageSize,
     excludeIds: Array.from(used),
   });
+  logSection("todayClusters", todayClusters);
   todayClusters.forEach((p) => used.add(p.id));
 
   // 4) 이번주: 1주 클러스터 상위, 이전 섹션 제외
@@ -53,6 +72,7 @@ export default async function Home() {
     pageSize,
     excludeIds: Array.from(used),
   });
+  logSection("weekClusters", weekClusters);
   weekClusters.forEach((p) => used.add(p.id));
 
   // 5) 최신: 선택 range 기반 신선도 정렬, 앞 섹션 모두 제외
@@ -63,6 +83,7 @@ export default async function Home() {
     mode: "fresh",
     excludeIds: Array.from(used),
   });
+  logSection("fresh", fresh);
 
   return (
     <div className="min-h-screen bg-gray-50">
