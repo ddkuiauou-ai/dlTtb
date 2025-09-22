@@ -420,6 +420,7 @@ interface ListVirtualizedFeedProps {
   layout: 'list' | 'grid';
   cardLayoutOverride?: 'grid' | 'list';
   readPostIds: ReadonlySet<string>;
+  sectionKey: string;
   listColumns: 'auto-2' | '3-2-1';
   threeColAt: 'lg' | 'xl';
   virtualOverscanOverride?: number;
@@ -453,6 +454,7 @@ function ListVirtualizedFeed({
   layout,
   cardLayoutOverride,
   readPostIds,
+  sectionKey,
   listColumns,
   threeColAt,
   virtualOverscanOverride,
@@ -1919,6 +1921,7 @@ export default function InfinitePostList({
         visiblePosts={visiblePosts}
         layout={layout}
         cardLayoutOverride={cardLayoutOverride}
+        sectionKey={sectionKey}
         listColumns={listColumns}
         threeColAt={threeColAt}
         virtualOverscanOverride={virtualOverscan}
