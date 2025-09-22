@@ -1070,6 +1070,17 @@ export async function getClusterTopPosts({
   const ids = picked.map((r: any) => r.id);
   if (ids.length === 0) return [];
 
+  const clusterSelections = picked
+    .filter((r: any) => r.clusterId)
+    .map((r: any) => ({
+      clusterId: r.clusterId,
+      score: r.score ?? 0,
+    }));
+  const postSelections = picked.map((r: any) => ({ id: r.id, score: r.score ?? 0 }));
+
+  await recordClusterRotation(range, clusterSelections);
+  await recordPostRotation(range, postSelections);
+
   const hydrated = await hydratePosts(ids);
   const hmap = new Map(hydrated.map((h: any) => [h.id, h]));
   return picked.map((p: any) => ({
