@@ -444,6 +444,7 @@ interface ListVirtualizedFeedProps {
   urlBootstrapDoneRef: React.MutableRefObject<boolean>;
   lastLoadTriggerRef: React.MutableRefObject<{ rowCount: number; page: number }>;
   isFetchingRef: React.MutableRefObject<boolean>;
+  windowScrollMargin: number;
 }
 
 function ListVirtualizedFeed({
@@ -476,6 +477,7 @@ function ListVirtualizedFeed({
   urlBootstrapDoneRef,
   lastLoadTriggerRef,
   isFetchingRef,
+  windowScrollMargin,
 }: ListVirtualizedFeedProps) {
   const [cols, setCols] = useState(1);
   const colsRef = useRef(cols);
@@ -719,7 +721,21 @@ function ListVirtualizedFeed({
       return visiblePosts[idx0]?.id ?? row;
     },
     rangeExtractor,
+    scrollMargin: windowScrollMargin,
   });
+
+  const prevScrollMarginRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (prevScrollMarginRef.current === windowScrollMargin) {
+      return;
+    }
+
+    if (prevScrollMarginRef.current !== null || windowScrollMargin !== 0) {
+      virtualizer.measure();
+    }
+
+    prevScrollMarginRef.current = windowScrollMargin;
+  }, [windowScrollMargin, virtualizer]);
 
   useEffect(() => {
     if (!DEBUG_IPL) return;
@@ -1087,6 +1103,12 @@ interface InfinitePostListProps {
   onColsChange?: (n: number) => void;
   readFilter?: string;
   /**
+   * Optional offset applied when virtualizing against the window scroller. When set to "auto",
+   * the list measures its distance from the top of the document to keep scroll positions stable
+   * with sticky headers.
+   */
+  windowScrollMargin?: 'auto' | number;
+  /**
    * Virtualized list column mode.
    * - 'auto-2': 1 → 2 columns at md breakpoint (default)
    * - '3-2-1': 1 → 2 → 3 columns at md/lg breakpoints
@@ -1135,6 +1157,7 @@ export default function InfinitePostList({
   loadAheadRows,
   virtualOverscan,
   readFilter = 'all',
+  windowScrollMargin: windowScrollMarginProp = 0,
 }: InfinitePostListProps) {
   const { addPosts, replacePosts } = usePostCache();
   const searchParams = useSearchParams();
@@ -1226,6 +1249,73 @@ export default function InfinitePostList({
   const manifestRef = useRef<ManifestSnapshot | null>(null);
   const manifestFetchTimeRef = useRef<number | null>(null);
   const prefetchingRef = useRef<Set<string>>(new Set());
+
+  const [autoWindowScrollMargin, setAutoWindowScrollMargin] = useState(0);
+  const computeWindowScrollMargin = useCallback(() => {
+    if (windowScrollMarginProp !== 'auto') return;
+    const rootEl = rootRef.current;
+    if (!rootEl) return;
+    try {
+      const rect = rootEl.getBoundingClientRect();
+      const next = Math.max(0, Math.round(rect.top + window.scrollY));
+      setAutoWindowScrollMargin((prev) => (prev === next ? prev : next));
+    } catch { /* no-op */ }
+  }, [windowScrollMarginProp]);
+
+  const derivedWindowScrollMargin = useMemo(() => {
+    if (windowScrollMarginProp === 'auto') {
+      return autoWindowScrollMargin;
+    }
+    if (typeof windowScrollMarginProp === 'number') {
+      return windowScrollMarginProp;
+    }
+    return 0;
+  }, [windowScrollMarginProp, autoWindowScrollMargin]);
+
+  useLayoutEffect(() => {
+    if (windowScrollMarginProp !== 'auto') return;
+
+    let raf = 0;
+    const trigger = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        computeWindowScrollMargin();
+      });
+    };
+
+    trigger();
+
+    const onResize = () => {
+      trigger();
+    };
+
+    window.addEventListener('resize', onResize);
+
+    let ro: ResizeObserver | null = null;
+    try {
+      ro = new window.ResizeObserver(() => {
+        trigger();
+      });
+      const rootEl = rootRef.current;
+      if (rootEl) {
+        ro.observe(rootEl);
+        if (rootEl.parentElement) {
+          ro.observe(rootEl.parentElement);
+        }
+      }
+      if (document.body) {
+        ro.observe(document.body);
+      }
+    } catch { /* no-op */ }
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      if (ro) {
+        ro.disconnect();
+      }
+    };
+  }, [windowScrollMarginProp, computeWindowScrollMargin]);
 
   const maybeRefreshManifest = useCallback(
     async (base: string | null | undefined) => {
@@ -1920,6 +2010,7 @@ export default function InfinitePostList({
         lastLoadTriggerRef={lastLoadTriggerRef}
         isFetchingRef={isFetchingRef}
         readPostIds={readPostIds}
+        windowScrollMargin={derivedWindowScrollMargin}
       />
     );
   }
