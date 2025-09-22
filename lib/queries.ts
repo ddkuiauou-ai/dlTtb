@@ -805,6 +805,28 @@ async function _getMainPagePostsRanked({
   const rows = base.filter((r) => !excludeSet.has(r.id));
   try { console.log(`[getMainPagePosts][ranked ${range}] base=${base.length} afterExclude=${rows.length}`); } catch { }
 
+  const debugRanked = (() => {
+    const flag = (process.env.DEBUG_RANKED_FEED ?? "").toLowerCase();
+    return ["1", "true", "yes", "on"].includes(flag);
+  })();
+  if (base.length === 0 || rows.length < pageSize || debugRanked) {
+    try {
+      const mvRes: any = await db.execute(
+        sql`SELECT COUNT(*) AS cnt, MAX(window_end) AS max_ts FROM mv_post_trends_agg WHERE range_label = ${range}`,
+      );
+      const mvDiag = (mvRes?.rows ?? mvRes)?.[0] ?? null;
+      console.log(`[getMainPagePosts][ranked ${range}] mv_diag`, mvDiag);
+
+      const srcRes: any = await db.execute(sql`SELECT MAX(window_end) AS max_ts FROM post_trends`);
+      const srcDiag = (srcRes?.rows ?? srcRes)?.[0] ?? null;
+      console.log(`[getMainPagePosts][ranked ${range}] post_trends_diag`, srcDiag);
+    } catch (err) {
+      if (debugRanked) {
+        console.error(`[getMainPagePosts][ranked ${range}] diag_failed`, err);
+      }
+    }
+  }
+
   // 강제 포함 후보군 (쿨다운/시간 창 무시)
   let forcedRows: RankedRow[] = [];
   if (forcedSet.size > 0) {
