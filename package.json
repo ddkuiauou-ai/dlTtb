@@ -26,7 +26,8 @@
     "build:category:shopping": "tsx scripts/build-category-json.ts shopping",
     "build:category:etc": "tsx scripts/build-category-json.ts etc",
     "build:category:all": "tsx scripts/build-category-json.ts all",
-    "build:categories": "pnpm build:category:news && pnpm build:category:humor && pnpm build:category:video && pnpm build:category:youtube && pnpm build:category:info && pnpm build:category:qna && pnpm build:category:review && pnpm build:category:debate && pnpm build:category:back && pnpm build:category:zzal && pnpm build:category:politics && pnpm build:category:shopping && pnpm build:category:etc && pnpm build:category:all"
+    "build:categories": "pnpm build:category:news && pnpm build:category:humor && pnpm build:category:video && pnpm build:category:youtube && pnpm build:category:info && pnpm build:category:qna && pnpm build:category:review && pnpm build:category:debate && pnpm build:category:back && pnpm build:category:zzal && pnpm build:category:politics && pnpm build:category:shopping && pnpm build:category:etc && pnpm build:category:all",
+    "test": "tsx --test"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.47.0",
