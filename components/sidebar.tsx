@@ -10,7 +10,7 @@ export const dynamic = "force-static";
 export const revalidate = false;
 
 export async function Sidebar() {
-  const trendingKeywords = await getTrendingKeywords("24h");
+  const trendingKeywords = await getTrendingKeywords("6h");
   const stats = await getHomeStats24h(); // `previous` is now `current - recent_additions`
 
   const builtLabel = new Date().toLocaleString("ko-KR", {
@@ -30,6 +30,7 @@ export async function Sidebar() {
             <TrendingUp className="h-5 w-5" />
             실시간 인기 키워드
           </CardTitle>
+          <div className="text-xs text-gray-500">최근 6시간 기준</div>
         </CardHeader>
         <CardContent>
           <TrendingKeywordList keywords={trendingKeywords} />

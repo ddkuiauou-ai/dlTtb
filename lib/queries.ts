@@ -1170,7 +1170,7 @@ export async function getHomeStats24h() {
   }
 }
 
-export async function getTrendingKeywords(range: "3h" | "6h" | "24h" | "1w" = "24h") {
+export async function getTrendingKeywords(range: "3h" | "6h" | "24h" | "1w" = "6h") {
   const latestWindowSubquery = db
     .select({ value: sql`MAX(${keywordTrends.windowEnd})` })
     .from(keywordTrends)
