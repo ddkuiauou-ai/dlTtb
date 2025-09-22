@@ -129,7 +129,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
     if (!contentEl) return;
 
     const videos = contentEl.querySelectorAll('video');
-    
+
     videos.forEach(async (video) => {
       let originalSrc = video.src;
       if (!originalSrc) {
@@ -144,7 +144,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
         if (originalSrc.startsWith('blob:')) {
           return;
         }
-        
+
         // Set a loading state
         video.style.opacity = '0.5';
         const poster = video.poster;
@@ -152,14 +152,14 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
 
         try {
           const response = await fetch(originalSrc, { referrerPolicy: 'no-referrer' });
-          
+
           if (!response.ok) {
             throw new Error(`Failed to fetch video: ${response.status} ${response.statusText}`);
           }
 
           const videoBlob = await response.blob();
           const blobUrl = URL.createObjectURL(videoBlob);
-          
+
           video.src = blobUrl;
           video.style.opacity = '1';
           video.poster = poster; // Restore original poster
@@ -463,7 +463,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
             {inDialog ? (
               <Link
                 href={`/posts/${post.id}`}
-                className="transition-colors hover:text-gray-600 hover:underline"
+                className="transition-colors hover:text-gray-400 hover:underline"
               >
                 {post.title}
               </Link>
