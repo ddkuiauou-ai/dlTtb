@@ -460,7 +460,16 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
           </div>
 
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-            {post.title}
+            {inDialog ? (
+              <Link
+                href={`/posts/${post.id}`}
+                className="hover:underline"
+              >
+                {post.title}
+              </Link>
+            ) : (
+              post.title
+            )}
           </h1>
 
           <div className="flex items-center justify-between">
