@@ -16,6 +16,8 @@ interface PostGridProps {
    * (섹션 간 중복 제거 및 차별화 목적)
    */
   initialPosts?: any[];
+  initialSampledPosts?: any[];
+  clampSeed?: number;
   jsonBase?: string;
   enablePaging?: boolean;
   community?: string;
@@ -38,6 +40,8 @@ export default function PostGrid({
   layout = "grid",
   mode = "ranked",
   initialPosts,
+  initialSampledPosts,
+  clampSeed,
   jsonBase,
   enablePaging = true,
   community,
@@ -118,6 +122,8 @@ export default function PostGrid({
           storageKeyPrefix={storageKey}
           rows={rows}
           randomizeOnEachMount={!!randomizeOnEachMount}
+          initialSampled={initialSampledPosts}
+          initialSeed={clampSeed}
         />
       ) : (
         <PostListProvider postIds={mapped.map(p => p.id)}>

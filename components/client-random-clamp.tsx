@@ -40,7 +40,17 @@ function pickRandom<T>(arr: T[], k: number, seed: number) {
 }
 
 export default function ClientRandomClamp({
-    items, sampleMax, layout = "grid", community, jsonBase, storageKeyPrefix, seedIntervalMs = 120000, rows = 1, randomizeOnEachMount = false,
+    items,
+    sampleMax,
+    layout = "grid",
+    community,
+    jsonBase,
+    storageKeyPrefix,
+    seedIntervalMs = 120000,
+    rows = 1,
+    randomizeOnEachMount = false,
+    initialSampled,
+    initialSeed,
 }: {
     items: any[];
     sampleMax: number;
@@ -55,6 +65,8 @@ export default function ClientRandomClamp({
      * (페이지 새로고침마다 구성이 달라짐)
      */
     randomizeOnEachMount?: boolean;
+    initialSampled?: any[];
+    initialSeed?: number;
 }) {
     const measureRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -70,12 +82,22 @@ export default function ClientRandomClamp({
     // 씨드 계산
     // - randomizeOnEachMount: 마운트마다 고정된 난수 씨드
     // - 아니면 시간 버킷 씨드(예: seedIntervalMs 단위로 바뀜; 새로고침 기준)
-    const seedRef = useRef<number>(Math.floor(Math.random() * 1e9));
-    const seed = useMemo(
-        () => (randomizeOnEachMount ? seedRef.current : Math.floor(Date.now() / seedIntervalMs)),
-        [randomizeOnEachMount, seedIntervalMs]
-    );
-    const sampled = useMemo(() => pickRandom(items, sampleMax, seed), [items, sampleMax, seed]);
+    const seedRef = useRef<number>(initialSeed ?? Math.floor(Math.random() * 1e9));
+    const seed = useMemo(() => {
+        if (randomizeOnEachMount) {
+            return seedRef.current;
+        }
+        if (initialSeed != null) {
+            return initialSeed;
+        }
+        return Math.floor(Date.now() / seedIntervalMs);
+    }, [initialSeed, randomizeOnEachMount, seedIntervalMs]);
+    const sampled = useMemo(() => {
+        if (initialSampled && initialSampled.length > 0) {
+            return initialSampled;
+        }
+        return pickRandom(items, sampleMax, seed);
+    }, [initialSampled, items, sampleMax, seed]);
 
     // 🔍 디버깅용 로그
     useEffect(() => {
@@ -86,8 +108,9 @@ export default function ClientRandomClamp({
             readyCols: cols || measuredCols,
             seed,
             randomizeOnEachMount,
+            initialSeed,
         });
-    }, [items, sampleMax, sampled, cols, measuredCols, seed, randomizeOnEachMount]);
+    }, [items, sampleMax, sampled, cols, measuredCols, seed, randomizeOnEachMount, initialSeed]);
 
     useEffect(() => {
         const el = measureRef.current;

@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/sidebar";
 import { Footer } from "@/components/footer";
 import TopRefreshOnScroll from "@/components/top-refresh-on-scroll";
 import { getMainPagePosts, getClusterTopPosts } from "@/lib/queries";
+import { sampleForClamp } from "@/lib/server-random-clamp";
 
 type Range = "3h" | "6h" | "24h" | "1w";
 
@@ -42,7 +43,12 @@ export default async function Home() {
     excludeIds: [],
   });
   logSection("rising", rising);
-  rising.forEach((p) => used.add(p.id));
+  const risingSample = sampleForClamp(rising, {
+    sampleMax: 3,
+    randomizeOnEachMount: true,
+  });
+  const risingDisplayed = risingSample.sampled;
+  risingDisplayed.forEach((p) => used.add(p.id));
 
   // 2) 지금 주목: 사용자 선택 range, 급상승에서 제외된 것 위주
   const spotlight = await getMainPagePosts({
@@ -53,7 +59,12 @@ export default async function Home() {
     excludeIds: Array.from(used),
   });
   logSection("spotlight", spotlight);
-  spotlight.forEach((p) => used.add(p.id));
+  const spotlightSample = sampleForClamp(spotlight, {
+    sampleMax: 6,
+    randomizeOnEachMount: true,
+  });
+  const spotlightDisplayed = spotlightSample.sampled;
+  spotlightDisplayed.forEach((p) => used.add(p.id));
 
   // 3) 오늘의 이슈: 24시간 클러스터 상위 (대표글만), 이전 섹션 제외
   const todayClusters = await getClusterTopPosts({
@@ -103,6 +114,8 @@ export default async function Home() {
                   layout="grid"
                   mode="ranked"
                   initialPosts={rising}
+                  initialSampledPosts={risingDisplayed}
+                  clampSeed={risingSample.seed}
                   jsonBase="/data/home/v1/3h/ranked"
                   enablePaging={false}
                   sampleMax={3}
@@ -119,6 +132,8 @@ export default async function Home() {
                   layout="grid"
                   mode="ranked"
                   initialPosts={spotlight}
+                  initialSampledPosts={spotlightDisplayed}
+                  clampSeed={spotlightSample.seed}
                   jsonBase={`/data/home/v1/${selectedRange}/ranked`}
                   enablePaging={false}
                   sampleMax={6}
