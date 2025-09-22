@@ -463,7 +463,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
             {inDialog ? (
               <Link
                 href={`/posts/${post.id}`}
-                className="hover:underline"
+                className="transition-colors hover:text-gray-600 hover:underline"
               >
                 {post.title}
               </Link>
