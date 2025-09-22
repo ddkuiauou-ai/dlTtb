@@ -2,7 +2,7 @@ import InfinitePostList from "@/components/infinite-post-list";
 import type { Post } from "@/lib/types";
 import { PostListProvider } from "@/context/post-list-context";
 import { usePostCache } from "@/context/post-cache-context";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 interface CategoryFeedProps {
   title: string;
@@ -15,11 +15,17 @@ export default function CategoryFeed({
   category,
   initialPosts,
 }: CategoryFeedProps) {
-  const { addPosts } = usePostCache();
+  const { addPostsToSection } = usePostCache();
+  const jsonBase = useMemo(() => `/data/category/${category}/v1`, [category]);
+  const storageKeyPrefix = useMemo(() => `category-${category}`, [category]);
+  const sectionKey = useMemo(
+    () => `${jsonBase}|${storageKeyPrefix}`,
+    [jsonBase, storageKeyPrefix],
+  );
 
   useEffect(() => {
-    addPosts(initialPosts);
-  }, [initialPosts, addPosts]);
+    addPostsToSection(sectionKey, initialPosts);
+  }, [addPostsToSection, initialPosts, sectionKey]);
 
   return (
     <div className="space-y-4">
@@ -28,8 +34,8 @@ export default function CategoryFeed({
         <InfinitePostList
           initialPosts={initialPosts}
           layout="list"
-          jsonBase={`/data/category/${category}/v1`}
-          storageKeyPrefix={`category-${category}`}
+          jsonBase={jsonBase}
+          storageKeyPrefix={storageKeyPrefix}
           enablePaging={true}
         />
       </PostListProvider>

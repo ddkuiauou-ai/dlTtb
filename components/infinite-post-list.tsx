@@ -1067,6 +1067,7 @@ function ListVirtualizedFeed({
                         layout={cardLayoutOverride ?? layout}
                         page={postIdToPageNumRef.current.get(post.id) || initialPage}
                         storageKeyPrefix={storageKeyPrefix}
+                        sectionKey={sectionKey}
                         isNew={(start + i) >= initialPosts.length}
                         isPriority={(start + i) < 5}
                         isRead={readPostIds.has(post.id)}
@@ -1159,7 +1160,7 @@ export default function InfinitePostList({
   readFilter = 'all',
   windowScrollMargin: windowScrollMarginProp = 0,
 }: InfinitePostListProps) {
-  const { addPosts, replacePosts } = usePostCache();
+  const { addPostsToSection, replacePostsForSection } = usePostCache();
   const searchParams = useSearchParams();
   // --- Column change observer (for grid layout) ---
   const prevColsRef = useRef<number>(0);
@@ -1287,7 +1288,7 @@ export default function InfinitePostList({
   );
 
   useEffect(() => {
-    replacePosts(initialPosts);
+    replacePostsForSection(sectionKey, initialPosts);
 
     const prevKey = prevSectionKeyRef.current;
     if (prevKey === sectionKey) {
@@ -1338,7 +1339,7 @@ export default function InfinitePostList({
     initialPage,
     initialPosts,
     jsonBase,
-    replacePosts,
+    replacePostsForSection,
     sectionKey,
   ]);
 
@@ -1667,7 +1668,7 @@ export default function InfinitePostList({
     }
     dlog("loadMore:loop-end", { appendedCount, lastSuccessfulPage, prevPage: pageRef.current });
     if (collected.length > 0) {
-      addPosts(collected);
+      addPostsToSection(sectionKey, collected);
       // Commit visibility before rendering
       collectedPairs.forEach(({ post, pageNum }) => {
         seenIdsRef.current.add(post.id);
@@ -1718,7 +1719,7 @@ export default function InfinitePostList({
     } catch {
       // no-op
     }
-  }, [loadPage, addPosts, jsonBase, maybeRefreshManifest]);
+  }, [loadPage, addPostsToSection, jsonBase, maybeRefreshManifest, sectionKey]);
 
   const ensureBelowBufferRows = useCallback(async (anchorId: string) => {
     const metrics = bufferMetricsRef.current;
@@ -2003,6 +2004,7 @@ export default function InfinitePostList({
               layout={layout}
               page={postIdToPageNumRef.current.get(post.id) || initialPage}
               storageKeyPrefix={storageKeyPrefix}
+              sectionKey={sectionKey}
               isNew={index >= initialPosts.length}
               isPriority={index < 10}
               isRead={readPostIds.has(post.id)}

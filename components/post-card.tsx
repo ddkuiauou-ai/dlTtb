@@ -698,6 +698,7 @@ interface PostCardProps {
   layout: "list" | "grid";
   page?: number;
   storageKeyPrefix?: string;
+  sectionKey: string;
   isNew?: boolean;
   isPriority?: boolean;
   isRead?: boolean;
@@ -715,10 +716,10 @@ const communityColors: Record<string, string> = {
 };
 
 export const PostCard = React.memo(
-  function PostCard({ postId, layout, page, storageKeyPrefix = "", isNew = false, isPriority = false, isRead = false }: PostCardProps) {
+  function PostCard({ postId, layout, page, storageKeyPrefix = "", sectionKey, isNew = false, isPriority = false, isRead = false }: PostCardProps) {
     const { openModal } = useModal();
     const { postIds } = usePostList();
-    const { posts } = usePostCache();
+    const { posts } = usePostCache(sectionKey);
     const post = posts.get(postId) as Post;
     const { setReasonActive: setPreviewActivationReason } = usePreviewActivationTracker(postId);
     const handleHoverCardOpenChange = React.useCallback(
