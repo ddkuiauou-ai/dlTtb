@@ -28,9 +28,8 @@ export async function Sidebar() {
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
-            실시간 인기 키워드
+            실시간 인기 키워드<div className="text-xs text-gray-500">최근 6시간 기준</div>
           </CardTitle>
-          <div className="text-xs text-gray-500">최근 6시간 기준</div>
         </CardHeader>
         <CardContent>
           <TrendingKeywordList keywords={trendingKeywords} />
