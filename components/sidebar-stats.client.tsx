@@ -96,12 +96,11 @@ function useDriftingValue(stat: SidebarStat, storageKey: string): DriftingValueS
       return;
     }
 
-    const delta = current - baselineRef.current;
     baselineRef.current = current;
     residualRef.current = 0;
     lastBumpRef.current = Date.now();
 
-    setDisplayValue((prev) => prev + delta);
+    setDisplayValue(current);
   }, [current]);
 
   React.useEffect(() => {
