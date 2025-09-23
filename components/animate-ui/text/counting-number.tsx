@@ -58,38 +58,37 @@ function CountingNumber({
     if (isInView) motionVal.set(number);
   }, [isInView, number, motionVal]);
 
+  const formatValue = React.useCallback(
+    (value: number) => {
+      let formatted =
+        decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
+
+      if (decimals > 0) {
+        formatted = formatted.replace('.', decimalSeparator);
+      }
+
+      if (padStart) {
+        const finalIntLength = Math.floor(Math.abs(number)).toString().length;
+        const [intPart, fracPart] = formatted.split(decimalSeparator);
+        const paddedInt = intPart?.padStart(finalIntLength, '0') ?? '';
+        formatted = fracPart ? `${paddedInt}${decimalSeparator}${fracPart}` : paddedInt;
+      }
+
+      return formatted;
+    },
+    [decimals, decimalSeparator, number, padStart],
+  );
+
   React.useEffect(() => {
     const unsubscribe = springVal.on('change', (latest) => {
       if (localRef.current) {
-        let formatted =
-          decimals > 0
-            ? latest.toFixed(decimals)
-            : Math.round(latest).toString();
-
-        if (decimals > 0) {
-          formatted = formatted.replace('.', decimalSeparator);
-        }
-
-        if (padStart) {
-          const finalIntLength = Math.floor(Math.abs(number)).toString().length;
-          const [intPart, fracPart] = formatted.split(decimalSeparator);
-          const paddedInt = intPart?.padStart(finalIntLength, '0') ?? '';
-          formatted = fracPart
-            ? `${paddedInt}${decimalSeparator}${fracPart}`
-            : paddedInt;
-        }
-
-        localRef.current.textContent = formatted;
+        localRef.current.textContent = formatValue(latest);
       }
     });
     return () => unsubscribe();
-  }, [springVal, decimals, padStart, number, decimalSeparator]);
+  }, [springVal, formatValue]);
 
-  const finalIntLength = Math.floor(Math.abs(number)).toString().length;
-  const initialText = padStart
-    ? '0'.padStart(finalIntLength, '0') +
-      (decimals > 0 ? decimalSeparator + '0'.repeat(decimals) : '')
-    : '0' + (decimals > 0 ? decimalSeparator + '0'.repeat(decimals) : '');
+  const initialText = formatValue(fromNumber);
 
   return (
     <span

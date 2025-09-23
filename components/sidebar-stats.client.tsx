@@ -27,9 +27,21 @@ type SidebarStatsProps = {
 export function SidebarStats({ stats }: SidebarStatsProps) {
   return (
     <div className="space-y-3 text-sm">
-      <StatisticLine label="총 게시글" stat={stats.posts} />
-      <StatisticLine label="총 댓글" stat={stats.comments} />
-      <StatisticLine label="활성 사용자" stat={stats.activeUsers} />
+      <StatisticLine
+        label="총 게시글"
+        stat={stats.posts}
+        storageKey="sidebar-stats:posts"
+      />
+      <StatisticLine
+        label="총 댓글"
+        stat={stats.comments}
+        storageKey="sidebar-stats:comments"
+      />
+      <StatisticLine
+        label="활성 사용자"
+        stat={stats.activeUsers}
+        storageKey="sidebar-stats:active-users"
+      />
     </div>
   );
 }
@@ -37,17 +49,18 @@ export function SidebarStats({ stats }: SidebarStatsProps) {
 type StatisticLineProps = {
   label: string;
   stat: SidebarStat;
+  storageKey: string;
 };
 
-function StatisticLine({ label, stat }: StatisticLineProps) {
-  const displayValue = useDriftingValue(stat);
+function StatisticLine({ label, stat, storageKey }: StatisticLineProps) {
+  const { displayValue, initialValue } = useDriftingValue(stat, storageKey);
 
   return (
     <div className="flex justify-between">
       <span className="text-gray-600">{label}</span>
       <span className="font-medium tabular-nums">
         <CountingNumber
-          fromNumber={stat.current}
+          fromNumber={initialValue}
           number={displayValue}
           transition={driftSpring}
         />
@@ -56,11 +69,19 @@ function StatisticLine({ label, stat }: StatisticLineProps) {
   );
 }
 
-function useDriftingValue(stat: SidebarStat) {
+type DriftingValueState = {
+  displayValue: number;
+  initialValue: number;
+};
+
+function useDriftingValue(stat: SidebarStat, storageKey: string): DriftingValueState {
   const { current, previous, ratePerMinute } = stat;
   const [displayValue, setDisplayValue] = React.useState(current);
+  const [initialValue, setInitialValue] = React.useState(current);
   const residualRef = React.useRef(0);
   const lastBumpRef = React.useRef<number>(Date.now());
+  const baselineRef = React.useRef(current);
+  const hydratedRef = React.useRef(false);
 
   const effectiveRate = React.useMemo(() => {
     const safeRate = Number.isFinite(ratePerMinute) ? Math.max(0, ratePerMinute) : 0;
@@ -71,10 +92,51 @@ function useDriftingValue(stat: SidebarStat) {
   }, [current, previous, ratePerMinute]);
 
   React.useEffect(() => {
-    setDisplayValue(current);
+    if (baselineRef.current === current) {
+      return;
+    }
+
+    baselineRef.current = current;
     residualRef.current = 0;
     lastBumpRef.current = Date.now();
+
+    setDisplayValue(current);
   }, [current]);
+
+  React.useEffect(() => {
+    if (hydratedRef.current) {
+      return;
+    }
+    hydratedRef.current = true;
+
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    try {
+      const raw = window.localStorage.getItem(storageKey);
+      if (!raw) {
+        return;
+      }
+
+      const parsed = JSON.parse(raw) as { value?: number; current?: number } | null;
+      const storedValue = typeof parsed?.value === "number" ? parsed.value : undefined;
+      if (storedValue === undefined) {
+        return;
+      }
+
+      const storedCurrent = typeof parsed?.current === "number" ? parsed.current : storedValue;
+      const adjusted = storedValue + (current - storedCurrent);
+
+      baselineRef.current = current;
+      residualRef.current = 0;
+      lastBumpRef.current = Date.now();
+      setInitialValue(adjusted);
+      setDisplayValue(adjusted);
+    } catch (error) {
+      console.warn("Failed to restore sidebar stat from storage", error);
+    }
+  }, [storageKey, current]);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -132,7 +194,24 @@ function useDriftingValue(stat: SidebarStat) {
     };
   }, [effectiveRate, current, previous]);
 
-  return displayValue;
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    try {
+      const payload = JSON.stringify({
+        value: displayValue,
+        current: baselineRef.current,
+        updatedAt: Date.now(),
+      });
+      window.localStorage.setItem(storageKey, payload);
+    } catch (error) {
+      console.warn("Failed to persist sidebar stat", error);
+    }
+  }, [displayValue, storageKey]);
+
+  return { displayValue, initialValue };
 }
 
 function computeNextIntervalMs(rate: number) {
