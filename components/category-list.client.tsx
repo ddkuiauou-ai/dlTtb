@@ -30,6 +30,9 @@ export function CategoryList() {
   const router = useRouter();
 
   const handleCategoryClick = (slug: string) => {
+    // Set a global timestamp to signal that a navigation is in progress.
+    (window as any).lastNavigationTime = Date.now();
+
     // 1. Get the stored range for this category, defaulting to 24h
     const range = getScopedRange('category', slug, '24h');
 

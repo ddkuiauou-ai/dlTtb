@@ -18,6 +18,7 @@ type AvatarProps = TooltipProps & {
   zIndex: number;
   transition: Transition;
   translate: string | number;
+  disableHover?: boolean;
 };
 
 function AvatarContainer({
@@ -25,6 +26,7 @@ function AvatarContainer({
   zIndex,
   transition,
   translate,
+  disableHover,
   ...props
 }: AvatarProps) {
   return (
@@ -33,8 +35,8 @@ function AvatarContainer({
         <motion.div
           data-slot="avatar-container"
           initial="initial"
-          whileHover="hover"
-          whileTap="hover"
+          whileHover={disableHover ? undefined : "hover"}
+          whileTap={disableHover ? undefined : "hover"}
           className="relative"
           style={{ zIndex }}
         >
@@ -65,6 +67,7 @@ type AvatarGroupProps = Omit<React.ComponentProps<'div'>, 'translate'> & {
   invertOverlap?: boolean;
   translate?: string | number;
   tooltipProps?: Omit<TooltipProps, 'children'>;
+  disableHover?: boolean;
 };
 
 function AvatarGroup({
@@ -75,6 +78,7 @@ function AvatarGroup({
   invertOverlap = false,
   translate = '-30%',
   tooltipProps = { side: 'top', sideOffset: 24 },
+  disableHover,
   ...props
 }: AvatarGroupProps) {
   return (
@@ -93,6 +97,7 @@ function AvatarGroup({
             }
             transition={transition}
             translate={translate}
+            disableHover={disableHover}
             {...tooltipProps}
           >
             {child}

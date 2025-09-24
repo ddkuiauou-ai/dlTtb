@@ -7,6 +7,9 @@ import { Menu, X } from "lucide-react"
 import { emitCommunity, emitCommunities } from "@/lib/communityFilter"
 import CommunityPresenceSelector from "@/components/community-presence-selector";
 import { SearchBar } from "@/components/search-bar";
+import { LogIn } from "@/components/animate-ui/icons/log-in";
+import { AnimateIcon } from "@/components/animate-ui/icons/icon";
+import { usePathname } from "next/navigation";
 
 interface Site {
   id: string;
@@ -23,6 +26,7 @@ export function HeaderClient({ sites }: HeaderClientProps) {
   const [selectedIds, setSelectedIds] = useState<string[] | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showKeyHint, setShowKeyHint] = useState(false)
+  const pathname = usePathname();
 
   // Show the keyboard hint banner once, then hide for a period
   const KEYHINT_KEY = 'isshoo:keyhint:dismissedAt:v1';
@@ -110,9 +114,13 @@ export function HeaderClient({ sites }: HeaderClientProps) {
             <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">인기글 모아보기</span>
           </div>
 
-          {/* Center: Community Selector */}
-          <div className="hidden md:flex justify-center">
+          {/* Center: Community Selector - REMOVED */}
+          <div className="hidden md:flex justify-center"></div>
+
+          {/* Right: Search Bar & Community Selector */}
+          <div className="flex-1 hidden md:flex items-center justify-end space-x-2">
             <CommunityPresenceSelector
+              key={pathname}
               items={communitiesAll}
               value={selectedIds}
               size="sm"
@@ -121,15 +129,13 @@ export function HeaderClient({ sites }: HeaderClientProps) {
               tooltipOffset={10}
               hoverLift="-20%"
               onChange={(idsOrAll) => {
-                // idsOrAll === null means ALL selected (전체)
                 if (idsOrAll == null) {
                   try { localStorage.setItem(COMM_KEY, JSON.stringify(communitiesAll.map(c => c.id))); } catch { }
                   setSelectedIds(null);
                   setSelectedCommunity("전체");
                   emitCommunities(null);
-                  emitCommunity("전체"); // backward compatibility with listeners
+                  emitCommunity("전체");
                 } else {
-                  // For UX parity, when only one is selected, mirror single-select
                   if (idsOrAll.length === 1) {
                     setSelectedIds([...idsOrAll]);
                     setSelectedCommunity(idsOrAll[0]);
@@ -143,16 +149,16 @@ export function HeaderClient({ sites }: HeaderClientProps) {
                 }
               }}
             />
-          </div>
-
-          {/* Right: Search Bar */}
-          <div className="flex-1 hidden md:flex items-center justify-end space-x-4">
             <div className="w-80">
               <SearchBar />
             </div>
             <SignedOut>
-              <SignInButton >
-                로그인
+              <SignInButton>
+                <button className="outline-none">
+                  <AnimateIcon animateOnHover>
+                    <LogIn className="h-5 w-5" />
+                  </AnimateIcon>
+                </button>
               </SignInButton>
             </SignedOut>
             <SignedIn>
@@ -176,6 +182,7 @@ export function HeaderClient({ sites }: HeaderClientProps) {
             </div>
             <div className="mb-4 overflow-x-auto">
               <CommunityPresenceSelector
+                key={pathname + '-mobile'}
                 items={communitiesAll}
                 value={selectedIds}
                 size="sm"
