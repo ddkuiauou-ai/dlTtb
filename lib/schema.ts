@@ -534,11 +534,21 @@ $$ LANGUAGE plpgsql;
 /*
 INSERT INTO sites (id, board, name, board_name, url)
 VALUES
-    ('clien', 'park', '클리앙', '자유게시판', 'https://www.clien.net/service/board/park'),
+    ('etoland','hit', '이토랜드', '히트게시판', 'https://www.etoland.co.kr/bbs/hit.php'),
+    ('slrclub','hot', 'SLR클럽', '인기글', 'https://www.slrclub.com/bbs/zboard.php?id=hot_article'),
+    ('humoruniv','humor', '웃긴대학', '오늘의베스트', 'https://web.humoruniv.com/board/humor/list.html?table=pds&st=day'),
+    ('theqoo','hot', '더쿠', '핫게시판', 'https://theqoo.net/hot'),
     ('damoang','free', '다모앙', '자유게시판', 'https://damoang.net/free'),
     ('damoang','new', '다모앙', '새로운소식', 'https://damoang.net/new'),
+    ('clien', 'park', '클리앙', '자유게시판', 'https://www.clien.net/service/board/park'),
+    ('ruliweb','best', '루리웹', '베스트', 'https://bbs.ruliweb.com/best/all?orderby=regdate&range=all'),
     ('ppomppu','hot', '뽐뿌', '핫게시판', 'https://www.ppomppu.co.kr/hot.php'),
-  ('fmkorea','best', '펨코', '베스트', 'https://www.fmkorea.com/best')
+    ('arca','hotdeal', '아카라이브', '핫딜', 'https://arca.live/b/hotdeal'),
+    ('fmkorea','best', '펨코', '베스트', 'https://www.fmkorea.com/best'),
+    ('inven','webzine', '인벤', '오픈이슈갤러리', 'https://www.inven.co.kr/board/webzine/2097?iskin=webzine'),
+    ('bobae','best', '보배드림', '베스트글', 'https://www.bobaedream.co.kr/list?code=best'),
+    ('82cook','hot', '82쿡', '자유게시판', 'https://www.82cook.com/entiz/enti.php?bn=15'),
+    ('instiz','hot', '인스티즈', '이슈', 'https://www.instiz.net/hot.htm?sid=pt'),
 ON CONFLICT (id, board)                -- 중복키(=id+board)가 있으면
 DO UPDATE SET
     name = EXCLUDED.name,

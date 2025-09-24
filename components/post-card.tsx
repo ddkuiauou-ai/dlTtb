@@ -709,10 +709,17 @@ const communityColors: Record<string, string> = {
   뽐뿌: "bg-green-100 text-green-800",
   인벤: "bg-purple-100 text-purple-800",
   MLBpark: "bg-orange-100 text-orange-800",
-  "디시인사이드": "bg-red-100 text-red-800",
+  디씨: "bg-red-100 text-red-800",
   루리웹: "bg-yellow-100 text-yellow-800",
   보배드림: "bg-indigo-100 text-indigo-800",
   펨코: "bg-indigo-100 text-indigo-800",
+  더쿠: "bg-pink-100 text-pink-800",
+  클리앙: "bg-teal-100 text-teal-800",
+  SLR클럽: "bg-cyan-100 text-cyan-800",
+  오유: "bg-lime-100 text-lime-800",
+  "82쿡": "bg-fuchsia-100 text-fuchsia-800",
+  와이고수: "bg-rose-100 text-rose-800",
+  아카라이브: "bg-amber-100 text-amber-800",
 };
 
 export const PostCard = React.memo(

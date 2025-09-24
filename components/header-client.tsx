@@ -79,10 +79,20 @@ export function HeaderClient({ sites }: HeaderClientProps) {
 
   // Use site id as the community key; display name as label
   const iconMap: Record<string, string> = {
-    clien: 'https://www.clien.net/favicon.ico',
+    etoland: 'https://www.etoland.co.kr/img/icon/sns_etoland.png?v3',
+    slrclub: 'https://www.slrclub.com/favicon.ico',
+    humoruniv: 'https://web.humoruniv.com/images/favicon.png',
+    theqoo: 'https://theqoo.net/files/attach/xeicon/favicon.ico',
     damoang: 'https://damoang.net/favicon.ico',
+    clien: 'https://www.clien.net/service/image/favicon.ico',
+    ruliweb: 'https://img.ruliweb.com/img/2016/icon/ruliweb_icon_144_144.png',
     ppomppu: 'https://www.ppomppu.co.kr/favicon.ico',
+    arca: 'https://arca.live/static/favicon.svg',
     fmkorea: 'https://www.fmkorea.com/favicon.ico',
+    inven: 'https://static.inven.co.kr/image_2011/favicon_48x48.png',
+    bobae: 'https://image.bobaedream.co.kr/renew2017/assets/images/favicon.ico',
+    '82cook': 'https://www.82cook.com/favicon.ico',
+    instiz: 'https://www.instiz.net/favicon.ico?231205',
   };
   const communitiesAll = Array.from(new Map(sites.map(s => [s.id, (s.name || s.id)])).entries()).map(([id, label]) => ({ id, label, iconUrl: iconMap[id] }));
 
