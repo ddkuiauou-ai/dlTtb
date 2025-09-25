@@ -14,7 +14,10 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const ids = await getAllPostIds();
-  return ids.map((id) => ({
+  // return ids.map((id) => ({
+  // 첫 페이지(최근 게시물) ID들만 반환
+  const firstPageIds = ids.slice(0, 20); // 페이지당 20개 게시물
+  return firstPageIds.map((id) => ({
     id,
   }));
 }
