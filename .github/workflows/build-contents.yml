@@ -8,6 +8,10 @@ on:
   # GitHub Actions 탭에서 수동으로 실행할 수 있도록 합니다.
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # 단일 스크립트들도 병렬로 빌드
   build_singular:
@@ -16,6 +20,12 @@ jobs:
       matrix:
         task: ["search-index", "post-details", "keyword-pages"]
       fail-fast: false
+    env:
+      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -32,38 +42,20 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --silent
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Check DB envs
         run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
           missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          for k in POSTGRES_HOST POSTGRES_PORT POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB; do
+            if [ -z "${!k}" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
-          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          echo "password_len=${#PASS}"
-          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
+          echo "DB secrets are set."
 
       - name: Build search index
         if: matrix.task == 'search-index'
         run: pnpm tsx scripts/build-search-index.ts
-        env:
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: Validate output layout
         if: matrix.task == 'search-index'
         run: |
@@ -77,12 +69,6 @@ jobs:
       - name: Build all post details
         if: matrix.task == 'post-details'
         run: pnpm tsx scripts/build-post-json.ts
-        env:
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: Validate output layout
         if: matrix.task == 'post-details'
         run: |
@@ -96,12 +82,6 @@ jobs:
       - name: Build all keyword pages
         if: matrix.task == 'keyword-pages'
         run: pnpm tsx scripts/build-keyword-json.ts
-        env:
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: Validate output layout
         if: matrix.task == 'keyword-pages'
         run: |
@@ -119,6 +99,7 @@ jobs:
           name: artifact-singular-search-index
           path: public/data
           if-no-files-found: error
+          retention-days: 3
 
       - name: Upload singular build artifact (post-details)
         if: matrix.task == 'post-details'
@@ -127,6 +108,7 @@ jobs:
           name: artifact-singular-post-details
           path: public/data
           if-no-files-found: error
+          retention-days: 3
 
       - name: Upload singular build artifact (keyword-pages)
         if: matrix.task == 'keyword-pages'
@@ -135,6 +117,7 @@ jobs:
           name: artifact-singular-keyword-pages
           path: public/data
           if-no-files-found: error
+          retention-days: 3
 
   # 'main' 페이지들을 병렬로 빌드하는 Job
   build_main:
@@ -144,6 +127,12 @@ jobs:
         range: ["3h", "6h", "24h", "1w"]
         section: ["fresh", "trending", "top", "ranked"]
       fail-fast: false # 특정 조합이 실패해도 다른 조합은 계속 실행합니다.
+    env:
+      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
     steps:
       - name: Checkout repository
@@ -158,39 +147,19 @@ jobs:
           node-version: "20"
           cache: "pnpm"
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --silent
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Check DB envs
         run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
           missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          for k in POSTGRES_HOST POSTGRES_PORT POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB; do
+            if [ -z "${!k}" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
-          # Show masked summary without leaking password
-          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          # Show non-sensitive breakdown
-          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          # Password diagnostics without revealing
-          echo "password_len=${#PASS}"
-          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
+          echo "DB secrets are set."
       - name: Build main pages
         run: pnpm tsx scripts/build-main-json.ts
         env:
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           RANGE: ${{ matrix.range }}
           SECTION: ${{ matrix.section }}
       - name: Validate output layout
@@ -206,6 +175,8 @@ jobs:
         with:
           name: artifact-main-${{ matrix.range }}-${{ matrix.section }}
           path: public/data
+          if-no-files-found: error
+          retention-days: 3
 
   # 'category' 페이지들을 병렬로 빌드하는 Job
   build_categories:
@@ -216,6 +187,12 @@ jobs:
         category: ["all", "humor", "video", "youtube", "info", "it", "sports", "game", "qna", "review", "news", "debate", "back", "zzal", "politics", "shopping", "etc"]
         range: ["3h", "6h", "24h", "1w"]
       fail-fast: false
+    env:
+      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
     steps:
       - name: Checkout repository
@@ -230,39 +207,18 @@ jobs:
           node-version: "20"
           cache: "pnpm"
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --silent
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Check DB envs
         run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
           missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          for k in POSTGRES_HOST POSTGRES_PORT POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB; do
+            if [ -z "${!k}" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
-          # Show masked summary without leaking password
-          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          # Show non-sensitive breakdown
-          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          # Password diagnostics without revealing
-          echo "password_len=${#PASS}"
-          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
+          echo "DB secrets are set."
       - name: Build category pages
         run: pnpm tsx scripts/build-category-json.ts ${{ matrix.category }} ${{ matrix.range }}
-        env:
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: Validate output layout
         run: |
           set -euo pipefail
@@ -276,6 +232,8 @@ jobs:
         with:
           name: artifact-category-${{ matrix.category }}-${{ matrix.range }}
           path: public/data
+          if-no-files-found: error
+          retention-days: 3
 
   # 'all-posts' 페이지들을 병렬로 빌드하는 Job
   build_all_posts:
@@ -284,6 +242,12 @@ jobs:
       matrix:
         range: ["3h", "6h", "24h", "1w"]
       fail-fast: false
+    env:
+      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
     steps:
       - name: Checkout repository
@@ -298,39 +262,18 @@ jobs:
           node-version: "20"
           cache: "pnpm"
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --silent
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Check DB envs
         run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
           missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          for k in POSTGRES_HOST POSTGRES_PORT POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB; do
+            if [ -z "${!k}" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
-          # Show masked summary without leaking password
-          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          # Show non-sensitive breakdown
-          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          # Password diagnostics without revealing
-          echo "password_len=${#PASS}"
-          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
+          echo "DB secrets are set."
       - name: Build all posts pages
         run: pnpm tsx scripts/build-allposts-json.ts ${{ matrix.range }}
-        env:
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: Validate output layout
         run: |
           set -euo pipefail
@@ -344,6 +287,8 @@ jobs:
         with:
           name: artifact-allposts-${{ matrix.range }}
           path: public/data
+          if-no-files-found: error
+          retention-days: 3
 
   # 모든 빌드 Job이 완료된 후, 결과물들을 합치고 배포하는 Job
   package_and_deploy:
@@ -372,7 +317,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --silent
 
       - name: Download all build artifacts
         uses: actions/download-artifact@v4
@@ -383,18 +328,13 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p public/data
-          echo "--- Merging all artifact contents into ./public/data ---"
-          # Loop through each downloaded artifact directory and sync its contents into public/data
           for d in artifacts/*/; do
-            if [ -d "$d" ]; then
-              echo "Merging contents of $d"
-              rsync -av "$d" public/data/
-            fi
+            [ -d "$d" ] && rsync -a "$d" public/data/
           done
-          echo "--- Final public/data directory tree ---"
-          ls -lR public/data
+          echo "files=$(find public/data -type f | wc -l)"
+          du -sh public/data || true
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Check DB envs
         run: |
           HOST='${{ secrets.POSTGRES_HOST }}'
           PORT='${{ secrets.POSTGRES_PORT }}'
@@ -404,12 +344,11 @@ jobs:
 
           missing=0
           for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \$k)
+            v=$(eval echo \${$k})
             if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
+          echo "DB secrets are set."
 
       - name: Check Clerk publishable key (masked-safe)
         run: |
@@ -418,10 +357,7 @@ jobs:
             echo "::error::NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY secret is empty."
             exit 1
           fi
-
           echo "Clerk publishable key is set."
-          echo "length=${#KEY}"
-          echo "sha256=$(printf '%s' "$KEY" | sha256sum | cut -d' ' -f1)"
 
       - name: Build & Export Next.js
         env:
