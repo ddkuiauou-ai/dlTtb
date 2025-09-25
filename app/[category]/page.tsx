@@ -5,7 +5,7 @@ export const dynamic = 'force-static';
 export const dynamicParams = false;
 export const revalidate = false;
 
-const CATEGORIES = ['news', 'humor', 'info', 'qna', 'review', 'debate', 'back', 'zzal', 'politics', 'shopping', 'etc', 'video', 'youtube', 'it', 'sports', 'all'];
+const CATEGORIES = ['news', 'humor', 'info', 'qna', 'review', 'debate', 'back', 'zzal', 'politics', 'shopping', 'etc', 'video', 'youtube', 'it', 'sports', 'game', 'all'];
 
 const CATEGORY_LABELS: Record<string, string> = {
   news: "뉴스",

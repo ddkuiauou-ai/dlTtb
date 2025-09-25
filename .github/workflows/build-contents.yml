@@ -213,7 +213,7 @@ jobs:
     strategy:
       matrix:
         # 참고: 이 목록을 실제 사용하는 카테고리 목록으로 확장해야 합니다.
-        category: ["all", "video", "youtube"]
+        category: ["all", "humor", "video", "youtube", "info", "it", "sports", "game", "qna", "review", "news", "debate", "back", "zzal", "politics", "shopping", "etc"]
         range: ["3h", "6h", "24h", "1w"]
       fail-fast: false
 

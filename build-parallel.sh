@@ -39,7 +39,7 @@ done
 # --- Matrix 실행: category 페이지 ---
 echo "Starting matrix builds for category pages..."
 # 참고: 이 카테고리 목록을 실제 사용하는 목록으로 수정하세요.
-for category in all video youtube; do
+for category in all humor video youtube info it sports game qna review news debate back zzal politics shopping etc; do
   for range in 3h 6h 24h 1w; do
     pnpm tsx scripts/build-category-json.ts "$category" "$range" &
     wait_for_job

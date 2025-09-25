@@ -28,6 +28,9 @@ const CATEGORY_DEFAULT_VIEW_MODES: Record<string, ViewMode> = {
   etc: 'list',
   all: 'list',
   back: 'grid',
+  game: 'grid',
+  sports: 'grid',
+  it: 'grid',
 };
 
 export default function CategoryFeed({
