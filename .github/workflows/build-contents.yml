@@ -34,26 +34,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Validate DB environment variables
         run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
           missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          for k in POSTGRES_HOST POSTGRES_PORT POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB; do
+            if [ -z "${!k}" ]; then 
+              echo "::error::$k is missing"
+              missing=1
+            fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
-          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          echo "password_len=${#PASS}"
-          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
+          echo "Database configuration validated"
+        env:
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
       - name: Build search index
         if: matrix.task == 'search-index'
@@ -64,15 +61,9 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      - name: Validate output layout
+      - name: Validate search index output
         if: matrix.task == 'search-index'
-        run: |
-          set -euo pipefail
-          test -f public/data/search-index.json
-          if [ -d public/data/v1 ]; then
-            echo "::error::Found unexpected 'public/data/v1'. Producers must write under posts/v1 or proper subtrees."
-            exit 1
-          fi
+        run: test -f public/data/search-index.json
 
       - name: Build all post details
         if: matrix.task == 'post-details'
@@ -83,15 +74,9 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      - name: Validate output layout
+      - name: Validate post details output
         if: matrix.task == 'post-details'
-        run: |
-          set -euo pipefail
-          test -d public/data/posts/v1
-          if [ -d public/data/v1 ]; then
-            echo "::error::Found unexpected 'public/data/v1'. Producers must write under posts/v1."
-            exit 1
-          fi
+        run: test -d public/data/posts/v1
 
       - name: Build all keyword pages
         if: matrix.task == 'keyword-pages'
@@ -102,15 +87,9 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      - name: Validate output layout
+      - name: Validate keyword pages output
         if: matrix.task == 'keyword-pages'
-        run: |
-          set -euo pipefail
-          test -d public/data/keywords
-          if [ -d public/data/v1 ]; then
-            echo "::error::Found unexpected 'public/data/v1'. Producers must write under proper subtrees."
-            exit 1
-          fi
+        run: test -d public/data/keywords
 
       - name: Upload singular build artifact (search-index)
         if: matrix.task == 'search-index'
@@ -160,29 +139,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Validate DB environment variables
         run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
           missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          for k in POSTGRES_HOST POSTGRES_PORT POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB; do
+            if [ -z "${!k}" ]; then 
+              echo "::error::$k is missing"
+              missing=1
+            fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
-          # Show masked summary without leaking password
-          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          # Show non-sensitive breakdown
-          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          # Password diagnostics without revealing
-          echo "password_len=${#PASS}"
-          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
+          echo "Database configuration validated"
+        env:
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: Build main pages
         run: pnpm tsx scripts/build-main-json.ts
         env:
@@ -193,19 +166,14 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           RANGE: ${{ matrix.range }}
           SECTION: ${{ matrix.section }}
-      - name: Validate output layout
-        run: |
-          set -euo pipefail
-          test -d "public/data/home/v1/${{ matrix.range }}/${{ matrix.section }}"
-          if [ -d public/data/v1 ]; then
-            echo "::error::Found unexpected 'public/data/v1'."
-            exit 1
-          fi
+      - name: Validate main pages output
+        run: test -d "public/data/home/v1/${{ matrix.range }}/${{ matrix.section }}"
       - name: Upload main build artifact
         uses: actions/upload-artifact@v4
         with:
           name: artifact-main-${{ matrix.range }}-${{ matrix.section }}
           path: public/data
+          if-no-files-found: error
 
   # 'category' 페이지들을 병렬로 빌드하는 Job
   build_categories:
@@ -232,29 +200,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Validate DB environment variables
         run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
           missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          for k in POSTGRES_HOST POSTGRES_PORT POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB; do
+            if [ -z "${!k}" ]; then 
+              echo "::error::$k is missing"
+              missing=1
+            fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
-          # Show masked summary without leaking password
-          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          # Show non-sensitive breakdown
-          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          # Password diagnostics without revealing
-          echo "password_len=${#PASS}"
-          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
+          echo "Database configuration validated"
+        env:
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: Build category pages
         run: pnpm tsx scripts/build-category-json.ts ${{ matrix.category }} ${{ matrix.range }}
         env:
@@ -263,19 +225,14 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      - name: Validate output layout
-        run: |
-          set -euo pipefail
-          test -d "public/data/category/${{ matrix.category }}/v1/${{ matrix.range }}"
-          if [ -d public/data/v1 ]; then
-            echo "::error::Found unexpected 'public/data/v1'."
-            exit 1
-          fi
+      - name: Validate category output
+        run: test -d "public/data/category/${{ matrix.category }}/v1/${{ matrix.range }}"
       - name: Upload category artifact
         uses: actions/upload-artifact@v4
         with:
           name: artifact-category-${{ matrix.category }}-${{ matrix.range }}
           path: public/data
+          if-no-files-found: error
 
   # 'all-posts' 페이지들을 병렬로 빌드하는 Job
   build_all_posts:
@@ -300,29 +257,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Validate DB environment variables
         run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
           missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          for k in POSTGRES_HOST POSTGRES_PORT POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB; do
+            if [ -z "${!k}" ]; then 
+              echo "::error::$k is missing"
+              missing=1
+            fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
-          # Show masked summary without leaking password
-          echo "masked=postgresql://${USER:+***}@${HOST}${PORT:+:$PORT}/${DB}"
-          # Show non-sensitive breakdown
-          echo "host=$HOST port=${PORT:-5432} user_set=$([ -n "$USER" ] && echo yes || echo no) db=$DB"
-          # Password diagnostics without revealing
-          echo "password_len=${#PASS}"
-          echo "password_sha256=$(printf '%s' "$PASS" | sha256sum | cut -d' ' -f1)"
+          echo "Database configuration validated"
+        env:
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: Build all posts pages
         run: pnpm tsx scripts/build-allposts-json.ts ${{ matrix.range }}
         env:
@@ -331,19 +282,14 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      - name: Validate output layout
-        run: |
-          set -euo pipefail
-          test -d "public/data/all/v1/${{ matrix.range }}"
-          if [ -d public/data/v1 ]; then
-            echo "::error::Found unexpected 'public/data/v1'."
-            exit 1
-          fi
+      - name: Validate all-posts output
+        run: test -d "public/data/all/v1/${{ matrix.range }}"
       - name: Upload all-posts artifact
         uses: actions/upload-artifact@v4
         with:
           name: artifact-allposts-${{ matrix.range }}
           path: public/data
+          if-no-files-found: error
 
   # 모든 빌드 Job이 완료된 후, 결과물들을 합치고 배포하는 Job
   package_and_deploy:
@@ -383,45 +329,32 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p public/data
-          echo "--- Merging all artifact contents into ./public/data ---"
-          # Loop through each downloaded artifact directory and sync its contents into public/data
+          echo "Merging build artifacts..."
           for d in artifacts/*/; do
             if [ -d "$d" ]; then
-              echo "Merging contents of $d"
-              rsync -av "$d" public/data/
+              rsync -a "$d" public/data/
             fi
           done
-          echo "--- Final public/data directory tree ---"
-          ls -lR public/data
+          echo "Artifacts merged successfully"
 
-      - name: Check DB ENVs (masked-safe)
+      - name: Validate environment variables
         run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
           missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \$k)
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
+          for k in POSTGRES_HOST POSTGRES_PORT POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY; do
+            if [ -z "${!k}" ]; then 
+              echo "::error::$k is missing"
+              missing=1
+            fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-
-          echo "All Postgres secrets are set."
-
-      - name: Check Clerk publishable key (masked-safe)
-        run: |
-          KEY='${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}'
-          if [ -z "$KEY" ]; then
-            echo "::error::NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY secret is empty."
-            exit 1
-          fi
-
-          echo "Clerk publishable key is set."
-          echo "length=${#KEY}"
-          echo "sha256=$(printf '%s' "$KEY" | sha256sum | cut -d' ' -f1)"
+          echo "All environment variables validated"
+        env:
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
 
       - name: Build & Export Next.js
         env:
