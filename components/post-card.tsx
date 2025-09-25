@@ -564,19 +564,17 @@ const InlinePreviewMedia = React.forwardRef<HTMLDivElement, InlinePreviewMediaPr
         document.head.appendChild(dnsPrefetch);
         links.push(dnsPrefetch);
 
-        // Only prefetch same-origin resources to avoid CORS errors.
-        if (origin === window.location.origin) {
-          const prefetch = document.createElement("link");
-          prefetch.rel = "prefetch";
-          prefetch.href = post.hoverPlayerUrl;
-          prefetch.as = "document";
-          prefetch.crossOrigin = "anonymous";
-          document.head.appendChild(prefetch);
-          links.push(prefetch);
-        }
       } catch {
         // ignore URL parsing issues
       }
+
+      const prefetch = document.createElement("link");
+      prefetch.rel = "prefetch";
+      prefetch.href = post.hoverPlayerUrl;
+      prefetch.as = "document";
+      prefetch.crossOrigin = "anonymous";
+      document.head.appendChild(prefetch);
+      links.push(prefetch);
 
       warmupLinksRef.current = links;
 
