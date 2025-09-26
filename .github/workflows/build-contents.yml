@@ -8,6 +8,11 @@ on:
   # GitHub Actions 탭에서 수동으로 실행할 수 있도록 합니다.
   workflow_dispatch:
 
+# 동일한 브랜치에서 여러 워크플로우가 실행될 때 이전 실행을 취소
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # 단일 스크립트들도 병렬로 빌드
   build_singular:
@@ -97,6 +102,7 @@ jobs:
         with:
           name: artifact-singular-search-index
           path: public/data
+          retention-days: 1
           if-no-files-found: error
 
       - name: Upload singular build artifact (post-details)
@@ -105,6 +111,7 @@ jobs:
         with:
           name: artifact-singular-post-details
           path: public/data
+          retention-days: 1
           if-no-files-found: error
 
       - name: Upload singular build artifact (keyword-pages)
@@ -113,6 +120,7 @@ jobs:
         with:
           name: artifact-singular-keyword-pages
           path: public/data
+          retention-days: 1
           if-no-files-found: error
 
   # 'main' 페이지들을 병렬로 빌드하는 Job
@@ -173,6 +181,7 @@ jobs:
         with:
           name: artifact-main-${{ matrix.range }}-${{ matrix.section }}
           path: public/data
+          retention-days: 1
           if-no-files-found: error
 
   # 'category' 페이지들을 병렬로 빌드하는 Job
@@ -232,6 +241,7 @@ jobs:
         with:
           name: artifact-category-${{ matrix.category }}-${{ matrix.range }}
           path: public/data
+          retention-days: 1
           if-no-files-found: error
 
   # 'all-posts' 페이지들을 병렬로 빌드하는 Job
@@ -289,6 +299,7 @@ jobs:
         with:
           name: artifact-allposts-${{ matrix.range }}
           path: public/data
+          retention-days: 1
           if-no-files-found: error
 
   # 모든 빌드 Job이 완료된 후, 결과물들을 합치고 배포하는 Job
