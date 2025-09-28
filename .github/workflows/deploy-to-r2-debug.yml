@@ -26,11 +26,11 @@ jobs:
         run: |
           echo "🔍 R2 Debug Information:"
           echo "GitHub Workspace: $GITHUB_WORKSPACE"
-          echo "R2 Bucket Name: ${{ secrets.R2_BUCKET_NAME }}"
-          echo "R2 Account ID: ${{ secrets.R2_ACCOUNT_ID }}"
-          echo "R2 Endpoint URL: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
-          echo "Has R2 Access Key: ${{ secrets.R2_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
-          echo "Has R2 Secret Key: ${{ secrets.R2_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
+          echo "R2 Bucket Name: ${{ env.R2_BUCKET_NAME }}"
+          echo "R2 Account ID: ${{ env.R2_ACCOUNT_ID }}"
+          echo "R2 Endpoint URL: https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
+          echo "Has R2 Access Key: ${{ env.R2_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
+          echo "Has R2 Secret Key: ${{ env.R2_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
 
           # 시크릿 값의 길이와 형식을 확인 (보안상 실제 값은 출력하지 않음)
           R2_ACCESS_KEY_LENGTH=${#R2_ACCESS_KEY_ID}
@@ -89,20 +89,17 @@ jobs:
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         with:
-          aws-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ env.R2_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.R2_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
       - name: Test AWS CLI authentication
         env:
-          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
-          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ env.R2_ACCOUNT_ID }}
         run: |
           echo "🔐 Testing AWS CLI authentication with R2..."
           # 간단한 AWS STS 호출로 인증 테스트
-          if aws sts get-caller-identity --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com 2>/dev/null; then
+          if aws sts get-caller-identity --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com 2>/dev/null; then
             echo "✅ AWS CLI authentication successful!"
           else
             echo "❌ AWS CLI authentication failed!"
@@ -115,22 +112,22 @@ jobs:
 
       - name: Test R2 connection and upload
         env:
-          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_BUCKET_NAME: ${{ env.R2_BUCKET_NAME }}
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           echo "Testing R2 connection..."
           # 먼저 버킷이 존재하는지 확인
-          aws s3 ls s3://${{ secrets.R2_BUCKET_NAME }}/ \
-            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com || echo "Bucket not found or no permissions"
+          aws s3 ls s3://${{ env.R2_BUCKET_NAME }}/ \
+            --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com || echo "Bucket not found or no permissions"
 
           echo "Uploading test files..."
-          aws s3 sync ./data s3://${{ secrets.R2_BUCKET_NAME }}/debug-test/ \
-            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+            aws s3 sync ./data s3://${{ env.R2_BUCKET_NAME }}/debug-test/ \
+            --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
 
           echo "Verifying upload..."
-          aws s3 ls s3://${{ secrets.R2_BUCKET_NAME }}/debug-test/ \
-            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+          aws s3 ls s3://${{ env.R2_BUCKET_NAME }}/debug-test/ \
+            --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
 
           echo "✅ Debug upload completed successfully!"
