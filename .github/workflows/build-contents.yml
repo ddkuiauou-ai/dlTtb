@@ -184,7 +184,26 @@ jobs:
     strategy:
       matrix:
         # 참고: 이 목록을 실제 사용하는 카테고리 목록으로 확장해야 합니다.
-        category: ["all", "humor", "video", "youtube", "info", "it", "sports", "game", "qna", "review", "news", "debate", "back", "zzal", "politics", "shopping", "etc"]
+        category:
+          [
+            "all",
+            "humor",
+            "video",
+            "youtube",
+            "info",
+            "it",
+            "sports",
+            "game",
+            "qna",
+            "review",
+            "news",
+            "debate",
+            "back",
+            "zzal",
+            "politics",
+            "shopping",
+            "etc",
+          ]
         range: ["3h", "6h", "24h", "1w"]
       fail-fast: false
     env:
@@ -290,11 +309,10 @@ jobs:
           if-no-files-found: error
           retention-days: 3
 
-  # 모든 빌드 Job이 완료된 후, 결과물들을 합치고 배포하는 Job
-  package_and_deploy:
+  # 메인 사이트 (HTML 페이지들) 배포
+  deploy_main_site:
     runs-on: ubuntu-latest
-    # 위에서 정의한 모든 빌드 Job들이 성공해야 이 Job이 실행됩니다.
-    needs: [build_singular, build_main, build_categories, build_all_posts]
+    needs: [build_singular]
     permissions:
       contents: read
       deployments: write
@@ -319,36 +337,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --silent
 
-      - name: Download all build artifacts
+      - name: Download singular build artifacts
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          name: artifact-singular-search-index
+          path: artifacts/search-index
 
-      - name: Combine artifacts
+      - name: Combine singular artifacts
         run: |
           set -euo pipefail
           mkdir -p public/data
-          for d in artifacts/*/; do
-            [ -d "$d" ] && rsync -a "$d" public/data/
-          done
+          rsync -a artifacts/search-index/ public/data/
           echo "files=$(find public/data -type f | wc -l)"
           du -sh public/data || true
-
-      - name: Check DB envs
-        run: |
-          HOST='${{ secrets.POSTGRES_HOST }}'
-          PORT='${{ secrets.POSTGRES_PORT }}'
-          USER='${{ secrets.POSTGRES_USER }}'
-          PASS='${{ secrets.POSTGRES_PASSWORD }}'
-          DB='${{ secrets.POSTGRES_DB }}'
-
-          missing=0
-          for k in HOST PORT USER PASS DB; do
-            v=$(eval echo \${$k})
-            if [ -z "$v" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
-          done
-          if [ $missing -ne 0 ]; then exit 1; fi
-          echo "DB secrets are set."
 
       - name: Check Clerk publishable key (masked-safe)
         run: |
@@ -370,10 +371,47 @@ jobs:
         run: |
           pnpm next build
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy Main Site to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy out --project-name=${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
           gitHubToken: ${{ secrets.TOKEN_GITHUB_COM }}
+
+  # 모든 JSON 데이터를 R2 버킷에 업로드
+  upload_json_to_r2:
+    runs-on: ubuntu-latest
+    needs: [build_singular, build_main, build_categories, build_all_posts]
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Download all JSON artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Combine all JSON artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p data
+
+          # 모든 아티팩트를 data 폴더에 합침
+          for artifact_dir in artifacts/*/; do
+            [ -d "$artifact_dir" ] && rsync -a "$artifact_dir" data/
+          done
+
+          echo "files=$(find data -type f | wc -l)"
+          du -sh data || true
+
+      - name: Upload JSON data to R2
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: r2 object put "r2://${{ secrets.CLOUDFLARE_R2_BUCKET }}/data/" --local data --recursive --exclude "*.git*" --exclude "*.DS_Store*"
