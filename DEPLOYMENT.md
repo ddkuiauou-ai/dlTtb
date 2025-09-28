@@ -26,7 +26,10 @@ GitHub 리포지토리의 **Settings > Secrets and variables > Actions**에서 �
 
 ### 프로젝트별 시크릿들 (신규):
 
-- `CLOUDFLARE_R2_BUCKET` - JSON 데이터 저장용 R2 버킷 이름
+- `R2_ACCESS_KEY_ID`: Cloudflare에서 생성한 R2 API 토큰의 Access Key ID
+- `R2_SECRET_ACCESS_KEY`: Cloudflare에서 생성한 R2 API 토큰의 Secret Access Key
+- `R2_ACCOUNT_ID`: Cloudflare 계정 ID
+- `R2_BUCKET_NAME`: 생성한 R2 버킷의 이름
 
 ### 데이터베이스 시크릿들:
 
@@ -47,11 +50,23 @@ GitHub 리포지토리의 **Settings > Secrets and variables > Actions**에서 �
 
 ### R2 버킷 생성
 
-JSON 데이터를 저장할 Cloudflare R2 버킷을 생성하세요:
+JSON 데이터를 저장할 Cloudflare R2 버킷과 API 토큰을 생성하세요:
 
-1. Cloudflare Dashboard → R2 → Create bucket
-2. 버킷 이름을 설정하고 생성
-3. 버킷 이름은 `CLOUDFLARE_R2_BUCKET` 시크릿에 저장될 값입니다.
+1. **R2 버킷 생성**:
+
+   - Cloudflare Dashboard → R2 → Create bucket
+   - 버킷 이름을 설정하고 생성
+   - 버킷 이름은 `R2_BUCKET_NAME` 시크릿에 저장될 값입니다
+
+2. **R2 API 토큰 생성**:
+   - R2 메뉴에서 **Manage R2 API Tokens** 클릭
+   - **Create API Token** 선택
+   - 권한(Permissions)은 **Object Read & Write**로 설정
+   - 원하는 버킷을 지정하거나 모든 버킷에 적용
+   - 생성된 토큰에서 다음 정보들을 복사:
+     - **Access Key ID** → `R2_ACCESS_KEY_ID` 시크릿
+     - **Secret Access Key** → `R2_SECRET_ACCESS_KEY` 시크릿
+   - **Account ID** → `R2_ACCOUNT_ID` 시크릿 (R2 개요 페이지에서 확인)
 
 ## 배포 구조
 
@@ -61,7 +76,7 @@ JSON 데이터를 저장할 Cloudflare R2 버킷을 생성하세요:
 └── data/
     └── search-index.json
 
-R2 버킷 (CLOUDFLARE_R2_BUCKET):
+R2 버킷 (R2_BUCKET_NAME):
 └── data/
     ├── posts/
     │   └── v1/
@@ -98,3 +113,13 @@ R2 버킷 (CLOUDFLARE_R2_BUCKET):
 
 - **메인 사이트**: 수백 페이지 (HTML + 검색 인덱스)
 - **JSON 데이터**: 무제한 (R2 버킷에 저장)
+
+## R2 업로드 방식
+
+JSON 데이터는 AWS CLI를 사용하여 R2 버킷에 업로드됩니다. R2는 S3 호환 API를 제공하므로 표준 AWS CLI 명령어를 사용할 수 있습니다:
+
+```bash
+aws s3 sync ./data s3://버킷이름/data/ --endpoint-url https://계정ID.r2.cloudflarestorage.com
+```
+
+이 방식은 더 표준적이고 안정적이며, 대용량 파일 업로드에 적합합니다.
