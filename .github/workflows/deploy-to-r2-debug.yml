@@ -38,6 +38,12 @@ jobs:
           echo "R2 Access Key Length: $R2_ACCESS_KEY_LENGTH characters"
           echo "R2 Secret Key Length: $R2_SECRET_KEY_LENGTH characters"
 
+          # 시크릿 값의 길이와 형식을 확인
+          R2_ACCESS_KEY_LENGTH=${#R2_ACCESS_KEY_ID}
+          R2_SECRET_KEY_LENGTH=${#R2_SECRET_ACCESS_KEY}
+          echo "R2 Access Key Length: $R2_ACCESS_KEY_LENGTH characters"
+          echo "R2 Secret Key Length: $R2_SECRET_KEY_LENGTH characters"
+
           # 시크릿 값의 처음과 끝 문자를 확인 (공백이나 줄바꿈 감지용)
           R2_ACCESS_KEY_FIRST=$(echo "$R2_ACCESS_KEY_ID" | head -c 1)
           R2_ACCESS_KEY_LAST=$(echo "$R2_ACCESS_KEY_ID" | tail -c 1)
@@ -77,12 +83,22 @@ jobs:
 
       - name: Configure AWS Credentials for R2
         uses: aws-actions/configure-aws-credentials@v4
+        env:
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         with:
           aws-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
       - name: Test AWS CLI authentication
+        env:
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           echo "🔐 Testing AWS CLI authentication with R2..."
           # 간단한 AWS STS 호출로 인증 테스트
@@ -98,6 +114,11 @@ jobs:
           fi
 
       - name: Test R2 connection and upload
+        env:
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           echo "Testing R2 connection..."
           # 먼저 버킷이 존재하는지 확인
