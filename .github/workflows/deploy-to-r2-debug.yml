@@ -9,6 +9,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # 시크릿이 Environment 수준에서 설정된 경우 아래 줄의 주석을 해제하고 실제 environment 이름을 입력하세요
+    # environment: production
 
     steps:
       - name: Checkout repository
@@ -31,6 +33,15 @@ jobs:
           echo "R2 Access Key Length: $R2_ACCESS_KEY_LENGTH characters"
           echo "R2 Secret Key Length: $R2_SECRET_KEY_LENGTH characters"
 
+          # 시크릿 값의 처음과 끝 문자를 확인 (공백이나 줄바꿈 감지용)
+          R2_ACCESS_KEY_FIRST=$(echo "$R2_ACCESS_KEY_ID" | head -c 1)
+          R2_ACCESS_KEY_LAST=$(echo "$R2_ACCESS_KEY_ID" | tail -c 1)
+          R2_SECRET_KEY_FIRST=$(echo "$R2_SECRET_ACCESS_KEY" | head -c 1)
+          R2_SECRET_KEY_LAST=$(echo "$R2_SECRET_ACCESS_KEY" | tail -c 1)
+
+          echo "Access Key starts with: '$R2_ACCESS_KEY_FIRST', ends with: '$R2_ACCESS_KEY_LAST'"
+          echo "Secret Key starts with: '$R2_SECRET_KEY_FIRST', ends with: '$R2_SECRET_KEY_LAST'"
+
           # Access Key 형식이 맞는지 확인 (보통 20자 정도)
           if [ "$R2_ACCESS_KEY_LENGTH" -lt 10 ]; then
             echo "⚠️  WARNING: R2_ACCESS_KEY_ID seems too short (expected ~20 chars)"
@@ -39,6 +50,14 @@ jobs:
           # Secret Key 형식이 맞는지 확인 (보통 40자 정도)
           if [ "$R2_SECRET_KEY_LENGTH" -lt 20 ]; then
             echo "⚠️  WARNING: R2_SECRET_ACCESS_KEY seems too short (expected ~40 chars)"
+          fi
+
+          # 공백이나 줄바꿈 문자 감지
+          if [[ "$R2_ACCESS_KEY_FIRST" =~ [[:space:]] ]] || [[ "$R2_ACCESS_KEY_LAST" =~ [[:space:]] ]]; then
+            echo "⚠️  WARNING: R2_ACCESS_KEY_ID contains leading/trailing whitespace"
+          fi
+          if [[ "$R2_SECRET_KEY_FIRST" =~ [[:space:]] ]] || [[ "$R2_SECRET_KEY_LAST" =~ [[:space:]] ]]; then
+            echo "⚠️  WARNING: R2_SECRET_ACCESS_KEY contains leading/trailing whitespace"
           fi
 
           echo "--------------------------------------------------"

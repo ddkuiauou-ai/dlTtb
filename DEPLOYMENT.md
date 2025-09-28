@@ -148,6 +148,25 @@ R2 업로드가 제대로 작동하는지 확인하려면 디버그 워크플로
    - 인증 실패 시 즉시 워크플로우 중단 (빠른 문제 파악)
 
 4. **문제 해결**:
+
+   **시크릿 접근 권한 문제 (가장 흔한 원인)**:
+
+   - 시크릿이 Organization 또는 Environment 수준에서 설정된 경우
+   - 워크플로우에 `environment` 설정이 누락된 경우
+   - 해결: job에 `environment: your-environment-name` 추가
+
+   ```yaml
+   jobs:
+     upload_json_to_r2:
+       runs-on: ubuntu-latest
+       environment: production # 또는 실제 environment 이름
+       # ... 나머지 설정
+   ```
+
+   **기타 문제 해결**:
+
    - AWS CLI 오류 시 리전 설정 확인 (`ap-northeast-2`)
    - 권한 오류 시 R2 API 토큰 재생성
    - 엔드포인트 오류 시 Account ID 확인
+   - 시크릿 값에 공백/줄바꿈 있는 경우 재입력
+   - 디버그 로그에서 "leading/trailing whitespace" 경고 확인
