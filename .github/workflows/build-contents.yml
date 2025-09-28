@@ -409,12 +409,31 @@ jobs:
           echo "files=$(find data -type f | wc -l)"
           du -sh data || true
 
+      - name: Debug R2 upload configuration
+        run: |
+          echo "🔍 R2 Upload Debug Information:"
+          echo "R2 Bucket Name: ${{ secrets.R2_BUCKET_NAME }}"
+          echo "R2 Account ID: ${{ secrets.R2_ACCOUNT_ID }}"
+          echo "R2 Endpoint URL: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
+          echo "Has R2 Access Key: ${{ secrets.R2_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
+          echo "Has R2 Secret Key: ${{ secrets.R2_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
+          echo "--------------------------------------------------"
+          echo "Files to be uploaded:"
+          find data -type f | head -20
+          echo "... (showing first 20 files)"
+          echo "Total files: $(find data -type f | wc -l)"
+          echo "Total size: $(du -sh data | cut -f1)"
+
       - name: Configure AWS CLI for R2
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
-      - run: |
+
+      - name: Upload JSON data to R2
+        run: |
+          echo "📤 Starting R2 upload..."
           aws s3 sync ./data s3://${{ secrets.R2_BUCKET_NAME }}/data/ \
-          --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+          echo "✅ R2 upload completed successfully!"

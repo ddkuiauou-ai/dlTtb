@@ -30,6 +30,7 @@ GitHub 리포지토리의 **Settings > Secrets and variables > Actions**에서 �
 - `R2_SECRET_ACCESS_KEY`: Cloudflare에서 생성한 R2 API 토큰의 Secret Access Key
 - `R2_ACCOUNT_ID`: Cloudflare 계정 ID
 - `R2_BUCKET_NAME`: 생성한 R2 버킷의 이름
+- `R2_ENDPOINT`: R2 엔드포인트 URL (선택사항, 직접 구성 가능)
 
 ### 데이터베이스 시크릿들:
 
@@ -123,3 +124,24 @@ aws s3 sync ./data s3://버킷이름/data/ --endpoint-url https://계정ID.r2.cl
 ```
 
 이 방식은 더 표준적이고 안정적이며, 대용량 파일 업로드에 적합합니다.
+
+## 디버깅 및 테스트
+
+R2 업로드가 제대로 작동하는지 확인하려면 디버그 워크플로우를 사용할 수 있습니다:
+
+1. **디버그 워크플로우 실행**:
+
+   - GitHub 리포지토리 → Actions 탭 → "DEBUG - Upload to Cloudflare R2" 워크플로우 선택
+   - "Run workflow" 버튼 클릭 (수동 실행)
+
+2. **디버그 워크플로우 기능**:
+
+   - 환경 변수 및 시크릿 값 확인
+   - 테스트 파일 생성 및 업로드
+   - R2 연결 및 권한 테스트
+   - 업로드 결과 검증
+
+3. **문제 해결**:
+   - AWS CLI 오류 시 리전 설정 확인 (`ap-northeast-2`)
+   - 권한 오류 시 R2 API 토큰 재생성
+   - 엔드포인트 오류 시 Account ID 확인

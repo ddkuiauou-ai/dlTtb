@@ -1,0 +1,57 @@
+# .github/workflows/deploy-to-r2-debug.yml
+
+name: DEBUG - Upload to Cloudflare R2
+
+on:
+  # 수동으로 실행할 수 있도록 workflow_dispatch 추가
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # --- 💡 디버깅 단계 추가 ---
+      - name: Check variables and environment
+        run: |
+          echo "GitHub Workspace: $GITHUB_WORKSPACE"
+          echo "R2 Bucket Name: ${{ secrets.R2_BUCKET_NAME }}"
+          echo "R2 Account ID: ${{ secrets.R2_ACCOUNT_ID }}"
+          echo "R2 Access Key ID: ${{ secrets.R2_ACCESS_KEY_ID }}"
+          echo "Has R2 Secret Access Key: ${{ secrets.R2_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
+          echo "--------------------------------------------------"
+          echo "Current directory structure:"
+          pwd && ls -la
+          echo "--------------------------------------------------"
+          echo "Creating test data directory and files..."
+          mkdir -p data/test
+          echo '{"test": "data", "timestamp": "'$(date)'"}' > data/test/sample.json
+          echo "Test file created:"
+          ls -la data/test/
+
+      - name: Configure AWS Credentials for R2
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Test R2 connection and upload
+        run: |
+          echo "Testing R2 connection..."
+          # 먼저 버킷이 존재하는지 확인
+          aws s3 ls s3://${{ secrets.R2_BUCKET_NAME }}/ \
+            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com || echo "Bucket not found or no permissions"
+
+          echo "Uploading test files..."
+          aws s3 sync ./data s3://${{ secrets.R2_BUCKET_NAME }}/debug-test/ \
+            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+
+          echo "Verifying upload..."
+          aws s3 ls s3://${{ secrets.R2_BUCKET_NAME }}/debug-test/ \
+            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+
+          echo "✅ Debug upload completed successfully!"
