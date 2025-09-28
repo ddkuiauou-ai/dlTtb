@@ -17,11 +17,30 @@ jobs:
       # --- 💡 디버깅 단계 추가 ---
       - name: Check variables and environment
         run: |
+          echo "🔍 R2 Debug Information:"
           echo "GitHub Workspace: $GITHUB_WORKSPACE"
           echo "R2 Bucket Name: ${{ secrets.R2_BUCKET_NAME }}"
           echo "R2 Account ID: ${{ secrets.R2_ACCOUNT_ID }}"
-          echo "R2 Access Key ID: ${{ secrets.R2_ACCESS_KEY_ID }}"
-          echo "Has R2 Secret Access Key: ${{ secrets.R2_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
+          echo "R2 Endpoint URL: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
+          echo "Has R2 Access Key: ${{ secrets.R2_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
+          echo "Has R2 Secret Key: ${{ secrets.R2_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
+
+          # 시크릿 값의 길이와 형식을 확인 (보안상 실제 값은 출력하지 않음)
+          R2_ACCESS_KEY_LENGTH=${#R2_ACCESS_KEY_ID}
+          R2_SECRET_KEY_LENGTH=${#R2_SECRET_ACCESS_KEY}
+          echo "R2 Access Key Length: $R2_ACCESS_KEY_LENGTH characters"
+          echo "R2 Secret Key Length: $R2_SECRET_KEY_LENGTH characters"
+
+          # Access Key 형식이 맞는지 확인 (보통 20자 정도)
+          if [ "$R2_ACCESS_KEY_LENGTH" -lt 10 ]; then
+            echo "⚠️  WARNING: R2_ACCESS_KEY_ID seems too short (expected ~20 chars)"
+          fi
+
+          # Secret Key 형식이 맞는지 확인 (보통 40자 정도)
+          if [ "$R2_SECRET_KEY_LENGTH" -lt 20 ]; then
+            echo "⚠️  WARNING: R2_SECRET_ACCESS_KEY seems too short (expected ~40 chars)"
+          fi
+
           echo "--------------------------------------------------"
           echo "Current directory structure:"
           pwd && ls -la
@@ -38,6 +57,21 @@ jobs:
           aws-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
+
+      - name: Test AWS CLI authentication
+        run: |
+          echo "🔐 Testing AWS CLI authentication with R2..."
+          # 간단한 AWS STS 호출로 인증 테스트
+          if aws sts get-caller-identity --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com 2>/dev/null; then
+            echo "✅ AWS CLI authentication successful!"
+          else
+            echo "❌ AWS CLI authentication failed!"
+            echo "This could mean:"
+            echo "  - Access Key ID or Secret Access Key is incorrect"
+            echo "  - Account ID is wrong"
+            echo "  - R2 API token permissions are insufficient"
+            exit 1
+          fi
 
       - name: Test R2 connection and upload
         run: |
