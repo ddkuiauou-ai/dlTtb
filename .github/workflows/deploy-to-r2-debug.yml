@@ -18,6 +18,11 @@ jobs:
 
       # --- 💡 디버깅 단계 추가 ---
       - name: Check variables and environment
+        env:
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           echo "🔍 R2 Debug Information:"
           echo "GitHub Workspace: $GITHUB_WORKSPACE"
