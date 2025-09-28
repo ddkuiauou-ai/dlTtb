@@ -120,8 +120,17 @@ R2 버킷 (R2_BUCKET_NAME):
 JSON 데이터는 AWS CLI를 사용하여 R2 버킷에 업로드됩니다. R2는 S3 호환 API를 제공하므로 표준 AWS CLI 명령어를 사용할 수 있습니다:
 
 ```bash
+# 환경 변수 설정 (job-level)
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ap-northeast-2
+
+# 업로드 명령어
 aws s3 sync ./data s3://버킷이름/data/ --endpoint-url https://계정ID.r2.cloudflarestorage.com
 ```
+
+**중요**: `aws-actions/configure-aws-credentials` 액션은 사용하지 않습니다. 이 액션은 AWS STS를 통해 인증을 검증하기 때문에 Cloudflare R2 키로는 항상 실패합니다. 대신 job-level 환경 변수를 사용하여 AWS CLI에 직접 인증 정보를 제공합니다.
 
 이 방식은 더 표준적이고 안정적이며, 대용량 파일 업로드에 적합합니다.
 
@@ -165,8 +174,7 @@ R2 업로드가 제대로 작동하는지 확인하려면 디버그 워크플로
 
    **기타 문제 해결**:
 
-   - AWS CLI 오류 시 리전 설정 확인 (`ap-northeast-2`)
-   - 권한 오류 시 R2 API 토큰 재생성
-   - 엔드포인트 오류 시 Account ID 확인
+   - AWS CLI 오류 시 R2 엔드포인트 URL 확인
+   - 권한 오류 시 R2 API 토큰 재생성 및 Object Read & Write 권한 확인
    - 시크릿 값에 공백/줄바꿈 있는 경우 재입력
    - 디버그 로그에서 "leading/trailing whitespace" 경고 확인

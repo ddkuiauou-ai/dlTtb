@@ -12,43 +12,41 @@ jobs:
     # 시크릿이 Environment 수준에서 설정된 경우 아래 줄의 주석을 해제하고 실제 environment 이름을 입력하세요
     # environment: production
 
+    # R2 인증을 위한 환경 변수 설정 (job-level)
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ap-northeast-2
+      R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_ENDPOINT_URL: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       # --- 💡 디버깅 단계 추가 ---
       - name: Check variables and environment
-        env:
-          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
-          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           echo "🔍 R2 Debug Information:"
           echo "GitHub Workspace: $GITHUB_WORKSPACE"
           echo "R2 Bucket Name: ${{ env.R2_BUCKET_NAME }}"
           echo "R2 Account ID: ${{ env.R2_ACCOUNT_ID }}"
-          echo "R2 Endpoint URL: https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
-          echo "Has R2 Access Key: ${{ env.R2_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
-          echo "Has R2 Secret Key: ${{ env.R2_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
+          echo "R2 Endpoint URL: ${{ env.R2_ENDPOINT_URL }}"
+          echo "Has R2 Access Key: ${{ env.AWS_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
+          echo "Has R2 Secret Key: ${{ env.AWS_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
 
           # 시크릿 값의 길이와 형식을 확인 (보안상 실제 값은 출력하지 않음)
-          R2_ACCESS_KEY_LENGTH=${#R2_ACCESS_KEY_ID}
-          R2_SECRET_KEY_LENGTH=${#R2_SECRET_ACCESS_KEY}
-          echo "R2 Access Key Length: $R2_ACCESS_KEY_LENGTH characters"
-          echo "R2 Secret Key Length: $R2_SECRET_KEY_LENGTH characters"
-
-          # 시크릿 값의 길이와 형식을 확인
-          R2_ACCESS_KEY_LENGTH=${#R2_ACCESS_KEY_ID}
-          R2_SECRET_KEY_LENGTH=${#R2_SECRET_ACCESS_KEY}
+          R2_ACCESS_KEY_LENGTH=${#AWS_ACCESS_KEY_ID}
+          R2_SECRET_KEY_LENGTH=${#AWS_SECRET_ACCESS_KEY}
           echo "R2 Access Key Length: $R2_ACCESS_KEY_LENGTH characters"
           echo "R2 Secret Key Length: $R2_SECRET_KEY_LENGTH characters"
 
           # 시크릿 값의 처음과 끝 문자를 확인 (공백이나 줄바꿈 감지용)
-          R2_ACCESS_KEY_FIRST=$(echo "$R2_ACCESS_KEY_ID" | head -c 1)
-          R2_ACCESS_KEY_LAST=$(echo "$R2_ACCESS_KEY_ID" | tail -c 1)
-          R2_SECRET_KEY_FIRST=$(echo "$R2_SECRET_ACCESS_KEY" | head -c 1)
-          R2_SECRET_KEY_LAST=$(echo "$R2_SECRET_ACCESS_KEY" | tail -c 1)
+          R2_ACCESS_KEY_FIRST=$(echo "$AWS_ACCESS_KEY_ID" | head -c 1)
+          R2_ACCESS_KEY_LAST=$(echo "$AWS_ACCESS_KEY_ID" | tail -c 1)
+          R2_SECRET_KEY_FIRST=$(echo "$AWS_SECRET_ACCESS_KEY" | head -c 1)
+          R2_SECRET_KEY_LAST=$(echo "$AWS_SECRET_ACCESS_KEY" | tail -c 1)
 
           echo "Access Key starts with: '$R2_ACCESS_KEY_FIRST', ends with: '$R2_ACCESS_KEY_LAST'"
           echo "Secret Key starts with: '$R2_SECRET_KEY_FIRST', ends with: '$R2_SECRET_KEY_LAST'"
@@ -81,53 +79,31 @@ jobs:
           echo "Test file created:"
           ls -la data/test/
 
-      - name: Configure AWS Credentials for R2
-        uses: aws-actions/configure-aws-credentials@v4
-        env:
-          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
-          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-        with:
-          aws-access-key-id: ${{ env.R2_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.R2_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      - name: Test AWS CLI authentication
-        env:
-          R2_ACCOUNT_ID: ${{ env.R2_ACCOUNT_ID }}
+      - name: Test AWS CLI connection to R2
         run: |
-          echo "🔐 Testing AWS CLI authentication with R2..."
-          # 간단한 AWS STS 호출로 인증 테스트
-          if aws sts get-caller-identity --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com 2>/dev/null; then
-            echo "✅ AWS CLI authentication successful!"
+          echo "🔐 Testing AWS CLI connection to R2..."
+          # R2 버킷 접근 테스트
+          if aws s3 ls s3://${{ env.R2_BUCKET_NAME }}/ --endpoint-url ${{ env.R2_ENDPOINT_URL }} 2>/dev/null; then
+            echo "✅ AWS CLI connection to R2 successful!"
           else
-            echo "❌ AWS CLI authentication failed!"
+            echo "❌ AWS CLI connection to R2 failed!"
             echo "This could mean:"
             echo "  - Access Key ID or Secret Access Key is incorrect"
             echo "  - Account ID is wrong"
             echo "  - R2 API token permissions are insufficient"
+            echo "  - Bucket does not exist"
             exit 1
           fi
 
-      - name: Test R2 connection and upload
-        env:
-          R2_BUCKET_NAME: ${{ env.R2_BUCKET_NAME }}
-          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      - name: Test R2 upload
         run: |
-          echo "Testing R2 connection..."
-          # 먼저 버킷이 존재하는지 확인
-          aws s3 ls s3://${{ env.R2_BUCKET_NAME }}/ \
-            --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com || echo "Bucket not found or no permissions"
+          echo "📤 Testing R2 upload..."
+          # 테스트 파일 업로드
+          aws s3 sync ./data s3://${{ env.R2_BUCKET_NAME }}/debug-test/ \
+            --endpoint-url ${{ env.R2_ENDPOINT_URL }}
 
-          echo "Uploading test files..."
-            aws s3 sync ./data s3://${{ env.R2_BUCKET_NAME }}/debug-test/ \
-            --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
-
-          echo "Verifying upload..."
+          echo "🔍 Verifying upload..."
           aws s3 ls s3://${{ env.R2_BUCKET_NAME }}/debug-test/ \
-            --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+            --endpoint-url ${{ env.R2_ENDPOINT_URL }}
 
           echo "✅ Debug upload completed successfully!"

@@ -383,6 +383,18 @@ jobs:
   upload_json_to_r2:
     runs-on: ubuntu-latest
     needs: [build_singular, build_main, build_categories, build_all_posts]
+    # 시크릿이 Environment 수준에서 설정된 경우 아래 줄의 주석을 해제하고 실제 environment 이름을 입력하세요
+    # environment: production
+
+    # R2 인증을 위한 환경 변수 설정 (job-level)
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ap-northeast-2
+      R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_ENDPOINT_URL: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+
     permissions:
       contents: read
       deployments: write
@@ -410,50 +422,45 @@ jobs:
           du -sh data || true
 
       - name: Debug R2 upload configuration
-        env:
-          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
-          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           echo "🔍 R2 Upload Debug Information:"
           echo "R2 Bucket Name: ${{ env.R2_BUCKET_NAME }}"
           echo "R2 Account ID: ${{ env.R2_ACCOUNT_ID }}"
-          echo "R2 Endpoint URL: https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
-          echo "Has R2 Access Key: ${{ env.R2_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
-          echo "Has R2 Secret Key: ${{ env.R2_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
+          echo "R2 Endpoint URL: ${{ env.R2_ENDPOINT_URL }}"
+          echo "Has R2 Access Key: ${{ env.AWS_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
+          echo "Has R2 Secret Key: ${{ env.AWS_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
 
           # 시크릿 값의 길이와 형식을 확인 (보안상 실제 값은 출력하지 않음)
-          R2_ACCESS_KEY_LENGTH=${#R2_ACCESS_KEY_ID}
-          R2_SECRET_KEY_LENGTH=${#R2_SECRET_ACCESS_KEY}
+          R2_ACCESS_KEY_LENGTH=${#AWS_ACCESS_KEY_ID}
+          R2_SECRET_KEY_LENGTH=${#AWS_SECRET_ACCESS_KEY}
           echo "R2 Access Key Length: $R2_ACCESS_KEY_LENGTH characters"
           echo "R2 Secret Key Length: $R2_SECRET_KEY_LENGTH characters"
 
           # 시크릿 값의 처음과 끝 문자를 확인 (공백이나 줄바꿈 감지용)
-          R2_ACCESS_KEY_FIRST=$(echo "$R2_ACCESS_KEY_ID" | head -c 1)
-          R2_ACCESS_KEY_LAST=$(echo "$R2_ACCESS_KEY_ID" | tail -c 1)
-          R2_SECRET_KEY_FIRST=$(echo "$R2_SECRET_ACCESS_KEY" | head -c 1)
-          R2_SECRET_KEY_LAST=$(echo "$R2_SECRET_ACCESS_KEY" | tail -c 1)
+          R2_ACCESS_KEY_FIRST=$(echo "$AWS_ACCESS_KEY_ID" | head -c 1)
+          R2_ACCESS_KEY_LAST=$(echo "$AWS_ACCESS_KEY_ID" | tail -c 1)
+          R2_SECRET_KEY_FIRST=$(echo "$AWS_SECRET_ACCESS_KEY" | head -c 1)
+          R2_SECRET_KEY_LAST=$(echo "$AWS_SECRET_ACCESS_KEY" | tail -c 1)
 
           echo "Access Key starts with: '$R2_ACCESS_KEY_FIRST', ends with: '$R2_ACCESS_KEY_LAST'"
           echo "Secret Key starts with: '$R2_SECRET_KEY_FIRST', ends with: '$R2_SECRET_KEY_LAST'"
 
           # Access Key 형식이 맞는지 확인 (보통 20자 정도)
           if [ "$R2_ACCESS_KEY_LENGTH" -lt 10 ]; then
-            echo "⚠️  WARNING: R2_ACCESS_KEY_ID seems too short (expected ~20 chars)"
+            echo "⚠️  WARNING: AWS_ACCESS_KEY_ID seems too short (expected ~20 chars)"
           fi
 
           # Secret Key 형식이 맞는지 확인 (보통 40자 정도)
           if [ "$R2_SECRET_KEY_LENGTH" -lt 20 ]; then
-            echo "⚠️  WARNING: R2_SECRET_ACCESS_KEY seems too short (expected ~40 chars)"
+            echo "⚠️  WARNING: AWS_SECRET_ACCESS_KEY seems too short (expected ~40 chars)"
           fi
 
           # 공백이나 줄바꿈 문자 감지
           if [[ "$R2_ACCESS_KEY_FIRST" =~ [[:space:]] ]] || [[ "$R2_ACCESS_KEY_LAST" =~ [[:space:]] ]]; then
-            echo "⚠️  WARNING: R2_ACCESS_KEY_ID contains leading/trailing whitespace"
+            echo "⚠️  WARNING: AWS_ACCESS_KEY_ID contains leading/trailing whitespace"
           fi
           if [[ "$R2_SECRET_KEY_FIRST" =~ [[:space:]] ]] || [[ "$R2_SECRET_KEY_LAST" =~ [[:space:]] ]]; then
-            echo "⚠️  WARNING: R2_SECRET_ACCESS_KEY contains leading/trailing whitespace"
+            echo "⚠️  WARNING: AWS_SECRET_ACCESS_KEY contains leading/trailing whitespace"
           fi
 
           echo "--------------------------------------------------"
@@ -463,41 +470,9 @@ jobs:
           echo "Total files: $(find data -type f | wc -l)"
           echo "Total size: $(du -sh data | cut -f1)"
 
-      - name: Configure AWS CLI for R2
-        uses: aws-actions/configure-aws-credentials@v4
-        env:
-          R2_BUCKET_NAME: ${{ env.R2_BUCKET_NAME }}
-          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-        with:
-          aws-access-key-id: ${{ env.R2_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.R2_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      - name: Test AWS CLI authentication
-        env:
-          R2_ACCOUNT_ID: ${{ env.R2_ACCOUNT_ID }}
-        run: |
-          echo "🔐 Testing AWS CLI authentication with R2..."
-          # 간단한 AWS STS 호출로 인증 테스트
-          if aws sts get-caller-identity --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com 2>/dev/null; then
-            echo "✅ AWS CLI authentication successful!"
-          else
-            echo "❌ AWS CLI authentication failed!"
-            echo "This could mean:"
-            echo "  - Access Key ID or Secret Access Key is incorrect"
-            echo "  - Account ID is wrong"
-            echo "  - R2 API token permissions are insufficient"
-            exit 1
-          fi
-
       - name: Upload JSON data to R2
-        env:
-          R2_BUCKET_NAME: ${{ env.R2_BUCKET_NAME }}
-          R2_ACCOUNT_ID: ${{ env.R2_ACCOUNT_ID }}
         run: |
           echo "📤 Starting R2 upload..."
           aws s3 sync ./data s3://${{ env.R2_BUCKET_NAME }}/data/ \
-            --endpoint-url https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+            --endpoint-url ${{ env.R2_ENDPOINT_URL }}
           echo "✅ R2 upload completed successfully!"
