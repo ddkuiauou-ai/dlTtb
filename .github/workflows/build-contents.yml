@@ -383,13 +383,6 @@ jobs:
   upload_json_to_r2:
     runs-on: ubuntu-latest
     needs: [build_singular, build_main, build_categories, build_all_posts]
-    # 시크릿이 Environment 수준에서 설정된 경우 아래 줄의 주석을 해제하고 실제 environment 이름을 입력하세요
-    # environment: production
-    env:
-      R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
-      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
     permissions:
       contents: read
       deployments: write
@@ -417,6 +410,11 @@ jobs:
           du -sh data || true
 
       - name: Debug R2 upload configuration
+        env:
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           echo "🔍 R2 Upload Debug Information:"
           echo "R2 Bucket Name: ${{ env.R2_BUCKET_NAME }}"
@@ -495,6 +493,9 @@ jobs:
           fi
 
       - name: Upload JSON data to R2
+        env:
+          R2_BUCKET_NAME: ${{ env.R2_BUCKET_NAME }}
+          R2_ACCOUNT_ID: ${{ env.R2_ACCOUNT_ID }}
         run: |
           echo "📤 Starting R2 upload..."
           aws s3 sync ./data s3://${{ env.R2_BUCKET_NAME }}/data/ \
