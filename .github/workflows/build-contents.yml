@@ -116,14 +116,9 @@ jobs:
           if-no-files-found: error
           retention-days: 3
 
-  # Build main pages in parallel
+  # Build main pages (only fresh|24h as needed for infinite scroll)
   build_main:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        range: ["3h", "6h", "24h", "1w"]
-        section: ["fresh", "trending", "top", "ranked"]
-      fail-fast: false
     env:
       POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
       POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
@@ -153,15 +148,15 @@ jobs:
             if [ -z "${!k}" ]; then echo "::error::$k is empty (missing corresponding secret)"; missing=1; fi
           done
           if [ $missing -ne 0 ]; then exit 1; fi
-      - name: Build main pages
+      - name: Build main pages (fresh|24h only)
         run: pnpm tsx scripts/build-main-json.ts
         env:
-          RANGE: ${{ matrix.range }}
-          SECTION: ${{ matrix.section }}
+          RANGE: 24h
+          SECTION: fresh
       - name: Validate output layout
         run: |
           set -euo pipefail
-          test -d "public/data/home/v1/${{ matrix.range }}/${{ matrix.section }}"
+          test -d "public/data/home/v1/24h/fresh"
           if [ -d public/data/v1 ]; then
             echo "::error::Found unexpected 'public/data/v1'."
             exit 1
@@ -169,7 +164,7 @@ jobs:
       - name: Upload main build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: artifact-main-${{ matrix.range }}-${{ matrix.section }}
+          name: artifact-main-24h-fresh
           path: public/data
           if-no-files-found: error
           retention-days: 3
@@ -345,9 +340,8 @@ jobs:
       - name: Download main build artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: artifact-main-*
+          name: artifact-main-24h-fresh
           path: artifacts/main
-          merge-multiple: true
 
       - name: Download category build artifacts
         uses: actions/download-artifact@v4
