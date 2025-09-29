@@ -2,7 +2,7 @@ import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import { getAllPosts } from "../lib/queries";
-import { TimeRange, ALL_TIME_RANGES } from "../lib/types";
+import { Range, ALL_RANGES } from "../lib/types";
 import { manifestFsPathForBaseFromPublic } from "./utils/manifest";
 
 const PAGE_SIZE = Number(process.env.PAGE_SIZE ?? 20);
@@ -15,16 +15,16 @@ function atomicWriteJson(filepath: string, data: unknown) {
 }
 
 // 커맨드 라인에서 시간 범위(range) 인자 파싱
-const requestedRange = process.argv[2] as TimeRange | undefined;
-const timeRangesToBuild = requestedRange ? [requestedRange] : ALL_TIME_RANGES;
+const requestedRange = process.argv[2] as Range | undefined;
+const rangesToBuild = requestedRange ? [requestedRange] : ALL_RANGES;
 
-if (requestedRange && !ALL_TIME_RANGES.includes(requestedRange)) {
+if (requestedRange && !ALL_RANGES.includes(requestedRange)) {
   console.error(`Invalid time range: ${requestedRange}`);
-  console.log(`Available ranges are: ${ALL_TIME_RANGES.join(", ")}`);
+  console.log(`Available ranges are: ${ALL_RANGES.join(", ")}`);
   process.exit(1);
 }
 
-async function buildAllPosts(range: TimeRange) {
+async function buildAllPosts(range: Range) {
   const outDir = path.join(process.cwd(), "public/data/all/v1", range);
   // 디렉터리를 삭제하고 다시 생성하여 오래된 파일을 정리합니다.
   if (fs.existsSync(outDir)) {
@@ -99,9 +99,9 @@ async function buildAllPosts(range: TimeRange) {
 
 async function main() {
   console.log(
-    `Starting build for 'all' posts, ranges: ${timeRangesToBuild.join(", ")}`
+    `Starting build for 'all' posts, ranges: ${rangesToBuild.join(", ")}`
   );
-  for (const range of timeRangesToBuild) {
+  for (const range of rangesToBuild) {
     await buildAllPosts(range);
   }
   console.log("Finished building 'all' posts.");

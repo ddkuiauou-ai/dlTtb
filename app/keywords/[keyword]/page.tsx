@@ -1,5 +1,6 @@
 import { getPostsByKeyword, getTopKeywords } from '@/lib/queries';
 import KeywordFeed from '@/components/KeywordFeed.client';
+import type { Range } from '@/lib/types';
 
 export const dynamic = 'force-static';
 // export const dynamicParams = false;
@@ -23,7 +24,7 @@ export default async function Page({ params }: PageProps) {
     const { keyword: slug } = params;
     const decodedKeyword = decodeURIComponent(slug);
 
-    const initialRange: TimeRange = '1w'; // Default range
+    const initialRange: Range = '1w'; // Default range
     const initialPosts = await getPostsByKeyword(decodedKeyword, { page: 1, pageSize: 20, range: initialRange });
 
     return <KeywordFeed

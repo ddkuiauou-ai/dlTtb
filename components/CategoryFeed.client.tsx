@@ -3,9 +3,9 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PostGrid from "@/components/post-grid";
-import type { Post } from "@/components/post-card";
+import type { Post, Range } from "@/lib/types";
 import { FeedControls } from "@/components/feed-controls";
-import { ViewMode, Range } from "@/lib/feed-prefs";
+import { ViewMode } from "@/lib/feed-prefs";
 
 interface CategoryFeedProps {
   initialPosts: Post[];
@@ -114,7 +114,7 @@ export default function CategoryFeed({
         cardLayoutOverride={viewMode === "grid" ? "grid" : "list"}
         threeColAt="xl"
         jsonBase={jsonBase}
-        range={range as any}
+        range={range}
         readFilter={readFilter}
       />
     </>

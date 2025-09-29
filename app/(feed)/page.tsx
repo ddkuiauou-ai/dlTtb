@@ -6,8 +6,7 @@ import { Footer } from "@/components/footer";
 import TopRefreshOnScroll from "@/components/top-refresh-on-scroll";
 import { getMainPagePosts, getClusterTopPosts } from "@/lib/queries";
 import { sampleForClamp } from "@/lib/server-random-clamp";
-
-type Range = "3h" | "6h" | "24h" | "1w";
+import type { Range } from "@/lib/types";
 
 export default async function Home() {
   const selectedRange: Range = "24h";

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { Range } from "./types";
 
-export type Range = "3h" | "6h" | "24h" | "1w";
 function isValidRange(r: any): r is Range { return r === "3h" || r === "6h" || r === "24h" || r === "1w"; }
 
 export type ViewMode = "grid" | "list";
@@ -133,28 +133,28 @@ export function resetScopedFeedPrefs(type: "category" | "keyword", id: string) {
 }
 
 export function getScopedRange(type: "category" | "keyword", id: string, fallback: Range = "24h"): Range {
-  try {
-    const skey = scopeKey(type, id);
-    const map = loadMap();
-    const hit = map[skey];
-    return hit?.rg ?? fallback;
-  } catch {
-    return fallback;
-  }
+    try {
+        const skey = scopeKey(type, id);
+        const map = loadMap();
+        const hit = map[skey];
+        return hit?.rg ?? fallback;
+    } catch {
+        return fallback;
+    }
 }
 
 export function setScopedRange(type: "category" | "keyword", id: string, range: Range): void {
-  if (!isValidRange(range)) return;
-  try {
-    const skey = scopeKey(type, id);
-    const map = loadMap();
-    const exists = map[skey];
-    map[skey] = {
-      vm: exists?.vm ?? "grid",
-      rf: exists?.rf ?? "all",
-      rg: range,
-      updatedAt: Date.now(),
-    };
-    saveMap(map);
-  } catch { /* no-op */ }
+    if (!isValidRange(range)) return;
+    try {
+        const skey = scopeKey(type, id);
+        const map = loadMap();
+        const exists = map[skey];
+        map[skey] = {
+            vm: exists?.vm ?? "grid",
+            rf: exists?.rf ?? "all",
+            rg: range,
+            updatedAt: Date.now(),
+        };
+        saveMap(map);
+    } catch { /* no-op */ }
 }

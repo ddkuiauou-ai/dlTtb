@@ -22,6 +22,6 @@ export type Post = {
   clusterSize: number | null;
 };
 
-export type TimeRange = "3h" | "6h" | "24h" | "1w";
+export type Range = "3h" | "6h" | "24h" | "1w";
 
-export const ALL_TIME_RANGES: TimeRange[] = ["3h", "6h", "24h", "1w"];
+export const ALL_RANGES: Range[] = ["3h", "6h", "24h", "1w"];

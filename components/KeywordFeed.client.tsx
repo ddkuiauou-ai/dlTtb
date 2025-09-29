@@ -2,17 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { HydratedPost } from '@/lib/types';
 import PostGrid from '@/components/post-grid';
 import { FeedControls } from '@/components/feed-controls';
-import { ViewMode, Range } from '@/lib/feed-prefs';
+import { ViewMode } from '@/lib/feed-prefs';
+import type { Post, Range } from '@/lib/types';
 
 export default function KeywordFeed({
   initialPosts,
   keyword,
   initialRange,
 }: {
-  initialPosts: HydratedPost[];
+  initialPosts: Post[];
   keyword: string;
   initialRange: string;
 }) {
@@ -20,12 +20,13 @@ export default function KeywordFeed({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [posts, setPosts] = useState<HydratedPost[]>(initialPosts);
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [readFilter, setReadFilter] = useState<"all" | "read" | "unread">('all');
 
   const urlRange = searchParams.get('range') as Range | null;
-  const [range, setRange] = useState<Range>(urlRange || initialRange as Range);
+  const initialRangeValidated = (initialRange as Range) || "1w"; // fallback to 1w if invalid
+  const [range, setRange] = useState<Range>(urlRange || initialRangeValidated);
 
   useEffect(() => {
     if (urlRange && urlRange !== range) {
@@ -81,10 +82,10 @@ export default function KeywordFeed({
           metricsKey={metricsKey}
         />
       </div>
-      <PostGrid 
+      <PostGrid
         key={gridKey}
         title={keyword}
-        initialPosts={posts} 
+        initialPosts={posts}
         jsonBase={jsonBase}
         range={range}
         readFilter={readFilter}

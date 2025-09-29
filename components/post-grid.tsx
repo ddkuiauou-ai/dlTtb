@@ -3,10 +3,11 @@ import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ClientRandomClamp from "@/components/client-random-clamp";
 import { PostListProvider } from "@/context/post-list-context";
+import type { Range } from "@/lib/types";
 
 interface PostGridProps {
   title: string;
-  range?: "3h" | "6h" | "24h" | "1w"; // 시간 필터
+  range?: Range; // 시간 필터
   perSiteCap?: number;                // 사이트 캡
   layout?: "list" | "grid";
   mode?: "ranked" | "fresh";          // 선정 기준
@@ -59,9 +60,9 @@ export default function PostGrid({
   const isLatestTimeline = title.includes("최신");
   const isSpotlight = title.includes("지금 주목");
   const effectiveMode: "ranked" | "fresh" = isLatestTimeline ? "fresh" : mode;
-  const selectedRange: "3h" | "6h" | "24h" | "1w" = range;
-  const effectiveRange: "3h" | "6h" | "24h" | "1w" = selectedRange;
-  const RANGE_LABEL: Record<typeof effectiveRange, string> = { "3h": "3시간", "6h": "6시간", "24h": "24시간", "1w": "1주일" } as const;
+  const selectedRange: Range = range;
+  const effectiveRange: Range = selectedRange;
+  const RANGE_LABEL: Record<Range, string> = { "3h": "3시간", "6h": "6시간", "24h": "24시간", "1w": "1주일" } as const;
   const rangeLabel = RANGE_LABEL[effectiveRange];
   const displayTitle = isLatestTimeline
     ? `최신 (${rangeLabel})`

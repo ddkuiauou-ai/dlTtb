@@ -5,7 +5,8 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Badge } from "@/components/ui/badge";
 import { LayoutGrid, List, Clock as ClockIcon, CircleDot, Circle } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import type { Range, ViewMode, ReadFilter } from "@/lib/feed-prefs";
+import type { ViewMode, ReadFilter } from "@/lib/feed-prefs";
+import type { Range } from "@/lib/types";
 import { useIsMobile } from "@/components/ui/use-mobile";
 import { CountingNumber } from "@/components/animate-ui/text/counting-number";
 

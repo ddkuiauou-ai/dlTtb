@@ -2,7 +2,7 @@ import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import { getPostsByCategory, getAllPosts, getPostsWithVideo, getPostsByYouTube } from "../lib/queries";
-import { TimeRange, ALL_TIME_RANGES } from "../lib/types";
+import { Range, ALL_RANGES } from "../lib/types";
 import { manifestFsPathForBaseFromPublic } from "./utils/manifest";
 
 const PAGE_SIZE = Number(process.env.PAGE_SIZE ?? 20);
@@ -19,16 +19,16 @@ if (!categoryName) {
   process.exit(1);
 }
 
-const requestedRange = process.argv[3] as TimeRange | undefined;
-const timeRangesToBuild = requestedRange ? [requestedRange] : ALL_TIME_RANGES;
+const requestedRange = process.argv[3] as Range | undefined;
+const rangesToBuild = requestedRange ? [requestedRange] : ALL_RANGES;
 
-if (requestedRange && !ALL_TIME_RANGES.includes(requestedRange)) {
+if (requestedRange && !ALL_RANGES.includes(requestedRange)) {
   console.error(`Invalid time range: ${requestedRange}`);
-  console.log(`Available ranges are: ${ALL_TIME_RANGES.join(", ")}`);
+  console.log(`Available ranges are: ${ALL_RANGES.join(", ")}`);
   process.exit(1);
 }
 
-async function buildCategory(category: string, range: TimeRange) {
+async function buildCategory(category: string, range: Range) {
   const outDir = path.join(process.cwd(), "public/data/category", category, "v1", range);
   // 디렉터리를 삭제하고 다시 생성하여 오래된 파일을 정리합니다.
   if (fs.existsSync(outDir)) {
@@ -44,7 +44,7 @@ async function buildCategory(category: string, range: TimeRange) {
 
   while (hasMore) {
     console.log(`  - Fetching page ${page} for category '${category}' range ${range}...`);
-    
+
     let posts;
     const options = { page, pageSize: PAGE_SIZE, range };
 
@@ -95,9 +95,9 @@ async function buildCategory(category: string, range: TimeRange) {
 
 async function main() {
   console.log(
-    `Starting build for category '${categoryName}', ranges: ${timeRangesToBuild.join(", ")}`
+    `Starting build for category '${categoryName}', ranges: ${rangesToBuild.join(", ")}`
   );
-  for (const range of timeRangesToBuild) {
+  for (const range of rangesToBuild) {
     await buildCategory(categoryName, range);
   }
   console.log(`Finished building category '${categoryName}'.`);

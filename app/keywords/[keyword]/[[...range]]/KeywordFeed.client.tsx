@@ -1,7 +1,9 @@
 "use client";
 
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import PostGrid from "@/components/post-grid";
-import type { Post } from "@/components/post-card";
+import type { Post, Range } from "@/lib/types";
 import { FeedControls } from "@/components/feed-controls";
 import { useScopedFeedPrefs } from "@/lib/feed-prefs";
 
@@ -12,16 +14,26 @@ interface KeywordFeedProps {
 }
 
 export default function KeywordFeed({ initialPosts, keyword, initialRange }: KeywordFeedProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const initialRangeValidated = (initialRange as Range) || "1w"; // fallback to 1w if invalid
+  const urlRange = searchParams.get('range') as Range | null;
+  const defaultRange = urlRange || initialRangeValidated;
+
   const { viewMode, readFilter, range, setRange, setViewMode, setReadFilter } = useScopedFeedPrefs({
     type: "keyword",
     id: keyword,
-    defaults: { rg: initialRange as any, vm: 'list' },
+    defaults: { rg: defaultRange, vm: 'list' },
   });
 
-  // Sync storage to the range from the URL
-  useEffect(() => {
-    setRange(initialRange as any);
-  }, [initialRange, setRange]);
+  const handleRangeChange = (newRange: Range) => {
+    setRange(newRange);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('range', newRange);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   const gridKey = `kw:${keyword}|rg:${range}|rf:${readFilter}|vm:${viewMode}`;
   const keywordSlug = encodeURIComponent(keyword);
@@ -38,7 +50,7 @@ export default function KeywordFeed({ initialPosts, keyword, initialRange }: Key
           range={range}
           viewMode={viewMode}
           readFilter={readFilter}
-          setRange={setRange}
+          setRange={handleRangeChange}
           setViewMode={setViewMode}
           setReadFilter={setReadFilter}
           metricsKey={metricsKey}
@@ -55,7 +67,7 @@ export default function KeywordFeed({ initialPosts, keyword, initialRange }: Key
         cardLayoutOverride={viewMode === "grid" ? "grid" : "list"}
         threeColAt="xl"
         jsonBase={jsonBase}
-        range={range as any}
+        range={range}
         readFilter={readFilter}
       />
     </>

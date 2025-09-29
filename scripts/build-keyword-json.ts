@@ -2,7 +2,7 @@ import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import { getPostsByKeyword, getTopKeywords } from "../lib/queries";
-import { TimeRange, ALL_TIME_RANGES } from "../lib/types";
+import { Range, ALL_RANGES } from "../lib/types";
 import { manifestFsPathForBaseFromPublic } from "./utils/manifest";
 
 const PAGE_SIZE = Number(process.env.PAGE_SIZE ?? 20);
@@ -14,17 +14,17 @@ function atomicWriteJson(filepath: string, data: unknown) {
   fs.renameSync(tmp, filepath);
 }
 
-const requestedRange = process.argv[2] as TimeRange | undefined;
+const requestedRange = process.argv[2] as Range | undefined;
 // As requested, default to 7d range
-const timeRangesToBuild = requestedRange ? [requestedRange] : (['1w'] as TimeRange[]);
+const rangesToBuild = requestedRange ? [requestedRange] : (['1w'] as Range[]);
 
-if (requestedRange && !ALL_TIME_RANGES.includes(requestedRange)) {
+if (requestedRange && !ALL_RANGES.includes(requestedRange)) {
   console.error(`Invalid time range: ${requestedRange}`);
-  console.log(`Available ranges are: ${ALL_TIME_RANGES.join(", ")}`);
+  console.log(`Available ranges are: ${ALL_RANGES.join(", ")}`);
   process.exit(1);
 }
 
-async function buildKeyword(keyword: string, range: TimeRange) {
+async function buildKeyword(keyword: string, range: Range) {
   const slug = encodeURIComponent(keyword);
   const outDir = path.join(process.cwd(), "public/data/keywords", slug, "v1", range);
   // 디렉터리를 삭제하고 다시 생성하여 오래된 파일을 정리합니다.
@@ -101,9 +101,9 @@ async function main() {
   for (const { keyword } of keywords) {
     if (!keyword) continue;
     console.log(
-      `Starting build for keyword '${keyword}', ranges: ${timeRangesToBuild.join(", ")}`
+      `Starting build for keyword '${keyword}', ranges: ${rangesToBuild.join(", ")}`
     );
-    for (const range of timeRangesToBuild) {
+    for (const range of rangesToBuild) {
       await buildKeyword(keyword, range);
     }
   }
