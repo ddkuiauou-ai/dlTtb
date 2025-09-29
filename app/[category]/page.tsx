@@ -38,7 +38,7 @@ type PageProps = {
 };
 
 export default async function Page({ params }: PageProps) {
-  const { category } = params;
+  const { category } = await params;
 
   const range = '24h'; // Hardcode to default range
 
