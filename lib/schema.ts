@@ -115,7 +115,7 @@ export const postEmbeds = pgTable("post_embeds", {
   // Composite index for postId + type + thumbnail
   index("post_embeds_post_type_thumb_idx").on(table.postId, table.type, table.thumbnail),
   index("post_embeds_mp4_idx").on(table.fileSize, table.duration),
-  index("post_embeds_mime_type_idx").on(table.mimeType),
+  index("post_embeds_type_idx").on(table.type),
 ]);
 
 /*
