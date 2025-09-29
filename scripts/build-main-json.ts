@@ -524,14 +524,14 @@ async function computePage1Ids(): Promise<string[]> {
 }
 
 async function main() {
-  const exclude = new Set(await computePage1Ids());
-
-  if (MODE === 'category') {
-    // buildCategoryPages(exclude);
-  } else {
-    await buildGlobalPages(exclude);
+  // 실제로 무한 스크롤이 사용되는 것은 fresh|24h 최신 밖에 없음
+  if (!(RANGE === "24h" && MODE === "fresh")) {
+    console.log(`⏭️  ${RANGE}/${MODE}는 무한 스크롤에 사용되지 않으므로 건너뜀`);
+    return;
   }
 
+  const exclude = new Set(await computePage1Ids());
+  await buildGlobalPages(exclude);
 
   const manifestPath = path.join(OUT_DIR, 'manifest.json');
   atomicWriteJson(manifestPath, {

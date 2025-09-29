@@ -72,7 +72,7 @@
     "lucide-react": "^0.454.0",
     "minisearch": "^7.1.2",
     "motion": "^12.23.12",
-    "next": "15.5.2",
+    "next": "15.5.4",
     "next-themes": "^0.4.4",
     "pg": "^8.16.1",
     "radix-ui": "^1.4.3",
@@ -90,16 +90,16 @@
   },
   "devDependencies": {
     "@tailwindcss/container-queries": "^0.1.1",
-    "@types/node": "^22",
+    "@types/node": "^24.5.2",
     "@types/pg": "^8.15.4",
-    "@types/react": "^19",
+    "@types/react": "^19.1.15",
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9",
-    "eslint-config-next": "15.5.3",
+    "eslint-config-next": "15.5.4",
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.20.3",
-    "typescript": "^5"
+    "typescript": "^5.9.2"
   }
 }
