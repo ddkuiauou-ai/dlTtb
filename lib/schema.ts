@@ -41,6 +41,7 @@ export const posts = pgTable("posts", {
   index("posts_site_board_timestamp_idx").on(table.site, table.board, table.timestamp),
   // Composite index for isDeleted + timestamp + id (feed queries, partial index not possible in Drizzle)
   index("posts_is_deleted_timestamp_id_idx").on(table.isDeleted, table.timestamp, table.id),
+  index("posts_updated_at_idx").on(table.updatedAt),
 ]);
 
 /*
@@ -104,6 +105,8 @@ export const postEmbeds = pgTable("post_embeds", {
   title: text("title"),
   description: text("description"),
   mimeType: varchar("mime_type", { length: 20 }),
+  fileSize: integer("file_size"),        // MP4 파일 크기 (바이트)
+  duration: doublePrecision("duration"), // MP4 재생 시간 (초)
 }, (table) => [
   index("post_embeds_post_id_idx").on(table.postId),
   unique("post_embeds_post_id_url_uq").on(table.postId, table.urlHash),
@@ -111,6 +114,8 @@ export const postEmbeds = pgTable("post_embeds", {
   index("post_embeds_post_type_idx").on(table.postId, table.type),
   // Composite index for postId + type + thumbnail
   index("post_embeds_post_type_thumb_idx").on(table.postId, table.type, table.thumbnail),
+  index("post_embeds_mp4_idx").on(table.fileSize, table.duration),
+  index("post_embeds_mime_type_idx").on(table.mimeType),
 ]);
 
 /*
@@ -418,8 +423,10 @@ export const postSignatures = pgTable("post_signatures", {
   imageCount: integer("image_count").default(0),
   embedCount: integer("embed_count").default(0),
   computedAt: timestamp("computed_at", { withTimezone: true }).defaultNow(),
+  mp4Minhash128: pgBytea("mp4_minhash128"), // MP4 메타데이터 기반 MinHash
 }, (table) => [
   index("post_signatures_computed_at_idx").on(table.computedAt),
+  index("post_signatures_mp4_idx").on(table.mp4Minhash128),
 ]);
 
 // 11. Clusters (이슈 단위)
