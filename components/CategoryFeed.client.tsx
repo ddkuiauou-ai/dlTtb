@@ -43,12 +43,18 @@ export default function CategoryFeed({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [posts, setPosts] = useState(initialPosts);
+  const urlRange = searchParams.get('range') as Range | null;
+  const effectiveRange = urlRange || (initialRange as Range);
+  const needsFetch = urlRange && urlRange !== initialRange;
+  
+  // If URL has a range param different from initialRange, start with that range
+  // but mark posts as not yet loaded (empty array) to avoid showing wrong data
+  const [range, setRange] = useState<Range>(effectiveRange);
+  const [posts, setPosts] = useState(needsFetch ? [] : initialPosts);
+  const [isLoading, setIsLoading] = useState(needsFetch);
+  const [dataReady, setDataReady] = useState(!needsFetch);
   const [viewMode, setViewMode] = useState<ViewMode>(CATEGORY_DEFAULT_VIEW_MODES[category] ?? 'list');
   const [readFilter, setReadFilter] = useState<"all" | "read" | "unread">('all');
-
-  const urlRange = searchParams.get('range') as Range | null;
-  const [range, setRange] = useState<Range>(urlRange || initialRange as Range);
 
   useEffect(() => {
     if (urlRange && urlRange !== range) {
@@ -59,17 +65,25 @@ export default function CategoryFeed({
   useEffect(() => {
     if (range === initialRange) {
       setPosts(initialPosts);
+      setIsLoading(false);
+      setDataReady(true);
       return;
     }
 
     const fetchData = async () => {
+      setIsLoading(true);
+      setDataReady(false);
       try {
         const res = await fetch(`/data/category/${category}/v1/${range}/page-1.json`);
         const data = await res.json();
         setPosts(data.posts || []);
+        setDataReady(true);
       } catch (error) {
         console.error("Failed to fetch posts for range:", error);
         setPosts([]);
+        setDataReady(false);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -83,7 +97,8 @@ export default function CategoryFeed({
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const gridKey = `cat:${category}|rg:${range}|rf:${readFilter}|vm:${viewMode}`;
+  // Only recreate PostGrid when category or range changes, not when filters change
+  const gridKey = `cat:${category}|rg:${range}`;
   const jsonBase = `/data/category/${category}/v1/${range}`;
   const metricsKey = jsonBase;
 
@@ -104,19 +119,25 @@ export default function CategoryFeed({
         />
       </div>
 
-      <PostGrid
-        key={gridKey}
-        title={categoryLabel}
-        category={category}
-        initialPosts={posts}
-        layout="list"
-        listColumns={viewMode === "grid" ? "3-2-1" : "auto-2"}
-        cardLayoutOverride={viewMode === "grid" ? "grid" : "list"}
-        threeColAt="xl"
-        jsonBase={jsonBase}
-        range={range}
-        readFilter={readFilter}
-      />
+      {isLoading ? (
+        <div className="text-center text-gray-400 py-8">불러오는 중...</div>
+      ) : dataReady && posts.length > 0 ? (
+        <PostGrid
+          key={gridKey}
+          title={categoryLabel}
+          category={category}
+          initialPosts={posts}
+          layout="list"
+          listColumns={viewMode === "grid" ? "3-2-1" : "auto-2"}
+          cardLayoutOverride={viewMode === "grid" ? "grid" : "list"}
+          threeColAt="xl"
+          jsonBase={jsonBase}
+          range={range}
+          readFilter={readFilter}
+        />
+      ) : (
+        <div className="text-center text-gray-400 py-8">데이터가 없습니다.</div>
+      )}
     </>
   );
 }

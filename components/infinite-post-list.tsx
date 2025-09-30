@@ -26,10 +26,10 @@ const READ_POSTS_KEY = 'readPosts:v2';
 
 const FALLBACK_VIEWPORT_HEIGHT = 900;
 const FALLBACK_ROW_ESTIMATE = 200;
-const HALF_VIEWPORT_BUFFER_RATIO = 0.5;
-const MIN_BUFFER_ROWS = 4;
+const HALF_VIEWPORT_BUFFER_RATIO = 0.3;
+const MIN_BUFFER_ROWS = 2;
 const MAX_BUFFER_ROWS = 64;
-const LOAD_AHEAD_VIEWPORT_MULTIPLIER = 1.5;
+const LOAD_AHEAD_VIEWPORT_MULTIPLIER = 1.0;
 const MANIFEST_TTL_MS = 5000;
 
 export type VirtualBufferSizing = {
@@ -87,6 +87,8 @@ const FIRST_JSON_PAGE = 2; // page-1.json은 존재하지 않음. SSR(DB) 결과
 
 // --- Debug ---
 const DEBUG_IPL = process.env.NODE_ENV !== 'production';
+// Generate unique instance ID for debugging React Strict Mode
+let instanceCounter = 0;
 const dlog = (...args: unknown[]) => {
   if (DEBUG_IPL) {
     // Prefix with component tag and timestamp for easier tracing
@@ -481,6 +483,9 @@ function ListVirtualizedFeed({
   isFetchingRef,
   windowScrollMargin,
 }: ListVirtualizedFeedProps) {
+  // Instance ID for debugging React Strict Mode double mounting
+  const instanceIdRef = useRef(++instanceCounter);
+  
   const [cols, setCols] = useState(1);
   const colsRef = useRef(cols);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -492,7 +497,19 @@ function ListVirtualizedFeed({
   });
   const [activePreviewIds, setActivePreviewIds] = useState<Set<string>>(() => new Set());
 
-  useEffect(() => { colsRef.current = cols; }, [cols]);
+  useEffect(() => { 
+    colsRef.current = cols; 
+    if (DEBUG_IPL && cols) {
+      dlog(`ListVirtualizedFeed instance #${instanceIdRef.current} initialized`, { 
+        initialPage, 
+        layout, 
+        storageKeyPrefix, 
+        enablePaging, 
+        initialPostsCount: initialPosts.length,
+        cols
+      });
+    }
+  }, [cols, initialPage, layout, storageKeyPrefix, enablePaging, initialPosts.length]);
 
   useEffect(() => { setHasMounted(true); }, []);
 
@@ -612,11 +629,17 @@ function ListVirtualizedFeed({
       const cardW = c > 0 ? (w - gapTotal) / c : w;
       const imgH = Math.max(120, Math.round((cardW * 2) / 3));
       const textBlock = 144;
-      return imgH + textBlock + ROW_GAP;
+      const estimated = imgH + textBlock + ROW_GAP;
+      // Initialize cache with calculated estimate
+      estimateCacheRef.current[key] = estimated;
+      return estimated;
     }
 
-    const LIST_ROW_BASE = 120;
-    return LIST_ROW_BASE + ROW_GAP;
+    const LIST_ROW_BASE = 200;
+    const estimated = LIST_ROW_BASE + ROW_GAP;
+    // Initialize cache with calculated estimate
+    estimateCacheRef.current[key] = estimated;
+    return estimated;
   }, [cardLayoutOverride, cols, containerWidth, getEstimateKey, layout, rootRef]);
 
   const bufferMetrics = useMemo(
@@ -816,8 +839,26 @@ function ListVirtualizedFeed({
     const manualTail = loadAheadRowsOverride != null ? Math.max(1, Math.round(loadAheadRowsOverride)) : null;
     const derivedTail = Math.max(1, bufferMetrics.loadAheadRows);
     const desiredTail = manualTail ?? derivedTail;
-    const threshold = Math.max(0, rowCount - Math.max(1, Math.floor(desiredTail)));
+    // Smart threshold: trigger when approaching the end minus buffer size
+    // This ensures smooth scrolling while preventing premature loading
+    const threshold = Math.max(0, rowCount - desiredTail);
     const inTail = viewportEnd >= threshold;
+    
+    if (DEBUG_IPL) {
+      dlog(`infinite-scroll:check (instance #${instanceIdRef.current})`, {
+        sectionKey,
+        viewportEnd,
+        threshold,
+        rowCount,
+        visiblePostsLength: visiblePosts.length,
+        seenIdsSize: seenIdsRef.current.size,
+        desiredTail,
+        inTail,
+        isFetching: isFetchingRef.current,
+        hasMore: hasMoreRef.current,
+      });
+    }
+    
     if (!inTail) return;
 
     const prev = lastLoadTriggerRef.current;
@@ -828,6 +869,9 @@ function ListVirtualizedFeed({
     lastLoadTriggerRef.current = cur;
 
     if (!isFetchingRef.current) {
+      if (DEBUG_IPL) {
+        dlog('infinite-scroll:trigger-load', { viewportEnd, threshold, rowCount, page: pageRef.current });
+      }
       loadMore();
     }
   }, [
@@ -1195,8 +1239,20 @@ export default function InfinitePostList({
     compute();
     return () => { ro.disconnect(); if (raf) cancelAnimationFrame(raf); };
   }, [onColsChange, layout]);
+  
+  // Instance ID for debugging React Strict Mode double mounting
+  const instanceIdRef = useRef(++instanceCounter);
+  
   useEffect(() => {
-    dlog("mount", { initialPage, layout, jsonBase, storageKeyPrefix, enablePaging, community });
+    dlog(`InfinitePostList instance #${instanceIdRef.current} mount`, { 
+      initialPage, 
+      layout, 
+      jsonBase, 
+      storageKeyPrefix, 
+      enablePaging, 
+      community,
+      initialPostsCount: initialPosts.length
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -1575,7 +1631,12 @@ export default function InfinitePostList({
 
     isFetchingRef.current = true;
     setIsFetching(true);
-    dlog("loadMore:start", { page: pageRef.current, hasMore: hasMoreRef.current, firstJson: FIRST_JSON_PAGE, streak: missingStreakRef.current });
+    dlog(`loadMore:start (instance #${instanceIdRef.current})`, { 
+      page: pageRef.current, 
+      hasMore: hasMoreRef.current, 
+      firstJson: FIRST_JSON_PAGE, 
+      streak: missingStreakRef.current 
+    });
     const ac = new AbortController();
     currentAbortRef.current?.abort();
     currentAbortRef.current = ac;
@@ -1594,6 +1655,7 @@ export default function InfinitePostList({
       const nextPage = Math.max(currentPage + 1, FIRST_JSON_PAGE);
       if (typeof lastPage === 'number' && nextPage > lastPage) {
         setHasMore(false);
+        hasMoreRef.current = false; // Sync ref immediately
         break;
       }
       currentPage = nextPage;
@@ -1629,6 +1691,7 @@ export default function InfinitePostList({
       } else if (status === "missing") {
         if (manifestRef.current?.lastPage && currentPage >= manifestRef.current.lastPage) {
           setHasMore(false);
+          hasMoreRef.current = false; // Sync ref immediately
           break;
         }
         missingStreakRef.current++;
@@ -1658,12 +1721,14 @@ export default function InfinitePostList({
           if (!foundAhead) {
             dlog("loadMore:lookahead-exhausted", { fromPage: currentPage, lookahead: MISSING_LOOKAHEAD });
             setHasMore(false);
+            hasMoreRef.current = false; // Sync ref immediately
             break;
           }
         }
       } else { // error
         dlog("loadMore:error-stop", { atPage: currentPage, fromPageState: pageRef.current });
-        setHasMore(false); // prevent endless IO retriggers at the tail when next page returns 5xx or network errors
+        setHasMore(false);
+        hasMoreRef.current = false; // Sync ref immediately - prevent endless IO retriggers
         hadError = true;
         break;
       }
@@ -1681,10 +1746,12 @@ export default function InfinitePostList({
       // We tried fetching but got no new posts (all duplicates or missing)
       // so stop trying.
       setHasMore(false);
+      hasMoreRef.current = false; // Sync ref immediately
     }
     // Even if nothing new was appended (ok-dup), advance the page pointer when we successfully traversed pages
     if (lastSuccessfulPage > pageRef.current) {
       setPage(lastSuccessfulPage);
+      pageRef.current = lastSuccessfulPage; // Update ref immediately to prevent duplicate calls
     }
 
     isFetchingRef.current = false;
@@ -1696,30 +1763,32 @@ export default function InfinitePostList({
     }
 
     // --- Auto-prime the tail after a programmatic jump/restore ---
-    // 콘텐츠가 뷰포트를 아직 못 채웠거나, 이미 거의 바닥에 붙어 있으면
-    // 다음 틱에 loadMore를 한 번 더 스케줄해 무한스크롤을 깨운다.
-    try {
-      const doc = document.documentElement;
-      const scrollTop = (doc.scrollTop || window.scrollY || 0);
-      const winBottom = scrollTop + window.innerHeight;
-      const docHeight = doc.scrollHeight;
+    // Only auto-prime if we actually appended content
+    // This prevents unnecessary loadMore calls when all content is duplicates
+    if (appendedCount > 0) {
+      try {
+        const doc = document.documentElement;
+        const scrollTop = (doc.scrollTop || window.scrollY || 0);
+        const winBottom = scrollTop + window.innerHeight;
+        const docHeight = doc.scrollHeight;
 
-      const NEED_FILL_THRESHOLD_PX = 48;    // 화면보다 살짝만 짧아도 채우자
-      const NEAR_BOTTOM_THRESHOLD_PX = 800; // 리스트 4~6행 정도
+        const NEED_FILL_THRESHOLD_PX = 48;    // Fill if slightly short
+        const NEAR_BOTTOM_THRESHOLD_PX = 800; // ~4-6 rows
 
-      const needFill = docHeight <= window.innerHeight + NEED_FILL_THRESHOLD_PX;
-      const nearBottom = (docHeight - winBottom) <= NEAR_BOTTOM_THRESHOLD_PX;
+        const needFill = docHeight <= window.innerHeight + NEED_FILL_THRESHOLD_PX;
+        const nearBottom = (docHeight - winBottom) <= NEAR_BOTTOM_THRESHOLD_PX;
 
-      if ((needFill || nearBottom) && hasMoreRef.current) {
-        // 재진입 방지: 다음 틱으로 미뤄서 게이트 재확인
-        setTimeout(() => {
-          if (!isFetchingRef.current && hasMoreRef.current) {
-            loadMore();
-          }
-        }, 0);
+        if ((needFill || nearBottom) && hasMoreRef.current) {
+          // Defer to next tick to re-check gates
+          setTimeout(() => {
+            if (!isFetchingRef.current && hasMoreRef.current) {
+              loadMore();
+            }
+          }, 0);
+        }
+      } catch {
+        // no-op
       }
-    } catch {
-      // no-op
     }
   }, [loadPage, addPostsToSection, jsonBase, maybeRefreshManifest, sectionKey]);
 
