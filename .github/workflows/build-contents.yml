@@ -373,7 +373,7 @@ jobs:
             exit 1
           fi
 
-      - name: Build & Export Next.js
+      - name: Build Next.js with Cloudflare Pages adapter
         env:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
@@ -382,14 +382,15 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
         run: |
-          pnpm next build
+          pnpm exec @cloudflare/next-on-pages
 
       - name: Deploy Main Site to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy out --project-name=${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
+          projectName: ${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
+          directory: ".vercel/output/static"
           gitHubToken: ${{ secrets.TOKEN_GITHUB_COM }}
 
   # Upload post-details JSON to R2 bucket

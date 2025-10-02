@@ -89,6 +89,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.16",
     "@tailwindcss/container-queries": "^0.1.1",
     "@types/node": "^24.5.2",
     "@types/pg": "^8.15.4",
