@@ -257,6 +257,10 @@ jobs:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
+    permissions:
+      contents: read
+      deployments: write # Cloudflare Action이 GitHub에 배포 상태를 기록하기 위해 필요합니다.
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
