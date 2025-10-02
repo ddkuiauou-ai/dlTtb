@@ -395,7 +395,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
           directory: ".vercel/output/static"
-          gitHubToken: ${{ secrets.TOKEN_GITHUB_COM }}
+          # gitHubToken: ${{ secrets.TOKEN_GITHUB_COM }}
 
   # Upload post-details JSON to R2 bucket
   upload_json_to_r2:
