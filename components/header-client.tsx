@@ -10,6 +10,7 @@ import { SearchBar } from "@/components/search-bar";
 import { LogIn } from "@/components/animate-ui/icons/log-in";
 import { AnimateIcon } from "@/components/animate-ui/icons/icon";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 interface Site {
   id: string;
@@ -106,11 +107,11 @@ export function HeaderClient({ sites }: HeaderClientProps) {
         <div className="flex items-center h-16">
           {/* Left: Logo */}
           <div className="flex-1 flex items-center space-x-4">
-            <a href="/" className="focus:outline-none">
+            <Link href="/" className="focus:outline-none">
               <h1 className="text-2xl font-bold text-blue-600 cursor-pointer hover:opacity-80 transition">
                 Isshoo <span className="text-xs text-gray-500 align-top">이슈</span>
               </h1>
-            </a>
+            </Link>
             <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">인기글 모아보기</span>
           </div>
 

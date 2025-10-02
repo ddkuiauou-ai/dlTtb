@@ -128,10 +128,10 @@ export default function TopRefreshOnScroll({
     upAccumRef.current = 0;
 
     return () => {
-      window.removeEventListener("scroll", onScroll as any);
-      window.removeEventListener("touchstart", onTouchStart as any);
-      window.removeEventListener("touchmove", onTouchMove as any);
-      window.removeEventListener("touchend", onTouchEnd as any);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
     };
   }, [
     enabled,

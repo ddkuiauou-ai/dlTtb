@@ -1,14 +1,8 @@
 import Image from 'next/image';
 import * as React from 'react';
+import type { Post } from '@/lib/types';
 
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  thumbnail: string;
-  hoverPlayerKind?: 'youtube' | 'mp4' | 'x' | null;
-  hoverPlayerUrl?: string | null;
-}
+// Local Post interface removed - using imported type from lib/types
 
 interface PostHoverCardProps {
   post: Post;

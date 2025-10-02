@@ -177,7 +177,7 @@ export function PostViewerModal() {
 
         <ScrollProgress ref={contentRef} className="flex-1 p-0">
           {isLoading && <PostDetailSkeleton />}
-          {!isLoading && post && <PostDetail post={post} inDialog={true} />}
+          {!isLoading && post && <PostDetail post={post as unknown as Parameters<typeof PostDetail>[0]['post']} inDialog={true} />}
           {!isLoading && postId && !post && (
             <div className="p-6 text-center">Post not found or failed to load.</div>
           )}

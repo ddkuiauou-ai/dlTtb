@@ -402,7 +402,6 @@ const readMarkersFromStorage = (): Record<string, ReadMarker> => {
   } catch {
     return {};
   }
-  return true;
 };
 
 const getReadSet = (): Set<string> => new Set(Object.keys(readMarkersFromStorage()));
@@ -1437,7 +1436,7 @@ export default function InfinitePostList({
               if (signal.aborted) return;
 
               const arr = (Array.isArray(data.posts) ? data.posts : []) as Post[];
-              const normalized = arr.map((p: any) => ({
+              const normalized = arr.map((p: Post & { community?: string; site?: string }) => ({
                 ...p,
                 communityId: p.communityId || p.community || p.site || undefined,
                 communityLabel: p.communityLabel || p.community || p.site || undefined,
@@ -1538,7 +1537,7 @@ export default function InfinitePostList({
           const data = await res.json();
           const incomingRaw = (Array.isArray(data.posts) ? data.posts : []) as Post[];
           // Normalize community fields for filtering/display
-          const incoming = incomingRaw.map((p: any) => ({
+          const incoming = incomingRaw.map((p: Post & { community?: string; site?: string }) => ({
             ...p,
             communityId: p.communityId || p.community || p.site || undefined,
             communityLabel: p.communityLabel || p.community || p.site || undefined,
@@ -1562,7 +1561,7 @@ export default function InfinitePostList({
                   if (r.ok) {
                     const d = await r.json();
                     const arr = (Array.isArray(d.posts) ? d.posts : []) as Post[];
-                    const norm = arr.map((p: any) => ({
+                    const norm = arr.map((p: Post & { community?: string; site?: string }) => ({
                       ...p,
                       communityId: p.communityId || p.community || p.site || undefined,
                       communityLabel: p.communityLabel || p.community || p.site || undefined,
@@ -1821,7 +1820,10 @@ export default function InfinitePostList({
   const communityFilteredPosts = useMemo(() => {
     if (activeCommunities && activeCommunities.length > 0) {
       const allowed = new Set(activeCommunities);
-      return posts.filter((p) => allowed.has(p.communityId || p.community));
+      return posts.filter((p) => {
+        const id = p.communityId || p.community;
+        return id && allowed.has(id);
+      });
     }
     if (activeCommunity === "전체") {
       return posts;
@@ -2016,6 +2018,7 @@ export default function InfinitePostList({
         lastLoadTriggerRef={lastLoadTriggerRef}
         isFetchingRef={isFetchingRef}
         readPostIds={readPostIds}
+        windowScrollMargin={typeof windowScrollMarginProp === 'number' ? windowScrollMarginProp : 0}
       />
     );
   }

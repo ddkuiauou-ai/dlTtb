@@ -9,8 +9,16 @@ import Link from "next/link"
 import { ReadMarker } from "./ReadMarker.client";
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
+
+type ClusterMember = { 
+  id: string; 
+  title: string; 
+  site: string; 
+  siteName?: string | null; 
+  timestamp: string;
+};
 
 export async function generateStaticParams() {
   const ids = await getAllPostIds();
@@ -47,9 +55,9 @@ export default async function PostPage(props: PageProps) {
               {Array.isArray(post.clusterMembers) && post.clusterMembers.length > 0 && (
                 <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {post.clusterMembers
-                    .filter((m: any) => m.id !== post.id)
+                    .filter((m: ClusterMember) => m.id !== post.id)
                     .slice(0, 10)
-                    .map((m: any) => (
+                    .map((m: ClusterMember) => (
                       <li key={m.id} className="truncate">
                         <Link href={`/posts/${m.id}`} className="text-sm text-blue-700 hover:underline">
                           <span className="post-title font-semibold">{m.title || m.id}</span>
@@ -64,7 +72,7 @@ export default async function PostPage(props: PageProps) {
             </section>
           )}
           <div id="comments" />
-          <CommentSection postId={post.id} comments={post.comments} />
+          <CommentSection comments={post.comments} />
           <RelatedPosts items={related} />        </div>
       </main>
       <Footer />

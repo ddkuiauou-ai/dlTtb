@@ -5,21 +5,21 @@ export type Post = {
   community: string;
   communityId: string;
   communityLabel: string;
-  boardLabel: string | null | undefined;
+  boardLabel: string | null;
   comments: number;
   upvotes: number;
   viewCount: number;
   timestamp: string;
   timeAgo: string;
-  thumbnail: string | null;
-  content: string | null;
+  thumbnail?: string | null;
+  content?: string | null;
   embed?: { type: "youtube" | "x" | "mp4"; url: string };
   hasYouTube?: boolean;
   hasX?: boolean;
-  hoverPlayerKind: 'youtube' | 'x' | 'mp4' | null;
-  hoverPlayerUrl: string | null;
-  clusterId: string | null;
-  clusterSize: number | null;
+  hoverPlayerKind?: 'youtube' | 'x' | 'mp4' | null;
+  hoverPlayerUrl?: string | null;
+  clusterId?: string | null;
+  clusterSize?: number | null;
 };
 
 export type Range = "3h" | "6h" | "24h" | "1w";

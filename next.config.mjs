@@ -3,10 +3,10 @@ const nextConfig = {
   // output: "export", // Removed for Cloudflare Pages SSG support
   trailingSlash: true,
   eslint: {
-    ignoreDuringBuilds: true,
+    // ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    // ignoreBuildErrors: true,
   },
   images: {
     unoptimized: true,

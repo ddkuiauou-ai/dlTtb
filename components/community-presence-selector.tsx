@@ -30,8 +30,8 @@ export interface CommunityPresenceSelectorProps {
   hoverLift?: string | number;
 }
 
-const AVATAR_MOTION_TRANSITION = { type: 'spring', stiffness: 200, damping: 25 };
-const GROUP_CONTAINER_TRANSITION = { type: 'spring', stiffness: 150, damping: 20 };
+const AVATAR_MOTION_TRANSITION = { type: 'spring' as const, stiffness: 200, damping: 25 };
+const GROUP_CONTAINER_TRANSITION = { type: 'spring' as const, stiffness: 150, damping: 20 };
 const ANIMATION_DURATION = 500; // ms
 
 // Helper Components
@@ -103,7 +103,18 @@ const DockView = React.memo(({ items, unselected, toggle, dims }: { items: Commu
 ));
 DockView.displayName = 'DockView';
 
-const ExpandedView = React.memo(({ selected, unselected, toggle, dims, space, hoverLift, tooltipSide, tooltipOffset, togglingGroup, className }: any) => (
+const ExpandedView = React.memo(({ selected, unselected, toggle, dims, space, hoverLift, tooltipSide, tooltipOffset, togglingGroup, className }: { 
+  selected: CommunityItem[];
+  unselected: CommunityItem[];
+  toggle: (id: string) => void;
+  dims: { h: string; s: string; b: string };
+  space: string;
+  hoverLift?: string | number;
+  tooltipSide?: 'top' | 'bottom' | 'left' | 'right';
+  tooltipOffset?: number;
+  togglingGroup: 'selected' | 'unselected' | null;
+  className?: string;
+}) => (
   <div className={cn('flex items-center justify-center gap-4', className)}>
     {selected.length > 0 && (
       <motion.div layout className={cn('bg-neutral-200 dark:bg-neutral-700/70 p-0.5 rounded-full', togglingGroup === 'selected' ? 'z-5' : 'z-10')} transition={GROUP_CONTAINER_TRANSITION}>
@@ -148,13 +159,15 @@ export default function CommunityPresenceSelector({ items, className, size = 'md
   const [togglingGroup, setTogglingGroup] = React.useState<'selected' | 'unselected' | null>(null);
   const [isHovered, setIsHovered] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
-  const animationTimer = React.useRef<NodeJS.Timeout>();
+  const animationTimer = React.useRef<NodeJS.Timeout | undefined>(undefined);
 
   // Animate on hover change
   React.useEffect(() => {
     setIsAnimating(true);
     animationTimer.current = setTimeout(() => setIsAnimating(false), ANIMATION_DURATION);
-    return () => clearTimeout(animationTimer.current);
+    return () => {
+      if (animationTimer.current) clearTimeout(animationTimer.current);
+    };
   }, [isHovered]);
 
   // Sync state with props

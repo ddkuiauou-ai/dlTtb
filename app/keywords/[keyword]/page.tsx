@@ -14,14 +14,14 @@ export async function generateStaticParams() {
 }
 
 type PageProps = {
-  params: {
+  params: Promise<{
     keyword: string;
-  };
+  }>;
 };
 
 export default async function Page({ params }: PageProps) {
   try {
-    const { keyword: slug } = params;
+    const { keyword: slug } = await params;
     const decodedKeyword = decodeURIComponent(slug);
 
     const initialRange: Range = '1w'; // Default range

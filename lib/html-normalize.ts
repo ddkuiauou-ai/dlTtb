@@ -49,7 +49,7 @@ export function normalizeCrawledHtml(html: string): string {
   out = out.replace(/<(div|section|article|aside|figure)\b([^>]*?)>/gi, (m, tag, rest) => {
     let r = rest;
     if (/\sstyle\s*=\s*("|')/i.test(r)) {
-      r = r.replace(/\sstyle\s*=\s*("|')(.*?)\1/gi, (_m, q, style) => {
+      r = r.replace(/\sstyle\s*=\s*("|')(.*?)\1/gi, (_m: string, q: string, style: string) => {
         let s = String(style)
           .replace(/(?:^|;)\s*max-width\s*:[^;]+;?/gi, '')
           .replace(/(?:^|;)\s*min-width\s*:[^;]+;?/gi, '')

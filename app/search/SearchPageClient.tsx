@@ -11,7 +11,8 @@ interface Doc {
   id: string;
   title: string;
   image?: string;
-  [key: string]: any;
+  score?: number;
+  [key: string]: string | number | undefined;
 }
 
 export default function SearchPageClient() {

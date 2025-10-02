@@ -219,10 +219,13 @@ export const fusionJobs = pgTable("fusion_jobs", {
 ]);
 
 // 5. Post Comments (nested/threaded)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const postComments: any = pgTable("post_comments", {
   id: text("id").primaryKey(), // comment ID (e.g. `${post_id}_comment_1`)
   postId: text("post_id").notNull().references(() => posts.id, { onDelete: "cascade" }),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parentId: text("parent_id").references((): any => postComments.id, { onDelete: "cascade" }), // null이면 루트 댓글
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rootId: text("root_id").references((): any => postComments.id, { onDelete: "cascade" }), // 스레드 루트(루트는 자기 자신)
   path: text("path").notNull(), //
   //  materialized DFS path (e.g. "001.002")

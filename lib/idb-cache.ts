@@ -92,7 +92,7 @@ export async function getManifest(base: string): Promise<Manifest | null> {
   } catch { /* ignore */ }
 
   if (!db) return null;
-  return new Promise((resolve, _reject) => {
+  return new Promise((resolve) => {
     const t = tx(db, 'readonly', STORE_MANIFESTS);
     const req = t.objectStore(STORE_MANIFESTS).get(manifestKey);
     req.onsuccess = () => resolve((req.result as Manifest) || null);

@@ -3,7 +3,7 @@ import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ClientRandomClamp from "@/components/client-random-clamp";
 import { PostListProvider } from "@/context/post-list-context";
-import type { Range } from "@/lib/types";
+import type { Range, Post } from "@/lib/types";
 
 interface PostGridProps {
   title: string;
@@ -16,8 +16,8 @@ interface PostGridProps {
    * 주입되면 내부에서 쿼리를 호출하지 않고 해당 데이터로 그대로 그립니다.
    * (섹션 간 중복 제거 및 차별화 목적)
    */
-  initialPosts?: any[];
-  initialSampledPosts?: any[];
+  initialPosts?: Post[];
+  initialSampledPosts?: Post[];
   clampSeed?: number;
   jsonBase?: string;
   enablePaging?: boolean;

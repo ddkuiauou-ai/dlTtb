@@ -19,8 +19,8 @@ const DEFAULT_RANGE_LABELS: Record<Range, string> = {
 };
 
 export interface FeedControlsProps {
-    type: "category" | "keyword";
-    id: string;
+    type?: "category" | "keyword";
+    id?: string;
     range: Range;
     viewMode: ViewMode;
     readFilter: ReadFilter;
@@ -33,8 +33,6 @@ export interface FeedControlsProps {
 }
 
 export function FeedControls({
-    type,
-    id,
     range,
     viewMode,
     readFilter,
@@ -48,7 +46,7 @@ export function FeedControls({
     const order = (rangeOrder && rangeOrder.length ? rangeOrder : ["3h", "6h", "24h", "1w"]) as Range[];
     const labels = { ...DEFAULT_RANGE_LABELS, ...(rangeLabels || {}) } as Record<Range, string>;
 
-    const [isPending, startTransition] = React.useTransition();
+    const [isPending] = React.useTransition();
 
     const [metrics, setMetrics] = React.useState<{ total: number; read: number; unread: number } | null>(null);
     const lastRxRef = React.useRef<{ total: number; read: number; unread: number } | null>(null);
@@ -56,8 +54,8 @@ export function FeedControls({
     React.useEffect(() => {
         const onMetrics = (e: Event) => {
             try {
-                const ce = e as CustomEvent<any>;
-                const d = ce.detail as { key: string; total: number; read: number; unread: number } | undefined;
+                const ce = e as CustomEvent<{ key: string; total: number; read: number; unread: number }>;
+                const d = ce.detail;
                 if (!d) return;
                 if (metricsKey && d.key !== metricsKey) {
                     if (process.env.NODE_ENV !== 'production') {
@@ -267,7 +265,7 @@ export function FeedControls({
                         <ToggleGroup
                             type="single"
                             value={viewMode}
-                            onValueChange={(value) => { if (value) setViewMode(value as any); }}
+                            onValueChange={(value) => { if (value) setViewMode(value as ViewMode); }}
                             aria-label="보기 모드"
                         >
                             <ToggleGroupItem value="grid" aria-label="그리드 보기">

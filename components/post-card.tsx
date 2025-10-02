@@ -742,7 +742,7 @@ export const PostCard = React.memo(
       return null; // Or a loading skeleton
     }
 
-    const timeInfo = formatPostTime(post.timeAgo);
+    const timeInfo = formatPostTime(post.timeAgo || '');
 
     const GridExtras = () => (
       <div className="flex items-center gap-2">
@@ -774,7 +774,7 @@ export const PostCard = React.memo(
       const isClustered = typeof post.clusterSize === "number" && post.clusterSize > 1;
       return (
         <div className="flex items-center gap-2 flex-shrink-0">
-          {isClustered && (
+          {isClustered && post.clusterSize && (
             <Badge variant="secondary" className="bg-amber-100 text-amber-800 border-0">
               통합 +{post.clusterSize - 1}
             </Badge>
@@ -783,11 +783,11 @@ export const PostCard = React.memo(
             <Badge
               variant="secondary"
               className={cn(
-                communityColors[post.communityLabel || post.community] || "bg-gray-100 text-gray-800",
+                communityColors[post.communityLabel || post.community || ''] || "bg-gray-100 text-gray-800",
                 "hidden @[10rem]:inline-flex"
               )}
             >
-              {post.communityLabel || post.community}
+              {post.communityLabel || post.community || ''}
             </Badge>
           )}
           {post.hasYouTube && (

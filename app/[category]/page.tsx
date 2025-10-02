@@ -1,5 +1,6 @@
 import CategoryFeedClient from '@/components/CategoryFeed.client';
 import { getPostsByCategory, getAllPosts, getPostsWithVideo, getPostsByYouTube } from '@/lib/queries';
+import type { Post } from '@/lib/types';
 
 export const dynamic = 'force-static';
 export const dynamicParams = false;
@@ -32,19 +33,19 @@ export async function generateStaticParams() {
 }
 
 type PageProps = {
-  params: {
+  params: Promise<{
     category: string;
-  };
+  }>;
 };
 
 export default async function Page({ params }: PageProps) {
   const { category } = await params;
 
-  const range = '24h'; // Hardcode to default range
+  const range: "3h" | "6h" | "24h" | "1w" = '24h'; // Hardcode to default range
 
   // SSG: 빌드 시점에 카테고리별로 다른 쿼리를 사용하여 데이터를 미리 가져옵니다.
-  let initialPosts;
-  const options = { page: 1, pageSize: 30, range: range as any };
+  let initialPosts: Post[];
+  const options = { page: 1, pageSize: 30, range };
 
   if (category === 'all') {
     initialPosts = await getAllPosts(options);
@@ -61,7 +62,7 @@ export default async function Page({ params }: PageProps) {
   return <CategoryFeedClient
     category={category}
     categoryLabel={categoryLabel}
-    initialPosts={initialPosts as any}
+    initialPosts={initialPosts}
     initialRange={range}
   />;
 }

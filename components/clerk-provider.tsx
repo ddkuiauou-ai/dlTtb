@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === "production") {
 }
 let missingKeyWarningLogged = false;
 
-export function ClientClerkProvider({ children }: PropsWithChildren): JSX.Element {
+export function ClientClerkProvider({ children }: PropsWithChildren): React.JSX.Element {
   const router = useRouter();
 
   if (!publishableKey) {
@@ -34,8 +34,6 @@ export function ClientClerkProvider({ children }: PropsWithChildren): JSX.Elemen
       publishableKey={publishableKey}
       routerPush={(to) => router.push(to)}
       routerReplace={(to) => router.replace(to)}
-      routerBack={() => router.back()}
-      routerNavigate={(to) => router.push(to)}
     >
       {children}
     </ReactClerkProvider>

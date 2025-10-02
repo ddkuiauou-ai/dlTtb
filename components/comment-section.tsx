@@ -8,16 +8,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { ThumbsUp, MessageCircle, MoreHorizontal } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 
-interface Comment {
-  id: number
-  author: string
-  content: string
-  createdAt: string
-  upvotes: number
-  downvotes: number
-  replies?: Comment[]
-}
-
 type CommentItemType = {
   id: string;
   author?: string | null;
@@ -32,11 +22,10 @@ type CommentItemType = {
 };
 
 interface CommentSectionProps {
-  postId: string;
   comments?: CommentItemType[];
 }
 
-export function CommentSection({ postId, comments = [] }: CommentSectionProps) {
+export function CommentSection({ comments = [] }: CommentSectionProps) {
   const [newComment, setNewComment] = useState("")
   const [commentList, setCommentList] = useState(comments)
 

@@ -32,16 +32,11 @@ import {
   postComments,
   sites,
   keywordTrends,
-  clusterTrends,
   clusters,
-  clusterRotation,
-  postRotation,
-  mvPostTrends30m,
-  mvPostTrendsAgg,
   postEnrichment,
   postImageEnrichment,
 } from "./schema";
-import { and, desc, eq, gt, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, sql, type SQL } from "drizzle-orm";
 import { boolean, pgTable, text } from "drizzle-orm/pg-core";
 
 // Locally define cluster_posts based on usage in queries
@@ -177,7 +172,7 @@ async function fetchRankedCandidates(
   rangeLabel: "3h" | "6h" | "24h" | "1w",
 ): Promise<RankedRow[]> {
   const q = buildRankedCandidatesQuery(intervalLiteral, limit, rangeLabel);
-  const res: any = await db.execute(q);
+  const res = await db.execute(q);
   return (res?.rows ?? res) as RankedRow[];
 }
 
@@ -315,7 +310,7 @@ function interleaveWithCaps<T extends { site: string; score?: number }>(rows: T[
   // 1. 사이트별로 게시물을 그룹화하고 점수 순으로 정렬합니다.
   const postsBySite = new Map<string, T[]>();
   for (const row of rows) {
-    const site = (row as any).site ?? "기타";
+    const site = row.site ?? "기타";
     if (!postsBySite.has(site)) postsBySite.set(site, []);
     postsBySite.get(site)!.push(row);
   }
@@ -538,7 +533,7 @@ export async function getPostDetail(id: string) {
 
   const processedContentHtml = row.contentHtml;
 
-  const safeImageEnrichments = imageEnrichments.map((item: any) => ({
+  const safeImageEnrichments = imageEnrichments.map((item) => ({
     ...item,
     embedding: null,
     enrichedAt: typeof item?.enrichedAt === 'string'
@@ -553,25 +548,42 @@ export async function getPostDetail(id: string) {
     return ts > latest ? ts : latest;
   }, null);
 
-  const formattedComments = comments.map((c) => ({
+  type FormattedComment = {
+    id: string;
+    parentId: string | null;
+    depth: number;
+    path: string;
+    author: string | null;
+    avatar: string | null;
+    content: string | null;
+    contentHtml: string | null;
+    timestamp: string;
+    likeCount: number;
+  };
+
+  type NestedComment = FormattedComment & {
+    replies: NestedComment[];
+  };
+
+  const formattedComments: FormattedComment[] = comments.map((c) => ({
     id: c.id,
     parentId: c.parentId,
     depth: c.depth,
     path: c.path,
     author: c.author,
     avatar: c.avatar,
-    contentHtml: c.contentHtml,
     content: c.content,
+    contentHtml: c.contentHtml,
     timestamp: typeof c.timestamp === "string" ? c.timestamp : c.timestamp.toISOString(),
     likeCount: c.likeCount ?? 0,
   }));
 
   // 트리 구성
   const sortedComments = [...formattedComments].sort((a, b) => (a.path ?? "").localeCompare(b.path ?? ""));
-  const nestedComments: typeof formattedComments = [];
-  const stack: Array<any> = [];
+  const nestedComments: NestedComment[] = [];
+  const stack: NestedComment[] = [];
   for (const comment of sortedComments) {
-    const node = { ...comment, replies: [] as any[] };
+    const node: NestedComment = { ...comment, replies: [] };
     while (stack.length > (comment.depth ?? 0)) stack.pop();
     if (stack.length === 0) nestedComments.push(node); else stack[stack.length - 1].replies.push(node);
     stack.push(node);
@@ -603,7 +615,7 @@ export async function getPostDetail(id: string) {
       .orderBy(sql`CASE WHEN ${clusterPosts.isRepresentative} THEN 0 ELSE 1 END`, desc(posts.timestamp))
       .limit(30);
 
-    clusterMembers = mRes.map((r: any) => ({
+    clusterMembers = mRes.map((r) => ({
       id: r.id,
       title: r.title,
       site: r.site,
@@ -664,14 +676,24 @@ export async function getRelatedPosts(postId: string, limit = 8) {
     ORDER BY overlap DESC, same_board DESC, c.timestamp DESC
     LIMIT ${limit}
   `;
-  const res: any = await db.execute(q);
-  const rows = (res?.rows ?? res) as any[];
-  return rows.map((r: any) => ({
+  const res = await db.execute(q);
+  const rows = (res?.rows ?? res) as Array<{
+    id: string;
+    title: string | null;
+    site: string;
+    board: string;
+    timestamp: string;
+    site_name: string | null;
+    overlap: number;
+    same_site: boolean;
+    same_board: boolean;
+  }>;
+  return rows.map((r) => ({
     id: r.id,
     title: r.title,
     site: r.site,
     siteName: r.site_name,
-    timestamp: typeof r.timestamp === "string" ? r.timestamp : r.timestamp?.toISOString?.() ?? "",
+    timestamp: typeof r.timestamp === "string" ? r.timestamp : (r.timestamp as Date | undefined)?.toISOString?.() ?? "",
     overlap: Number(r.overlap) || 0,
     sameSite: !!r.same_site,
     sameBoard: !!r.same_board,
@@ -811,13 +833,13 @@ async function _getMainPagePostsRanked({
   })();
   if (base.length === 0 || rows.length < pageSize || debugRanked) {
     try {
-      const mvRes: any = await db.execute(
+      const mvRes = await db.execute(
         sql`SELECT COUNT(*) AS cnt, MAX(window_end) AS max_ts FROM mv_post_trends_agg WHERE range_label = ${range}`,
       );
       const mvDiag = (mvRes?.rows ?? mvRes)?.[0] ?? null;
       console.log(`[getMainPagePosts][ranked ${range}] mv_diag`, mvDiag);
 
-      const srcRes: any = await db.execute(sql`SELECT MAX(window_end) AS max_ts FROM post_trends`);
+      const srcRes = await db.execute(sql`SELECT MAX(window_end) AS max_ts FROM post_trends`);
       const srcDiag = (srcRes?.rows ?? srcRes)?.[0] ?? null;
       console.log(`[getMainPagePosts][ranked ${range}] post_trends_diag`, srcDiag);
     } catch (err) {
@@ -836,7 +858,7 @@ async function _getMainPagePostsRanked({
       FROM posts p
       WHERE ${inArray(posts.id, [...forcedSet])} AND p.is_deleted = FALSE
     `;
-    const rf: any = await db.execute(qf);
+    const rf = await db.execute(qf);
     forcedRows = (rf?.rows ?? rf) as RankedRow[];
     try { console.log(`[getMainPagePosts][ranked ${range}] forcedRows=${forcedRows.length}`); } catch { }
   }
@@ -938,8 +960,22 @@ async function _getMainPagePostsFresh({
     ORDER BY score DESC
     LIMIT ${pageSize * 8}
   `;
-  const res: any = await db.execute(q);
-  const fresh = (res?.rows ?? res) as any[];
+  const res = await db.execute(q);
+  const fresh = (res?.rows ?? res) as Array<{
+    id: string;
+    title: string | null;
+    site: string;
+    comment_count: number | null;
+    like_count: number | null;
+    view_count: number | null;
+    timestamp: string;
+    site_name: string | null;
+    board_name: string | null;
+    content: string | null;
+    hot30: number;
+    age_hours: number;
+    score: number;
+  }>;
   const freshRows = fresh.filter((r) => !excludeSet.has(r.id));
   try { console.log(`[getMainPagePosts][fresh ${range}] base=${fresh.length} afterExclude=${freshRows.length}`); } catch { }
 
@@ -964,7 +1000,7 @@ async function _getMainPagePostsFresh({
       FROM posts p
       WHERE ${inArray(posts.id, [...forcedSet])} AND p.is_deleted = FALSE
     `;
-    const rf: any = await db.execute(qf);
+    const rf = await db.execute(qf);
     const forcedSmall = (rf?.rows ?? rf) as Array<{ id: string; site: string; score: number }>;
 
     const map = new Map<string, { id: string; site: string; score: number }>();
@@ -1020,8 +1056,8 @@ async function loadSuppressedClusters(range: "3h" | "6h" | "24h" | "1w") {
       AND suppressed_until IS NOT NULL
       AND suppressed_until >= NOW()
   `;
-  const res: any = await db.execute(q);
-  return new Set<string>((res?.rows ?? res).map((r: any) => r.cluster_id));
+  const res = await db.execute(q);
+  return new Set<string>((res?.rows ?? res).map((r) => r.cluster_id as string));
 }
 
 
@@ -1074,8 +1110,19 @@ export async function getClusterTopPosts({
     ORDER BY f.hot DESC
     LIMIT ${BATCH};
   `;
-  const res: any = await db.execute(q);
-  const rows: Array<{ id: string; title: string | null; site: string; commentCount: number | null; likeCount: number | null; timestamp: string; siteName: string | null; score: number; cluster_id: string; cluster_size: number; }> = (res?.rows ?? res) as any;
+  const res = await db.execute(q);
+  const rows = (res?.rows ?? res) as Array<{
+    id: string;
+    title: string | null;
+    site: string;
+    comment_count: number | null;
+    like_count: number | null;
+    timestamp: string;
+    site_name: string | null;
+    hot: number;
+    cluster_id: string;
+    cluster_size: number;
+  }>;
 
   if (!rows?.length) {
     try {
@@ -1098,10 +1145,11 @@ export async function getClusterTopPosts({
     // ignore
   }
 
-  const filtered = filteredRows.map((r: any) => ({
+  const filtered = filteredRows.map((r) => ({
     ...r,
     clusterId: r.cluster_id,
     clusterSize: r.cluster_size,
+    score: r.hot,
   }));
   const picked = interleaveProportionalCap(filtered, pageSize, perSiteCap);
 
@@ -1113,48 +1161,56 @@ export async function getClusterTopPosts({
     // ignore
   }
 
-  const ids = picked.map((r: any) => r.id);
+  const ids = picked.map((r) => r.id);
   if (ids.length === 0) return [];
 
   const clusterSelections = picked
-    .filter((r: any) => r.clusterId)
-    .map((r: any) => ({
-      clusterId: r.clusterId,
+    .filter((r) => r.clusterId)
+    .map((r) => ({
+      clusterId: r.clusterId!,
       score: r.score ?? 0,
     }));
-  const postSelections = picked.map((r: any) => ({ id: r.id, score: r.score ?? 0 }));
+  const postSelections = picked.map((r) => ({ id: r.id, score: (r as typeof r & { score?: number }).score ?? 0 }));
 
   await recordClusterRotation(range, clusterSelections);
   await recordPostRotation(range, postSelections);
 
   const hydrated = await hydratePosts(ids);
-  const hmap = new Map(hydrated.map((h: any) => [h.id, h]));
-  return picked.map((p: any) => ({
-    ...p,
-    ...(hmap.get(p.id) || {}),
-  }));
+  const hmap = new Map(hydrated.map((h) => [h.id, h]));
+  return picked.map((p) => {
+    const hydratedPost = hmap.get(p.id);
+    if (!hydratedPost) {
+      // If hydration failed, skip this post
+      return null;
+    }
+    return hydratedPost;
+  }).filter((p): p is NonNullable<typeof p> => p !== null);
 }
 
 // 24h home stats for SSG (posts / comments / active unique commenters)
-export async function getHomeStats24h() {
+export async function getHomeStats24h(): Promise<{
+  posts: { current: number; previous: number; ratePerMinute: number };
+  comments: { current: number; previous: number; ratePerMinute: number };
+  activeUsers: { current: number; previous: number; ratePerMinute: number };
+}> {
   try {
     const intervals = {
       '24h': sql`INTERVAL '24 hours'`,
       '30m': sql`INTERVAL '30 minutes'`,
     };
 
-    const getCount = async (table: 'posts' | 'post_comments', interval: '24h' | '30m') => {
+    const getCount = async (table: 'posts' | 'post_comments', interval: '24h' | '30m'): Promise<number> => {
       const q = sql`SELECT COUNT(*)::int AS cnt FROM ${sql.raw(table)} WHERE is_deleted = FALSE AND timestamp >= NOW() - ${intervals[interval]}`;
-      const result: any = await db.execute(q);
+      const result = await db.execute(q);
       const rows = result?.rows ?? result;
-      return rows?.[0]?.cnt ?? 0;
+      return Number(rows?.[0]?.cnt ?? 0);
     };
 
-    const getActiveUsers = async (interval: '24h' | '30m') => {
+    const getActiveUsers = async (interval: '24h' | '30m'): Promise<number> => {
       const q = sql`SELECT COUNT(DISTINCT author)::int AS cnt FROM post_comments WHERE is_deleted = FALSE AND author IS NOT NULL AND author <> '' AND timestamp >= NOW() - ${intervals[interval]}`;
-      const result: any = await db.execute(q);
+      const result = await db.execute(q);
       const rows = result?.rows ?? result;
-      return rows?.[0]?.cnt ?? 0;
+      return Number(rows?.[0]?.cnt ?? 0);
     };
 
     const [posts_current, posts_recent, comments_current, comments_recent, active_current, active_recent] = await Promise.all([
@@ -1255,13 +1311,13 @@ export async function getTopKeywords(limit: number) {
     ORDER BY count DESC
     LIMIT ${limit}
   `;
-  const res: any = await db.execute(q);
+  const res = await db.execute(q);
   return (res?.rows ?? res) as Array<{ keyword: string; count: number }>;
 }
 
 async function getPostsBy(
   options: { page: number; pageSize: number; range?: "3h" | "6h" | "24h" | "1w" },
-  whereClause: any,
+  whereClause: SQL,
 ) {
   const { page, pageSize, range = "24h" } = options;
   const offset = (page - 1) * pageSize;
@@ -1278,8 +1334,8 @@ async function getPostsBy(
     OFFSET ${offset}
   `;
 
-  const res: any = await db.execute(q);
-  const postIds = ((res?.rows ?? res) as any[]).map(p => p.id);
+  const res = await db.execute(q);
+  const postIds = ((res?.rows ?? res) as Array<{ id: string }>).map(p => p.id);
 
   if (postIds.length === 0) return [];
   return hydratePosts(postIds);

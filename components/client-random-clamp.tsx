@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import InfinitePostList from "@/components/infinite-post-list";
 import { PostListProvider } from "@/context/post-list-context";
+import type { Post } from "@/lib/types";
 
 function SkeletonCard() {
     return (
@@ -52,7 +53,7 @@ export default function ClientRandomClamp({
     initialSampled,
     initialSeed,
 }: {
-    items: any[];
+    items: Post[];
     sampleMax: number;
     layout?: "grid" | "list";
     community?: string;
@@ -65,7 +66,7 @@ export default function ClientRandomClamp({
      * (페이지 새로고침마다 구성이 달라짐)
      */
     randomizeOnEachMount?: boolean;
-    initialSampled?: any[];
+    initialSampled?: Post[];
     initialSeed?: number;
 }) {
     const measureRef = useRef<HTMLDivElement | null>(null);
@@ -175,9 +176,9 @@ export default function ClientRandomClamp({
         if (typeof window === 'undefined' || !window.matchMedia) return;
         const mql = window.matchMedia('(min-width: 1280px)');
         const handler = () => setIsXl(mql.matches);
-        try { mql.addEventListener('change', handler); } catch { (mql as any).addListener(handler); }
+        try { mql.addEventListener('change', handler); } catch { (mql as MediaQueryList).addListener(handler); }
         handler();
-        return () => { try { mql.removeEventListener('change', handler); } catch { (mql as any).removeListener(handler); } };
+        return () => { try { mql.removeEventListener('change', handler); } catch { (mql as MediaQueryList).removeListener(handler); } };
     }, []);
 
     // 아직 마운트 전이거나 컬럼 수를 모르기 전엔, 얇은 스켈레톤 렌더

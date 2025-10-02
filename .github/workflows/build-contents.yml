@@ -409,10 +409,6 @@ jobs:
       R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
       R2_ENDPOINT_URL: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
 
-    permissions:
-      contents: read
-      deployments: write
-
     steps:
       - name: Checkout source
         uses: actions/checkout@v4

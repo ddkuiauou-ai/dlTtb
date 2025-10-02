@@ -267,7 +267,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
       }
 
       if (Array.isArray(item.objects) && item.objects.length > 0) {
-        const formatted = item.objects.map((obj: any) => {
+        const formatted = item.objects.map((obj: { name?: string; count?: number; confidence?: number }) => {
           const parts = [String(obj?.name ?? '')];
           if (typeof obj?.count === 'number' && obj.count > 0) parts.push(`x${obj.count}`);
           if (typeof obj?.confidence === 'number') parts.push(`${Math.round(obj.confidence * 100)}%`);
@@ -426,13 +426,13 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
                 prepareReturnFromDetail(key, post.id);
                 const src = sessionStorage.getItem(`sourceUrl-${key}/latest`);
                 if (src) {
-                  (router as any).replace(src);
+                  router.replace(src);
                   return;
                 }
               }
-              (router as any).replace("/");
+              router.replace("/");
             } catch {
-              (router as any).replace("/");
+              router.replace("/");
             }
           }}
         >
@@ -529,7 +529,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
               {categories.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-xs text-gray-500">카테고리</span>
-                  {categories.map((c: any, idx: number) => (
+                  {categories.map((c: string | number, idx: number) => (
                     <Badge key={`cat-${idx}`} variant="secondary">
                       {String(c)}
                     </Badge>
@@ -539,7 +539,7 @@ export function PostDetail({ post, inDialog }: PostDetailProps) {
               {tags.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-xs text-gray-500">태그</span>
-                  {tags.map((t: any, idx: number) => (
+                  {tags.map((t: string | number, idx: number) => (
                     <Link key={`tag-${idx}`} href={getKeywordLink(String(t))} passHref>
                       <span
                         className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs text-gray-700 bg-gray-50 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"

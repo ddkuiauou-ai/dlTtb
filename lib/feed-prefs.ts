@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Range } from "./types";
 
-function isValidRange(r: any): r is Range { return r === "3h" || r === "6h" || r === "24h" || r === "1w"; }
+function isValidRange(r: unknown): r is Range { return r === "3h" || r === "6h" || r === "24h" || r === "1w"; }
 
 export type ViewMode = "grid" | "list";
 export type ReadFilter = "all" | "read" | "unread";
@@ -22,8 +22,8 @@ function scopeKey(type: "category" | "keyword", id: string) {
 function loadMap(): FeedPrefsMap {
     try {
         const raw = localStorage.getItem(KEY);
-        const obj = raw ? JSON.parse(raw) : {};
-        return obj && typeof obj === "object" ? obj as FeedPrefsMap : {};
+        const obj: unknown = raw ? JSON.parse(raw) : {};
+        return obj && typeof obj === "object" && !Array.isArray(obj) ? obj as FeedPrefsMap : {};
     } catch {
         return {};
     }
@@ -110,7 +110,7 @@ export function useScopedFeedPrefs(opts: {
             window.removeEventListener("storage", onStorage);
             window.removeEventListener("feedPrefs:updated", onCustom);
         };
-    }, [skey]);
+    }, [skey, setVm, setRf, setRg]);
 
     return {
         ready,
