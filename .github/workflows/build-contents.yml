@@ -382,7 +382,7 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
         run: |
-          pnpm exec @cloudflare/next-on-pages
+          pnpm exec next-on-pages
 
       - name: Deploy Main Site to Cloudflare Pages
         uses: cloudflare/pages-action@v1
