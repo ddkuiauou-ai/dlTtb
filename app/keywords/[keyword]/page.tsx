@@ -3,7 +3,7 @@ import KeywordFeed from '@/components/KeywordFeed.client';
 import type { Range } from '@/lib/types';
 
 export const dynamic = 'force-static';
-// export const dynamicParams = false;
+export const dynamicParams = false;
 export const revalidate = false;
 
 export async function generateStaticParams() {

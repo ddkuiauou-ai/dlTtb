@@ -8,6 +8,20 @@ import { PostDetail } from "@/components/post-detail"
 import Link from "next/link"
 import { ReadMarker } from "./ReadMarker.client";
 
+// Cloudflare Pages: 빌드 시 정적 생성 (로컬 DB 사용)
+// Neon 사용 시: runtime = 'edge', dynamic = 'force-dynamic' 으로 변경
+export const dynamic = 'force-static';
+export const dynamicParams = false;
+export const revalidate = false;
+
+// 빌드 시 생성할 포스트 ID 목록
+export async function generateStaticParams() {
+  const ids = await getAllPostIds();
+  // 최근 100개 포스트만 빌드 (빌드 시간 단축)
+  const recentIds = ids.slice(0, 100);
+  return recentIds.map((id) => ({ id }));
+}
+
 interface PageProps {
   params: Promise<{ id: string }>
 }
@@ -20,20 +34,10 @@ type ClusterMember = {
   timestamp: string;
 };
 
-export async function generateStaticParams() {
-  const ids = await getAllPostIds();
-  // return ids.map((id) => ({
-  // 첫 페이지(최근 게시물) ID들만 반환
-  const firstPageIds = ids.slice(0, 20); // 페이지당 20개 게시물
-  return firstPageIds.map((id) => ({
-    id,
-  }));
-}
-
 export default async function PostPage(props: PageProps) {
   const { id } = await props.params;
-  const post = await getPostDetail(id)
-  if (!post) return notFound()
+  const post = await getPostDetail(id);
+  if (!post) return notFound();
   const related = await getRelatedPosts(id, 8);
 
   return (
@@ -73,7 +77,8 @@ export default async function PostPage(props: PageProps) {
           )}
           <div id="comments" />
           <CommentSection comments={post.comments} />
-          <RelatedPosts items={related} />        </div>
+          <RelatedPosts items={related} />
+        </div>
       </main>
       <Footer />
     </div>

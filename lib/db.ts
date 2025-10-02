@@ -1,7 +1,10 @@
+// 현재는 로컬 PostgreSQL만 사용
+// Neon 사용 시: NEON_SETUP.md 참고하여 변경
+
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
 
-// 환경 변수 로드 (.env.local에 정의)
+// 환경 변수 로드 (.env에 정의)
 const pool = new Pool({
   host: process.env.POSTGRES_HOST,
   port: Number(process.env.POSTGRES_PORT),
