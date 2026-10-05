@@ -1,0 +1,4254 @@
+{
+  "date": "2026-10-05",
+  "records": [
+    {
+      "version": "5.61.3",
+      "engines": {
+        "node": ">=18.17.0"
+      },
+      "peerDependencies": {
+        "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0",
+        "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0"
+      },
+      "dependencies": {
+        "tslib": "2.8.1",
+        "@clerk/shared": "^3.47.2"
+      },
+      "deprecated": "This package is no longer supported. Please use @clerk/react instead. See the upgrade guide for more info: https://clerk.com/docs/guides/development/upgrading/upgrade-guides/core-3",
+      "dist": {
+        "shasum": "595f496b12a05b3a30285e806951896cf2b3c09b",
+        "tarball": "https://registry.npmjs.org/@clerk/clerk-react/-/clerk-react-5.61.3.tgz",
+        "fileCount": 42,
+        "integrity": "sha512-W21aNEeHtqh3xJLuW5g2ydben/1D5pSnxsl/kCnv0IY1zma7lO+aIJ7Br2bR4FKKkiu695mPnjtY+fvkQmCXBg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD+9lE6tNz631+RghMP4IMY9cX4DrLWO4Qo8HV1P7vb2wIhAMO0Syphz2zMXjp3enxohHfHdpWwu5+IJs5meyH+XUu5",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@clerk%2fclerk-react@5.61.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 1022976
+      },
+      "name": "@clerk/clerk-react",
+      "registry": "https://registry.npmjs.org/%40clerk%2Fclerk-react",
+      "distTags": {
+        "next": "4.4.0-next.2",
+        "staging": "4.28.0-staging.v4f9214a",
+        "alpha-v5": "5.0.0-alpha-v5.16",
+        "beta-v5": "5.0.0-beta-v5.18",
+        "beta": "5.0.0-beta.41",
+        "latest-v4": "4.32.5",
+        "canary": "5.58.1-canary.v20251208170916",
+        "snapshot": "5.61.0-snapshot.v20260216124703",
+        "latest": "5.61.3",
+        "latest-v5": "5.61.10"
+      }
+    },
+    {
+      "version": "6.17.5",
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "peerDependencies": {
+        "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0",
+        "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0"
+      },
+      "dependencies": {
+        "tslib": "2.8.1",
+        "@clerk/shared": "^4.38.0"
+      },
+      "dist": {
+        "shasum": "97dc34cc353fbd226ba76d69aabea0015c79c609",
+        "tarball": "https://registry.npmjs.org/@clerk/react/-/react-6.17.5.tgz",
+        "fileCount": 51,
+        "integrity": "sha512-ibTMS/bvo4W7+r+JrnzTig9s4QMVyybxxKCED8VgZE9LSE8XJ0VCH+dVj36hmvndXmpEqNuHRC61SQVJvv+40w==",
+        "signatures": [
+          {
+            "sig": "MEUCIAYc9Vbi3c7Ooeeu51CR4FG/JjtA3yr3Y6v8XD8Ed1vfAiEAyZzIVdEx9uL7v9o2bdC+oSKHEPgCuonXF4gbx06iA7c=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIAY4QIUShicx/Xcv0TfSP5E7YkR2auT3VUoX9By2s5upAiEA9Rxv98JS6zTho2Q9uD5t5vGdpQjbViPlKk2SOOA4fDY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@clerk%2freact@6.17.5",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2015488
+      },
+      "name": "@clerk/react",
+      "registry": "https://registry.npmjs.org/%40clerk%2Freact",
+      "distTags": {
+        "canary-core3": "6.0.0-canary-core3.v20251208193449",
+        "snapshot": "6.17.4-snapshot.v20260930211104",
+        "latest": "6.17.5",
+        "canary": "6.17.6-canary.v20261003180613"
+      }
+    },
+    {
+      "version": "1.13.16",
+      "peerDependencies": {
+        "next": ">=14.3.0 && <=15.5.2",
+        "vercel": ">=30.0.0 && <=47.0.4",
+        "wrangler": "^3.28.2 || ^4.0.0",
+        "@cloudflare/workers-types": "^4.20240208.0"
+      },
+      "dependencies": {
+        "acorn": "^8.8.0",
+        "chalk": "^5.2.0",
+        "cookie": "^0.5.0",
+        "semver": "^7.5.2",
+        "esbuild": "^0.15.3",
+        "js-yaml": "^4.1.0",
+        "chokidar": "^3.5.3",
+        "ast-types": "^0.14.2",
+        "commander": "^11.1.0",
+        "miniflare": "^3.20231218.1",
+        "pcre-to-regexp": "^1.1.0",
+        "package-manager-manager": "^0.2.0"
+      },
+      "deprecated": "Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare",
+      "dist": {
+        "shasum": "8592c51f2129a580ca5f42762a19b211da03b818",
+        "tarball": "https://registry.npmjs.org/@cloudflare/next-on-pages/-/next-on-pages-1.13.16.tgz",
+        "fileCount": 34,
+        "integrity": "sha512-52h51WNcfmx3szTdTd+n/xgz4qNxFtjOGG0zwnUAhTg8cjPwSUYmZp0OPRNw2jYG9xHwRS2ttSPAS8tcGkQGsw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDocBts+MYhfsojDjZUtdkXRniBjwxEOUWPkKsMoD3XrAIgbhyqe+ZxRo5W5tr8u1oFbXAaAey8+eq6WKS5Y6ApGEo=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 712287
+      },
+      "name": "@cloudflare/next-on-pages",
+      "registry": "https://registry.npmjs.org/%40cloudflare%2Fnext-on-pages",
+      "distTags": {
+        "pre-v1": "0.10.2",
+        "latest": "1.13.16",
+        "beta": "0.0.0-2a55aaa"
+      }
+    },
+    {
+      "version": "10.0.2",
+      "engines": {
+        "node": ">=18"
+      },
+      "peerDependencies": {
+        "react": ">=16.8.0",
+        "@types/react": ">=16.8.0"
+      },
+      "dependencies": {
+        "react-day-picker": "10.0.2"
+      },
+      "dist": {
+        "shasum": "263513f0b76538f1a6d6fa8bdc9667d4fec420d9",
+        "tarball": "https://registry.npmjs.org/@daypicker/react/-/react-10.0.2.tgz",
+        "fileCount": 396,
+        "integrity": "sha512-Z/gvGXnc/xjRr5Z6l9OhIey00C7kwbIyJ85Pff9B9EWDkjTlkTQztB3qeylmGJDQ9xmxRJUV1W+02rskqarUBw==",
+        "signatures": [
+          {
+            "sig": "MEUCIEoRGUmtfXT3CppvAElgOgPTxgkAHY4G0JxPAdmA9h8yAiEAtiEDScMbwCmZEexbCC/D0+yLePIDevNHRvvxqe3d+IU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIHk8nXNsVaQHhpzGhF2/f4A42Z5xKLc0lCAfH4nsHf3KAiAnqJdWvyhAcb+ngfUsZlAyxln6SS528UA+oWrMPGkH3A=="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@daypicker%2freact@10.0.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 57161
+      },
+      "name": "@daypicker/react",
+      "registry": "https://registry.npmjs.org/%40daypicker%2Freact",
+      "distTags": {
+        "next": "10.0.0-next.6",
+        "latest": "10.0.2"
+      }
+    },
+    {
+      "version": "5.9.1",
+      "peerDependencies": {
+        "ajv": "^8.12.0",
+        "joi": "^17.0.0 || ^18.0.0",
+        "yup": "^1.0.0",
+        "zod": "^3.25.0 || ^4.0.0",
+        "vest": ">=6.0.0",
+        "fp-ts": "^2.7.0",
+        "io-ts": "^2.0.0",
+        "effect": "^3.10.3",
+        "arktype": "^2.0.0",
+        "valibot": ">=0.31.0 || ^1.0.0-beta.4 || ^1.0.0-rc",
+        "typanion": "^3.3.2",
+        "ajv-errors": "^3.0.0",
+        "ajv-formats": "^2.1.1",
+        "superstruct": ">=0.12.0",
+        "@vinejs/vine": "^2.0.0 || ^3.0.0 || ^4.0.0",
+        "ata-validator": "^1.2.0",
+        "computed-types": "^1.0.0",
+        "nope-validator": ">=0.12.0",
+        "class-validator": ">=0.12.0",
+        "react-hook-form": "^7.55.0",
+        "@typeschema/main": ">=0.13.7",
+        "@sinclair/typebox": ">=0.25.24",
+        "class-transformer": ">=0.4.0",
+        "fluentvalidation-ts": "^3.0.0",
+        "@standard-schema/spec": "^1.0.0"
+      },
+      "dependencies": {
+        "@standard-schema/utils": "^0.3.0"
+      },
+      "dist": {
+        "shasum": "2010c1b542ce6fa75fa5d8fee5cc911ece009f5c",
+        "tarball": "https://registry.npmjs.org/@hookform/resolvers/-/resolvers-5.9.1.tgz",
+        "fileCount": 436,
+        "integrity": "sha512-7b7vsbraJxKgjVSA1Nur9tLwj539WGJUBLA7QNvXnFoT2pM5Z7G+6rlukk4B2/QrTZy6huRtH6wKeESPKuIr6w==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCIQ9jsrGZWgfrmjPSXD3kOphyONRzV+b2FF9nonyl1lwIhANls5Bl0dkREv7hRyL8whE0hBtxXfdqauftal9/7gFmy",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDGBoXudCJo4PSDceK7xZRQWhf1y3UjfEsNaMgEQ6gr8gIgaMrW8zhijnu9Xx+Vyv6tVJqUQMiHxlwvLzDqT+MORYk="
+          }
+        ],
+        "unpackedSize": 1164823
+      },
+      "name": "@hookform/resolvers",
+      "registry": "https://registry.npmjs.org/%40hookform%2Fresolvers",
+      "distTags": {
+        "next": "1.0.0-rc.2",
+        "beta": "2.0.0-beta.17",
+        "release-1.x": "1.3.8",
+        "latest": "5.9.1"
+      }
+    },
+    {
+      "version": "16.3.8",
+      "dependencies": {
+        "execa": "4.0.3",
+        "globby": "11.0.1",
+        "semver": "7.6.3",
+        "cheerio": "1.0.0-rc.9",
+        "find-up": "4.1.0",
+        "js-yaml": "4.2.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "picocolors": "1.0.0",
+        "strip-ansi": "6.0.0",
+        "jscodeshift": "17.0.0",
+        "is-git-clean": "1.1.0"
+      },
+      "dist": {
+        "shasum": "dfa1a2250278f1200e884f6b9bd35df354c7c128",
+        "tarball": "https://registry.npmjs.org/@next/codemod/-/codemod-16.3.8.tgz",
+        "fileCount": 44,
+        "integrity": "sha512-No90YRRU88liF/qXwZn84+9ux679RIx9WA2OmvrEEDM6OWPzbwHShV2WTGPAes49+Q7X8Bm6Ypq7rtTgacDKDA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQC5Pj+pPG5wo7uQNSJGTIqg2Ja3y4m7z9FPC+SfSQwnBQIgbyIB2m0Bjc6+fSFzG4j7731GSgdYX63gC176R/F3hWQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQCPI8Zt+esJ1/cJac52GOIwSqmD/VH2hb3yUL9Iz/FTvwIgE2lJxQ1VzkT/6ZmxsTlT1vIYxXTEmpOi+SR8oQGdmNY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@next%2fcodemod@16.3.8",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 402311
+      },
+      "name": "@next/codemod",
+      "registry": "https://registry.npmjs.org/%40next%2Fcodemod",
+      "distTags": {
+        "next-11": "11.1.4",
+        "next-12-2-6": "12.2.6",
+        "next-14-1": "14.1.1",
+        "rc": "15.0.0-rc.1",
+        "next-13": "13.5.11",
+        "next-12-3-2": "12.3.7",
+        "beta": "16.0.0-beta.0",
+        "next-14": "14.2.35",
+        "next-15-3": "15.3.9",
+        "next-15-2": "15.2.9",
+        "next-15-0": "15.1.12",
+        "next-15-0-0": "15.0.8",
+        "preview": "16.3.0-preview.10",
+        "latest": "16.3.8",
+        "backport": "15.5.27",
+        "canary": "16.4.0-canary.60"
+      }
+    },
+    {
+      "version": "1.20.8",
+      "peerDependencies": {
+        "next": ">=15.5.27 <16 || >=16.3.8",
+        "wrangler": "^4.125.0",
+        "rclone.js": "^0.6.6"
+      },
+      "dependencies": {
+        "glob": "^12.0.0",
+        "yargs": "^18.0.0",
+        "ci-info": "^4.2.0",
+        "ts-tqdm": "^0.8.6",
+        "enquirer": "^2.4.1",
+        "cloudflare": "^4.4.1",
+        "comment-json": "^4.5.1",
+        "@ast-grep/napi": "^0.40.5",
+        "@opennextjs/aws": "4.1.7",
+        "@dotenvx/dotenvx": "1.31.0"
+      },
+      "dist": {
+        "shasum": "0bbd6bbfd8c836404a5903ca59629d4bf7ad1ece",
+        "tarball": "https://registry.npmjs.org/@opennextjs/cloudflare/-/cloudflare-1.20.8.tgz",
+        "fileCount": 187,
+        "integrity": "sha512-7rrsBqd234GBBnHITobS0gagT4/fSfHJwm+ogYTyUb7ubg3PGC06biJgL9l4DZabFeu/ucqvml80sBr5torBgg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQC01VmzaMypDfWVl+subOTHK1rwzLx7niZT+PfUeo5FrQIgfSV3oYIpXIVOpz8edlrQdODGYreN8wG8dZItgoZJk2w=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIHYtYc4jkRmuIUPW5Vn2vNy9KMbWAMXupUH91So5t5BJAiEAoiAfJ6koXuospEiEcjKmKEESxIBk88s8KNvYoWBNbU0="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@opennextjs%2fcloudflare@1.20.8",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 474599
+      },
+      "name": "@opennextjs/cloudflare",
+      "registry": "https://registry.npmjs.org/%40opennextjs%2Fcloudflare",
+      "distTags": {
+        "latest": "1.20.8"
+      }
+    },
+    {
+      "version": "1.2.20",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-collapsible": "1.1.20",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "b472f0a32028bc43e8af749169b65cbbcdfd70bf",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-accordion/-/react-accordion-1.2.20.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-jDhG9FvAEnlhnjrsINbNXcUa4G+L1KqSkJSunkbKEzFRcAb52jvM0PjPxPRvhe1HNc5F5yc0yzzWeeqlH4yBIg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCibewlwfqEknD9awyQb/H7jGWa4d+pBhu6u5EHU0vgpwIhAOSTbnSItEJS6BzkzeIVpJez2LP2hvLYuhdLWXwRbPCp",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQD8JhloBCO8fng/v7cUhz+1HTC21jHF2tBKsrTCWN6IsQIhAOWhNO9/ilzoxlcU8RYfbxUWYuk5MO0PFx9aMqNY+gTW",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-accordion@1.2.20",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 92789
+      },
+      "name": "@radix-ui/react-accordion",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-accordion",
+      "distTags": {
+        "latest": "1.2.20",
+        "next": "1.2.21-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.23",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-dialog": "1.1.23",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5"
+      },
+      "dist": {
+        "shasum": "4e2f354a3b0209b8bdf2c6d85085a8091baa11f4",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-alert-dialog/-/react-alert-dialog-1.1.23.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-VAYOiQRqj3GPpYJE0I9J+X8Ip05cyVlNdKOFeiGS2Ou1HHGfpl0BxOyZm6nmVDyU+W+NF3/XLzmjHmVGydhwgA==",
+        "signatures": [
+          {
+            "sig": "MEQCIArNAl+HEVBPfxV4RvbAmBrKaXBZRAtLcnFxlC9e7xSzAiB6rzKFMBQgWM29DhpOSRXw1SJ9I9J5TIDA0CL9Ehj5LQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQCAP6wi+5X0/j1DS3nN+drgxP2/YZhm/Npd8TuD/VaS0AIhAKfMIDrp/9LgbPGvD94A3f8Zxp+bKLUNugtz86utzwuI",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-alert-dialog@1.1.23",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 66123
+      },
+      "name": "@radix-ui/react-alert-dialog",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-alert-dialog",
+      "distTags": {
+        "latest": "1.1.23",
+        "next": "1.1.24-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.15",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-primitive": "2.1.10"
+      },
+      "dist": {
+        "shasum": "43e6f97912febf432b81245445e20aa76933ce89",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-aspect-ratio/-/react-aspect-ratio-1.1.15.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-fy+dyVR+90nelK8rqIznFlxzx7uPcGbhxH8Nfr2bHb4UfSe+e3hklOC0luK0hDwVwnRX7xTRySpsrQVeW+/oNQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIDdJ7m+RUGVlVZzc0E6keNgaTxqTlaWtw4bZ4d9pGTAPAiEA0kZnKX9EusbSXOiWC8GfDg3o2b51L0PyW/cFE88AgA4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQCRhLHvZcSfnttlQgTP400tMJ0m/IjRT5e7pd6m2UxseAIhALaXRkJsGnmOXJJ+n1L6Z+U53vyn+PN/rWTbLjr46ioP",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-aspect-ratio@1.1.15",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 12960
+      },
+      "name": "@radix-ui/react-aspect-ratio",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-aspect-ratio",
+      "distTags": {
+        "latest": "1.1.15",
+        "next": "1.1.16-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.2.6",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-use-is-hydrated": "0.1.3",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-use-layout-effect": "1.1.4"
+      },
+      "dist": {
+        "shasum": "1133b4b13b15e571796d4431175114dddac3b06e",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-avatar/-/react-avatar-1.2.6.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-4ULOTJ/mqy2hT9GlWa/MFHxHSvH3nJzHnZM1waNsc5Bonv7i70aNenghXmD97S6OJ81ekXONGGt4nT1r0PfEdA==",
+        "signatures": [
+          {
+            "sig": "MEUCIHTCVOod+CV/xfzEpUyIbThg2mushR3NhK361cR6lO0kAiEAhL7H6Z3p2DbVZgMVP1GExYA6K0Lah+S8y7+TO1Wioeg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIBQwRW4yIf+a7LTEB/VN2vKnW9b/c7Jq5u0DcX5/Ab6DAiEAljlgFk56gGLBOStO6T/4yBqbBhZwW/5DlOnNjhVJK1o=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-avatar@1.2.6",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 42902
+      },
+      "name": "@radix-ui/react-avatar",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-avatar",
+      "distTags": {
+        "latest": "1.2.6",
+        "next": "1.2.7-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.3.11",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "2a7b4fb747b9b3ff3c30094b8fb95ff221c6a4b5",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-checkbox/-/react-checkbox-1.3.11.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-Gnptr9pDDQxD3hgq2dtPbtrp/c2qH1mBwIzw3X/ivrMb2e1t0jMTi606fVEqFPaQR1ggXIVQWKj3P2WW9v7zGQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDpt9ESNACCFnPleeOcqFz2UJ5ZhuFZfzECuboReAYUbAIgJ8cHE2mU0M6o/FRyxbbWCA2Z9gDlVobZ9FdqAt+vBnM=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIBSwEA7+JrugC6mXY18KtWZNpD0DrlAbbEb122EQ+Nq8AiEAtrsz/g1VeWyPGk6qNfCbDLs0mY/2lkYtA1C7cI3KazI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-checkbox@1.3.11",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 76205
+      },
+      "name": "@radix-ui/react-checkbox",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-checkbox",
+      "distTags": {
+        "latest": "1.3.11",
+        "next": "1.3.12-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.20",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "146057107f01587380b6f5b0ef8f60abd7230b23",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-collapsible/-/react-collapsible-1.1.20.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-mcGesGplBnzN2sbvJETzpCNfSMyPnb29q1GRLU+Ib7bJrpIG2ywmRoh2V5VbA2uNvKikKUlVbAPks7JDjz4A8Q==",
+        "signatures": [
+          {
+            "sig": "MEUCIGvTHDrntlOaf1CAFpWeiesedtx+BTh00k2fUHX3XGJJAiEAni202mzqNL//rBCab1JE9S/qJ1EJFaXmKN3gmxX0PeI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQDguRze3ZaNzhgmQRKItZfq4Q+Kwa2yiutX/ww5v9qPnwIgeawt21RDrgls8i05mKbaeW5/6lWV7uh1PlKA83XTDNI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-collapsible@1.1.20",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 46119
+      },
+      "name": "@radix-ui/react-collapsible",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-collapsible",
+      "distTags": {
+        "latest": "1.1.20",
+        "next": "1.1.21-rc.1785512840124"
+      }
+    },
+    {
+      "version": "2.3.7",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-menu": "2.1.24",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "9973ebbccc944bd99582c60dd1e99a5bc0285c8d",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-context-menu/-/react-context-menu-2.3.7.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-CtXP35dxaB5T3zXSd+E3uHe/QpXcpYnZmxp6OaIbfthtfW4wyb77M23BG+bwIJDtsMwEP/YssdsmNyZu7jhWew==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDI2N/sDgidQ/YCRyzunf8aXBRxNic7zQGOq9K+bUG00wIhAMRERdA1Oc7fDTPnS6KtTWvsoYJO0TMS6+N4mK5t50A3",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQCgrKRtN6+6YE/Pv4TPYSSa8G9jhjjO1fPNKGjkVPDmswIhAOTH+CPwllXjZPcTkwSGtfZsat7URFiUaPh7ZgzlJMm0",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-context-menu@2.3.7",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 114995
+      },
+      "name": "@radix-ui/react-context-menu",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-context-menu",
+      "distTags": {
+        "latest": "2.3.7",
+        "next": "2.3.8-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.23",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "aria-hidden": "^1.2.4",
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "react-remove-scroll": "^2.7.2",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-focus-scope": "1.1.16",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-focus-guards": "1.1.6",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "b7d8e83a3ccf97e46f3c3f477a0bf563f0de8239",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-dialog/-/react-dialog-1.1.23.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-Ksw4WeROkO4rC9k/onilX/Ao2Cr1ku1unMNH+XSCcP4jSXYu7HDsg9n4ojMjVb22XpYjAQ9qfrFlVbru1vXDUA==",
+        "signatures": [
+          {
+            "sig": "MEUCIDf8MHm1v5wgBJWsziZenja8Dw6Wb9wmilUQC4lZKoJ+AiEApe7g3T9jmQCdG8XgqE7hBJik9HOwI70lhhET/Y6g8C8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQC0o0908Wyy9ragVMnEeZOP9ti0Bv+qdLLwWyv6UaVQFAIhANFek828TdrIbN5J30zhqMKvbOlZ2sw4dxcDQw6OaGfn",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-dialog@1.1.23",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 99377
+      },
+      "name": "@radix-ui/react-dialog",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-dialog",
+      "distTags": {
+        "latest": "1.1.23",
+        "next": "1.2.0-rc.1785512840124"
+      }
+    },
+    {
+      "version": "2.1.24",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-menu": "2.1.24",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "3ed6d50cdacb1e68a5230c13510b6a87131b577b",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-dropdown-menu/-/react-dropdown-menu-2.1.24.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-geq8l2rJkxvkXsT9RMgtUE3P8pITFpTsvYpbySi1IH4fZEABD/Gp85myayFgxk0ktljGMJnCbeFkyTusvSvv7g==",
+        "signatures": [
+          {
+            "sig": "MEUCIEMwUSo4ksRUa/T7LPhtH110+/xUxHQAiWCwocySnNK2AiEAsmwfDn/VO4oGv4SiJbFtoxwa/FHQOyb8dHHR9Omo2A0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIFe8UsNmiAvi/e2i3qjE2TkqWDGKyzalwQMQRVh5jMjpAiAlbmQBKEjkT7XyiWQKa97LJqGhKauvAnAM01OkQqHM/w==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-dropdown-menu@2.1.24",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 107334
+      },
+      "name": "@radix-ui/react-dropdown-menu",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-dropdown-menu",
+      "distTags": {
+        "latest": "2.1.24",
+        "next": "2.1.25-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.23",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "9543671321afb3e822d1bfab8cc1016cc4d95e9e",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-hover-card/-/react-hover-card-1.1.23.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-H8qONfZd3ltrU3+jHCIgITbWo6e1iTKvP9DHdrvYbX48ooRM5FjEDTn16AMwdfuOGkWdZEhpl3PLL/Wk/AnHDQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIEfFA3A/jcuevCHndVOZ5bOvSYUZxxY51aOVfXn81x/hAiAthY6XYtLDF5caKklUiMeAShLknaPOWz3KqvP8KBSsGA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDGoDwM5nj5clKJKe/cnoS7GpblZ8dAN6ZPzkxwbBhoZwIhAMyvS98kjrcJ9xKiWu9MvCZAWtNp2we+N3dtGQINrA4G",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-hover-card@1.1.23",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 78652
+      },
+      "name": "@radix-ui/react-hover-card",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-hover-card",
+      "distTags": {
+        "latest": "1.1.23",
+        "next": "1.1.24-rc.1785512840124"
+      }
+    },
+    {
+      "version": "2.1.15",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-primitive": "2.1.10"
+      },
+      "dist": {
+        "shasum": "d6df361e853d8de9e3a512f6772b646fdb8d34e7",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-label/-/react-label-2.1.15.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-o/rdYEwZTTo5tjknnPeyQFU45kUC4i/XyeDPP+HGyi6XqpOP6Zf5Ya5vh/Yfe9Id5JiuWnnAx2XqIeD3UYZt0g==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD9PbpmSY2d9rbJ3W34kj8ORPm996O6fK1wHiH9QfzV3wIgeU6XmWRZy8lNpP+rx6UftBY3GJYIENq6QqQnVbBuyYc=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQCd4n+f6SPxTYoPJZujZ+a1Qrq21G2kBHzoM1ml85C8jAIgKtEfKqwCvOipqzjGfW8+ihwrecWAChgxp2FxgnePzbk=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-label@2.1.15",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 11059
+      },
+      "name": "@radix-ui/react-label",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-label",
+      "distTags": {
+        "latest": "2.1.15",
+        "next": "2.1.16-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.24",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-menu": "2.1.24",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "9cd0181cb03bbe971417c76339ed54dbd1d6bbf7",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-menubar/-/react-menubar-1.1.24.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-eeVs0vf7cuqXaM0qLQCPcufImiJNVBXdJDLu7ZGYl2732UH23Qat/foNGrr6vYV3/DdTsBqASoggUFgH14OcZA==",
+        "signatures": [
+          {
+            "sig": "MEQCID2twtuKxzluMvUhECzYXRJcffzlm0hb+emrmgvOpsFUAiA7VyZP2sej2MvHbn5no9+tawPc5//F9UIj8eDMxuphrQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIBapaY+WzzBXOdJYuneg4GU21uDXl+aTeAYqRq7n5TYwAiBhgSdV8Xv2zx1UI6D4VhpCim39bjaldTLPiMWBlVM18A==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-menubar@1.1.24",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 140886
+      },
+      "name": "@radix-ui/react-menubar",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-menubar",
+      "distTags": {
+        "latest": "1.1.24",
+        "next": "1.1.25-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.2.22",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-previous": "1.1.4",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "e6db06a6bb188233c7db3616e7f76328705570dd",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-navigation-menu/-/react-navigation-menu-1.2.22.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-ou7iLEJ+yrhQndkkA4U21XIdS/CS45F4iXIkTZcb6/Ne9EMsOuDudVmCwmDnfFZZ+y1FZqXRNSIgBy+YMvZVZg==",
+        "signatures": [
+          {
+            "sig": "MEQCIFvcsZn6QI4muye89/7NyGPQo76wyxetuZd9izFJ+maSAiB6VG2C2T/Nmk0sLAkkMtkWl24n2UFDDE417GtqpgFq6w==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQCE5OZsjitHtypRb90t7grHOj4Cispcx1KjRMTEHS+ZPwIhAMiDOqZhASrJlkQLaFZF+mg5gbS4gkqrZn7lrRKPBlLq",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-navigation-menu@1.2.22",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 235750
+      },
+      "name": "@radix-ui/react-navigation-menu",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-navigation-menu",
+      "distTags": {
+        "latest": "1.2.22",
+        "next": "1.3.0-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.23",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "aria-hidden": "^1.2.4",
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "react-remove-scroll": "^2.7.2",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-focus-scope": "1.1.16",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-focus-guards": "1.1.6",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "0d3bfb292d4ac14625022c581029d0e596a52308",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-popover/-/react-popover-1.1.23.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-mw58MrBlyHWFisTOYignD0vf/3gdcgAR+9of1s9G/38CbFiUwH1nCDkc0AUM9IrXFgN5Ue8n45j9WCgyM1sbiQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCse/TichlVx7hIsT0meLz3o7d6hakWRa5p5pqVWpi8tAIhAKVWE+Gyrd3UpWqKpf2pDA6Sxw1LUmiT4AzIER1Hg9mi",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCICrKmWk6X3IZNuSl8eQZHd+t4x5w4STYAIGbRdPRqP7EAiB2Cq5xvM/j0piyGO0LwX3PU3oC21P1/O9tX/T7Iz4Btg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-popover@1.1.23",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 93837
+      },
+      "name": "@radix-ui/react-popover",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-popover",
+      "distTags": {
+        "latest": "1.1.23",
+        "next": "1.2.0-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.16",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10"
+      },
+      "dist": {
+        "shasum": "250b03532573ba603f074b7702388a9427a5bcc4",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-progress/-/react-progress-1.1.16.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-5XnomAsoZZCY+KNTxbIghpGqPruZvKFNlvcAljVAOdDRDsH4/OZQxhtwo5wdtoDM5R6MhJBb2sPnDuRFep3lzg==",
+        "signatures": [
+          {
+            "sig": "MEUCIATU8hquampjQ+ei3duI6bMiHSPpn55eMjgUwdxC5i3RAiEAg7AMNZv0iYMLxeJDtCagMUy3AbFVA8QagKkCCeC1e2Y=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQCzfcpHI+1lpBo6c6YLGgKROsD7hzN1+JIjHr3KSWuVWwIgRXROVMnmN6J0lgUSCj/0y+FAgo2XdKW2QWJ3wIoE8yo=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-progress@1.1.16",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 30923
+      },
+      "name": "@radix-ui/react-progress",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-progress",
+      "distTags": {
+        "latest": "1.1.16",
+        "next": "1.1.17-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.4.7",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "915d083547d26d763884b7683be469c6402aed96",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-radio-group/-/react-radio-group-1.4.7.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-cgYFEkntCxppHZgtSZ+7vh0wbZQ+IC7PPMw8DSnRG27B6kDd32/Zw0OJt7dGDigCoprMuWHjg2PvUn3PYvPFoQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIEIVLe4x8Z0rkwaVSu7DRyowhG6XwEi72ZnX20DVzDpzAiAudTS1jqhtEHqXNWuqVePZa0NEPXh0qwnquBsvfhqJAQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCID9KUhF32GizHUg9SoWdi6VX9u9YIFa2o4C53TOi34lMAiBvJg/WA/wS2IC4clf3zULVkAzFkCrUgSVXrHT7sx5pEQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-radio-group@1.4.7",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 117298
+      },
+      "name": "@radix-ui/react-radio-group",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-radio-group",
+      "distTags": {
+        "latest": "1.4.7",
+        "next": "1.4.8-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.2.18",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/number": "1.1.3",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-use-layout-effect": "1.1.4"
+      },
+      "dist": {
+        "shasum": "93c16378e812ad5fe9ba0abd635b51c840021162",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-scroll-area/-/react-scroll-area-1.2.18.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-Zn5Cd171wxsO3Dfg8HaW6RifTb9CYTKQJHs/G4+LN1GfmJpaQMZQyQxMprVPHpaz7QY4l9BxK2JwQuzHsXC8nA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDH4Ga2sv1Mu7Fghno050zuING60IGTQp99FU5dKWsuRQIhANIiCeD1jhrJYY3wMCcRYrhH3/ugIZ1eM+6j078nUrTm",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQCNiAv16GeTgSrpTFv9W+EaBhRf9kUM8yyNNia1FEzB5QIhAK3qTx0YEp/uz8AJoTzXtLNp9GW+xRKcOVC5KLJZ/s7n",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-scroll-area@1.2.18",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 207370
+      },
+      "name": "@radix-ui/react-scroll-area",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-scroll-area",
+      "distTags": {
+        "latest": "1.2.18",
+        "next": "1.2.19-rc.1785512840124"
+      }
+    },
+    {
+      "version": "2.3.7",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "aria-hidden": "^1.2.4",
+        "@radix-ui/number": "1.1.3",
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "react-remove-scroll": "^2.7.2",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-focus-scope": "1.1.16",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-focus-guards": "1.1.6",
+        "@radix-ui/react-use-previous": "1.1.4",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "fc83ddd866decff8ca99e63f093c6e387ad54790",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-select/-/react-select-2.3.7.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-WFGImkmbzcfxeIwq/+4HvRN0pizBwbwQUED4I13ezQsDdfl38ZntN6TmR8XaSzPBqoCToe8rF75j6NPNDSzhbg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDb1crUIIqb3Vw8CSA13fXbBBDtFk3SAnuDnMihi6SieQIhAPvMAMNoEbvJlP0GVs4f3jcgNtgnPtXB93A+1VbE9Wct",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQD7Fu4wOYXLUCmdcAQGS9Vu27/ZMgsu08QM3QWZj1+bpgIhAJupt0OuPJ96yCmm0GpOx/ZVZI70SU2m5MF2bXqUI7gZ",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-select@2.3.7",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 352057
+      },
+      "name": "@radix-ui/react-select",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-select",
+      "distTags": {
+        "latest": "2.3.7",
+        "next": "2.3.8-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.15",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-primitive": "2.1.10"
+      },
+      "dist": {
+        "shasum": "0b59a55ce42f881bda6da45a1cc8069214a8606c",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-separator/-/react-separator-1.1.15.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-jOLO4lssEzWpoDu7G+Ze4VjwMRUBt291pnZD0gmalREZipnTX3wadQo7Fy48GCTfe14/YRN6rw/rOJqrE85Wxw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCs1MewUzb9lkULHzTklRnIPz7ouG2gD1fIJudrmawoZgIhAJetDF7StB/fhCmuI6ODf/DDTrmrYIxLhqWVnRlBsgVf",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIF/Mv6z91Ql1k6YMCsg7XHmEKVVu1cfp1OojBGOhybQsAiAU7zsF0rxFIVYCvc+1gxKZk6bt2x/nhsnnCrd3PIcc2g==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-separator@1.1.15",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 14879
+      },
+      "name": "@radix-ui/react-separator",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-separator",
+      "distTags": {
+        "latest": "1.1.15",
+        "next": "1.1.16-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.4.7",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/number": "1.1.3",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-previous": "1.1.4",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "937c44ba404404a2fbf572863a3b4c44635d50e8",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-slider/-/react-slider-1.4.7.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-mTSLf1GC/C0moWjTbvCM6Qn/gBjvlFt1azuWF2v7MN5C3Zq2U2J2lN3ZEYkpujuOU5Ro7A28wkviSxaKnG0BYg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCz+CH3BXXS6QEZ3AMoUS6JtE3N46t05zlV/8AayDhFAAIhAMKj/y4Vmujua89VXHJbOZsqaCnzlb8F1OOXMFLTGe55",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDYSwdNjcM0qS/QZlrMsp1ylaP+qKqeCVqWNVGEBYEEewIhAPeGCwf3knjPb2plmC3ePYeugMUPR2usAJAEqJ3ARC0H",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-slider@1.4.7",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 170787
+      },
+      "name": "@radix-ui/react-slider",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-slider",
+      "distTags": {
+        "latest": "1.4.7",
+        "next": "1.5.0-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.3.3",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-compose-refs": "1.1.5"
+      },
+      "dist": {
+        "shasum": "ccc8c8936fff12f7e324d6917fe5167357097676",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-slot/-/react-slot-1.3.3.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-qx7oqnYbxnK9kYI9m317qmFmEgo6ywqWvbTogdj7cL9p3/yx4M48p7Rnw5z3H890cL/ow/EeWJsuTykeZVXP5Q==",
+        "signatures": [
+          {
+            "sig": "MEUCIEh23urH7dzkmdr2ONr4NDwrpXztYjGcjycVkUpzDrG8AiEAtx1bYi0jxZLKoP4xetDRQQV8a3LxH8VLQv9x+qwLq0g=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIEXgKt2Y1LBU5AATTd0LKi8FSSn1xs3p4tUvgZjEXANYAiEArQJKAiaHO1PZ+Pt97I8PwZhNQqniW2yY1y4odSMl07Q=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-slot@1.3.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 44851
+      },
+      "name": "@radix-ui/react-slot",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-slot",
+      "distTags": {
+        "latest": "1.3.3",
+        "next": "1.4.0-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.3.7",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "54dc0d331145418c2e3ac6545c166b89cb1e186e",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-switch/-/react-switch-1.3.7.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-48tB/4dn2UVLBCYhTu9AuR63IHl73l/qLbLgxd86noTUor4/K4LFDAcYjK+isP5313qxaFpjPVogE7+Y0/V3Kw==",
+        "signatures": [
+          {
+            "sig": "MEUCIDDnYRlJWz6GxGVfpDpawp5xcpNoKnuPGrgURVPOzhhHAiEAxq07PbtJ226R62IARWA8WMMAMeswd4zICxNiqDg0nQk=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIBe/RlVcbiYHb81RBNBCioJ7jpF/Z+q889A2FKoVOatPAiBdizW4+Ja1krj9+9jWY+9dyhtGBGF5pQk2ByRudL/mVw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-switch@1.3.7",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 68430
+      },
+      "name": "@radix-ui/react-switch",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-switch",
+      "distTags": {
+        "latest": "1.3.7",
+        "next": "1.3.8-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.21",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "db7eb9b33f25d645a6a21028e9e0047d457c49a0",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-tabs/-/react-tabs-1.1.21.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-UKxJlZid7FVtsk/WTxj4i4uSEgj2Au+KBbS7SQyTlzMhhn+86Cz3tISZdTa87bfEfcuvZezf2ZsxD4xuEKtkog==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDYec/zzlpAAJCTAD2WY6LeDkZ11ehHt/b3Asx40swSmAIhAOz2j0Z/AQJUNL4y5G8P7rxbzVEmPefOHAfJ9zW1Wv7P",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIDJ/guyuciJEUkC6cK0ixEKdAzkdrtEIs+qfhefK44gXAiEAwE+O+aRfzieR8eAem4AO17O8M4wvfeba6UY66yEINLo=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-tabs@1.1.21",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 54303
+      },
+      "name": "@radix-ui/react-tabs",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-tabs",
+      "distTags": {
+        "latest": "1.1.21",
+        "next": "1.1.22-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.2.23",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "b64e2e2b735b4f2188fd79f446e0e2cbc624d088",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-toast/-/react-toast-1.2.23.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-ofhyAsYaocRGOs/n0XWdUOSVzEAG6BfrMVM8z0c0kLEWY38w/0WuMFPTJP/HVaZPYkMvHZoKIIhNcjbTCBILPg==",
+        "signatures": [
+          {
+            "sig": "MEQCIGCHIa/KPve85OPHwj25AVsevXNRP7Hra/q+5QAwKFIkAiAFwWltwQHS/3EiqO2u6f0DbJXiEjKeAXvgn29mRSu9Vg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIHR7Karw4Pbj6I19cQFCxNiJbNWhlUPfhbRmYSgBRIPCAiEAxKq6AvonmpFSyuYkOKssVFbTQFpOSkXcw+gEo5MqSng=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-toast@1.2.23",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 186458
+      },
+      "name": "@radix-ui/react-toast",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-toast",
+      "distTags": {
+        "latest": "1.2.23",
+        "next": "1.2.24-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.18",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "3b464b235e76193142d9ea276611a9c8ef3babc7",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-toggle/-/react-toggle-1.1.18.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-7lonPlKfSacd20GlOBx2ltuVKz9oqWYZz+oMQyOltw6t1y2nyftj2ZmwwUHYn49kqfDWcp8dNZm5NgV+5Z+mug==",
+        "signatures": [
+          {
+            "sig": "MEQCIEf5rXAVJ5FBlGJKujB2kdkS+KBdEY7Th+qw/tiZDcskAiBkBgmWGzxeGgr8tS9e0fW0OuMUr/uSZEQW3SQ9M/AkNQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIFd09c7V8ibTvljFaVdLR56rPqtsp/vGiqIzFj5h/5OeAiEA/zldu/N2IeBGPVF2DmAIar58zWQJAbmZbZ2a8LprO00=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-toggle@1.1.18",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 15124
+      },
+      "name": "@radix-ui/react-toggle",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-toggle",
+      "distTags": {
+        "latest": "1.1.18",
+        "next": "1.1.19-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.1.19",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-toggle": "1.1.18",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "cefc32db4e117e5a15812bb944676a4d14d9e59b",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-toggle-group/-/react-toggle-group-1.1.19.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-OtnwuSVjd1Ofi+AdnvhsjQdyuhCDwYs1w9RyB5BN/OavXOVQo42SYqQjwUnbPnaiPFBpQ9aX70dWeee+v2oBLA==",
+        "signatures": [
+          {
+            "sig": "MEUCICJOSp9j9ICI9O0atIAAinsq9oV8+4I6aEqi4tyK3ebvAiEAnIjdvTlUzmIlCJefBM//N4BWTt6nK3MW7/5WoP7BVP8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQDKR95bdg8v3zeYN+pZOqb4oyVU20KNWX3Sowwsq79icQIgTfbaye8Ta6r4uAfKWze+zanyumb5e0rnQEzQpGFBfVI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-toggle-group@1.1.19",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 56319
+      },
+      "name": "@radix-ui/react-toggle-group",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-toggle-group",
+      "distTags": {
+        "latest": "1.1.19",
+        "next": "1.1.20-rc.1785512840124"
+      }
+    },
+    {
+      "version": "1.2.16",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      },
+      "dist": {
+        "shasum": "b38fc8475b4d5619b0f50fa057390b278a5d4e69",
+        "tarball": "https://registry.npmjs.org/@radix-ui/react-tooltip/-/react-tooltip-1.2.16.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-6EamKFRRnlpdadndbZ6LMwycfwkwPte1B42hs6QA0gYhjaOKqW4PZ4pjaW9UrlDX5eVt/OjncE7BFTPL5nmZhg==",
+        "signatures": [
+          {
+            "sig": "MEUCIFa/QquG9iYh7PzAMthFSaNbroZq+rDG69KtSyjZw7T0AiEA1fDw46l2hzLr6FPkuZ+1PpzOUvUkdiy/EflDoVpyzM8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQCDlLorIzloOI0GZ2MJ/cwRTQAoANDHhSecMxgJUQvnJAIgJK2F1q9qzZdRzXtpiyV4Fxi/c3MFvtZ0EgV+tPUgOaE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@radix-ui%2freact-tooltip@1.2.16",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 139023
+      },
+      "name": "@radix-ui/react-tooltip",
+      "registry": "https://registry.npmjs.org/%40radix-ui%2Freact-tooltip",
+      "distTags": {
+        "latest": "1.2.16",
+        "next": "1.3.0-rc.1785512840124"
+      }
+    },
+    {
+      "version": "0.1.1",
+      "peerDependencies": {
+        "tailwindcss": ">=3.2.0"
+      },
+      "dist": {
+        "shasum": "9a759ce2cb8736a4c6a0cb93aeb740573a731974",
+        "tarball": "https://registry.npmjs.org/@tailwindcss/container-queries/-/container-queries-0.1.1.tgz",
+        "fileCount": 5,
+        "integrity": "sha512-p18dswChx6WnTSaJCSGx6lTmrGzNNvm2FtXmiO6AuA1V4U5REyoqwmT6kgAsIMdjo07QdAfYXHJ4hnMtfHzWgA==",
+        "signatures": [
+          {
+            "sig": "MEUCIFvR78Ugv3eV77CSQFXBnR9wgUa/TOftidWQ/qdWflAjAiEA/M1pncV6xe9wA6DSeaMHtSG3Z7weMD79OFcBnZo4kLc=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 8459,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJkJvNKACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmqOqQ/5AbLtbEhQKu6RtfM8pVU92uQ0M1O+pDEPX2LvB1MOflZ5+kXl\r\nIR2ScQ662XzsI/LvpwJTl/3H3mPFIL8FXTAmers7hV/DIJxDAXjt3zAIgUdo\r\nOrkTyuCxEkRsAlc7n8t1RWfUv1kSMbFCJLGWXbSTJ7S6tNwL3pQX7ZnozdmN\r\nvHG8k2jpIaJjBtL/qFJRGsIjunecwehZClEl0ykfdOcuqTPhUglE9dF2ntPO\r\nJ76uKxy3CdPLdAqt+3bYhFKvrkAxPX9LnLtMzGkfG3rni0pW5lWcNEX79Qjy\r\nNpHWXGZvZn/3NiLK6AcD1lWISX7m9uy2YxFMeQjITaGjumAJzaQ4WaG0Sy3N\r\nEeab/WqD+fNC0s0MLxerszY2MtRkimbvbNcC0cyoMI/YIS0uR6FPzn+KQ+bn\r\n7cEc9v90McJ3EOtq4LvZ7xZO1ZTa1yJZaHwgV+nFSdPTtBtuz+VwHQ0/uVIO\r\nzfOascn6UDEnP92EaXeNqpog50DYwaPQWeX9Qx1XmK562+5BiLICWxDQAj0D\r\nlc13ygQ8+woiqSlGjREWfZl86Eh6Cz1M49vhP//ZB8GsmZh+qIzIboF7kGnc\r\n7ccrSgs3C3+Bavl9IbwWtBMZQYIm3B7ONiDLZO6Z6smY4fblCOCMhByElpdc\r\nmh1lmbG6dDv0d1wmAf0+cZgZZKu3KvwId0s=\r\n=SgUR\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "name": "@tailwindcss/container-queries",
+      "registry": "https://registry.npmjs.org/%40tailwindcss%2Fcontainer-queries",
+      "distTags": {
+        "latest": "0.1.1",
+        "insiders": "0.0.0-insiders.7a968b3"
+      }
+    },
+    {
+      "version": "4.3.3",
+      "dependencies": {
+        "postcss": "^8.5.16",
+        "tailwindcss": "4.3.3",
+        "@alloc/quick-lru": "^5.2.0",
+        "@tailwindcss/node": "4.3.3",
+        "@tailwindcss/oxide": "4.3.3"
+      },
+      "dist": {
+        "shasum": "dc14df6477edc16087df1663617ee23bc1042610",
+        "tarball": "https://registry.npmjs.org/@tailwindcss/postcss/-/postcss-4.3.3.tgz",
+        "fileCount": 7,
+        "integrity": "sha512-JTSZZGQi1AyKirbLN3azmjVzef92tcX7h+iSqPdaeStyFpGpDlKvvpxeOE8njhbUanbRwr3z8DyzhICWnMtQeg==",
+        "signatures": [
+          {
+            "sig": "MEUCICxRkPecO9+yyQ7ULS0msC3psAkYpbrtzIoTLpvJ4VyxAiEA9MMzo8YZ/F5Pn3hMF4Wg9GCzxms0phvOEuhfN4xgxi8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tailwindcss%2fpostcss@4.3.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 100480
+      },
+      "name": "@tailwindcss/postcss",
+      "registry": "https://registry.npmjs.org/%40tailwindcss%2Fpostcss",
+      "distTags": {
+        "internal": "0.0.0-internal.b2586d4e",
+        "next": "4.0.0",
+        "latest": "4.3.3",
+        "insiders": "0.0.0-insiders.fa81d69"
+      }
+    },
+    {
+      "version": "3.14.13",
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+      },
+      "dependencies": {
+        "@tanstack/virtual-core": "3.17.11"
+      },
+      "dist": {
+        "shasum": "b30cab7650aef2f05a70297c3861bd3a43013d0b",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-virtual/-/react-virtual-3.14.13.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-JbDTAwtzZ99aOeCrAfW5EsE5KSq5RWh6Af2dtFwyLIIk48Ja7vm6n4axu/43T3vfjFnEGJalxJ1wyYjSQD6bSg==",
+        "signatures": [
+          {
+            "sig": "MEQCIBvVkw9MS8uXKGkgaH1xXIZRHX0GL5X7HZTfrD+wviiHAiBBbEUpxe0ciNRKEwXzwbvdHmCVvnzkhADT/k64En+iqw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQC9b65LJUHii+JlW9QdESW8n5NlNWNrJxR40jZuJ5lI2gIgftycFkkY4Ib/iDjKOvPbN0on0c0IJaa3mNJxYceh5EI="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-virtual@3.14.13",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 60900
+      },
+      "name": "@tanstack/react-virtual",
+      "registry": "https://registry.npmjs.org/%40tanstack%2Freact-virtual",
+      "distTags": {
+        "alpha": "3.0.0-alpha.2",
+        "beta": "3.0.0-beta.68",
+        "latest": "3.14.13"
+      }
+    },
+    {
+      "version": "26.6.4",
+      "peerDependencies": {},
+      "dependencies": {
+        "undici-types": "~8.9.0"
+      },
+      "dist": {
+        "shasum": "5aaac1a7337945f7f9a2de4e0d14e7107157e813",
+        "tarball": "https://registry.npmjs.org/@types/node/-/node-26.6.4.tgz",
+        "fileCount": 109,
+        "integrity": "sha512-ldVPDCzj7fsaGZrLB0NuHuTvJcsNasysBAqMolr/cgxrLd1xbqxIr3XJiPnHHJUCxj5sNF1vnRj9aWnrVh5Jcg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD3VRkh76Uoag2E0cy7gw7cc66ESvAmzrZolyQiVwOSUAIhAMkz6XzaMLeOGk4+/+jGdDIwphOQJ6T23SRMuMH+APoQ",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDMY/y91gX+57+uT5J5lStpO7nK57DESW6k8GsYHXWKrAIhAMWTny4xTO2OUda5yXPWbKA5MObLM22/UgTBZ/+0L1hg",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 2546018
+      },
+      "name": "@types/node",
+      "registry": "https://registry.npmjs.org/%40types%2Fnode",
+      "distTags": {
+        "ts2.6": "12.12.6",
+        "ts2.0": "12.12.6",
+        "ts2.1": "12.12.6",
+        "ts2.5": "12.12.6",
+        "ts2.7": "12.12.6",
+        "ts2.3": "12.12.6",
+        "ts2.4": "12.12.6",
+        "ts2.2": "12.12.6",
+        "ts2.8": "13.13.4",
+        "ts2.9": "14.0.1",
+        "ts3.0": "14.6.0",
+        "ts3.1": "14.10.1",
+        "ts3.2": "14.14.9",
+        "ts3.3": "14.14.20",
+        "ts3.4": "14.14.31",
+        "ts3.5": "15.6.1",
+        "ts3.6": "16.6.2",
+        "ts3.7": "16.11.7",
+        "ts3.8": "17.0.21",
+        "ts3.9": "17.0.41",
+        "ts4.0": "18.7.14",
+        "ts4.1": "18.11.9",
+        "ts4.2": "18.15.3",
+        "ts4.4": "20.6.0",
+        "ts4.3": "20.6.0",
+        "ts4.5": "20.10.0",
+        "ts4.6": "20.11.25",
+        "ts4.7": "20.14.8",
+        "ts4.8": "22.9.0",
+        "ts4.9": "22.9.3",
+        "ts5.0": "22.13.14",
+        "ts5.1": "24.1.0",
+        "ts5.2": "25.5.0",
+        "ts5.5": "25.9.3",
+        "ts5.3": "25.9.3",
+        "ts5.4": "25.9.3",
+        "old-version": "22.20.5",
+        "ts5.8": "26.6.4",
+        "ts6.0": "26.6.4",
+        "ts5.6": "26.6.4",
+        "ts7.0": "26.6.4",
+        "ts7.1": "26.6.4",
+        "latest": "26.6.4",
+        "ts5.9": "26.6.4",
+        "ts5.7": "26.6.4"
+      }
+    },
+    {
+      "version": "8.23.1",
+      "peerDependencies": {},
+      "dependencies": {
+        "pg-types": "^2.2.0",
+        "@types/node": "*",
+        "pg-protocol": "*"
+      },
+      "dist": {
+        "shasum": "7e712ce02cf44ad100862127f10f52e9c6b9d227",
+        "tarball": "https://registry.npmjs.org/@types/pg/-/pg-8.23.1.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCGT3gAmd1foe4h5A+yaOnvnGkX4FmiT1+tr47rnCz5NgIhAPlL7G9WIK6VVbn78dzvvjLpr92Qv7fs2EeVm3TegnYG",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIECf+CMs6DtJn1Pv5baTTBd3pydqnHoxUG1uqL+954wEAiBThLT81ktCMBVT/tLtxIL2fhUbe9UonwJn0yW8y9pIDw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 19802
+      },
+      "name": "@types/pg",
+      "registry": "https://registry.npmjs.org/%40types%2Fpg",
+      "distTags": {
+        "ts2.1": "7.11.0",
+        "ts2.2": "7.11.0",
+        "ts2.0": "7.11.0",
+        "ts2.3": "7.11.2",
+        "ts2.6": "7.11.2",
+        "ts2.7": "7.11.2",
+        "ts2.5": "7.11.2",
+        "ts2.4": "7.11.2",
+        "ts2.9": "7.14.3",
+        "ts2.8": "7.14.3",
+        "ts3.1": "7.14.4",
+        "ts3.0": "7.14.4",
+        "ts3.3": "7.14.7",
+        "ts3.2": "7.14.7",
+        "ts3.4": "7.14.11",
+        "ts3.5": "8.6.0",
+        "ts3.6": "8.6.1",
+        "ts3.7": "8.6.1",
+        "ts3.8": "8.6.4",
+        "ts4.0": "8.6.5",
+        "ts4.1": "8.6.5",
+        "ts3.9": "8.6.5",
+        "ts4.2": "8.6.6",
+        "ts4.4": "8.10.2",
+        "ts4.3": "8.10.2",
+        "ts4.5": "8.10.9",
+        "ts4.6": "8.11.2",
+        "ts4.7": "8.11.6",
+        "ts4.9": "8.11.10",
+        "ts4.8": "8.11.10",
+        "ts5.0": "8.11.11",
+        "ts5.1": "8.15.5",
+        "ts5.3": "8.20.0",
+        "ts5.4": "8.20.0",
+        "ts5.2": "8.20.0",
+        "ts5.5": "8.20.0",
+        "ts7.0": "8.23.1",
+        "ts5.7": "8.23.1",
+        "ts5.8": "8.23.1",
+        "ts6.0": "8.23.1",
+        "ts5.9": "8.23.1",
+        "latest": "8.23.1",
+        "ts5.6": "8.23.1",
+        "ts7.1": "8.23.1"
+      }
+    },
+    {
+      "version": "19.3.0",
+      "peerDependencies": {},
+      "dependencies": {
+        "csstype": "^3.2.2"
+      },
+      "dist": {
+        "shasum": "3b3ce8d8c1627fb5ccd4dadd57ef445c5a153b77",
+        "tarball": "https://registry.npmjs.org/@types/react/-/react-19.3.0.tgz",
+        "fileCount": 18,
+        "integrity": "sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==",
+        "signatures": [
+          {
+            "sig": "MEQCICO9E9W9sN+6oHDGno2fJYJ8YEsNOa01MoJJmauunAjGAiAVusL8FBYYoRgnVrnz0RY2KMSjP1OlJ7GunY0YhIr0GA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQCG/2kbQCjMBz9wJNsFnPRUQFtQzxGIbkrwTxQ3ZYlQrwIhAKZAxRpE46wtsHz27OGDgRmXLV83Q5GivNToLaMzF7Q2",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 408108
+      },
+      "name": "@types/react",
+      "registry": "https://registry.npmjs.org/%40types%2Freact",
+      "distTags": {
+        "ts2.0": "15.0.1",
+        "ts2.1": "15.0.20",
+        "ts2.2": "15.0.30",
+        "ts2.4": "16.0.36",
+        "ts2.3": "16.0.36",
+        "ts2.5": "16.0.36",
+        "ts2.7": "16.4.7",
+        "ts2.6": "16.4.7",
+        "ts2.8": "16.9.34",
+        "ts2.9": "16.9.35",
+        "ts3.0": "16.9.46",
+        "ts3.1": "16.9.49",
+        "ts3.2": "16.9.56",
+        "ts3.3": "17.0.0",
+        "ts3.4": "17.0.2",
+        "ts3.5": "17.0.8",
+        "ts3.6": "17.0.19",
+        "ts3.7": "17.0.35",
+        "ts3.8": "17.0.39",
+        "ts3.9": "18.0.12",
+        "ts4.0": "18.0.18",
+        "ts4.1": "18.0.25",
+        "ts4.2": "18.0.28",
+        "ts4.3": "18.2.21",
+        "ts4.4": "18.2.21",
+        "ts4.5": "18.2.39",
+        "ts4.6": "18.2.64",
+        "ts4.7": "18.3.3",
+        "ts4.9": "18.3.12",
+        "ts4.8": "18.3.12",
+        "ts5.0": "19.0.12",
+        "ts5.1": "19.1.9",
+        "ts5.2": "19.2.14",
+        "ts5.4": "19.2.17",
+        "ts5.3": "19.2.17",
+        "ts5.5": "19.2.17",
+        "ts5.9": "19.3.0",
+        "ts5.6": "19.3.0",
+        "ts5.8": "19.3.0",
+        "ts7.0": "19.3.0",
+        "ts5.7": "19.3.0",
+        "ts6.0": "19.3.0",
+        "latest": "19.3.0",
+        "ts7.1": "19.3.0"
+      }
+    },
+    {
+      "version": "19.3.0",
+      "peerDependencies": {
+        "@types/react": "^19.3.0"
+      },
+      "dependencies": {},
+      "dist": {
+        "shasum": "90294a9266efd928a5266f2110d60d5dba5015d2",
+        "tarball": "https://registry.npmjs.org/@types/react-dom/-/react-dom-19.3.0.tgz",
+        "fileCount": 19,
+        "integrity": "sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDeggFlao9be7yHQ/b9bEJ/aNUgA9ewpLiMScDNunzitAIhAKh8Ct2ZYAjnfZI/KeuIMkZ0Qz2vlOS1C1PkdT2UacvQ",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDfRDroOzjwBEz1yqXRbBWKCYOt7p/DKB+WIMPoMWCfUAIhAMPChj/cPQOALZVIGvV0h+QYQERrlQ5RJZb3dptWvQFV",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 32862
+      },
+      "name": "@types/react-dom",
+      "registry": "https://registry.npmjs.org/%40types%2Freact-dom",
+      "distTags": {
+        "ts2.0": "0.14.20",
+        "ts2.1": "15.5.0",
+        "ts2.2": "15.5.0",
+        "ts2.5": "16.0.3",
+        "ts2.3": "16.0.3",
+        "ts2.4": "16.0.3",
+        "ts2.7": "16.0.6",
+        "ts2.6": "16.0.6",
+        "ts2.8": "16.9.7",
+        "ts3.0": "16.9.8",
+        "ts2.9": "16.9.8",
+        "ts3.1": "16.9.8",
+        "ts3.2": "16.9.9",
+        "ts3.3": "17.0.0",
+        "ts3.4": "17.0.1",
+        "ts3.5": "17.0.5",
+        "ts3.6": "17.0.9",
+        "ts3.8": "17.0.11",
+        "ts3.7": "17.0.11",
+        "ts3.9": "18.0.5",
+        "ts4.0": "18.0.6",
+        "ts4.1": "18.0.9",
+        "ts4.2": "18.0.11",
+        "ts4.4": "18.2.7",
+        "ts4.3": "18.2.7",
+        "ts4.5": "18.2.17",
+        "ts4.6": "18.2.21",
+        "ts4.7": "18.3.0",
+        "ts4.8": "18.3.1",
+        "ts4.9": "18.3.1",
+        "ts5.0": "19.0.4",
+        "ts5.1": "19.1.7",
+        "ts5.2": "19.2.3",
+        "ts5.5": "19.2.3",
+        "ts5.3": "19.2.3",
+        "ts5.4": "19.2.3",
+        "ts5.8": "19.3.0",
+        "ts5.7": "19.3.0",
+        "ts6.0": "19.3.0",
+        "ts5.9": "19.3.0",
+        "ts7.0": "19.3.0",
+        "ts5.6": "19.3.0",
+        "latest": "19.3.0",
+        "ts7.1": "19.3.0"
+      }
+    },
+    {
+      "version": "10.6.1",
+      "engines": {
+        "node": "^10 || ^12 || >=14"
+      },
+      "peerDependencies": {
+        "postcss": "^8.1.0"
+      },
+      "dependencies": {
+        "picocolors": "^1.1.1",
+        "fraction.js": "^5.3.4",
+        "browserslist": "^4.28.9",
+        "caniuse-lite": "^1.0.30001810",
+        "postcss-value-parser": "^4.2.0"
+      },
+      "dist": {
+        "shasum": "437cea1a0b96cedc4065c05327b728b1594faf27",
+        "tarball": "https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.6.1.tgz",
+        "integrity": "sha512-cL1Qz6ADZhcEbny/8HPfe99J6HhNoYtpX2LFLIbhgGE7Q1hlQVkYFdetDN7Id3KiQxhDrHwzlHr/YQCnZ8+xSA==",
+        "fileCount": 83,
+        "unpackedSize": 202620,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/autoprefixer@10.6.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCID36R4G609s7dLOfvnmcyX+DsYY5XQAdxv35to7/TuE5AiEA+Ka93/QatZzetSpFtqGwiu5Zv4FIvCCNUg2gcTsjwaQ="
+          }
+        ]
+      },
+      "name": "autoprefixer",
+      "registry": "https://registry.npmjs.org/autoprefixer",
+      "distTags": {
+        "latest": "10.6.1"
+      }
+    },
+    {
+      "version": "0.7.1",
+      "dependencies": {
+        "clsx": "^2.1.1"
+      },
+      "dist": {
+        "integrity": "sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==",
+        "shasum": "4008a798a0e4553a781a57ac5177c9fb5d043787",
+        "tarball": "https://registry.npmjs.org/class-variance-authority/-/class-variance-authority-0.7.1.tgz",
+        "fileCount": 9,
+        "unpackedSize": 22073,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEUCIQD8Ow1fDpGJrlJunCUBoC6MmqcGhmiMrjgR/7XLqD+vwQIgJjg1VIoLC6xKrdXZj9wvuoLJmI0erWC7gAeRTTjq9EE="
+          }
+        ]
+      },
+      "name": "class-variance-authority",
+      "registry": "https://registry.npmjs.org/class-variance-authority",
+      "distTags": {
+        "latest": "0.7.1",
+        "canary": "0.7.1-canary.2"
+      }
+    },
+    {
+      "version": "2.1.1",
+      "engines": {
+        "node": ">=6"
+      },
+      "dist": {
+        "shasum": "eed397c9fd8bd882bfb18deab7102049a2f32999",
+        "tarball": "https://registry.npmjs.org/clsx/-/clsx-2.1.1.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCt4cimtFNdDPY5NOqLXbuPrCyxPFP7Pym/n1+tTeA16wIgUvCZBteiHTXv3GZRuhWQ2BqaV+qtiZYbi4c0T7jw87M=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 8555
+      },
+      "name": "clsx",
+      "registry": "https://registry.npmjs.org/clsx",
+      "distTags": {
+        "next": "2.0.0-next.0",
+        "latest": "2.1.1"
+      }
+    },
+    {
+      "version": "1.1.1",
+      "peerDependencies": {
+        "react": "^18 || ^19 || ^19.0.0-rc",
+        "react-dom": "^18 || ^19 || ^19.0.0-rc"
+      },
+      "dependencies": {
+        "@radix-ui/react-id": "^1.1.0",
+        "@radix-ui/react-dialog": "^1.1.6",
+        "@radix-ui/react-primitive": "^2.0.2",
+        "@radix-ui/react-compose-refs": "^1.1.1"
+      },
+      "dist": {
+        "shasum": "b8524272699ccaa37aaf07f36850b376bf3d58e5",
+        "tarball": "https://registry.npmjs.org/cmdk/-/cmdk-1.1.1.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-Vsv7kFaXm+ptHDMZ7izaRsP70GgrW9NBNGswt9OZaVBLlE0SNpDq8eu/VGXyF9r7M0azK3Wy7OlYXsuyYLFzHg==",
+        "signatures": [
+          {
+            "sig": "MEUCIH5gdD8aAcbaPB2bT8E1HmrUwmaL/6hyV0e5bKy9xdrKAiEAoCzciYcGtwYEJGusM6X6BsgiaDkPOmWk/3MW9BTHxt0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 81852
+      },
+      "name": "cmdk",
+      "registry": "https://registry.npmjs.org/cmdk",
+      "distTags": {
+        "beta": "1.0.3-beta.0",
+        "latest": "1.1.1"
+      }
+    },
+    {
+      "version": "4.4.0",
+      "dist": {
+        "shasum": "806539edf45c616b2b76b5f78b88c56ed3c7e036",
+        "tarball": "https://registry.npmjs.org/date-fns/-/date-fns-4.4.0.tgz",
+        "fileCount": 5136,
+        "integrity": "sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w==",
+        "signatures": [
+          {
+            "sig": "MEUCIQClKEUq4bjUNAkSA9kzCnybaJmqY2AfUGlP7CQ4kJAmjAIgO/EXDtdkhIQeLkdcX02tQqDrnSsdVher7ldgk00S3eg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 10902084
+      },
+      "name": "date-fns",
+      "registry": "https://registry.npmjs.org/date-fns",
+      "distTags": {
+        "next": "5.0.0-alpha.0",
+        "latest": "4.4.0"
+      }
+    },
+    {
+      "version": "18.0.5",
+      "engines": {
+        "node": ">=12"
+      },
+      "dist": {
+        "shasum": "4fc2c5cd92cf89cdd72c8aa5b82b5a37c0a9a2bf",
+        "tarball": "https://registry.npmjs.org/dotenv/-/dotenv-18.0.5.tgz",
+        "fileCount": 7,
+        "integrity": "sha512-aBrGvt6KhjxbEnatqMWOMidftwsrCiCvqh1yNIGB9QyF0J+VcWkKDMsvYOEm7ZS82oiV+BT1sTOtIlAmUlTpwQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDRh13W3NEMLcB/8jBb2eYZo4AioCzMLLkmNOuJJk0rkwIgUkFsy1O/OS3AANNAWXF/tYXZFqTRoq4QxM4nkNXIdF4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDToCc9ILu6DTa7sM+lcr4VaQHa4jsX54DFoTqtQ3hqDQIgbI4pHsVJ/LyJiXltukEOXLqZ3udeodsH9ciDK26+ia8="
+          }
+        ],
+        "unpackedSize": 45909
+      },
+      "name": "dotenv",
+      "registry": "https://registry.npmjs.org/dotenv",
+      "distTags": {
+        "latest": "18.0.5"
+      }
+    },
+    {
+      "version": "0.31.11",
+      "dependencies": {
+        "tsx": "^4.21.0",
+        "esbuild": "^0.25.4",
+        "@drizzle-team/brocli": "^0.10.2",
+        "@esbuild-kit/esm-loader": "^2.5.5"
+      },
+      "dist": {
+        "shasum": "6188c577edd1495c23910c4903a23f898add9599",
+        "tarball": "https://registry.npmjs.org/drizzle-kit/-/drizzle-kit-0.31.11.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-YCYqxTLIB2OCqf6w9/Vef13baBVbwQIPcbT4Y56AfO6B9ajZhDhD8Jkveg/hJvT/iuMloKD/IYYkyMMNhr7Kqg==",
+        "signatures": [
+          {
+            "sig": "MEUCIBWCzFAwAMSPe02rkrJUQseCiVjEwFjneeGltwlFlqo4AiEA+ZB5qLvNKP/YD5N7OQubA1KZwLyLTYM1qqL4sHhOR+w=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIC/F979gIlYOOeI17MsLkymDlLCCwRTYZfGE6aDabtxBAiBTg6Vqim4afzM5PwgDudAsrxzK3FRcS0UI53M71ZwD1A=="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/drizzle-kit@0.31.11",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 10267562
+      },
+      "name": "drizzle-kit",
+      "registry": "https://registry.npmjs.org/drizzle-kit",
+      "distTags": {
+        "numeric-modes": "1.0.0-beta.1-867d080",
+        "rqb-v1-schema-fix": "1.0.0-beta.1-b96a4f8",
+        "rqb-typeperf": "1.0.0-beta.1-69a2ca0",
+        "effect": "1.0.0-beta.1-cdf226f",
+        "workflows": "1.0.0-beta.1-37e2608",
+        "sqlite-cloud-studio": "1.0.0-beta.1-bc61bbe",
+        "beta-next-pack": "1.0.0-beta.1-140e6cc",
+        "alternation-engine": "1.0.0-beta.2-6565b14",
+        "kit-cli-wrong-config-hints": "1.0.0-beta.2-a1a6b39",
+        "studio-benchmark": "1.0.0-beta.2-01787d6",
+        "rqb-perf-patch": "1.0.0-beta.2-f9236e3",
+        "kit-duckdb": "1.0.0-beta.3-d4ff358",
+        "mysql-blob-rqb-v2-fix": "1.0.0-beta.5-e0482ac",
+        "beta-fixes": "1.0.0-beta.6-7419dcb",
+        "beelink": "1.0.0-beta.9-c26fd2f",
+        "effect3": "1.0.0-beta.9-635dfc2",
+        "effect-fixes": "1.0.0-beta.10-9f1399e",
+        "bun-timestampstring-patch": "1.0.0-beta.10-4a698ad",
+        "drizzle-seed/bug-fixes": "1.0.0-beta.10-7f0f68a",
+        "issues": "1.0.0-beta.11-165921d",
+        "effect-cache-fix": "1.0.0-beta.11-88ca292",
+        "data-migrator": "1.0.0-beta.11-c3fb442",
+        "update/migrator-strategy": "1.0.0-beta.12-5845444",
+        "drizzle-effect": "1.0.0-beta.13-f16bdca",
+        "pg-prepare-nameless": "1.0.0-beta.13-4ef3fca",
+        "kit-introspect": "1.0.0-beta.13-ba3365d",
+        "effect-validator": "1.0.0-beta.14-56118cc",
+        "sql-explicit-origin": "1.0.0-beta.15-90d1d1a",
+        "beta.16": "1.0.0-beta.16-2ffd1a5",
+        "node-sqlite": "1.0.0-beta.16-c2458b2",
+        "sqlite-indexes": "1.0.0-beta.16-501e9b2",
+        "beta.17": "1.0.0-beta.17-160831b",
+        "kit/node-sqlite": "1.0.0-beta.17-8a36f93",
+        "fix-duckdb": "1.0.0-beta.17-c09bdc5",
+        "latest": "0.31.11",
+        "fix-jiti-tsconfig-paths": "1.0.0-beta.18-905b79a",
+        "query-comments": "1.0.0-beta.19-dca1773",
+        "conditions-wrap": "1.0.0-beta.19-c49995f",
+        "beta21": "1.0.0-beta.21-b0c345d",
+        "casing-rework": "1.0.0-beta.21-3269112",
+        "issues2": "1.0.0-beta.22-17a476d",
+        "beta": "1.0.0-beta.22",
+        "netlify-constructor": "1.0.0-beta.22-d23690d",
+        "revert-netlify": "1.0.0-beta.23-c10d10c",
+        "codecs": "1.0.0-beta.23-5d05836",
+        "pg-introspect": "1.0.0-rc.1-929a083",
+        "rc1-fixes": "1.0.0-rc.2-8feace6",
+        "turso-sls": "1.0.0-rc.2-640c81e",
+        "jiti-import-fix": "1.0.0-rc.2-67a3509",
+        "mysql-update": "1.0.0-rc.2-2be6d1e",
+        "rc4": "1.0.0-rc.4-5d5b77c",
+        "ai": "1.0.0-rc.3-abc2ef6",
+        "sqlite-update": "1.0.0-rc.4-ca0f029",
+        "rc": "1.0.0-rc.4",
+        "rc5": "1.0.0-rc.5-5935859"
+      }
+    },
+    {
+      "version": "0.45.3",
+      "peerDependencies": {
+        "pg": ">=8",
+        "gel": ">=2",
+        "knex": "*",
+        "kysely": "*",
+        "mysql2": ">=2",
+        "sql.js": ">=1",
+        "sqlite3": ">=5",
+        "postgres": ">=3",
+        "@types/pg": "*",
+        "bun-types": "*",
+        "@netlify/db": ">=0.4.0",
+        "expo-sqlite": ">=14.0.0",
+        "@types/sql.js": "*",
+        "@libsql/client": ">=0.10.0",
+        "@prisma/client": "*",
+        "@upstash/redis": ">=1.34.7",
+        "better-sqlite3": ">=7",
+        "@xata.io/client": "*",
+        "@vercel/postgres": ">=0.8.0",
+        "@opentelemetry/api": "^1.4.1",
+        "@libsql/client-wasm": ">=0.10.0",
+        "@electric-sql/pglite": ">=0.2.0",
+        "@planetscale/database": ">=1.13",
+        "@tidbcloud/serverless": "*",
+        "@types/better-sqlite3": "*",
+        "@aws-sdk/client-rds-data": ">=3",
+        "@neondatabase/serverless": ">=0.10.0",
+        "@cloudflare/workers-types": ">=4",
+        "@op-engineering/op-sqlite": ">=2"
+      },
+      "dist": {
+        "shasum": "73d9f535ee4b44c790ae5815e0a5919fe69d0fdc",
+        "tarball": "https://registry.npmjs.org/drizzle-orm/-/drizzle-orm-0.45.3.tgz",
+        "fileCount": 2690,
+        "integrity": "sha512-CAloER21cDdcgZ1OmjrZX82EeRNsdP+y0onX/eyoYDaYzki/adrAa91lzM5jWh7zZPK4qUbw/6LGv9J+A+uizA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCDAM9n8EgAQbiF3IPiFx4nqbUCSNLoD28ctt77AKapGAIgZDXaxbEN6hhvHmOj0IKRKeOLLfAgFCQpycB3p+su1QI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDhaqWiQlDet7yv0nAUJ0N6A2e6o7qdawdGAZEFAzDvNwIgPdrGkMU/BA3VIhnfeKMfMtzMveco6qkDzYaaLamjlx0="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/drizzle-orm@0.45.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 10516772
+      },
+      "name": "drizzle-orm",
+      "registry": "https://registry.npmjs.org/drizzle-orm",
+      "distTags": {
+        "numeric-modes": "1.0.0-beta.1-867d080",
+        "rqb-v1-schema-fix": "1.0.0-beta.1-b96a4f8",
+        "rqb-typeperf": "1.0.0-beta.1-69a2ca0",
+        "effect": "1.0.0-beta.1-cdf226f",
+        "workflows": "1.0.0-beta.1-37e2608",
+        "sqlite-cloud-studio": "1.0.0-beta.1-bc61bbe",
+        "beta-next-pack": "1.0.0-beta.1-140e6cc",
+        "alternation-engine": "1.0.0-beta.2-6565b14",
+        "kit-cli-wrong-config-hints": "1.0.0-beta.2-a1a6b39",
+        "studio-benchmark": "1.0.0-beta.2-01787d6",
+        "rqb-perf-patch": "1.0.0-beta.2-f9236e3",
+        "kit-duckdb": "1.0.0-beta.3-d4ff358",
+        "mysql-blob-rqb-v2-fix": "1.0.0-beta.5-e0482ac",
+        "beta-fixes": "1.0.0-beta.6-7419dcb",
+        "beelink": "1.0.0-beta.9-c26fd2f",
+        "effect3": "1.0.0-beta.9-635dfc2",
+        "effect-fixes": "1.0.0-beta.10-9f1399e",
+        "bun-timestampstring-patch": "1.0.0-beta.10-4a698ad",
+        "drizzle-seed/bug-fixes": "1.0.0-beta.10-7f0f68a",
+        "issues": "1.0.0-beta.11-165921d",
+        "effect-cache-fix": "1.0.0-beta.11-88ca292",
+        "data-migrator": "1.0.0-beta.11-c3fb442",
+        "update/migrator-strategy": "1.0.0-beta.12-5845444",
+        "drizzle-effect": "1.0.0-beta.13-f16bdca",
+        "pg-prepare-nameless": "1.0.0-beta.13-4ef3fca",
+        "kit-introspect": "1.0.0-beta.13-ba3365d",
+        "effect-validator": "1.0.0-beta.14-56118cc",
+        "sql-explicit-origin": "1.0.0-beta.15-90d1d1a",
+        "beta.16": "1.0.0-beta.16-2ffd1a5",
+        "node-sqlite": "1.0.0-beta.16-c2458b2",
+        "sqlite-indexes": "1.0.0-beta.16-501e9b2",
+        "beta.17": "1.0.0-beta.17-160831b",
+        "kit/node-sqlite": "1.0.0-beta.17-8a36f93",
+        "fix-duckdb": "1.0.0-beta.17-c09bdc5",
+        "fix-jiti-tsconfig-paths": "1.0.0-beta.18-905b79a",
+        "query-comments": "1.0.0-beta.19-dca1773",
+        "conditions-wrap": "1.0.0-beta.19-c49995f",
+        "latest": "0.45.3",
+        "beta21": "1.0.0-beta.21-b0c345d",
+        "casing-rework": "1.0.0-beta.21-3269112",
+        "issues2": "1.0.0-beta.22-17a476d",
+        "beta": "1.0.0-beta.22",
+        "netlify-constructor": "1.0.0-beta.22-d23690d",
+        "revert-netlify": "1.0.0-beta.23-c10d10c",
+        "codecs": "1.0.0-beta.23-5d05836",
+        "pg-introspect": "1.0.0-rc.1-929a083",
+        "rc1-fixes": "1.0.0-rc.2-8feace6",
+        "turso-sls": "1.0.0-rc.2-640c81e",
+        "jiti-import-fix": "1.0.0-rc.2-67a3509",
+        "mysql-update": "1.0.0-rc.2-2be6d1e",
+        "rc4": "1.0.0-rc.4-5d5b77c",
+        "ai": "1.0.0-rc.3-e9dfa4b",
+        "rc": "1.0.0-rc.4",
+        "postgres": "1.0.0-rc.4-fb12281",
+        "rc5": "1.0.0-rc.5-5935859"
+      }
+    },
+    {
+      "version": "8.6.0",
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.1 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc"
+      },
+      "dependencies": {
+        "embla-carousel": "8.6.0",
+        "embla-carousel-reactive-utils": "8.6.0"
+      },
+      "dist": {
+        "shasum": "b737042a32761c38d6614593653b3ac619477bd1",
+        "tarball": "https://registry.npmjs.org/embla-carousel-react/-/embla-carousel-react-8.6.0.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-0/PjqU7geVmo6F734pmPqpyHqiM99olvyecY7zdweCw+6tKEXnrE90pBiBbMMU8s5tICemzpQ3hi5EpxzGW+JA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCUkloTIGKWWJ2NtrDoz5BKBFMjuO0c5NFSDARd+Z+JggIgA3r+zIv4hkn9HPUsRYRG+nWUzjUrz45M9aX/7hs4Hko=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 50629
+      },
+      "name": "embla-carousel-react",
+      "registry": "https://registry.npmjs.org/embla-carousel-react",
+      "distTags": {
+        "latest": "8.6.0",
+        "next": "9.0.0-rc03"
+      }
+    },
+    {
+      "version": "10.12.0",
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+      },
+      "peerDependencies": {
+        "jiti": "*"
+      },
+      "dependencies": {
+        "ajv": "^6.14.0",
+        "debug": "^4.3.2",
+        "espree": "^11.2.0",
+        "ignore": "^5.2.0",
+        "esquery": "^1.7.0",
+        "esutils": "^2.0.2",
+        "find-up": "^5.0.0",
+        "is-glob": "^4.0.0",
+        "minimatch": "^10.2.5",
+        "optionator": "^0.9.3",
+        "cross-spawn": "^7.0.6",
+        "glob-parent": "^6.0.2",
+        "imurmurhash": "^0.1.4",
+        "@eslint/core": "^1.2.1",
+        "eslint-scope": "^9.1.2",
+        "@humanfs/node": "^0.16.6",
+        "@types/estree": "^1.0.6",
+        "fast-deep-equal": "^3.1.3",
+        "natural-compare": "^1.4.0",
+        "file-entry-cache": "11.1.5 || >11.1.6 <12",
+        "@eslint/plugin-kit": "^0.7.3",
+        "eslint-visitor-keys": "^5.0.1",
+        "@eslint/config-array": "^0.23.5",
+        "@humanwhocodes/retry": "^0.4.2",
+        "escape-string-regexp": "^4.0.0",
+        "@eslint/config-helpers": "^0.7.0",
+        "@eslint-community/regexpp": "^4.12.2",
+        "@eslint-community/eslint-utils": "^4.8.0",
+        "@humanwhocodes/module-importer": "^1.0.1",
+        "json-stable-stringify-without-jsonify": "^1.0.1"
+      },
+      "dist": {
+        "shasum": "4f2f7e679bdce9d71438c2900f2c8d4d297332b0",
+        "tarball": "https://registry.npmjs.org/eslint/-/eslint-10.12.0.tgz",
+        "fileCount": 421,
+        "integrity": "sha512-npHjrHb2o4ehH3mE+YuxABR+0gyb0aVWCIolgJDArwCiHEIsonBm3ZKjel5b0U5+a+MbEvIyRCGCzD3eKKK2NA==",
+        "signatures": [
+          {
+            "sig": "MEQCIACiuX8cuqJW7bxeMOsKGVHqdBXYfPXYBb5PuH973SL8AiAD6iWD4BwsFcJHHdhW6qixRf4sDVAEwqo3MQxHE3vd1g==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCICroNkqaTnX/nfg9Z2D39H7ZqDb5Z3h++5yIrobmmo9jAiByt7PnOjO2oa46qh6ejj4VqSxuvYCF1JOg6VrIhBxhhg=="
+          }
+        ],
+        "unpackedSize": 2947964
+      },
+      "name": "eslint",
+      "registry": "https://registry.npmjs.org/eslint",
+      "distTags": {
+        "es6jsx": "0.11.0-alpha.0",
+        "next": "10.0.0-rc.2",
+        "maintenance": "9.39.5",
+        "latest": "10.12.0"
+      },
+      "compatible9": {
+        "name": "eslint",
+        "version": "9.39.5",
+        "keywords": [
+          "ast",
+          "lint",
+          "javascript",
+          "ecmascript",
+          "espree"
+        ],
+        "author": {
+          "name": "Nicholas C. Zakas",
+          "email": "nicholas+npm@nczconsulting.com"
+        },
+        "license": "MIT",
+        "_id": "eslint@9.39.5",
+        "maintainers": [
+          {
+            "name": "openjsfoundation",
+            "email": "npm@openjsf.org"
+          },
+          {
+            "name": "eslintbot",
+            "email": "contact@eslint.org"
+          }
+        ],
+        "homepage": "https://eslint.org",
+        "bugs": {
+          "url": "https://github.com/eslint/eslint/issues/"
+        },
+        "bin": {
+          "eslint": "bin/eslint.js"
+        },
+        "dist": {
+          "shasum": "2a4e3c8b0f753196efae943c8ffaa8730fc6a3fa",
+          "tarball": "https://registry.npmjs.org/eslint/-/eslint-9.39.5.tgz",
+          "fileCount": 426,
+          "integrity": "sha512-DgZS62aPLXKlnxILS/AYCoRvHaZeXceIzlXPkkGGzJWSow1aEk0lbTlxUSlyjC8jcaKxAdOnTDz+o1JFSBsyjw==",
+          "signatures": [
+            {
+              "sig": "MEQCIHJMfgiHn8FqX/m+C6QjvjegpkewOjnsonHYZIeXRnAmAiAcR74ioJVvvL67b0gqBskGmlMDAybTPajnpK9jAKPcnA==",
+              "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+            }
+          ],
+          "unpackedSize": 3008896
+        },
+        "main": "./lib/api.js",
+        "type": "commonjs",
+        "types": "./lib/types/index.d.ts",
+        "engines": {
+          "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+        },
+        "exports": {
+          ".": {
+            "types": "./lib/types/index.d.ts",
+            "default": "./lib/api.js"
+          },
+          "./rules": {
+            "types": "./lib/types/rules.d.ts"
+          },
+          "./config": {
+            "types": "./lib/types/config-api.d.ts",
+            "default": "./lib/config-api.js"
+          },
+          "./universal": {
+            "types": "./lib/types/universal.d.ts",
+            "default": "./lib/universal.js"
+          },
+          "./package.json": "./package.json",
+          "./use-at-your-own-risk": {
+            "types": "./lib/types/use-at-your-own-risk.d.ts",
+            "default": "./lib/unsupported-api.js"
+          }
+        },
+        "funding": "https://eslint.org/donate",
+        "gitHead": "4a24e8c09d374d773a034e36b1d7a7fbe1216478",
+        "scripts": {
+          "lint": "trunk check --no-fix --ignore=docs/**/*.js -a --filter=eslint && trunk check --no-fix --ignore=docs/**/*.js",
+          "test": "node Makefile.js test",
+          "lint:fix": "trunk check -y --ignore=docs/**/*.js -a --filter=eslint && trunk check -y --ignore=docs/**/*.js",
+          "test:cli": "mocha",
+          "test:fuzz": "node Makefile.js fuzz",
+          "test:pnpm": "cd tests/pnpm && node check.js && pnpm install && pnpm exec tsc",
+          "build:site": "node Makefile.js gensite",
+          "lint:types": "attw --pack",
+          "test:types": "tsc -p tests/lib/types/tsconfig.json",
+          "lint:unused": "knip",
+          "test:emfile": "node tools/check-emfile-handling.js",
+          "build:readme": "node tools/update-readme.js",
+          "lint:docs:js": "trunk check --no-fix --ignore=** --ignore=!docs/**/*.js -a --filter=eslint && trunk check --no-fix --ignore=** --ignore=!docs/**/*.js",
+          "test:browser": "node Makefile.js cypress",
+          "build:webpack": "node Makefile.js webpack",
+          "lint:rule-types": "node tools/update-rule-type-headers.js --check",
+          "release:publish": "node Makefile.js publishRelease",
+          "lint:fix:docs:js": "trunk check -y --ignore=** --ignore=!docs/**/*.js -a --filter=eslint && trunk check -y --ignore=** --ignore=!docs/**/*.js",
+          "test:performance": "node Makefile.js perf",
+          "build:rules-index": "node Makefile.js generateRuleIndexPage",
+          "release:generate:rc": "node Makefile.js generatePrerelease -- rc",
+          "release:generate:beta": "node Makefile.js generatePrerelease -- beta",
+          "release:generate:alpha": "node Makefile.js generatePrerelease -- alpha",
+          "build:docs:update-links": "node tools/fetch-docs-links.js",
+          "lint:docs:rule-examples": "node Makefile.js checkRuleExamples",
+          "release:generate:latest": "node Makefile.js generateRelease -- latest",
+          "release:generate:maintenance": "node Makefile.js generateRelease -- maintenance"
+        },
+        "_npmUser": {
+          "name": "eslintbot",
+          "email": "contact@eslint.org"
+        },
+        "gitHooks": {
+          "pre-commit": "lint-staged"
+        },
+        "overrides": {
+          "@metascraper/helpers": {
+            "re2": "~1.24.1"
+          },
+          "@arethetypeswrong/core": {
+            "fflate": "0.8.2"
+          }
+        },
+        "deprecated": "This version is no longer supported. Please see https://eslint.org/version-support for other options.",
+        "repository": {
+          "url": "git+https://github.com/eslint/eslint.git",
+          "type": "git"
+        },
+        "_npmVersion": "10.9.4",
+        "description": "An AST-based pattern checker for JavaScript.",
+        "directories": {},
+        "lint-staged": {
+          "*": "trunk check --fix",
+          "lib/rules/*.js": [
+            "node tools/update-eslint-all.js",
+            "node tools/update-eslint-recommended.js",
+            "node tools/update-rule-type-headers.js",
+            "git add packages/js/src/configs/*.js lib/types/rules.d.ts"
+          ],
+          "docs/src/rules/*.md": [
+            "node tools/check-rule-examples.js",
+            "node tools/fetch-docs-links.js",
+            "git add docs/src/_data/further_reading_links.json"
+          ]
+        },
+        "_nodeVersion": "22.21.0",
+        "dependencies": {
+          "ajv": "^6.14.0",
+          "chalk": "^4.0.0",
+          "debug": "^4.3.2",
+          "espree": "^10.4.0",
+          "ignore": "^5.2.0",
+          "esquery": "^1.5.0",
+          "esutils": "^2.0.2",
+          "find-up": "^5.0.0",
+          "is-glob": "^4.0.0",
+          "minimatch": "^3.1.5",
+          "@eslint/js": "9.39.5",
+          "optionator": "^0.9.3",
+          "cross-spawn": "^7.0.6",
+          "glob-parent": "^6.0.2",
+          "imurmurhash": "^0.1.4",
+          "@eslint/core": "^0.17.0",
+          "eslint-scope": "^8.4.0",
+          "lodash.merge": "^4.6.2",
+          "@humanfs/node": "^0.16.6",
+          "@types/estree": "^1.0.6",
+          "fast-deep-equal": "^3.1.3",
+          "natural-compare": "^1.4.0",
+          "@eslint/eslintrc": "^3.3.6",
+          "file-entry-cache": "^8.0.0",
+          "@eslint/plugin-kit": "^0.4.1",
+          "eslint-visitor-keys": "^4.2.1",
+          "@eslint/config-array": "^0.21.2",
+          "@humanwhocodes/retry": "^0.4.2",
+          "escape-string-regexp": "^4.0.0",
+          "@eslint/config-helpers": "^0.4.2",
+          "@eslint-community/regexpp": "^4.12.1",
+          "@eslint-community/eslint-utils": "^4.8.0",
+          "@humanwhocodes/module-importer": "^1.0.1",
+          "json-stable-stringify-without-jsonify": "^1.0.1"
+        },
+        "typesVersions": {
+          "*": {
+            "rules": [
+              "./lib/types/rules.d.ts"
+            ],
+            "config": [
+              "./lib/types/config-api.d.ts"
+            ],
+            "universal": [
+              "./lib/types/universal.d.ts"
+            ],
+            "use-at-your-own-risk": [
+              "./lib/types/use-at-your-own-risk.d.ts"
+            ]
+          }
+        },
+        "_hasShrinkwrap": false,
+        "readmeFilename": "README.md",
+        "devDependencies": {
+          "c8": "^7.12.0",
+          "ejs": "^3.0.2",
+          "got": "^11.8.3",
+          "chai": "^4.0.1",
+          "glob": "^10.0.0",
+          "jiti": "^2.6.1",
+          "knip": "^5.60.2",
+          "mocha": "^11.7.1",
+          "sinon": "^11.0.0",
+          "eslint": "file:.",
+          "eslump": "^3.0.0",
+          "marked": "^4.0.8",
+          "recast": "^0.23.0",
+          "semver": "^7.5.3",
+          "yorkie": "^2.0.0",
+          "cheerio": "^0.22.0",
+          "core-js": "^3.1.3",
+          "cypress": "^14.1.0",
+          "esprima": "^4.0.1",
+          "globals": "^16.2.0",
+          "pirates": "^4.0.5",
+          "shelljs": "^0.10.0",
+          "webpack": "^5.23.0",
+          "progress": "^2.0.3",
+          "fast-glob": "^3.2.11",
+          "jiti-v2.0": "npm:jiti@2.0.x",
+          "jiti-v2.1": "npm:jiti@2.1.x",
+          "proxyquire": "^2.0.1",
+          "typescript": "^5.3.3",
+          "@babel/core": "^7.4.3",
+          "@types/node": "^22.13.14",
+          "common-tags": "^1.8.0",
+          "fs-teardown": "^0.1.3",
+          "gray-matter": "^4.0.3",
+          "lint-staged": "^11.0.0",
+          "markdown-it": "^12.2.0",
+          "metascraper": "^5.25.7",
+          "npm-license": "^0.3.3",
+          "webpack-cli": "^4.5.0",
+          "@eslint/json": "^0.13.2",
+          "babel-loader": "^8.0.5",
+          "@types/esquery": "^1.5.4",
+          "eslint-release": "^3.3.0",
+          "metascraper-logo": "^5.25.7",
+          "@babel/preset-env": "^7.4.3",
+          "@trunkio/launcher": "^1.3.4",
+          "eslint-plugin-yml": "^1.14.0",
+          "metascraper-image": "^5.29.3",
+          "metascraper-title": "^5.25.7",
+          "regenerator-runtime": "^0.14.0",
+          "eslint-config-eslint": "file:packages/eslint-config-eslint",
+          "eslint-rule-composer": "^0.3.0",
+          "@arethetypeswrong/cli": "^0.18.0",
+          "markdown-it-container": "^3.0.0",
+          "metascraper-description": "^5.25.7",
+          "metascraper-logo-favicon": "^5.25.7",
+          "@typescript-eslint/parser": "^8.4.0",
+          "eslint-plugin-expect-type": "^0.6.0",
+          "eslint-plugin-eslint-plugin": "^6.0.0",
+          "node-polyfill-webpack-plugin": "^1.0.3",
+          "@cypress/webpack-preprocessor": "^6.0.2"
+        },
+        "peerDependencies": {
+          "jiti": "*"
+        },
+        "peerDependenciesMeta": {
+          "jiti": {
+            "optional": true
+          }
+        },
+        "_npmOperationalInternal": {
+          "tmp": "tmp/eslint_9.39.5_1783716107272_0.507747376497784",
+          "host": "s3://npm-registry-packages-npm-production"
+        }
+      }
+    },
+    {
+      "version": "16.3.8",
+      "peerDependencies": {
+        "eslint": ">=9.0.0",
+        "typescript": ">=3.3.1"
+      },
+      "dependencies": {
+        "globals": "16.4.0",
+        "typescript-eslint": "^8.46.0",
+        "eslint-plugin-react": "^7.37.0",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-jsx-a11y": "^6.10.0",
+        "@next/eslint-plugin-next": "16.3.8",
+        "eslint-plugin-react-hooks": "^7.0.0",
+        "eslint-import-resolver-node": "^0.3.6",
+        "eslint-import-resolver-typescript": "^3.5.2"
+      },
+      "dist": {
+        "shasum": "83f8366dbf97f02b87aecb573372ca643f83250d",
+        "tarball": "https://registry.npmjs.org/eslint-config-next/-/eslint-config-next-16.3.8.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-81vovwMe6NGnoFsl0KUJWzlS+y239i3fdsxs49gSEX3pDQW2cuKy+fxUPXNkQqqx6OCPheYPtBlSufc9aZ0k+w==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCSESj9p26Mx+/T8yfTNeD1tO4eGQCvllX3s6r65ZDNEQIgWODD2KwZQq6LzxW0glF2oMe3oWBOpfenoyHfDdpe6Ng=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIA8GSyEbEz85FygJA4ORT8csMLtsbOAHHkSFR4/LNnH0AiEA63cql9hAwjktlebiGqe4AGJ4g9bwOfnXCUvcCxry9oI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/eslint-config-next@16.3.8",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 14190
+      },
+      "name": "eslint-config-next",
+      "registry": "https://registry.npmjs.org/eslint-config-next",
+      "distTags": {
+        "next-11": "11.1.4",
+        "next-12-2-6": "12.2.6",
+        "next-14-1": "14.1.1",
+        "rc": "15.0.0-rc.1",
+        "next-13": "13.5.11",
+        "next-12-3-2": "12.3.7",
+        "beta": "16.0.0-beta.0",
+        "next-14": "14.2.35",
+        "next-15-3": "15.3.9",
+        "next-15-2": "15.2.9",
+        "next-15-0": "15.1.12",
+        "next-15-0-0": "15.0.8",
+        "preview": "16.3.0-preview.10",
+        "latest": "16.3.8",
+        "backport": "15.5.27",
+        "canary": "16.4.0-canary.60"
+      }
+    },
+    {
+      "version": "2.32.0",
+      "engines": {
+        "node": ">=4"
+      },
+      "peerDependencies": {
+        "eslint": "^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8 || ^9"
+      },
+      "dependencies": {
+        "@rtsao/scc": "^1.1.0",
+        "array-includes": "^3.1.9",
+        "array.prototype.findlastindex": "^1.2.6",
+        "array.prototype.flat": "^1.3.3",
+        "array.prototype.flatmap": "^1.3.3",
+        "debug": "^3.2.7",
+        "doctrine": "^2.1.0",
+        "eslint-import-resolver-node": "^0.3.9",
+        "eslint-module-utils": "^2.12.1",
+        "hasown": "^2.0.2",
+        "is-core-module": "^2.16.1",
+        "is-glob": "^4.0.3",
+        "minimatch": "^3.1.2",
+        "object.fromentries": "^2.0.8",
+        "object.groupby": "^1.0.3",
+        "object.values": "^1.2.1",
+        "semver": "^6.3.1",
+        "string.prototype.trimend": "^1.0.9",
+        "tsconfig-paths": "^3.15.0"
+      },
+      "dist": {
+        "integrity": "sha512-whOE1HFo/qJDyX4SnXzP4N6zOWn79WhnCUY/iDR0mPfQZO8wcYE4JClzI2oZrhBnnMUCBCHZhO6VQyoBU95mZA==",
+        "shasum": "602b55faa6e4caeaa5e970c198b5c00a37708980",
+        "tarball": "https://registry.npmjs.org/eslint-plugin-import/-/eslint-plugin-import-2.32.0.tgz",
+        "fileCount": 132,
+        "unpackedSize": 1417661,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQDB1cmN9UIDrsRT8rxmciSqaKZon/8NSub1RHdOqbXP5QIhAI5/WIZoQ5xVPcUeHZwhzG6NELESnUdt8ok4ZKrsEWdm"
+          }
+        ]
+      },
+      "name": "eslint-plugin-import",
+      "registry": "https://registry.npmjs.org/eslint-plugin-import",
+      "distTags": {
+        "next": "2.0.0-beta.1",
+        "latest": "2.32.0"
+      }
+    },
+    {
+      "version": "6.10.2",
+      "engines": {
+        "node": ">=4.0"
+      },
+      "peerDependencies": {
+        "eslint": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9"
+      },
+      "dependencies": {
+        "aria-query": "^5.3.2",
+        "array-includes": "^3.1.8",
+        "array.prototype.flatmap": "^1.3.2",
+        "ast-types-flow": "^0.0.8",
+        "axe-core": "^4.10.0",
+        "axobject-query": "^4.1.0",
+        "damerau-levenshtein": "^1.0.8",
+        "emoji-regex": "^9.2.2",
+        "hasown": "^2.0.2",
+        "jsx-ast-utils": "^3.3.5",
+        "language-tags": "^1.0.9",
+        "minimatch": "^3.1.2",
+        "object.fromentries": "^2.0.8",
+        "safe-regex-test": "^1.0.3",
+        "string.prototype.includes": "^2.0.1"
+      },
+      "dist": {
+        "integrity": "sha512-scB3nz4WmG75pV8+3eRUQOHZlNSUhFNq37xnpgRkCCELU3XMvXAxLk1eqWWyE22Ki4Q01Fnsw9BA3cJHDPgn2Q==",
+        "shasum": "d2812bb23bf1ab4665f1718ea442e8372e638483",
+        "tarball": "https://registry.npmjs.org/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.10.2.tgz",
+        "fileCount": 229,
+        "unpackedSize": 752797,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEQCIBLVcMo1z8881smPVhZGfvKqwjP/+8M3bzoHT8HZNUjkAiA/xOYOovyHHvvQMOBMfy5+Yr/IUGMhxRrzLV+dMim4GA=="
+          }
+        ]
+      },
+      "name": "eslint-plugin-jsx-a11y",
+      "registry": "https://registry.npmjs.org/eslint-plugin-jsx-a11y",
+      "distTags": {
+        "v5-backport": "5.1.1",
+        "latest": "6.10.2"
+      }
+    },
+    {
+      "version": "7.37.5",
+      "engines": {
+        "node": ">=4"
+      },
+      "peerDependencies": {
+        "eslint": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7"
+      },
+      "dependencies": {
+        "array-includes": "^3.1.8",
+        "array.prototype.findlast": "^1.2.5",
+        "array.prototype.flatmap": "^1.3.3",
+        "array.prototype.tosorted": "^1.1.4",
+        "doctrine": "^2.1.0",
+        "es-iterator-helpers": "^1.2.1",
+        "estraverse": "^5.3.0",
+        "hasown": "^2.0.2",
+        "jsx-ast-utils": "^2.4.1 || ^3.0.0",
+        "minimatch": "^3.1.2",
+        "object.entries": "^1.1.9",
+        "object.fromentries": "^2.0.8",
+        "object.values": "^1.2.1",
+        "prop-types": "^15.8.1",
+        "resolve": "^2.0.0-next.5",
+        "semver": "^6.3.1",
+        "string.prototype.matchall": "^4.0.12",
+        "string.prototype.repeat": "^1.0.0"
+      },
+      "dist": {
+        "integrity": "sha512-Qteup0SqU15kdocexFNAJMvCJEfa2xUKNV4CC1xsVMrIIqEy3SQ/rqyxCWNzfrd3/ldy6HMlD2e0JDVpDg2qIA==",
+        "shasum": "2975511472bdda1b272b34d779335c9b0e877065",
+        "tarball": "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.37.5.tgz",
+        "fileCount": 406,
+        "unpackedSize": 937569,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCICSNRvL9Jzj5j1Oy46rZG9V8PLLdyOF9okd8dfbGRNF+AiEA/388X+hcfwIUZjeT+53CI1bsDE+bvHxbpnN7jr7YeVo="
+          }
+        ]
+      },
+      "name": "eslint-plugin-react",
+      "registry": "https://registry.npmjs.org/eslint-plugin-react",
+      "distTags": {
+        "next": "7.8.0-rc.0",
+        "latest": "7.37.5"
+      }
+    },
+    {
+      "version": "1.5.0",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc"
+      },
+      "dist": {
+        "shasum": "3374c67458084b9bad5ee75d09204bce5a9ebdc3",
+        "tarball": "https://registry.npmjs.org/input-otp/-/input-otp-1.5.0.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-3AcfdW1sNG0FmSA5hHMBXG7jNW5CdcdKs8ln8JOmn6S2SRkoXoJx+2UwC+ZvjflfnOdHJx0SfQ9/YjlxVYLtGQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIFa6aISZY5Paowmij0RwFM73bTAOHlODQ7hK8cwkBrjOAiAW/NqOvhVjI8GEnz+jWrAt+PYgi86fybBaDnXaoXbgXg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQCfW1XXCbb+wZUOU/FCW3g1y4FwCdRNFhqzW7oh45gUxwIgAOK83e05uVcmMoDZhjl27imHOejuYQ+H1/6JgN3no2Y="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/input-otp@1.5.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 117855
+      },
+      "name": "input-otp",
+      "registry": "https://registry.npmjs.org/input-otp",
+      "distTags": {
+        "latest": "1.5.0",
+        "beta": "1.5.0-beta.2"
+      }
+    },
+    {
+      "version": "1.52.0",
+      "peerDependencies": {
+        "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "@types/react": "*"
+      },
+      "dist": {
+        "shasum": "9945c4edc9550be7cc79808ec8a510c80512c727",
+        "tarball": "https://registry.npmjs.org/lucide-react/-/lucide-react-1.52.0.tgz",
+        "fileCount": 4306,
+        "integrity": "sha512-TUgPtl5ZI9WgxOcbu4ckaC5B3l1qxPQrCMgb6OfUB9owx/OvSJfcf93SMgUWAxRw5/1XDfh9uI5F5iNGXCcGDQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCxeKbB1V1KacKwDo23cm+vFLjDb0qVA3NZ7dRWOlCakAIgI/+JRopLUO1LfpxHUnoPjsOJntdMKDayPqS7HPEkk68=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCICkvbNBE3Z59X6uZof4RytWvzlIbigRlsaoHPnclwDrTAiEAwauzk1PPVLHwPEqd3OldWemQskqoW/J6TIn1ekYLcy8="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/lucide-react@1.52.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 35569891
+      },
+      "name": "lucide-react",
+      "registry": "https://registry.npmjs.org/lucide-react",
+      "distTags": {
+        "beta": "0.266.0-beta.0",
+        "dev": "0.554.0-rc.0",
+        "next": "1.3.0",
+        "latest": "1.52.0"
+      }
+    },
+    {
+      "version": "7.2.0",
+      "dependencies": {},
+      "dist": {
+        "shasum": "3dc30e41e9464b3836553b6d969b656614f8f359",
+        "integrity": "sha512-dqT2XBYUOZOiC5t2HRnwADjhNS2cecp9u+TJRiJ1Qp/f5qjkeT5APcGPjHw+bz89Ms8Jp+cG4AlE+QZ/QnDglg==",
+        "tarball": "https://registry.npmjs.org/minisearch/-/minisearch-7.2.0.tgz",
+        "fileCount": 37,
+        "unpackedSize": 826513,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQC1J6nF28PEOIvGza3h32aBXvbmMqF9YbWziE0ywu/9agIgVggbC6oZVmmcde9Lpbr6qKhkI8eGEymnZIRDHLUJPhY="
+          }
+        ]
+      },
+      "name": "minisearch",
+      "registry": "https://registry.npmjs.org/minisearch",
+      "distTags": {
+        "next": "5.0.0-beta1",
+        "latest": "7.2.0"
+      }
+    },
+    {
+      "version": "14.0.0",
+      "peerDependencies": {
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0"
+      },
+      "dependencies": {
+        "tslib": "^2.4.0",
+        "framer-motion": "14.0.0"
+      },
+      "dist": {
+        "shasum": "acb2afa358ab351e72d25d393266dd019d358c58",
+        "tarball": "https://registry.npmjs.org/motion/-/motion-14.0.0.tgz",
+        "fileCount": 40,
+        "integrity": "sha512-oGc2lkge2lkRZCP+J8/JsnYu4NFjqP1MtXirNdetn3QbvK2JqwM9A200EdT4C598KfzDhjLT12zF21xDM4Oilw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDnvsjpY/64FZa9E3pBNy3earirF6bM/WkCSDr6npjgPQIhANiDNJ/qymufb/1fqEC8s+T3ZfLO776Gt8/z1WLcR+nm",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDa844ZdKdIMP19YWqyLpPl9rScZYbHTa0pu5jk/Uq15wIgSFvvEUmjHtAuRBdaaK2kMxDNn8p+TO28AUhmLCf24NA="
+          }
+        ],
+        "unpackedSize": 750887
+      },
+      "name": "motion",
+      "registry": "https://registry.npmjs.org/motion",
+      "distTags": {
+        "beta": "3.2.4",
+        "rc": "10.0.0-rc.6",
+        "alpha": "10.5.0-alpha.1",
+        "canary": "13.1.1-alpha.0",
+        "latest": "14.0.0"
+      }
+    },
+    {
+      "version": "16.3.8",
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "peerDependencies": {
+        "sass": "^1.3.0",
+        "react": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
+        "react-dom": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
+        "@playwright/test": "^1.51.1",
+        "@opentelemetry/api": "^1.1.0",
+        "babel-plugin-react-compiler": "*"
+      },
+      "dependencies": {
+        "postcss": "8.5.23",
+        "@next/env": "16.3.8",
+        "styled-jsx": "5.1.6",
+        "@swc/helpers": "0.5.23",
+        "caniuse-lite": "^1.0.30001579",
+        "baseline-browser-mapping": "^2.9.19"
+      },
+      "dist": {
+        "shasum": "1c74c9d90029c9c756456bd745c49c248b21050c",
+        "tarball": "https://registry.npmjs.org/next/-/next-16.3.8.tgz",
+        "fileCount": 8539,
+        "integrity": "sha512-U7QEZaTini6wKrb8A8hqLLqYQyCetegKjCpJOyxk642vWoMoU1x5PyZCJFvgYgiptA8xc5j/9xYlZFO7w9Sjmw==",
+        "signatures": [
+          {
+            "sig": "MEQCIDhpsXHjABLHO9qjpuVwMPJ8CSHy1sXZC8iOiq6vZczJAiBz2pZASggMktKwbPmueznDAl+55rctih9HhWzSiUl12A==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDwLzhr8jAcb15I2eB+RswUcY1v+nhpgtXA881zJKWx0AIhAIh3rBvLplQ5YQ+SS52+iQEFZac6hPvZazDBDKr6RUei",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/next@16.3.8",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 185970409
+      },
+      "name": "next",
+      "registry": "https://registry.npmjs.org/next",
+      "distTags": {
+        "next-11": "11.1.4",
+        "next-12-2-6": "12.2.6",
+        "next-14-1": "14.1.1",
+        "rc": "15.0.0-rc.1",
+        "next-13": "13.5.11",
+        "next-12-3-2": "12.3.7",
+        "beta": "16.0.0-beta.0",
+        "next-14": "14.2.35",
+        "next-15-3": "15.3.9",
+        "next-15-2": "15.2.9",
+        "next-15-0": "15.1.12",
+        "next-15-0-0": "15.0.8",
+        "preview": "16.3.0-preview.10",
+        "latest": "16.3.8",
+        "backport": "15.5.27",
+        "canary": "16.4.0-canary.60"
+      }
+    },
+    {
+      "version": "0.4.6",
+      "peerDependencies": {
+        "react": "^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc"
+      },
+      "dist": {
+        "integrity": "sha512-pZvgD5L0IEvX5/9GWyHMf3m8BKiVQwsCMHfoFosXtXBMnaS0ZnIJ9ST4b4NqLVKDEm8QBxoNNGNaBv2JNF6XNA==",
+        "shasum": "8d7e92d03b8fea6582892a50a928c9b23502e8b6",
+        "tarball": "https://registry.npmjs.org/next-themes/-/next-themes-0.4.6.tgz",
+        "fileCount": 7,
+        "unpackedSize": 33783,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIEjsXyeYxtgTUlg8U12KqB4P3wieRcDbwJ0ExLoD5TA+AiAgdwdr/w62amVLhEqCCriGTld1uzgkzAV24J8Hfq1pNg=="
+          }
+        ]
+      },
+      "name": "next-themes",
+      "registry": "https://registry.npmjs.org/next-themes",
+      "distTags": {
+        "beta": "0.4.3-beta.0",
+        "latest": "0.4.6"
+      }
+    },
+    {
+      "version": "8.23.1",
+      "engines": {
+        "node": ">= 16.0.0"
+      },
+      "peerDependencies": {
+        "pg-native": ">=3.0.1"
+      },
+      "dependencies": {
+        "pgpass": "1.0.5",
+        "pg-pool": "^3.14.0",
+        "pg-types": "2.2.0",
+        "pg-protocol": "^1.16.1",
+        "pg-cloudflare": "^1.4.1",
+        "pg-connection-string": "^2.14.1"
+      },
+      "dist": {
+        "shasum": "e4848051a04aa2f968fd5671d075f89e5e7918b9",
+        "tarball": "https://registry.npmjs.org/pg/-/pg-8.23.1.tgz",
+        "fileCount": 20,
+        "integrity": "sha512-aL96AHANtWjPLDOLqnhx+ngp9+UK7ETEU8VJrDCGvsSSi/mGLcWYsS6Herg7lmaBJe4uwrfqsa7gTEFaSizDoQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCaQ7YY2yU8gtOVUdpEmdwhMZX8RimNffuKliyHO8GPcQIgdnqtDpcBEkCylJPazoNxAcwG0J+2ErEXsbGHsceQDbQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQCoTOteRl6SbOEx95tHOsn0FgIOYsb5wPdT77A0PUDC8wIgUGnJrpGJKdY8o6QUGoU0GRtQVHfVx3aHN7ChoRaAMmo="
+          }
+        ],
+        "unpackedSize": 102632
+      },
+      "name": "pg",
+      "registry": "https://registry.npmjs.org/pg",
+      "distTags": {
+        "beta": "8.14.2-alpha.1",
+        "latest": "8.23.1"
+      }
+    },
+    {
+      "version": "1.63.0",
+      "engines": {
+        "node": ">=20"
+      },
+      "dependencies": {
+        "playwright-core": "1.63.0"
+      },
+      "dist": {
+        "shasum": "99b56f9f69b1b70c44f00bf84b2fe52348ae2511",
+        "tarball": "https://registry.npmjs.org/playwright/-/playwright-1.63.0.tgz",
+        "fileCount": 62,
+        "integrity": "sha512-+7ziBLidS4NaNCdt57SUDT+wYmmd5fmiQejUic/kb+YsYSCPyOOE9sebzMjNmQrsnNpDJqd4WHvV/8lfKfUDUg==",
+        "signatures": [
+          {
+            "sig": "MEQCIFn72Uq9JNdpz1rV1lvXHFkN/RVw2SRE69/WaPi8+JVpAiBylqLY4s2V2Ykl102NEUg56SIXh9Ig1vzaxWMY+6phYw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDbhaeMgqrXvUZ8VnMwwCDWzJT2LAkJoad5xAQLowOEXQIhAI7AM5/Z5BCB4ChADMQtg5y2yUhs6LzrHzREhmKgiFpZ",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/playwright@1.63.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 5094512
+      },
+      "name": "playwright",
+      "registry": "https://registry.npmjs.org/playwright",
+      "distTags": {
+        "rc": "1.18.0-rc1",
+        "latest": "1.63.0",
+        "beta": "1.63.0-beta-1789413634000",
+        "next": "1.64.0-alpha-2026-10-04"
+      }
+    },
+    {
+      "version": "12.9.1",
+      "engines": {
+        "node": ">=18.*"
+      },
+      "dist": {
+        "shasum": "3431acab44b8aee29ca1b92e5042bd1b694d5d7a",
+        "tarball": "https://registry.npmjs.org/pnpm/-/pnpm-12.9.1.tgz",
+        "fileCount": 449,
+        "integrity": "sha512-BrBV//XNINwSeB3hc87TMQzglRvy7GICEaFgRdVETVyTpmMhB2TvKaZTphBFm6A2jw50+E2AxUcjz5Wq57wNbQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIEpHkCW6yqESc+WQvKAWZp34AAdiYXWebZUwiOLoBWnTAiEAhS1n5b9YvEwex4QtEk1S+Gw7t6HAZpYIOk2Q7VVlap0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/pnpm@12.9.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 4107858
+      },
+      "name": "pnpm",
+      "registry": "https://registry.npmjs.org/pnpm",
+      "distTags": {
+        "latest-1": "1.43.1",
+        "latest-2": "2.25.7",
+        "latest-3": "3.8.1",
+        "latest-4": "4.14.4",
+        "latest-5": "5.18.10",
+        "dev": "6.23.7-202112041634",
+        "pr4475": "0.0.0-pr4475.1",
+        "next-6": "6.35.1",
+        "latest-6": "6.35.1",
+        "latest-7": "7.33.5",
+        "next-7": "7.33.7",
+        "latest-8": "8.15.9",
+        "next-8": "8.15.9",
+        "next-9": "9.15.9",
+        "latest-9": "9.15.9",
+        "latest-11": "11.28.2",
+        "latest": "12.9.1",
+        "next-10": "10.34.6",
+        "latest-10": "10.34.6",
+        "next-11": "11.28.4",
+        "next-12": "12.9.1",
+        "latest-12": "12.9.1"
+      }
+    },
+    {
+      "version": "8.5.28",
+      "engines": {
+        "node": "^10 || ^12 || >=14"
+      },
+      "dependencies": {
+        "nanoid": "^3.3.18",
+        "picocolors": "^1.1.1",
+        "source-map-js": "^1.2.1"
+      },
+      "dist": {
+        "shasum": "da4563a99a06e62d6c1cd1acae363224bcaed6e9",
+        "tarball": "https://registry.npmjs.org/postcss/-/postcss-8.5.28.tgz",
+        "integrity": "sha512-RRuzqDtt5Y9h3quz5hWhK+TPnsmVs6WwSU6LkJMeY4HstUEDuYTG8UJSdawMRzmzAtV+KEoG8N3Qg2qLy5vM/A==",
+        "fileCount": 55,
+        "unpackedSize": 218290,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/postcss@8.5.28",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCICGlIb6CorxUAu3DbNoH0Ykqqm6CkwXTtV1xPl9bLwFwAiBuZq1F9i2V5mwjRkgAPKBBJyx9j03qSeuQIvFzk9HFng=="
+          }
+        ]
+      },
+      "name": "postcss",
+      "registry": "https://registry.npmjs.org/postcss",
+      "distTags": {
+        "latest": "8.5.28"
+      }
+    },
+    {
+      "version": "1.6.7",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "dependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-form": "0.1.16",
+        "@radix-ui/react-menu": "2.1.24",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-tabs": "1.1.21",
+        "@radix-ui/react-arrow": "1.1.15",
+        "@radix-ui/react-label": "2.1.15",
+        "@radix-ui/react-toast": "1.2.23",
+        "@radix-ui/react-avatar": "1.2.6",
+        "@radix-ui/react-dialog": "1.1.23",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-select": "2.3.7",
+        "@radix-ui/react-slider": "1.4.7",
+        "@radix-ui/react-switch": "1.3.7",
+        "@radix-ui/react-toggle": "1.1.18",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-menubar": "1.1.24",
+        "@radix-ui/react-popover": "1.1.23",
+        "@radix-ui/react-toolbar": "1.1.19",
+        "@radix-ui/react-tooltip": "1.2.16",
+        "@radix-ui/react-checkbox": "1.3.11",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-progress": "1.1.16",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-accordion": "1.2.20",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-separator": "1.1.15",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-hover-card": "1.1.23",
+        "@radix-ui/react-collapsible": "1.1.20",
+        "@radix-ui/react-focus-scope": "1.1.16",
+        "@radix-ui/react-radio-group": "1.4.7",
+        "@radix-ui/react-scroll-area": "1.2.18",
+        "@radix-ui/react-alert-dialog": "1.1.23",
+        "@radix-ui/react-aspect-ratio": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-context-menu": "2.3.7",
+        "@radix-ui/react-focus-guards": "1.1.6",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-toggle-group": "1.1.19",
+        "@radix-ui/react-dropdown-menu": "2.1.24",
+        "@radix-ui/react-accessible-icon": "1.1.15",
+        "@radix-ui/react-navigation-menu": "1.2.22",
+        "@radix-ui/react-use-is-hydrated": "0.1.3",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-use-effect-event": "0.0.5",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-escape-keydown": "1.1.5",
+        "@radix-ui/react-password-toggle-field": "0.1.11",
+        "@radix-ui/react-use-controllable-state": "1.2.6",
+        "@radix-ui/react-one-time-password-field": "0.1.16"
+      },
+      "dist": {
+        "shasum": "0a40f1b1a70a7aee9c4faa691d03361f53f881f0",
+        "tarball": "https://registry.npmjs.org/radix-ui/-/radix-ui-1.6.7.tgz",
+        "fileCount": 262,
+        "integrity": "sha512-QBdhh1arIEUvPC0dQ5+nwWAxt7+N+oP/9jPwjJkGFoSk/sqxg32gJtSXGtFh8frAIcS6oC9cx2Q+7KYCQLOAeA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD0wd/WoHYwgmfoP532TAgwi3loPqJX4Kd1PpmxyS/qdwIgO3FedI24n36ajvbWN6JVIj5ryV4jtnRhFqytZnG3r3U=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDdmnkXY6KYCJK/KyxWpn4+mC1CuNJYWDg/CvSqvCxERQIhAKNIsrC8XNtJdAYnNctHdZlMDtdZavPMlIlpMg2guqFk",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/radix-ui@1.6.7",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 105561
+      },
+      "name": "radix-ui",
+      "registry": "https://registry.npmjs.org/radix-ui",
+      "distTags": {
+        "latest": "1.6.7",
+        "next": "1.7.0-rc.1785512840124"
+      }
+    },
+    {
+      "version": "19.3.0",
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "dist": {
+        "shasum": "e20aa3a14687075ce863351b5878b0608c3fbfb2",
+        "tarball": "https://registry.npmjs.org/react/-/react-19.3.0.tgz",
+        "fileCount": 27,
+        "integrity": "sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==",
+        "signatures": [
+          {
+            "sig": "MEUCIALru2uJjzTwQTeh/ax6FRZSyVBDySuUEr4k+TiaANpDAiEAgJVCX1upjcvo4FzKCrJW9vcVnWVJwMbuM4Wsc4UM61o=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQCLRI5uegHedldoJjX7BioMz8AnR5jZmFZB2+1PMyrFagIhAMlHH0dBWncX0Nq4vSqkVKZtP7Jolgae2aodnOtIRrQK",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/react@19.3.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 178663
+      },
+      "name": "react",
+      "registry": "https://registry.npmjs.org/react",
+      "distTags": {
+        "beta": "19.0.0-beta-26f2496093-20240514",
+        "rc": "19.0.0-rc.1",
+        "next": "19.3.0-canary-d5736f09-20260507",
+        "backport": "19.0.8",
+        "latest": "19.3.0",
+        "experimental": "0.0.0-experimental-278794d7-20261002",
+        "canary": "19.3.0-canary-278794d7-20261002"
+      }
+    },
+    {
+      "version": "10.0.2",
+      "engines": {
+        "node": ">=18"
+      },
+      "peerDependencies": {
+        "react": ">=16.8.0",
+        "@types/react": ">=16.8.0"
+      },
+      "dependencies": {
+        "date-fns": "^4.1.0",
+        "@date-fns/tz": "^1.4.1"
+      },
+      "dist": {
+        "shasum": "0bc95cb1ff49c31a65aefe2e3aa5ed44dba4fa4a",
+        "tarball": "https://registry.npmjs.org/react-day-picker/-/react-day-picker-10.0.2.tgz",
+        "fileCount": 818,
+        "integrity": "sha512-QetiKtZWE9Uaw/pM/SYNv6WPYOTRnSJ2puL0GgwkmUFMIwiY0dtjH1W4B7DOVXVNQM0ZOClGpH/heOfBSzWeiA==",
+        "signatures": [
+          {
+            "sig": "MEUCIBOvR3iBEQK/1K4GNdjoctJRuWfhDvelyzx9kOTBBZXFAiEAjz2raAB6BfijXDVEJ8GZqry+6qfeGnMbxjc2dmDnM6U=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQC04aAwY+9JMSzthl+X03LzL0vblVkIouWWB8UEqQU/kAIgIhFtQufyhAbCCPyyGJadnyZ/WFcvDC3ZgMWD1saYfJU="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/react-day-picker@10.0.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 992031
+      },
+      "name": "react-day-picker",
+      "registry": "https://registry.npmjs.org/react-day-picker",
+      "distTags": {
+        "legacy-v8": "8.10.2",
+        "next": "10.0.0-next.6",
+        "latest": "10.0.2"
+      }
+    },
+    {
+      "version": "19.3.0",
+      "peerDependencies": {
+        "react": "^19.3.0"
+      },
+      "dependencies": {
+        "scheduler": "^0.28.0"
+      },
+      "dist": {
+        "shasum": "a0ff19161d7f4e9be5469a07278b0c06e00f9001",
+        "tarball": "https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz",
+        "fileCount": 43,
+        "integrity": "sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDl7gfoVlOoqKLgPU325X6EcrNHIYuFJJX0R9PHDs9KygIgAQaRzlBCG57IDn6XBjaOL/adBCuf/oiguaTixpmBBjw=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIBJlBwP9e+XpqYfXpAJxCFTZ2i9tt8XCm9JYmuFMXsm1AiEAi9g3MN8fg6vModu7alAeUKmJ6iWO6untLGlvHfX1mb4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/react-dom@19.3.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 8063782
+      },
+      "name": "react-dom",
+      "registry": "https://registry.npmjs.org/react-dom",
+      "distTags": {
+        "beta": "19.0.0-beta-26f2496093-20240514",
+        "rc": "19.0.0-rc.1",
+        "next": "19.3.0-canary-d5736f09-20260507",
+        "backport": "19.0.8",
+        "latest": "19.3.0",
+        "experimental": "0.0.0-experimental-278794d7-20261002",
+        "canary": "19.3.0-canary-278794d7-20261002"
+      }
+    },
+    {
+      "version": "7.89.0",
+      "engines": {
+        "node": ">=18.0.0"
+      },
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17 || ^18 || ^19",
+        "@types/react": "*"
+      },
+      "dist": {
+        "shasum": "16bde1ff233fef58bbbfd5cda47e6df929251e70",
+        "tarball": "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.89.0.tgz",
+        "fileCount": 233,
+        "integrity": "sha512-vKcoCfy8RKZDrhSdqsRFp0uEOdS1AhLjOL6hR7Wmfzg1akNxEhaPf5WORx8SgEQPVXakdDyDkqQp+KNxVnnPHg==",
+        "signatures": [
+          {
+            "sig": "MEUCIFaYUHUxm8ZeZDotw4afgVKJFv7bco9XTqNdIAvLcH8TAiEA7r6vf4IwKO7eDq0mGj3ZcfAIA1dDORFs2blNRhnClvI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIEgBeIbGM/YRbFBN5olGTF1rGWfdCwoELi9rJI74tObPAiA8cYdATPVKpmXo8j8eh2rYl9BYKGrOtaO8L2pTeCID6Q==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 1527796
+      },
+      "name": "react-hook-form",
+      "registry": "https://registry.npmjs.org/react-hook-form",
+      "distTags": {
+        "next": "7.60.0-next.0",
+        "alpha": "8.0.0-alpha.5",
+        "beta": "8.0.0-beta.4",
+        "latest": "7.89.0"
+      }
+    },
+    {
+      "version": "4.14.2",
+      "peerDependencies": {
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0"
+      },
+      "dist": {
+        "shasum": "df39ef4acb8cf42c4f96d40f6c56b0510d8257c4",
+        "tarball": "https://registry.npmjs.org/react-resizable-panels/-/react-resizable-panels-4.14.2.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-s35mfXhwpPEPnB+BKPCZJ9VZU0CHb1I9trm9tijEGBNv1Srl0HzIweENeXnsQvd0Xm9BeOBkEzDGVJOZM2mkEQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIBXDzyRvmTQYrPZ/js2ZzAgorJv1aYdb1zonwsDGS5uZAiBncqY3b17+VKzVfJPEBkKNNQZmN8s4ZePjYZeHXITA+Q==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDKh9cHDzxPmEi70ceAPIwTZ35ocoIGnaSvNw01IL3MhwIgY7oOP/VZTsC6pBJv1S8s2rj8fLV6RIVY5qDIUcY15yE="
+          }
+        ],
+        "unpackedSize": 918706
+      },
+      "name": "react-resizable-panels",
+      "registry": "https://registry.npmjs.org/react-resizable-panels",
+      "distTags": {
+        "next": "1.0.0",
+        "issue-297": "2.0.8-rc.1",
+        "alpha": "4.7.1-alpha.1",
+        "latest": "4.14.2"
+      }
+    },
+    {
+      "version": "3.10.1",
+      "engines": {
+        "node": ">=18"
+      },
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-is": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+      },
+      "dependencies": {
+        "clsx": "^2.1.1",
+        "immer": "^11.1.8",
+        "reselect": "5.2.0",
+        "es-toolkit": "^1.39.3",
+        "react-redux": "8.x.x || 9.x.x",
+        "eventemitter3": "^5.0.1",
+        "tiny-invariant": "^1.3.3",
+        "victory-vendor": "^37.0.2",
+        "@reduxjs/toolkit": "^1.9.0 || 2.x.x",
+        "decimal.js-light": "^2.5.1",
+        "use-sync-external-store": "^1.2.2"
+      },
+      "dist": {
+        "shasum": "e6f52c2604a38f728b6d47f95881595fa6604c6c",
+        "tarball": "https://registry.npmjs.org/recharts/-/recharts-3.10.1.tgz",
+        "fileCount": 839,
+        "integrity": "sha512-QXFrvt6IVcw7eeZCoyXTwkIJAX3Dv1nyVhMicXJ47GsGDDpcN8z6o644DibE9XjpBTThtsomLKnTV6lc+cVFUA==",
+        "signatures": [
+          {
+            "sig": "MEUCIHkKo5NwfI4YMZPz5kc0CoFg7WgGOnVEgAckHFxc7/SZAiEAk37DfzkOtzi24ERQ0TJAQidKimvDPR6MEOL1ejvM2fc=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDGe+y+HgZAfvpTyh6NWl2SYWW4dmCwIbhWQJ9nwQMmrwIhAJuU4rB378tx0/gEwlzwATIq8QHWJg8eevxOPVg/9Nwa",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/recharts@3.10.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 7452998
+      },
+      "name": "recharts",
+      "registry": "https://registry.npmjs.org/recharts",
+      "distTags": {
+        "alpha": "3.0.0-alpha.9",
+        "beta": "3.0.0-beta.2",
+        "latest": "3.10.1",
+        "canary": "3.11.0-canary.5"
+      }
+    },
+    {
+      "version": "2.0.8",
+      "peerDependencies": {
+        "react": "^18.0.0 || ^19.0.0 || ^19.0.0-rc",
+        "react-dom": "^18.0.0 || ^19.0.0 || ^19.0.0-rc",
+        "@types/react": "^18.0.0 || ^19.0.0"
+      },
+      "dist": {
+        "shasum": "dbfa02bb4eb0924616800a4594e9a455a9a195ac",
+        "tarball": "https://registry.npmjs.org/sonner/-/sonner-2.0.8.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-UM/ByIoFra8yzV75n1o0Puu0bw5U/9UNnDacrJNspekBewIfsQ3D6ez1nvlWpt7aTsO6rujQtifBpycwIivqlg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCU7QlR4W1u0jeOpeaB8KERFNAKFsy+TKykboZVkeOAnwIgGir/kr6aoJiMBXzyRmed9BAjVJe7gbcQFLBIKhZ5QBg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCO+mGxUW1wKYjjW1DUSLTdrH2LmWeBpQG8anOvuYwSkwIhAPLGPvJNePgo8Mvu0kipTcPpqwX91bbDV41AUtFdVBgm"
+          }
+        ],
+        "unpackedSize": 174012
+      },
+      "name": "sonner",
+      "registry": "https://registry.npmjs.org/sonner",
+      "distTags": {
+        "beta": "2.0.0-beta.3",
+        "latest": "2.0.8"
+      }
+    },
+    {
+      "version": "3.7.0",
+      "dist": {
+        "shasum": "61e9a67ab11b64138dea7d4fa5b74a33e17f2c87",
+        "tarball": "https://registry.npmjs.org/tailwind-merge/-/tailwind-merge-3.7.0.tgz",
+        "fileCount": 36,
+        "integrity": "sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCkKnSRL7xMc2sfe2DlCjJBx+t9Ppu4Ho1YZVdsip7aFgIgd7vKaetvFQpRq9PrEd2QypReBfDZy0qkgzdKu6qw96Y=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQCXLogdiYh6r6HhaQVTJak4lGSNt2nthyqSzMuUd71pGAIgGN5AamsATcPdm7wIM2Qrq6YMrgwK7YPxoQ32Cs8fck0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/tailwind-merge@3.7.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 1052654
+      },
+      "name": "tailwind-merge",
+      "registry": "https://registry.npmjs.org/tailwind-merge",
+      "distTags": {
+        "tailwind-merge-2": "2.6.1",
+        "latest": "3.7.0",
+        "dev": "3.7.0-dev.7fcb814ea439b749aa18b72415b0e21837811853"
+      }
+    },
+    {
+      "version": "4.3.3",
+      "dist": {
+        "shasum": "c006861611c213c1877893ab5b23daa16be2bb55",
+        "tarball": "https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.3.3.tgz",
+        "fileCount": 34,
+        "integrity": "sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIBhVHX/RChjUWt77CdssLibpRhMHsS3XWOKLRtP/ibJvAiBt9/qLAVxC6nR+eobWqzs5j/1ztHVMWGH0p/sMFj08bw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/tailwindcss@4.3.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 772893
+      },
+      "name": "tailwindcss",
+      "registry": "https://registry.npmjs.org/tailwindcss",
+      "distTags": {
+        "next": "4.0.0",
+        "v3-lts": "3.4.19",
+        "latest": "4.3.3",
+        "insiders": "0.0.0-insiders.fa81d69"
+      }
+    },
+    {
+      "version": "1.0.7",
+      "peerDependencies": {
+        "tailwindcss": ">=3.0.0 || insiders"
+      },
+      "dist": {
+        "integrity": "sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==",
+        "shasum": "318b692c4c42676cc9e67b19b78775742388bef4",
+        "tarball": "https://registry.npmjs.org/tailwindcss-animate/-/tailwindcss-animate-1.0.7.tgz",
+        "fileCount": 5,
+        "unpackedSize": 18121,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEUCIFusk1VgdPvD2UjqSwaEKqjrW0W0B6UyeLONXMdmFDenAiEA10d5YV2/aAou/atQhWw83pPLqBUqkVFfCJxgO3rtedw="
+          }
+        ]
+      },
+      "name": "tailwindcss-animate",
+      "registry": "https://registry.npmjs.org/tailwindcss-animate",
+      "distTags": {
+        "latest": "1.0.7"
+      }
+    },
+    {
+      "version": "4.23.15",
+      "engines": {
+        "node": ">=18.0.0"
+      },
+      "dependencies": {
+        "esbuild": "~0.28.0"
+      },
+      "dist": {
+        "shasum": "f53901695685ad567fed0f08532f7782e631c251",
+        "tarball": "https://registry.npmjs.org/tsx/-/tsx-4.23.15.tgz",
+        "fileCount": 30,
+        "integrity": "sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==",
+        "signatures": [
+          {
+            "sig": "MEQCIEdZwApsfWNOga6vkPQnLak5uTcy5XmVvo93d0LMHEPOAiBPsZl9nIidrCfwoj7omW/coVC+xSNHyMCn22pHfOV03g==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIFIjwXnhQX6Za+28gR87xqXhXtk3cmveBFnx6jIvDgbDAiEAn9WanG6tAd/NuFifbVZvx2kebV1zhSQf6tppTJvPSxA="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/tsx@4.23.15",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 396881
+      },
+      "name": "tsx",
+      "registry": "https://registry.npmjs.org/tsx",
+      "distTags": {
+        "latest": "4.23.15"
+      }
+    },
+    {
+      "version": "7.0.2",
+      "engines": {
+        "node": ">=16.20.0"
+      },
+      "dependencies": {
+        "@typescript/typescript-aix-ppc64": "7.0.2",
+        "@typescript/typescript-linux-arm": "7.0.2",
+        "@typescript/typescript-linux-x64": "7.0.2",
+        "@typescript/typescript-sunos-x64": "7.0.2",
+        "@typescript/typescript-win32-x64": "7.0.2",
+        "@typescript/typescript-darwin-x64": "7.0.2",
+        "@typescript/typescript-netbsd-x64": "7.0.2",
+        "@typescript/typescript-freebsd-x64": "7.0.2",
+        "@typescript/typescript-linux-arm64": "7.0.2",
+        "@typescript/typescript-linux-ppc64": "7.0.2",
+        "@typescript/typescript-linux-s390x": "7.0.2",
+        "@typescript/typescript-openbsd-x64": "7.0.2",
+        "@typescript/typescript-win32-arm64": "7.0.2",
+        "@typescript/typescript-darwin-arm64": "7.0.2",
+        "@typescript/typescript-netbsd-arm64": "7.0.2",
+        "@typescript/typescript-freebsd-arm64": "7.0.2",
+        "@typescript/typescript-linux-loong64": "7.0.2",
+        "@typescript/typescript-linux-riscv64": "7.0.2",
+        "@typescript/typescript-openbsd-arm64": "7.0.2",
+        "@typescript/typescript-linux-mips64el": "7.0.2"
+      },
+      "dist": {
+        "shasum": "9ec773d7954a8c182c17cc5bbd575aa28bc51582",
+        "tarball": "https://registry.npmjs.org/typescript/-/typescript-7.0.2.tgz",
+        "fileCount": 416,
+        "integrity": "sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==",
+        "signatures": [
+          {
+            "sig": "MEUCIHn8lVrLBbTJToaOcV3IJ0oVPREmFT5BhqmO2niVNCaSAiEAjbubGExGAYMSJN39iEgX/eDYhwBGnh/iyyGTRigXGjY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 2497498
+      },
+      "name": "typescript",
+      "registry": "https://registry.npmjs.org/typescript",
+      "distTags": {
+        "dev": "3.9.4",
+        "tag-for-publishing-older-releases": "4.1.6",
+        "insiders": "4.6.2-insiders.20220225",
+        "beta": "6.0.0-beta",
+        "rc": "7.0.1-rc",
+        "latest": "7.0.2",
+        "next": "7.1.0-dev.20261004.1"
+      },
+      "compatible6": {
+        "name": "typescript",
+        "version": "6.0.3",
+        "keywords": [
+          "TypeScript",
+          "Microsoft",
+          "compiler",
+          "language",
+          "javascript"
+        ],
+        "author": {
+          "name": "Microsoft Corp."
+        },
+        "license": "Apache-2.0",
+        "_id": "typescript@6.0.3",
+        "maintainers": [
+          {
+            "name": "microsoft1es",
+            "email": "npmjs@microsoft.com"
+          },
+          {
+            "name": "typescript-bot",
+            "email": "typescript@microsoft.com"
+          },
+          {
+            "name": "weswigham",
+            "email": "wwigham@gmail.com"
+          },
+          {
+            "name": "andrewbranch",
+            "email": "andrew@wheream.io"
+          },
+          {
+            "name": "typescript-deploys",
+            "email": "typescript-design@microsoft.com"
+          },
+          {
+            "name": "jakebailey",
+            "email": "jacob.b.bailey@gmail.com"
+          }
+        ],
+        "homepage": "https://www.typescriptlang.org/",
+        "bugs": {
+          "url": "https://github.com/microsoft/TypeScript/issues"
+        },
+        "bin": {
+          "tsc": "bin/tsc",
+          "tsserver": "bin/tsserver"
+        },
+        "dist": {
+          "shasum": "90251dc007916e972786cb94d74d15b185577d21",
+          "tarball": "https://registry.npmjs.org/typescript/-/typescript-6.0.3.tgz",
+          "fileCount": 140,
+          "integrity": "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
+          "signatures": [
+            {
+              "sig": "MEYCIQDv8tVB8x5z1EeS+UHLgSqOywErEEFERRmMNef6kTXsPQIhAMO+L+ktR6FwCDSc+z0KD68md8mvKukeVzgjuBhoie9i",
+              "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+            }
+          ],
+          "unpackedSize": 24346827
+        },
+        "main": "./lib/typescript.js",
+        "_from": "file:/mnt/vss/_work/1/tgz/typescript.tgz",
+        "volta": {
+          "npm": "8.19.4",
+          "node": "22.22.0"
+        },
+        "browser": {
+          "fs": false,
+          "os": false,
+          "path": false,
+          "buffer": false,
+          "crypto": false,
+          "inspector": false,
+          "perf_hooks": false,
+          "source-map-support": false
+        },
+        "engines": {
+          "node": ">=14.17"
+        },
+        "gitHead": "050880ce59e30b356b686bd3144efe24f875ebc8",
+        "scripts": {
+          "gulp": "hereby",
+          "knip": "hereby knip",
+          "lint": "hereby lint",
+          "test": "hereby runtests-parallel --light=false",
+          "build": "npm run build:compiler && npm run build:tests",
+          "clean": "hereby clean",
+          "format": "dprint fmt",
+          "build:tests": "hereby tests",
+          "setup-hooks": "node scripts/link-hooks.mjs",
+          "build:compiler": "hereby local",
+          "test:eslint-rules": "hereby run-eslint-rules-tests",
+          "build:tests:notypecheck": "hereby tests --no-typecheck"
+        },
+        "typings": "./lib/typescript.d.ts",
+        "_npmUser": {
+          "name": "typescript-bot",
+          "email": "typescript@microsoft.com"
+        },
+        "_resolved": "/mnt/vss/_work/1/tgz/typescript.tgz",
+        "overrides": {
+          "typescript@*": "$typescript"
+        },
+        "_integrity": "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
+        "repository": {
+          "url": "git+https://github.com/microsoft/TypeScript.git",
+          "type": "git"
+        },
+        "_npmVersion": "10.8.2",
+        "description": "TypeScript is a language for application scale JavaScript development",
+        "directories": {},
+        "_nodeVersion": "20.20.2",
+        "_hasShrinkwrap": false,
+        "packageManager": "npm@8.19.4",
+        "devDependencies": {
+          "c8": "^10.1.3",
+          "ms": "^2.1.3",
+          "chai": "^4.5.0",
+          "diff": "^8.0.3",
+          "glob": "^10.5.0",
+          "knip": "^5.85.0",
+          "mocha": "^10.8.2",
+          "tslib": "^2.8.1",
+          "which": "^3.0.1",
+          "dprint": "^0.49.1",
+          "eslint": "^10.0.2",
+          "hereby": "^1.12.0",
+          "esbuild": "^0.27.3",
+          "globals": "^17.4.0",
+          "chokidar": "^4.0.3",
+          "minimist": "^1.2.8",
+          "@types/ms": "^2.1.0",
+          "@eslint/js": "^10.0.1",
+          "picocolors": "^1.1.1",
+          "playwright": "^1.58.2",
+          "typescript": "^5.9.3",
+          "@types/chai": "^4.3.20",
+          "@types/node": "latest",
+          "@types/mocha": "^10.0.10",
+          "@types/which": "^3.0.4",
+          "jsonc-parser": "^3.3.1",
+          "@octokit/rest": "^22.0.1",
+          "@types/minimist": "^1.2.5",
+          "fast-xml-parser": "^5.4.1",
+          "@dprint/formatter": "^0.4.1",
+          "@esfx/canceltoken": "^1.0.0",
+          "typescript-eslint": "^8.56.1",
+          "@dprint/typescript": "0.93.4",
+          "source-map-support": "^0.5.21",
+          "eslint-plugin-regexp": "^3.0.0",
+          "azure-devops-node-api": "^15.1.3",
+          "@typescript-eslint/utils": "^8.56.1",
+          "@types/source-map-support": "^0.5.10",
+          "monocart-coverage-reports": "^2.12.9",
+          "@typescript-eslint/type-utils": "^8.56.1",
+          "@typescript-eslint/rule-tester": "^8.56.1",
+          "mocha-fivemat-progress-reporter": "^0.1.0"
+        },
+        "_npmOperationalInternal": {
+          "tmp": "tmp/typescript_6.0.3_1776382707642_0.31279279892453626",
+          "host": "s3://npm-registry-packages-npm-production"
+        }
+      }
+    },
+    {
+      "version": "8.71.0",
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      },
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "typescript": ">=4.8.4 <6.1.0"
+      },
+      "dependencies": {
+        "@typescript-eslint/utils": "8.71.0",
+        "@typescript-eslint/parser": "8.71.0",
+        "@typescript-eslint/eslint-plugin": "8.71.0",
+        "@typescript-eslint/typescript-estree": "8.71.0"
+      },
+      "dist": {
+        "shasum": "4d7d8e9939bc12f20690ebf99367b50a02f9ece9",
+        "tarball": "https://registry.npmjs.org/typescript-eslint/-/typescript-eslint-8.71.0.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-fBdHYiqQ14RW6mOMXD14Svn82ZsCYAoQSzGRzyEjR59S5A2Krh/l7fGTOQ7iCr8gGy/mHVXtEF7s5fgjEdV0Pw==",
+        "signatures": [
+          {
+            "sig": "MEUCIF4iFN9aH46MSBrjvDVaLd7MVBpgm8AbXSaLOg568lSCAiEAh7Hw0W2cUzxbyBnpza4YrO5CuxUw85uLYPDT5csRtK8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQDldfqi1dKv/RlDYnXCtcaQgaV/fRbgQsj5YLIpkaMJKgIgMMXBHpuoOzvbk06gyiEKhZ9IeJGJo7ntBRDXKZI2mR0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/typescript-eslint@8.71.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 42688
+      },
+      "name": "typescript-eslint",
+      "registry": "https://registry.npmjs.org/typescript-eslint",
+      "distTags": {
+        "rc-v8": "8.0.0-alpha.62",
+        "latest": "8.71.0",
+        "canary": "8.71.1-alpha.11"
+      }
+    },
+    {
+      "version": "1.1.2",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc"
+      },
+      "dependencies": {
+        "@radix-ui/react-dialog": "^1.1.1"
+      },
+      "dist": {
+        "integrity": "sha512-ZFkClGpWyI2WUQjdLJ/BaGuV6AVQiJ3uELGk3OYtP+B6yCO7Cmn9vPFXVJkRaGkOJu3m8bQMgtyzNHixULceQA==",
+        "shasum": "c959f8b9dc2ed4f7d99366caee433fbef91f5ba9",
+        "tarball": "https://registry.npmjs.org/vaul/-/vaul-1.1.2.tgz",
+        "fileCount": 8,
+        "unpackedSize": 184301,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEUCIQCcEZtGv+aQAHZpvGkReD4GBO0bVgGrS0P3ry4Zvy7t+gIgY2dVDQeJiUg52IVn1Ghla28VkfuLWv4YwV3vMJ+10Nw="
+          }
+        ]
+      },
+      "name": "vaul",
+      "registry": "https://registry.npmjs.org/vaul",
+      "distTags": {
+        "latest": "1.1.2"
+      }
+    },
+    {
+      "version": "4.147.0",
+      "engines": {
+        "node": ">=22.0.0"
+      },
+      "peerDependencies": {
+        "@cloudflare/workers-types": "^5.20261001.1"
+      },
+      "dependencies": {
+        "unenv": "2.0.0-rc.24",
+        "esbuild": "0.28.1",
+        "workerd": "1.20261001.1",
+        "miniflare": "5.20261001.0-alpha",
+        "blake3-wasm": "2.1.5",
+        "path-to-regexp": "6.3.0",
+        "@cloudflare/unenv-preset": "2.16.2",
+        "@cloudflare/kv-asset-handler": "0.5.0"
+      },
+      "dist": {
+        "shasum": "636f56e1d28c4cc046802d4f031e73030b1f53cd",
+        "tarball": "https://registry.npmjs.org/wrangler/-/wrangler-4.147.0.tgz",
+        "fileCount": 30,
+        "integrity": "sha512-pQYRoiq8PTAxphaG69z8+GC1DkSGd19EDZehQ8zxjo/Ko3mRB6Qs1mTrd8ZuKAarLklIjTqr1lUdCK9r4q2hUg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCP75Wa/fKCqDSrypl8g7uYHIqg4+LdNXct7Lk24x44LgIhAMXMp6FIo1OJgpv48CQTSzJkeUyUqhzH/Qr90yChtx77",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQCqLkPz9gs6Tb2H7dEMd0XOB2YdJTpc5kdN7jzaz+xqKAIgL9xJlbLteRVTJDsn0wW5oMr/o+QHzL/OMaEJYRNm+vw="
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/wrangler@4.147.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 15462618
+      },
+      "name": "wrangler",
+      "registry": "https://registry.npmjs.org/wrangler",
+      "distTags": {
+        "wrangler@2.2.4": "2.2.4",
+        "legacy": "3.114.17",
+        "latest": "4.147.0"
+      }
+    },
+    {
+      "version": "4.6.5",
+      "dist": {
+        "shasum": "e3af3edbdc260239c52f73caad05dbbffe6e82cd",
+        "tarball": "https://registry.npmjs.org/zod/-/zod-4.6.5.tgz",
+        "fileCount": 840,
+        "integrity": "sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==",
+        "signatures": [
+          {
+            "sig": "MEUCIDtkjZOq6lmdtsdqBESzHORjYxE3jnbtCMlc6fp5KcXBAiEAx7qf7EGotCL3tQfTVb+gukRlzOmeGDbJR+8DrkwN+Vs=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIBNNqEXGwMQtbIAF5A2Z8IDOhQQVSkHwQAkmsgywNJSCAiAfbEx/zArqNnn/f4OQedpGwu17tlhIWsBJ1+yBFjssqQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/zod@4.6.5",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 6140311
+      },
+      "name": "zod",
+      "registry": "https://registry.npmjs.org/zod",
+      "distTags": {
+        "next": "3.25.0-beta.20250519T094321",
+        "alpha": "3.25.68-alpha.11",
+        "beta": "4.1.13-beta.0",
+        "canary": "4.5.0-canary.20260828T171753",
+        "latest": "4.6.5"
+      }
+    }
+  ],
+  "selectedNodeTypes": "24.19.1"
+}

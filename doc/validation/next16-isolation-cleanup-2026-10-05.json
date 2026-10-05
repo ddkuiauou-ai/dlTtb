@@ -1,0 +1,36 @@
+{
+  "completedAt": "2026-10-05T05:06:54.225649+00:00",
+  "scope": "Only upgrade-owned synthetic rows, 5017/5018 dev servers and copied PostgreSQL cluster",
+  "sourceRootsRetained": [
+    "/private/tmp/next16-final-browser-h_8hjms4",
+    "/private/tmp/next16-final-build-8lzzeb5k",
+    "/private/tmp/next16-phase1-browser-hp8arytt"
+  ],
+  "artifactsRetained": true,
+  "businessDatabaseWrites": 0,
+  "original5005Touched": false,
+  "cloudflareDeployment": false,
+  "fixtureCountsAfterCleanup": {
+    "posts": 0,
+    "post_rotation": 0,
+    "cluster_rotation": 0,
+    "fixture_sites": 0,
+    "fixture_keywords": 0,
+    "builder_schemas": 0
+  },
+  "terminatedOwnedProcesses": 8,
+  "ownedServers": {
+    "5017": {
+      "stopped": true,
+      "remainingListener": false
+    },
+    "5018": {
+      "stopped": true,
+      "remainingListener": false
+    },
+    "55442": {
+      "stopped": true,
+      "remainingListener": false
+    }
+  }
+}

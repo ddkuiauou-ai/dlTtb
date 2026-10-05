@@ -1,0 +1,40 @@
+✔ an empty mounted feed adopts a new first-page seed (2.231917ms)
+✔ a same-generation seed refresh retains appended pages and cursor (0.185666ms)
+✔ seed data wins overlapping IDs and duplicate IDs never appear twice (0.1355ms)
+✔ removes absent old seed items without dropping unrelated appended items (0.096292ms)
+✔ explicit generation replacement clears old pages and resets all feed metadata (0.131959ms)
+✔ identical input retains the posts reference and does not mutate old metadata (0.12925ms)
+✔ anchor preservation prefers the same ID and then its closest surviving neighbor (0.429667ms)
+✔ cached pages retain ordered payloads when the same ID is written by another base or generation (2.748875ms)
+✔ an empty complete page is a hit and a legacy ID-only page is a miss (0.102ms)
+✔ a partial, reordered, or invalid cached payload is rejected as a whole (0.086584ms)
+✔ denied IndexedDB does not prevent a network manifest or turn page cache into an error (127.766583ms)
+✔ ranked candidates query filters by activity window (4.5165ms)
+✔ ranked candidates query no longer filters by post timestamp (0.280042ms)
+✔ ranked candidates query decays by activity timestamp (0.111791ms)
+✔ document position is independent of current window scroll, including fractional pixels (0.504167ms)
+✔ paired document margin and local row placement cover all visible rows across layouts (190.346083ms)
+✔ legacy zero margin and margin-only placement reproduce the regression controls (0.4555ms)
+✔ 360 successive position and count changes retain visible coverage on the same virtualizer (5.187417ms)
+✔ position changes and appended rows preserve existing measured heights (0.835375ms)
+✔ default window scroller applies corrections when a measured row above the viewport grows (0.228541ms)
+✔ a retained feed anchor is selected within its root when an upper section repeats the same ID (0.425375ms)
+﹣ fixture projections reach actual home queries with correct empty/stale/suppressed/deleted behavior (0.371625ms) # SKIP
+﹣ actual home JSON builder publishes complete fixture generations without predicted SSR exclusions (0.494417ms) # SKIP
+✔ validates contiguous pages starting at 2 with no first-page JSON (4.244708ms)
+✔ permits an explicitly empty tail but rejects metadata without a page contract (1.890916ms)
+✔ rejects missing pages and leaves the published generation untouched (2.849084ms)
+✔ rejects a mixed generation, duplicate IDs, and malformed posts (3.687875ms)
+✔ repeated publication removes stale tail pages and supports an empty next generation (16.195792ms)
+✔ rejects unexpected stale files and incompatible feed metadata (2.327875ms)
+✔ the continuation contract retains candidates beyond an independently selected live seed (4.002042ms)
+✔ rejects a manifest that claims an unsupported seed relationship (3.794167ms)
+✔ actual SSR 36 and actual upper IDs are excluded without losing unseen continuation candidates (18.945333ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 2
+ℹ todo 0
+ℹ duration_ms 1324.408459

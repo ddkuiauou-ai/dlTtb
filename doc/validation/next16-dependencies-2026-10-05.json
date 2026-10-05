@@ -1,0 +1,2625 @@
+{
+  "metadata": {
+    "date": "2026-10-05",
+    "timezone": "Asia/Seoul",
+    "gitHead": "35c645b52e46b3456127809b0233cf3839cc6fa1",
+    "scope": "is",
+    "source": "npm registry read-only queries; no dependency changes"
+  },
+  "dependencies": [
+    {
+      "name": "@clerk/clerk-react",
+      "specifier": "^5.47.0",
+      "installed": "5.47.0",
+      "current": "5.47.0",
+      "latest": "5.61.3",
+      "wanted": "5.47.0",
+      "isDeprecated": true,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@clerk/clerk-react/latest",
+      "peerDependencies": {
+        "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0",
+        "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0"
+      },
+      "engines": {
+        "node": ">=18.17.0"
+      },
+      "deprecated": "This package is no longer supported. Please use @clerk/react instead. See the upgrade guide for more info: https://clerk.com/docs/guides/development/upgrading/upgrade-guides/core-3",
+      "latestDependencies": {
+        "tslib": "2.8.1",
+        "@clerk/shared": "^3.47.2"
+      }
+    },
+    {
+      "name": "@hookform/resolvers",
+      "specifier": "^3.9.1",
+      "installed": "3.10.0",
+      "current": "3.10.0",
+      "latest": "5.9.1",
+      "wanted": "3.10.0",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@hookform/resolvers/latest",
+      "peerDependencies": {
+        "ajv": "^8.12.0",
+        "joi": "^17.0.0 || ^18.0.0",
+        "yup": "^1.0.0",
+        "zod": "^3.25.0 || ^4.0.0",
+        "vest": ">=6.0.0",
+        "fp-ts": "^2.7.0",
+        "io-ts": "^2.0.0",
+        "effect": "^3.10.3",
+        "arktype": "^2.0.0",
+        "valibot": ">=0.31.0 || ^1.0.0-beta.4 || ^1.0.0-rc",
+        "typanion": "^3.3.2",
+        "ajv-errors": "^3.0.0",
+        "ajv-formats": "^2.1.1",
+        "superstruct": ">=0.12.0",
+        "@vinejs/vine": "^2.0.0 || ^3.0.0 || ^4.0.0",
+        "ata-validator": "^1.2.0",
+        "computed-types": "^1.0.0",
+        "nope-validator": ">=0.12.0",
+        "class-validator": ">=0.12.0",
+        "react-hook-form": "^7.55.0",
+        "@typeschema/main": ">=0.13.7",
+        "@sinclair/typebox": ">=0.25.24",
+        "class-transformer": ">=0.4.0",
+        "fluentvalidation-ts": "^3.0.0",
+        "@standard-schema/spec": "^1.0.0"
+      },
+      "latestDependencies": {
+        "@standard-schema/utils": "^0.3.0"
+      }
+    },
+    {
+      "name": "@radix-ui/react-accordion",
+      "specifier": "1.2.2",
+      "installed": "1.2.2",
+      "current": "1.2.2",
+      "latest": "1.2.20",
+      "wanted": "1.2.2",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-accordion/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-collapsible": "1.1.20",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-alert-dialog",
+      "specifier": "1.1.4",
+      "installed": "1.1.4",
+      "current": "1.1.4",
+      "latest": "1.1.23",
+      "wanted": "1.1.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-alert-dialog/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-dialog": "1.1.23",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5"
+      }
+    },
+    {
+      "name": "@radix-ui/react-aspect-ratio",
+      "specifier": "1.1.1",
+      "installed": "1.1.1",
+      "current": "1.1.1",
+      "latest": "1.1.15",
+      "wanted": "1.1.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-aspect-ratio/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-primitive": "2.1.10"
+      }
+    },
+    {
+      "name": "@radix-ui/react-avatar",
+      "specifier": "1.1.2",
+      "installed": "1.1.2",
+      "current": "1.1.2",
+      "latest": "1.2.6",
+      "wanted": "1.1.2",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-avatar/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-use-is-hydrated": "0.1.3",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-use-layout-effect": "1.1.4"
+      }
+    },
+    {
+      "name": "@radix-ui/react-checkbox",
+      "specifier": "1.1.3",
+      "installed": "1.1.3",
+      "current": "1.1.3",
+      "latest": "1.3.11",
+      "wanted": "1.1.3",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-checkbox/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-collapsible",
+      "specifier": "1.1.2",
+      "installed": "1.1.2",
+      "current": "1.1.2",
+      "latest": "1.1.20",
+      "wanted": "1.1.2",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-collapsible/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-context-menu",
+      "specifier": "2.2.4",
+      "installed": "2.2.4",
+      "current": "2.2.4",
+      "latest": "2.3.7",
+      "wanted": "2.2.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-context-menu/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-menu": "2.1.24",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-dialog",
+      "specifier": "1.1.4",
+      "installed": "1.1.4",
+      "current": "1.1.4",
+      "latest": "1.1.23",
+      "wanted": "1.1.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-dialog/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "aria-hidden": "^1.2.4",
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "react-remove-scroll": "^2.7.2",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-focus-scope": "1.1.16",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-focus-guards": "1.1.6",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-dropdown-menu",
+      "specifier": "2.1.4",
+      "installed": "2.1.4",
+      "current": "2.1.4",
+      "latest": "2.1.24",
+      "wanted": "2.1.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-dropdown-menu/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-menu": "2.1.24",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-hover-card",
+      "specifier": "1.1.4",
+      "installed": "1.1.4",
+      "current": "1.1.4",
+      "latest": "1.1.23",
+      "wanted": "1.1.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-hover-card/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-label",
+      "specifier": "2.1.1",
+      "installed": "2.1.1",
+      "current": "2.1.1",
+      "latest": "2.1.15",
+      "wanted": "2.1.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-label/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-primitive": "2.1.10"
+      }
+    },
+    {
+      "name": "@radix-ui/react-menubar",
+      "specifier": "1.1.4",
+      "installed": "1.1.4",
+      "current": "1.1.4",
+      "latest": "1.1.24",
+      "wanted": "1.1.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-menubar/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-menu": "2.1.24",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-navigation-menu",
+      "specifier": "1.2.3",
+      "installed": "1.2.3",
+      "current": "1.2.3",
+      "latest": "1.2.22",
+      "wanted": "1.2.3",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-navigation-menu/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-previous": "1.1.4",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-popover",
+      "specifier": "1.1.4",
+      "installed": "1.1.4",
+      "current": "1.1.4",
+      "latest": "1.1.23",
+      "wanted": "1.1.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-popover/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "aria-hidden": "^1.2.4",
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "react-remove-scroll": "^2.7.2",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-focus-scope": "1.1.16",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-focus-guards": "1.1.6",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-progress",
+      "specifier": "1.1.1",
+      "installed": "1.1.1",
+      "current": "1.1.1",
+      "latest": "1.1.16",
+      "wanted": "1.1.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-progress/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-primitive": "2.1.10"
+      }
+    },
+    {
+      "name": "@radix-ui/react-radio-group",
+      "specifier": "1.2.2",
+      "installed": "1.2.2",
+      "current": "1.2.2",
+      "latest": "1.4.7",
+      "wanted": "1.2.2",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-radio-group/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-scroll-area",
+      "specifier": "1.2.2",
+      "installed": "1.2.2",
+      "current": "1.2.2",
+      "latest": "1.2.18",
+      "wanted": "1.2.2",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-scroll-area/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/number": "1.1.3",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-use-layout-effect": "1.1.4"
+      }
+    },
+    {
+      "name": "@radix-ui/react-select",
+      "specifier": "2.1.4",
+      "installed": "2.1.4",
+      "current": "2.1.4",
+      "latest": "2.3.7",
+      "wanted": "2.1.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-select/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "aria-hidden": "^1.2.4",
+        "@radix-ui/number": "1.1.3",
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "react-remove-scroll": "^2.7.2",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-focus-scope": "1.1.16",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-focus-guards": "1.1.6",
+        "@radix-ui/react-use-previous": "1.1.4",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-separator",
+      "specifier": "1.1.1",
+      "installed": "1.1.1",
+      "current": "1.1.1",
+      "latest": "1.1.15",
+      "wanted": "1.1.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-separator/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-primitive": "2.1.10"
+      }
+    },
+    {
+      "name": "@radix-ui/react-slider",
+      "specifier": "1.2.2",
+      "installed": "1.2.2",
+      "current": "1.2.2",
+      "latest": "1.4.7",
+      "wanted": "1.2.2",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-slider/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/number": "1.1.3",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-previous": "1.1.4",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "specifier": "1.1.1",
+      "installed": "1.1.1",
+      "current": "1.1.1",
+      "latest": "1.3.3",
+      "wanted": "1.1.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-slot/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-compose-refs": "1.1.5"
+      }
+    },
+    {
+      "name": "@radix-ui/react-switch",
+      "specifier": "1.1.2",
+      "installed": "1.1.2",
+      "current": "1.1.2",
+      "latest": "1.3.7",
+      "wanted": "1.1.2",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-switch/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-tabs",
+      "specifier": "1.1.2",
+      "installed": "1.1.2",
+      "current": "1.1.2",
+      "latest": "1.1.21",
+      "wanted": "1.1.2",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-tabs/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-toast",
+      "specifier": "1.2.4",
+      "installed": "1.2.4",
+      "current": "1.2.4",
+      "latest": "1.2.23",
+      "wanted": "1.2.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-toast/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-toggle",
+      "specifier": "1.1.1",
+      "installed": "1.1.1",
+      "current": "1.1.1",
+      "latest": "1.1.18",
+      "wanted": "1.1.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-toggle/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-toggle-group",
+      "specifier": "1.1.1",
+      "installed": "1.1.1",
+      "current": "1.1.1",
+      "latest": "1.1.19",
+      "wanted": "1.1.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-toggle-group/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-toggle": "1.1.18",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@radix-ui/react-tooltip",
+      "specifier": "1.1.6",
+      "installed": "1.1.6",
+      "current": "1.1.6",
+      "latest": "1.2.16",
+      "wanted": "1.1.6",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@radix-ui/react-tooltip/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-id": "1.1.4",
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-controllable-state": "1.2.6"
+      }
+    },
+    {
+      "name": "@tanstack/react-virtual",
+      "specifier": "^3.13.12",
+      "installed": "3.13.12",
+      "current": "3.13.12",
+      "latest": "3.14.13",
+      "wanted": "3.13.12",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/@tanstack/react-virtual/latest",
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+      },
+      "latestDependencies": {
+        "@tanstack/virtual-core": "3.17.11"
+      }
+    },
+    {
+      "name": "autoprefixer",
+      "specifier": "^10.4.20",
+      "installed": "10.4.21",
+      "current": "10.4.21",
+      "latest": "10.6.1",
+      "wanted": "10.4.21",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/autoprefixer/latest",
+      "peerDependencies": {
+        "postcss": "^8.1.0"
+      },
+      "engines": {
+        "node": "^10 || ^12 || >=14"
+      },
+      "latestDependencies": {
+        "picocolors": "^1.1.1",
+        "fraction.js": "^5.3.4",
+        "browserslist": "^4.28.9",
+        "caniuse-lite": "^1.0.30001810",
+        "postcss-value-parser": "^4.2.0"
+      }
+    },
+    {
+      "name": "class-variance-authority",
+      "specifier": "^0.7.1",
+      "installed": "0.7.1",
+      "latest": "0.7.1",
+      "registry": "https://registry.npmjs.org/class-variance-authority/latest",
+      "latestDependencies": {
+        "clsx": "^2.1.1"
+      }
+    },
+    {
+      "name": "clsx",
+      "specifier": "^2.1.1",
+      "installed": "2.1.1",
+      "latest": "2.1.1",
+      "registry": "https://registry.npmjs.org/clsx/latest",
+      "engines": {
+        "node": ">=6"
+      }
+    },
+    {
+      "name": "cmdk",
+      "specifier": "1.0.4",
+      "installed": "1.0.4",
+      "current": "1.0.4",
+      "latest": "1.1.1",
+      "wanted": "1.0.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/cmdk/latest",
+      "peerDependencies": {
+        "react": "^18 || ^19 || ^19.0.0-rc",
+        "react-dom": "^18 || ^19 || ^19.0.0-rc"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-id": "^1.1.0",
+        "@radix-ui/react-dialog": "^1.1.6",
+        "@radix-ui/react-primitive": "^2.0.2",
+        "@radix-ui/react-compose-refs": "^1.1.1"
+      }
+    },
+    {
+      "name": "date-fns",
+      "specifier": "4.1.0",
+      "installed": "4.1.0",
+      "current": "4.1.0",
+      "latest": "4.4.0",
+      "wanted": "4.1.0",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/date-fns/latest"
+    },
+    {
+      "name": "dotenv",
+      "specifier": "^16.5.0",
+      "installed": "16.5.0",
+      "current": "16.5.0",
+      "latest": "18.0.5",
+      "wanted": "16.5.0",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/dotenv/latest",
+      "engines": {
+        "node": ">=12"
+      }
+    },
+    {
+      "name": "drizzle-orm",
+      "specifier": "^0.44.4",
+      "installed": "0.44.4",
+      "current": "0.44.4",
+      "latest": "0.45.3",
+      "wanted": "0.44.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/drizzle-orm/latest",
+      "peerDependencies": {
+        "pg": ">=8",
+        "gel": ">=2",
+        "knex": "*",
+        "kysely": "*",
+        "mysql2": ">=2",
+        "sql.js": ">=1",
+        "sqlite3": ">=5",
+        "postgres": ">=3",
+        "@types/pg": "*",
+        "bun-types": "*",
+        "@netlify/db": ">=0.4.0",
+        "expo-sqlite": ">=14.0.0",
+        "@types/sql.js": "*",
+        "@libsql/client": ">=0.10.0",
+        "@prisma/client": "*",
+        "@upstash/redis": ">=1.34.7",
+        "better-sqlite3": ">=7",
+        "@xata.io/client": "*",
+        "@vercel/postgres": ">=0.8.0",
+        "@opentelemetry/api": "^1.4.1",
+        "@libsql/client-wasm": ">=0.10.0",
+        "@electric-sql/pglite": ">=0.2.0",
+        "@planetscale/database": ">=1.13",
+        "@tidbcloud/serverless": "*",
+        "@types/better-sqlite3": "*",
+        "@aws-sdk/client-rds-data": ">=3",
+        "@neondatabase/serverless": ">=0.10.0",
+        "@cloudflare/workers-types": ">=4",
+        "@op-engineering/op-sqlite": ">=2"
+      }
+    },
+    {
+      "name": "embla-carousel-react",
+      "specifier": "8.5.1",
+      "installed": "8.5.1",
+      "current": "8.5.1",
+      "latest": "8.6.0",
+      "wanted": "8.5.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/embla-carousel-react/latest",
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.1 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc"
+      },
+      "latestDependencies": {
+        "embla-carousel": "8.6.0",
+        "embla-carousel-reactive-utils": "8.6.0"
+      }
+    },
+    {
+      "name": "input-otp",
+      "specifier": "1.4.1",
+      "installed": "1.4.1",
+      "current": "1.4.1",
+      "latest": "1.5.0",
+      "wanted": "1.4.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/input-otp/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc"
+      }
+    },
+    {
+      "name": "lucide-react",
+      "specifier": "^0.454.0",
+      "installed": "0.454.0",
+      "current": "0.454.0",
+      "latest": "1.52.0",
+      "wanted": "0.454.0",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/lucide-react/latest",
+      "peerDependencies": {
+        "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "@types/react": "*"
+      }
+    },
+    {
+      "name": "minisearch",
+      "specifier": "^7.1.2",
+      "installed": "7.1.2",
+      "current": "7.1.2",
+      "latest": "7.2.0",
+      "wanted": "7.1.2",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/minisearch/latest",
+      "latestDependencies": {}
+    },
+    {
+      "name": "motion",
+      "specifier": "^12.23.12",
+      "installed": "12.23.12",
+      "current": "12.23.12",
+      "latest": "14.0.0",
+      "wanted": "12.23.12",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/motion/latest",
+      "peerDependencies": {
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0"
+      },
+      "latestDependencies": {
+        "tslib": "^2.4.0",
+        "framer-motion": "14.0.0"
+      }
+    },
+    {
+      "name": "next",
+      "specifier": "15.5.4",
+      "installed": "15.5.4",
+      "current": "15.5.4",
+      "latest": "16.3.8",
+      "wanted": "15.5.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/next/latest",
+      "peerDependencies": {
+        "sass": "^1.3.0",
+        "react": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
+        "react-dom": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
+        "@playwright/test": "^1.51.1",
+        "@opentelemetry/api": "^1.1.0",
+        "babel-plugin-react-compiler": "*"
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "latestDependencies": {
+        "postcss": "8.5.23",
+        "@next/env": "16.3.8",
+        "styled-jsx": "5.1.6",
+        "@swc/helpers": "0.5.23",
+        "caniuse-lite": "^1.0.30001579",
+        "baseline-browser-mapping": "^2.9.19"
+      }
+    },
+    {
+      "name": "next-themes",
+      "specifier": "^0.4.4",
+      "installed": "0.4.6",
+      "latest": "0.4.6",
+      "registry": "https://registry.npmjs.org/next-themes/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc"
+      }
+    },
+    {
+      "name": "pg",
+      "specifier": "^8.16.1",
+      "installed": "8.16.1",
+      "current": "8.16.1",
+      "latest": "8.23.1",
+      "wanted": "8.16.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/pg/latest",
+      "peerDependencies": {
+        "pg-native": ">=3.0.1"
+      },
+      "engines": {
+        "node": ">= 16.0.0"
+      },
+      "latestDependencies": {
+        "pgpass": "1.0.5",
+        "pg-pool": "^3.14.0",
+        "pg-types": "2.2.0",
+        "pg-protocol": "^1.16.1",
+        "pg-cloudflare": "^1.4.1",
+        "pg-connection-string": "^2.14.1"
+      }
+    },
+    {
+      "name": "radix-ui",
+      "specifier": "^1.4.3",
+      "installed": "1.4.3",
+      "current": "1.4.3",
+      "latest": "1.6.7",
+      "wanted": "1.4.3",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/radix-ui/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "latestDependencies": {
+        "@radix-ui/primitive": "1.1.7",
+        "@radix-ui/react-form": "0.1.16",
+        "@radix-ui/react-menu": "2.1.24",
+        "@radix-ui/react-slot": "1.3.3",
+        "@radix-ui/react-tabs": "1.1.21",
+        "@radix-ui/react-arrow": "1.1.15",
+        "@radix-ui/react-label": "2.1.15",
+        "@radix-ui/react-toast": "1.2.23",
+        "@radix-ui/react-avatar": "1.2.6",
+        "@radix-ui/react-dialog": "1.1.23",
+        "@radix-ui/react-popper": "1.3.7",
+        "@radix-ui/react-portal": "1.1.17",
+        "@radix-ui/react-select": "2.3.7",
+        "@radix-ui/react-slider": "1.4.7",
+        "@radix-ui/react-switch": "1.3.7",
+        "@radix-ui/react-toggle": "1.1.18",
+        "@radix-ui/react-context": "1.2.2",
+        "@radix-ui/react-menubar": "1.1.24",
+        "@radix-ui/react-popover": "1.1.23",
+        "@radix-ui/react-toolbar": "1.1.19",
+        "@radix-ui/react-tooltip": "1.2.16",
+        "@radix-ui/react-checkbox": "1.3.11",
+        "@radix-ui/react-presence": "1.1.10",
+        "@radix-ui/react-progress": "1.1.16",
+        "@radix-ui/react-use-size": "1.1.4",
+        "@radix-ui/react-accordion": "1.2.20",
+        "@radix-ui/react-direction": "1.1.4",
+        "@radix-ui/react-primitive": "2.1.10",
+        "@radix-ui/react-separator": "1.1.15",
+        "@radix-ui/react-collection": "1.1.15",
+        "@radix-ui/react-hover-card": "1.1.23",
+        "@radix-ui/react-collapsible": "1.1.20",
+        "@radix-ui/react-focus-scope": "1.1.16",
+        "@radix-ui/react-radio-group": "1.4.7",
+        "@radix-ui/react-scroll-area": "1.2.18",
+        "@radix-ui/react-alert-dialog": "1.1.23",
+        "@radix-ui/react-aspect-ratio": "1.1.15",
+        "@radix-ui/react-compose-refs": "1.1.5",
+        "@radix-ui/react-context-menu": "2.3.7",
+        "@radix-ui/react-focus-guards": "1.1.6",
+        "@radix-ui/react-roving-focus": "1.1.19",
+        "@radix-ui/react-toggle-group": "1.1.19",
+        "@radix-ui/react-dropdown-menu": "2.1.24",
+        "@radix-ui/react-accessible-icon": "1.1.15",
+        "@radix-ui/react-navigation-menu": "1.2.22",
+        "@radix-ui/react-use-is-hydrated": "0.1.3",
+        "@radix-ui/react-visually-hidden": "1.2.11",
+        "@radix-ui/react-use-callback-ref": "1.1.4",
+        "@radix-ui/react-use-effect-event": "0.0.5",
+        "@radix-ui/react-dismissable-layer": "1.1.19",
+        "@radix-ui/react-use-layout-effect": "1.1.4",
+        "@radix-ui/react-use-escape-keydown": "1.1.5",
+        "@radix-ui/react-password-toggle-field": "0.1.11",
+        "@radix-ui/react-use-controllable-state": "1.2.6",
+        "@radix-ui/react-one-time-password-field": "0.1.16"
+      }
+    },
+    {
+      "name": "react",
+      "specifier": "^19.1.1",
+      "installed": "19.1.1",
+      "current": "19.1.1",
+      "latest": "19.3.0",
+      "wanted": "19.1.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/react/latest",
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
+    {
+      "name": "react-day-picker",
+      "specifier": "8.10.1",
+      "installed": "8.10.1",
+      "current": "8.10.1",
+      "latest": "10.0.2",
+      "wanted": "8.10.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/react-day-picker/latest",
+      "peerDependencies": {
+        "react": ">=16.8.0",
+        "@types/react": ">=16.8.0"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "latestDependencies": {
+        "date-fns": "^4.1.0",
+        "@date-fns/tz": "^1.4.1"
+      }
+    },
+    {
+      "name": "react-dom",
+      "specifier": "^19.1.1",
+      "installed": "19.1.1",
+      "current": "19.1.1",
+      "latest": "19.3.0",
+      "wanted": "19.1.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/react-dom/latest",
+      "peerDependencies": {
+        "react": "^19.3.0"
+      },
+      "latestDependencies": {
+        "scheduler": "^0.28.0"
+      }
+    },
+    {
+      "name": "react-hook-form",
+      "specifier": "^7.54.1",
+      "installed": "7.58.1",
+      "current": "7.58.1",
+      "latest": "7.89.0",
+      "wanted": "7.58.1",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/react-hook-form/latest",
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17 || ^18 || ^19",
+        "@types/react": "*"
+      },
+      "engines": {
+        "node": ">=18.0.0"
+      }
+    },
+    {
+      "name": "react-resizable-panels",
+      "specifier": "^2.1.7",
+      "installed": "2.1.9",
+      "current": "2.1.9",
+      "latest": "4.14.2",
+      "wanted": "2.1.9",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/react-resizable-panels/latest",
+      "peerDependencies": {
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0"
+      }
+    },
+    {
+      "name": "recharts",
+      "specifier": "2.15.0",
+      "installed": "2.15.0",
+      "current": "2.15.0",
+      "latest": "3.10.1",
+      "wanted": "2.15.0",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/recharts/latest",
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-is": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "latestDependencies": {
+        "clsx": "^2.1.1",
+        "immer": "^11.1.8",
+        "reselect": "5.2.0",
+        "es-toolkit": "^1.39.3",
+        "react-redux": "8.x.x || 9.x.x",
+        "eventemitter3": "^5.0.1",
+        "tiny-invariant": "^1.3.3",
+        "victory-vendor": "^37.0.2",
+        "@reduxjs/toolkit": "^1.9.0 || 2.x.x",
+        "decimal.js-light": "^2.5.1",
+        "use-sync-external-store": "^1.2.2"
+      }
+    },
+    {
+      "name": "sonner",
+      "specifier": "^1.7.1",
+      "installed": "1.7.4",
+      "current": "1.7.4",
+      "latest": "2.0.8",
+      "wanted": "1.7.4",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/sonner/latest",
+      "peerDependencies": {
+        "react": "^18.0.0 || ^19.0.0 || ^19.0.0-rc",
+        "react-dom": "^18.0.0 || ^19.0.0 || ^19.0.0-rc",
+        "@types/react": "^18.0.0 || ^19.0.0"
+      }
+    },
+    {
+      "name": "tailwind-merge",
+      "specifier": "^2.5.5",
+      "installed": "2.6.0",
+      "current": "2.6.0",
+      "latest": "3.7.0",
+      "wanted": "2.6.0",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/tailwind-merge/latest"
+    },
+    {
+      "name": "tailwindcss-animate",
+      "specifier": "^1.0.7",
+      "installed": "1.0.7",
+      "latest": "1.0.7",
+      "registry": "https://registry.npmjs.org/tailwindcss-animate/latest",
+      "peerDependencies": {
+        "tailwindcss": ">=3.0.0 || insiders"
+      }
+    },
+    {
+      "name": "vaul",
+      "specifier": "^0.9.6",
+      "installed": "0.9.9",
+      "current": "0.9.9",
+      "latest": "1.1.2",
+      "wanted": "0.9.9",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/vaul/latest",
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc"
+      },
+      "latestDependencies": {
+        "@radix-ui/react-dialog": "^1.1.1"
+      }
+    },
+    {
+      "name": "zod",
+      "specifier": "^3.24.1",
+      "installed": "3.25.67",
+      "current": "3.25.67",
+      "latest": "4.6.5",
+      "wanted": "3.25.67",
+      "isDeprecated": false,
+      "dependencyType": "dependencies",
+      "registry": "https://registry.npmjs.org/zod/latest"
+    },
+    {
+      "name": "@cloudflare/next-on-pages",
+      "specifier": "^1.13.16",
+      "installed": "1.13.16",
+      "current": "1.13.16",
+      "latest": "1.13.16",
+      "wanted": "1.13.16",
+      "isDeprecated": true,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/@cloudflare/next-on-pages/latest",
+      "peerDependencies": {
+        "next": ">=14.3.0 && <=15.5.2",
+        "vercel": ">=30.0.0 && <=47.0.4",
+        "wrangler": "^3.28.2 || ^4.0.0",
+        "@cloudflare/workers-types": "^4.20240208.0"
+      },
+      "deprecated": "Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare",
+      "latestDependencies": {
+        "acorn": "^8.8.0",
+        "chalk": "^5.2.0",
+        "cookie": "^0.5.0",
+        "semver": "^7.5.2",
+        "esbuild": "^0.15.3",
+        "js-yaml": "^4.1.0",
+        "chokidar": "^3.5.3",
+        "ast-types": "^0.14.2",
+        "commander": "^11.1.0",
+        "miniflare": "^3.20231218.1",
+        "pcre-to-regexp": "^1.1.0",
+        "package-manager-manager": "^0.2.0"
+      }
+    },
+    {
+      "name": "@tailwindcss/container-queries",
+      "specifier": "^0.1.1",
+      "installed": "0.1.1",
+      "latest": "0.1.1",
+      "registry": "https://registry.npmjs.org/@tailwindcss/container-queries/latest",
+      "peerDependencies": {
+        "tailwindcss": ">=3.2.0"
+      }
+    },
+    {
+      "name": "@types/node",
+      "specifier": "^24.5.2",
+      "installed": "24.5.2",
+      "current": "24.5.2",
+      "latest": "26.6.4",
+      "wanted": "24.5.2",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/@types/node/latest",
+      "peerDependencies": {},
+      "latestDependencies": {
+        "undici-types": "~8.9.0"
+      }
+    },
+    {
+      "name": "@types/pg",
+      "specifier": "^8.15.4",
+      "installed": "8.15.4",
+      "current": "8.15.4",
+      "latest": "8.23.1",
+      "wanted": "8.15.4",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/@types/pg/latest",
+      "peerDependencies": {},
+      "latestDependencies": {
+        "pg-types": "^2.2.0",
+        "@types/node": "*",
+        "pg-protocol": "*"
+      }
+    },
+    {
+      "name": "@types/react",
+      "specifier": "^19.1.15",
+      "installed": "19.1.15",
+      "current": "19.1.15",
+      "latest": "19.3.0",
+      "wanted": "19.1.15",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/@types/react/latest",
+      "peerDependencies": {},
+      "latestDependencies": {
+        "csstype": "^3.2.2"
+      }
+    },
+    {
+      "name": "@types/react-dom",
+      "specifier": "^19",
+      "installed": "19.1.6",
+      "current": "19.1.6",
+      "latest": "19.3.0",
+      "wanted": "19.1.6",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/@types/react-dom/latest",
+      "peerDependencies": {
+        "@types/react": "^19.3.0"
+      },
+      "latestDependencies": {}
+    },
+    {
+      "name": "drizzle-kit",
+      "specifier": "^0.31.4",
+      "installed": "0.31.4",
+      "current": "0.31.4",
+      "latest": "0.31.11",
+      "wanted": "0.31.4",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/drizzle-kit/latest",
+      "latestDependencies": {
+        "tsx": "^4.21.0",
+        "esbuild": "^0.25.4",
+        "@drizzle-team/brocli": "^0.10.2",
+        "@esbuild-kit/esm-loader": "^2.5.5"
+      }
+    },
+    {
+      "name": "eslint",
+      "specifier": "^9",
+      "installed": "9.35.0",
+      "current": "9.35.0",
+      "latest": "10.12.0",
+      "wanted": "9.35.0",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/eslint/latest",
+      "peerDependencies": {
+        "jiti": "*"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+      },
+      "latestDependencies": {
+        "ajv": "^6.14.0",
+        "debug": "^4.3.2",
+        "espree": "^11.2.0",
+        "ignore": "^5.2.0",
+        "esquery": "^1.7.0",
+        "esutils": "^2.0.2",
+        "find-up": "^5.0.0",
+        "is-glob": "^4.0.0",
+        "minimatch": "^10.2.5",
+        "optionator": "^0.9.3",
+        "cross-spawn": "^7.0.6",
+        "glob-parent": "^6.0.2",
+        "imurmurhash": "^0.1.4",
+        "@eslint/core": "^1.2.1",
+        "eslint-scope": "^9.1.2",
+        "@humanfs/node": "^0.16.6",
+        "@types/estree": "^1.0.6",
+        "fast-deep-equal": "^3.1.3",
+        "natural-compare": "^1.4.0",
+        "file-entry-cache": "11.1.5 || >11.1.6 <12",
+        "@eslint/plugin-kit": "^0.7.3",
+        "eslint-visitor-keys": "^5.0.1",
+        "@eslint/config-array": "^0.23.5",
+        "@humanwhocodes/retry": "^0.4.2",
+        "escape-string-regexp": "^4.0.0",
+        "@eslint/config-helpers": "^0.7.0",
+        "@eslint-community/regexpp": "^4.12.2",
+        "@eslint-community/eslint-utils": "^4.8.0",
+        "@humanwhocodes/module-importer": "^1.0.1",
+        "json-stable-stringify-without-jsonify": "^1.0.1"
+      }
+    },
+    {
+      "name": "eslint-config-next",
+      "specifier": "15.5.4",
+      "installed": "15.5.4",
+      "current": "15.5.4",
+      "latest": "16.3.8",
+      "wanted": "15.5.4",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/eslint-config-next/latest",
+      "peerDependencies": {
+        "eslint": ">=9.0.0",
+        "typescript": ">=3.3.1"
+      },
+      "latestDependencies": {
+        "globals": "16.4.0",
+        "typescript-eslint": "^8.46.0",
+        "eslint-plugin-react": "^7.37.0",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-jsx-a11y": "^6.10.0",
+        "@next/eslint-plugin-next": "16.3.8",
+        "eslint-plugin-react-hooks": "^7.0.0",
+        "eslint-import-resolver-node": "^0.3.6",
+        "eslint-import-resolver-typescript": "^3.5.2"
+      }
+    },
+    {
+      "name": "playwright",
+      "specifier": "1.62.1",
+      "installed": "1.62.1",
+      "current": "1.62.1",
+      "latest": "1.63.0",
+      "wanted": "1.62.1",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/playwright/latest",
+      "engines": {
+        "node": ">=20"
+      },
+      "latestDependencies": {
+        "playwright-core": "1.63.0"
+      }
+    },
+    {
+      "name": "postcss",
+      "specifier": "^8.5",
+      "installed": "8.5.6",
+      "current": "8.5.6",
+      "latest": "8.5.28",
+      "wanted": "8.5.6",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/postcss/latest",
+      "engines": {
+        "node": "^10 || ^12 || >=14"
+      },
+      "latestDependencies": {
+        "nanoid": "^3.3.18",
+        "picocolors": "^1.1.1",
+        "source-map-js": "^1.2.1"
+      }
+    },
+    {
+      "name": "tailwindcss",
+      "specifier": "^3.4.17",
+      "installed": "3.4.17",
+      "current": "3.4.17",
+      "latest": "4.3.3",
+      "wanted": "3.4.17",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/tailwindcss/latest"
+    },
+    {
+      "name": "tsx",
+      "specifier": "^4.20.3",
+      "installed": "4.20.3",
+      "current": "4.20.3",
+      "latest": "4.23.15",
+      "wanted": "4.20.3",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/tsx/latest",
+      "engines": {
+        "node": ">=18.0.0"
+      },
+      "latestDependencies": {
+        "esbuild": "~0.28.0"
+      }
+    },
+    {
+      "name": "typescript",
+      "specifier": "^5.9.2",
+      "installed": "5.9.2",
+      "current": "5.9.2",
+      "latest": "7.0.2",
+      "wanted": "5.9.2",
+      "isDeprecated": false,
+      "dependencyType": "devDependencies",
+      "registry": "https://registry.npmjs.org/typescript/latest",
+      "engines": {
+        "node": ">=16.20.0"
+      },
+      "latestDependencies": {
+        "@typescript/typescript-aix-ppc64": "7.0.2",
+        "@typescript/typescript-linux-arm": "7.0.2",
+        "@typescript/typescript-linux-x64": "7.0.2",
+        "@typescript/typescript-sunos-x64": "7.0.2",
+        "@typescript/typescript-win32-x64": "7.0.2",
+        "@typescript/typescript-darwin-x64": "7.0.2",
+        "@typescript/typescript-netbsd-x64": "7.0.2",
+        "@typescript/typescript-freebsd-x64": "7.0.2",
+        "@typescript/typescript-linux-arm64": "7.0.2",
+        "@typescript/typescript-linux-ppc64": "7.0.2",
+        "@typescript/typescript-linux-s390x": "7.0.2",
+        "@typescript/typescript-openbsd-x64": "7.0.2",
+        "@typescript/typescript-win32-arm64": "7.0.2",
+        "@typescript/typescript-darwin-arm64": "7.0.2",
+        "@typescript/typescript-netbsd-arm64": "7.0.2",
+        "@typescript/typescript-freebsd-arm64": "7.0.2",
+        "@typescript/typescript-linux-loong64": "7.0.2",
+        "@typescript/typescript-linux-riscv64": "7.0.2",
+        "@typescript/typescript-openbsd-arm64": "7.0.2",
+        "@typescript/typescript-linux-mips64el": "7.0.2"
+      }
+    }
+  ],
+  "supportMetadata": [
+    {
+      "name": "@clerk/react",
+      "version": "6.17.5",
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "peerDependencies": {
+        "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0",
+        "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0"
+      },
+      "registry": "https://registry.npmjs.org/@clerk/react/latest"
+    },
+    {
+      "name": "@tailwindcss/postcss",
+      "version": "4.3.3",
+      "registry": "https://registry.npmjs.org/@tailwindcss/postcss/latest"
+    },
+    {
+      "name": "@typescript-eslint/eslint-plugin",
+      "version": "8.71.0",
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      },
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "typescript": ">=4.8.4 <6.1.0",
+        "@typescript-eslint/parser": "^8.71.0"
+      },
+      "registry": "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/latest"
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "version": "8.71.0",
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      },
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "typescript": ">=4.8.4 <6.1.0"
+      },
+      "registry": "https://registry.npmjs.org/@typescript-eslint/parser/latest"
+    },
+    {
+      "name": "typescript-eslint",
+      "version": "8.71.0",
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      },
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "typescript": ">=4.8.4 <6.1.0"
+      },
+      "registry": "https://registry.npmjs.org/typescript-eslint/latest"
+    },
+    {
+      "name": "eslint-import-resolver-typescript",
+      "version": "4.4.5",
+      "engines": {
+        "node": "^16.17.0 || >=18.6.0"
+      },
+      "peerDependencies": {
+        "eslint": "*",
+        "eslint-plugin-import": "*",
+        "eslint-plugin-import-x": "*"
+      },
+      "registry": "https://registry.npmjs.org/eslint-import-resolver-typescript/latest"
+    },
+    {
+      "name": "eslint-plugin-react-hooks",
+      "version": "7.1.1",
+      "engines": {
+        "node": ">=18"
+      },
+      "peerDependencies": {
+        "eslint": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0 || ^10.0.0"
+      },
+      "registry": "https://registry.npmjs.org/eslint-plugin-react-hooks/latest"
+    },
+    {
+      "name": "eslint-plugin-jsx-a11y",
+      "version": "6.10.2",
+      "engines": {
+        "node": ">=4.0"
+      },
+      "peerDependencies": {
+        "eslint": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9"
+      },
+      "registry": "https://registry.npmjs.org/eslint-plugin-jsx-a11y/latest"
+    },
+    {
+      "name": "eslint-plugin-react",
+      "version": "7.37.5",
+      "engines": {
+        "node": ">=4"
+      },
+      "peerDependencies": {
+        "eslint": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7"
+      },
+      "registry": "https://registry.npmjs.org/eslint-plugin-react/latest"
+    },
+    {
+      "name": "eslint-plugin-import",
+      "version": "2.32.0",
+      "engines": {
+        "node": ">=4"
+      },
+      "peerDependencies": {
+        "eslint": "^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8 || ^9"
+      },
+      "registry": "https://registry.npmjs.org/eslint-plugin-import/latest"
+    },
+    {
+      "name": "typescript@6",
+      "version": "6.0.3",
+      "distTags": {
+        "dev": "3.9.4",
+        "tag-for-publishing-older-releases": "4.1.6",
+        "insiders": "4.6.2-insiders.20220225",
+        "beta": "6.0.0-beta",
+        "rc": "7.0.1-rc",
+        "latest": "7.0.2",
+        "next": "7.1.0-dev.20261004.1"
+      },
+      "registry": "https://registry.npmjs.org/typescript"
+    }
+  ],
+  "staticUsage": [
+    {
+      "name": "@clerk/clerk-react",
+      "imports": [
+        "components/post-card.tsx",
+        "components/clerk-provider.tsx",
+        "components/header-client.tsx",
+        "components/ReadPostList.client.tsx"
+      ],
+      "reachableImports": [
+        "components/post-card.tsx",
+        "components/clerk-provider.tsx",
+        "components/header-client.tsx",
+        "components/ReadPostList.client.tsx"
+      ]
+    },
+    {
+      "name": "@hookform/resolvers",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-accordion",
+      "imports": [
+        "components/ui/accordion.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-alert-dialog",
+      "imports": [
+        "components/ui/alert-dialog.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-aspect-ratio",
+      "imports": [
+        "components/ui/aspect-ratio.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-avatar",
+      "imports": [
+        "components/ui/avatar.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/avatar.tsx"
+      ]
+    },
+    {
+      "name": "@radix-ui/react-checkbox",
+      "imports": [
+        "components/ui/checkbox.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-collapsible",
+      "imports": [
+        "components/ui/collapsible.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-context-menu",
+      "imports": [
+        "components/ui/context-menu.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-dialog",
+      "imports": [
+        "components/ui/dialog.tsx",
+        "components/ui/command.tsx",
+        "components/ui/sheet.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/dialog.tsx",
+        "components/ui/command.tsx"
+      ]
+    },
+    {
+      "name": "@radix-ui/react-dropdown-menu",
+      "imports": [
+        "components/ui/dropdown-menu.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-hover-card",
+      "imports": [
+        "components/ui/hover-card.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-label",
+      "imports": [
+        "components/ui/form.tsx",
+        "components/ui/label.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-menubar",
+      "imports": [
+        "components/ui/menubar.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-navigation-menu",
+      "imports": [
+        "components/ui/navigation-menu.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-popover",
+      "imports": [
+        "components/ui/popover.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/popover.tsx"
+      ]
+    },
+    {
+      "name": "@radix-ui/react-progress",
+      "imports": [
+        "components/ui/progress.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-radio-group",
+      "imports": [
+        "components/ui/radio-group.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-scroll-area",
+      "imports": [
+        "components/ui/scroll-area.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-select",
+      "imports": [
+        "components/ui/select.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-separator",
+      "imports": [
+        "components/ui/separator.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/separator.tsx"
+      ]
+    },
+    {
+      "name": "@radix-ui/react-slider",
+      "imports": [
+        "components/ui/slider.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "imports": [
+        "components/ui/form.tsx",
+        "components/ui/button.tsx",
+        "components/ui/sidebar.tsx",
+        "components/ui/breadcrumb.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/button.tsx"
+      ]
+    },
+    {
+      "name": "@radix-ui/react-switch",
+      "imports": [
+        "components/ui/switch.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-tabs",
+      "imports": [
+        "components/ui/tabs.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-toast",
+      "imports": [
+        "components/ui/toast.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "@radix-ui/react-toggle",
+      "imports": [
+        "components/ui/toggle.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/toggle.tsx"
+      ]
+    },
+    {
+      "name": "@radix-ui/react-toggle-group",
+      "imports": [
+        "components/ui/toggle-group.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/toggle-group.tsx"
+      ]
+    },
+    {
+      "name": "@radix-ui/react-tooltip",
+      "imports": [
+        "components/ui/tooltip.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/tooltip.tsx"
+      ]
+    },
+    {
+      "name": "@tanstack/react-virtual",
+      "imports": [
+        "lib/__tests__/virtual-feed-geometry.test.ts",
+        "components/infinite-post-list.tsx"
+      ],
+      "reachableImports": [
+        "components/infinite-post-list.tsx"
+      ]
+    },
+    {
+      "name": "autoprefixer",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "class-variance-authority",
+      "imports": [
+        "components/ui/toast.tsx",
+        "components/ui/toggle.tsx",
+        "components/ui/button.tsx",
+        "components/ui/sidebar.tsx",
+        "components/ui/badge.tsx",
+        "components/ui/toggle-group.tsx",
+        "components/ui/dock.tsx",
+        "components/ui/alert.tsx",
+        "components/ui/navigation-menu.tsx",
+        "components/ui/label.tsx",
+        "components/ui/sheet.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/toggle.tsx",
+        "components/ui/button.tsx",
+        "components/ui/badge.tsx",
+        "components/ui/toggle-group.tsx",
+        "components/ui/dock.tsx"
+      ]
+    },
+    {
+      "name": "clsx",
+      "imports": [
+        "lib/utils.ts"
+      ],
+      "reachableImports": [
+        "lib/utils.ts"
+      ]
+    },
+    {
+      "name": "cmdk",
+      "imports": [
+        "components/ui/command.tsx"
+      ],
+      "reachableImports": [
+        "components/ui/command.tsx"
+      ]
+    },
+    {
+      "name": "date-fns",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "dotenv",
+      "imports": [
+        "scripts/build-keyword-json.ts",
+        "scripts/build-category-json.ts",
+        "scripts/build-post-json.ts",
+        "scripts/build-search-index.ts",
+        "scripts/build-allposts-json.ts",
+        "scripts/build-main-json.ts"
+      ],
+      "reachableImports": [
+        "scripts/build-keyword-json.ts",
+        "scripts/build-category-json.ts",
+        "scripts/build-post-json.ts",
+        "scripts/build-search-index.ts",
+        "scripts/build-allposts-json.ts",
+        "scripts/build-main-json.ts"
+      ]
+    },
+    {
+      "name": "drizzle-orm",
+      "imports": [
+        "lib/db.ts",
+        "lib/queries.ts",
+        "lib/schema.ts",
+        "scripts/build-main-json.ts"
+      ],
+      "reachableImports": [
+        "lib/db.ts",
+        "lib/queries.ts",
+        "lib/schema.ts",
+        "scripts/build-main-json.ts"
+      ]
+    },
+    {
+      "name": "embla-carousel-react",
+      "imports": [
+        "components/ui/carousel.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "input-otp",
+      "imports": [
+        "components/ui/input-otp.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "lucide-react",
+      "imports": [
+        "components/keyboard-help.tsx",
+        "components/post-card.tsx",
+        "components/sidebar.tsx",
+        "components/post-detail.tsx",
+        "components/post-grid.tsx",
+        "components/header-client.tsx",
+        "components/search-bar.tsx",
+        "components/feed-controls.tsx",
+        "components/top-refresh-on-scroll.tsx",
+        "components/comment-section.tsx",
+        "components/ui/carousel.tsx",
+        "components/ui/context-menu.tsx",
+        "components/ui/select.tsx",
+        "components/ui/dropdown-menu.tsx",
+        "components/ui/checkbox.tsx",
+        "components/ui/toast.tsx",
+        "components/ui/sidebar.tsx",
+        "components/ui/dialog.tsx",
+        "components/ui/menubar.tsx",
+        "components/ui/command.tsx",
+        "components/ui/radio-group.tsx",
+        "components/ui/breadcrumb.tsx",
+        "components/ui/calendar.tsx",
+        "components/ui/accordion.tsx",
+        "components/ui/navigation-menu.tsx",
+        "components/ui/resizable.tsx",
+        "components/ui/sheet.tsx",
+        "components/ui/input-otp.tsx",
+        "components/ui/pagination.tsx",
+        "components/animate-ui/radix/dialog.tsx"
+      ],
+      "reachableImports": [
+        "components/post-card.tsx",
+        "components/sidebar.tsx",
+        "components/post-detail.tsx",
+        "components/post-grid.tsx",
+        "components/header-client.tsx",
+        "components/search-bar.tsx",
+        "components/feed-controls.tsx",
+        "components/top-refresh-on-scroll.tsx",
+        "components/comment-section.tsx",
+        "components/ui/dialog.tsx",
+        "components/ui/command.tsx"
+      ]
+    },
+    {
+      "name": "minisearch",
+      "imports": [
+        "scripts/build-search-index.ts",
+        "components/search-bar.tsx",
+        "app/search/SearchPageClient.tsx"
+      ],
+      "reachableImports": [
+        "scripts/build-search-index.ts",
+        "components/search-bar.tsx",
+        "app/search/SearchPageClient.tsx"
+      ]
+    },
+    {
+      "name": "motion",
+      "imports": [
+        "hooks/use-is-in-view.tsx",
+        "components/community-presence-selector.tsx",
+        "components/animate-ui/ui-elements/user-presence-avatar.tsx",
+        "components/animate-ui/effects/motion-effect.tsx",
+        "components/animate-ui/text/rotating.tsx",
+        "components/animate-ui/text/counting-number.tsx",
+        "components/animate-ui/icons/clock-6.tsx",
+        "components/animate-ui/icons/pause.tsx",
+        "components/animate-ui/icons/clock-4.tsx",
+        "components/animate-ui/icons/clock-12.tsx",
+        "components/animate-ui/icons/clock-3.tsx",
+        "components/animate-ui/icons/icon.tsx",
+        "components/animate-ui/icons/layout-dashboard.tsx",
+        "components/animate-ui/icons/log-in.tsx",
+        "components/ui/dock.tsx",
+        "components/animate-ui/radix/dialog.tsx",
+        "components/animate-ui/components/avatar-group.tsx",
+        "components/animate-ui/radix/hover-card.tsx",
+        "components/animate-ui/radix/progress.tsx",
+        "components/animate-ui/components/scroll-progress.tsx",
+        "components/animate-ui/components/tooltip.tsx"
+      ],
+      "reachableImports": [
+        "hooks/use-is-in-view.tsx",
+        "components/community-presence-selector.tsx",
+        "components/animate-ui/text/rotating.tsx",
+        "components/animate-ui/text/counting-number.tsx",
+        "components/animate-ui/icons/icon.tsx",
+        "components/animate-ui/icons/log-in.tsx",
+        "components/ui/dock.tsx",
+        "components/animate-ui/components/avatar-group.tsx",
+        "components/animate-ui/radix/hover-card.tsx",
+        "components/animate-ui/components/scroll-progress.tsx",
+        "components/animate-ui/components/tooltip.tsx"
+      ]
+    },
+    {
+      "name": "next",
+      "imports": [
+        "components/post-hover-card.tsx",
+        "components/CategoryFeed.client.tsx",
+        "components/post-card.tsx",
+        "components/post-detail.tsx",
+        "components/clerk-provider.tsx",
+        "components/footer.tsx",
+        "components/header-client.tsx",
+        "components/search-bar.tsx",
+        "components/infinite-post-list.tsx",
+        "components/category-list.client.tsx",
+        "components/top-refresh-on-scroll.tsx",
+        "components/TrendingKeywordList.client.tsx",
+        "components/KeywordFeed.client.tsx",
+        "next.config.mjs",
+        "components/ReadPostList.client.tsx",
+        "app/layout.tsx",
+        "app/search/SearchPageClient.tsx",
+        "app/test-feed/page.tsx",
+        "app/keywords/[keyword]/[[...range]]/KeywordFeed.client.tsx",
+        "app/(feed)/posts/[id]/page.tsx",
+        "app/api/test-feed/[scenario]/[file]/route.ts"
+      ],
+      "reachableImports": [
+        "components/post-hover-card.tsx",
+        "components/CategoryFeed.client.tsx",
+        "components/post-card.tsx",
+        "components/post-detail.tsx",
+        "components/clerk-provider.tsx",
+        "components/footer.tsx",
+        "components/header-client.tsx",
+        "components/search-bar.tsx",
+        "components/infinite-post-list.tsx",
+        "components/category-list.client.tsx",
+        "components/top-refresh-on-scroll.tsx",
+        "components/TrendingKeywordList.client.tsx",
+        "components/KeywordFeed.client.tsx",
+        "next.config.mjs",
+        "components/ReadPostList.client.tsx",
+        "app/layout.tsx",
+        "app/search/SearchPageClient.tsx",
+        "app/test-feed/page.tsx",
+        "app/keywords/[keyword]/[[...range]]/KeywordFeed.client.tsx",
+        "app/(feed)/posts/[id]/page.tsx",
+        "app/api/test-feed/[scenario]/[file]/route.ts"
+      ]
+    },
+    {
+      "name": "next-themes",
+      "imports": [
+        "components/theme-provider.tsx",
+        "components/ui/sonner.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "pg",
+      "imports": [
+        "lib/db.ts",
+        "scripts/utils/__tests__/feed-consumer.integration.test.ts",
+        "scripts/utils/__tests__/home-feed-builder.integration.test.ts"
+      ],
+      "reachableImports": [
+        "lib/db.ts",
+        "scripts/utils/__tests__/feed-consumer.integration.test.ts",
+        "scripts/utils/__tests__/home-feed-builder.integration.test.ts"
+      ]
+    },
+    {
+      "name": "radix-ui",
+      "imports": [
+        "components/animate-ui/radix/dialog.tsx",
+        "components/animate-ui/radix/hover-card.tsx",
+        "components/animate-ui/radix/progress.tsx"
+      ],
+      "reachableImports": [
+        "components/animate-ui/radix/hover-card.tsx"
+      ]
+    },
+    {
+      "name": "react",
+      "imports": [
+        "lib/feed-prefs.ts",
+        "hooks/use-feed-scroll-margin.ts",
+        "hooks/use-keyword-manifest.ts",
+        "hooks/use-is-in-view.tsx",
+        "hooks/use-toast.ts",
+        "hooks/use-mobile.tsx",
+        "components/post-hover-card.tsx",
+        "components/CategoryFeed.client.tsx",
+        "components/community-presence-selector.tsx",
+        "components/post-card.tsx",
+        "components/brand-icon.tsx",
+        "components/sidebar-stats.client.tsx",
+        "components/post-detail.tsx",
+        "components/category-feed.tsx",
+        "components/clerk-provider.tsx",
+        "components/server-time.client.tsx",
+        "components/post-viewer-modal.tsx",
+        "components/header-client.tsx",
+        "components/search-bar.tsx",
+        "components/feed-controls.tsx",
+        "components/theme-provider.tsx",
+        "components/client-random-clamp.tsx",
+        "components/infinite-post-list.tsx",
+        "components/top-refresh-on-scroll.tsx",
+        "components/KeywordFeed.client.tsx",
+        "components/ReadPostList.client.tsx",
+        "components/comment-section.tsx",
+        "components/animate-ui/ui-elements/user-presence-avatar.tsx",
+        "components/animate-ui/effects/motion-effect.tsx",
+        "components/animate-ui/text/rotating.tsx",
+        "components/animate-ui/text/counting-number.tsx",
+        "components/animate-ui/icons/clock-6.tsx",
+        "components/animate-ui/icons/pause.tsx",
+        "components/animate-ui/icons/clock-4.tsx",
+        "components/animate-ui/icons/clock-12.tsx",
+        "components/animate-ui/icons/clock-3.tsx",
+        "components/animate-ui/icons/icon.tsx",
+        "components/animate-ui/icons/layout-dashboard.tsx",
+        "components/animate-ui/icons/log-in.tsx",
+        "components/ui/carousel.tsx",
+        "components/ui/form.tsx",
+        "components/ui/context-menu.tsx",
+        "components/ui/glowing-shadow.tsx",
+        "components/ui/input.tsx",
+        "components/ui/textarea.tsx",
+        "components/ui/select.tsx",
+        "components/ui/dropdown-menu.tsx",
+        "components/ui/checkbox.tsx",
+        "components/ui/toast.tsx",
+        "components/ui/toggle.tsx",
+        "components/ui/button.tsx",
+        "components/ui/separator.tsx",
+        "components/ui/table.tsx",
+        "components/ui/sidebar.tsx",
+        "components/ui/badge.tsx",
+        "components/ui/progress-bar.tsx",
+        "components/ui/dialog.tsx",
+        "components/ui/menubar.tsx",
+        "components/ui/avatar.tsx",
+        "components/ui/toggle-group.tsx",
+        "components/ui/command.tsx",
+        "components/ui/radio-group.tsx",
+        "components/ui/breadcrumb.tsx",
+        "components/ui/calendar.tsx",
+        "components/ui/switch.tsx",
+        "components/ui/use-toast.ts",
+        "components/ui/dock.tsx",
+        "components/ui/alert.tsx",
+        "components/ui/tooltip.tsx",
+        "components/ui/drawer.tsx",
+        "components/ui/accordion.tsx",
+        "components/ui/navigation-menu.tsx",
+        "components/ui/label.tsx",
+        "components/ui/scroll-area.tsx",
+        "components/ui/sheet.tsx",
+        "components/ui/hover-card.tsx",
+        "components/ui/chart.tsx",
+        "components/ui/input-otp.tsx",
+        "components/ui/progress.tsx",
+        "components/ui/popover.tsx",
+        "components/ui/slider.tsx",
+        "components/ui/card.tsx",
+        "components/ui/tabs.tsx",
+        "components/ui/pagination.tsx",
+        "components/ui/use-mobile.tsx",
+        "components/ui/alert-dialog.tsx",
+        "context/post-list-context.tsx",
+        "context/post-cache-context.tsx",
+        "context/modal-context.tsx",
+        "app/search/page.tsx",
+        "app/search/SearchPageClient.tsx",
+        "app/test-feed/feed-fixture.tsx",
+        "components/animate-ui/radix/dialog.tsx",
+        "app/(feed)/page.tsx",
+        "components/animate-ui/components/avatar-group.tsx",
+        "components/animate-ui/radix/hover-card.tsx",
+        "components/animate-ui/radix/progress.tsx",
+        "app/keywords/[keyword]/[[...range]]/KeywordFeed.client.tsx",
+        "components/animate-ui/components/scroll-progress.tsx",
+        "components/animate-ui/components/tooltip.tsx",
+        "app/(feed)/posts/[id]/ReadMarker.client.tsx"
+      ],
+      "reachableImports": [
+        "lib/feed-prefs.ts",
+        "hooks/use-feed-scroll-margin.ts",
+        "hooks/use-keyword-manifest.ts",
+        "hooks/use-is-in-view.tsx",
+        "components/post-hover-card.tsx",
+        "components/CategoryFeed.client.tsx",
+        "components/community-presence-selector.tsx",
+        "components/post-card.tsx",
+        "components/brand-icon.tsx",
+        "components/sidebar-stats.client.tsx",
+        "components/post-detail.tsx",
+        "components/clerk-provider.tsx",
+        "components/server-time.client.tsx",
+        "components/post-viewer-modal.tsx",
+        "components/header-client.tsx",
+        "components/search-bar.tsx",
+        "components/feed-controls.tsx",
+        "components/client-random-clamp.tsx",
+        "components/infinite-post-list.tsx",
+        "components/top-refresh-on-scroll.tsx",
+        "components/KeywordFeed.client.tsx",
+        "components/ReadPostList.client.tsx",
+        "components/comment-section.tsx",
+        "components/animate-ui/text/rotating.tsx",
+        "components/animate-ui/text/counting-number.tsx",
+        "components/animate-ui/icons/icon.tsx",
+        "components/animate-ui/icons/log-in.tsx",
+        "components/ui/textarea.tsx",
+        "components/ui/toggle.tsx",
+        "components/ui/button.tsx",
+        "components/ui/separator.tsx",
+        "components/ui/badge.tsx",
+        "components/ui/dialog.tsx",
+        "components/ui/avatar.tsx",
+        "components/ui/toggle-group.tsx",
+        "components/ui/command.tsx",
+        "components/ui/dock.tsx",
+        "components/ui/tooltip.tsx",
+        "components/ui/popover.tsx",
+        "components/ui/card.tsx",
+        "components/ui/use-mobile.tsx",
+        "context/post-list-context.tsx",
+        "context/post-cache-context.tsx",
+        "context/modal-context.tsx",
+        "app/search/page.tsx",
+        "app/search/SearchPageClient.tsx",
+        "app/test-feed/feed-fixture.tsx",
+        "app/(feed)/page.tsx",
+        "components/animate-ui/components/avatar-group.tsx",
+        "components/animate-ui/radix/hover-card.tsx",
+        "app/keywords/[keyword]/[[...range]]/KeywordFeed.client.tsx",
+        "components/animate-ui/components/scroll-progress.tsx",
+        "components/animate-ui/components/tooltip.tsx",
+        "app/(feed)/posts/[id]/ReadMarker.client.tsx"
+      ]
+    },
+    {
+      "name": "react-day-picker",
+      "imports": [
+        "components/ui/calendar.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "react-dom",
+      "imports": [
+        "components/animate-ui/components/tooltip.tsx"
+      ],
+      "reachableImports": [
+        "components/animate-ui/components/tooltip.tsx"
+      ]
+    },
+    {
+      "name": "react-hook-form",
+      "imports": [
+        "components/ui/form.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "react-resizable-panels",
+      "imports": [
+        "components/ui/resizable.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "recharts",
+      "imports": [
+        "components/ui/chart.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "sonner",
+      "imports": [
+        "components/ui/sonner.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "tailwind-merge",
+      "imports": [
+        "lib/utils.ts"
+      ],
+      "reachableImports": [
+        "lib/utils.ts"
+      ]
+    },
+    {
+      "name": "tailwindcss-animate",
+      "imports": [
+        "tailwind.config.ts"
+      ],
+      "reachableImports": [
+        "tailwind.config.ts"
+      ]
+    },
+    {
+      "name": "vaul",
+      "imports": [
+        "components/ui/drawer.tsx"
+      ],
+      "reachableImports": []
+    },
+    {
+      "name": "zod",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "@cloudflare/next-on-pages",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "@tailwindcss/container-queries",
+      "imports": [
+        "tailwind.config.ts"
+      ],
+      "reachableImports": [
+        "tailwind.config.ts"
+      ]
+    },
+    {
+      "name": "@types/node",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "@types/pg",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "@types/react",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "@types/react-dom",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "drizzle-kit",
+      "imports": [
+        "drizzle.config.ts"
+      ],
+      "reachableImports": [
+        "drizzle.config.ts"
+      ]
+    },
+    {
+      "name": "eslint",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "eslint-config-next",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "playwright",
+      "imports": [
+        "playwright.config.ts",
+        "tests/browser/feed.spec.ts"
+      ],
+      "reachableImports": [
+        "playwright.config.ts"
+      ]
+    },
+    {
+      "name": "postcss",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "tailwindcss",
+      "imports": [
+        "tailwind.config.ts"
+      ],
+      "reachableImports": [
+        "tailwind.config.ts"
+      ]
+    },
+    {
+      "name": "tsx",
+      "imports": [],
+      "reachableImports": []
+    },
+    {
+      "name": "typescript",
+      "imports": [],
+      "reachableImports": []
+    }
+  ]
+}

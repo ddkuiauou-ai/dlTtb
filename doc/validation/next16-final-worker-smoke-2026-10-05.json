@@ -1,0 +1,426 @@
+{
+  "source": "/private/tmp/next16-final-build-8lzzeb5k",
+  "base": "http://127.0.0.1:5021",
+  "runtimePostgresProvided": false,
+  "cloudflareCredentialsProvided": false,
+  "remoteDeployPerformed": false,
+  "operationalR2ConnectionVerified": false,
+  "totalChecks": 22,
+  "passedChecks": 22,
+  "prerenderRoutes": [
+    {
+      "route": "/",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/_global-error",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/_not-found",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/all",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/back",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/debate",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/etc",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/game",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/humor",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/info",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/it",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/keywords/next16-fixture",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/news",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/politics",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/posts/upgrade-fixture-001",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/qna",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/review",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/search",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/shopping",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/sports",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/video",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/youtube",
+      "initialRevalidateSeconds": false
+    },
+    {
+      "route": "/zzal",
+      "initialRevalidateSeconds": false
+    }
+  ],
+  "dynamicRoutes": [
+    {
+      "route": "/keywords/[keyword]",
+      "fallback": false
+    },
+    {
+      "route": "/posts/[id]",
+      "fallback": false
+    },
+    {
+      "route": "/[category]",
+      "fallback": false
+    }
+  ],
+  "checks": [
+    {
+      "path": "/",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "s-maxage=31536000",
+      "location": null,
+      "bytes": 51772,
+      "pass": true
+    },
+    {
+      "path": "/news/",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "s-maxage=31536000",
+      "location": null,
+      "bytes": 35678,
+      "pass": true,
+      "containsTitle": true
+    },
+    {
+      "path": "/search/",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "s-maxage=31536000",
+      "location": null,
+      "bytes": 30591,
+      "pass": true
+    },
+    {
+      "path": "/posts/upgrade-fixture-001/",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "s-maxage=31536000",
+      "location": null,
+      "bytes": 34989,
+      "pass": true,
+      "containsTitle": true,
+      "containsBody": true,
+      "containsComment": true
+    },
+    {
+      "path": "/keywords/next16-fixture/",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "s-maxage=31536000",
+      "location": null,
+      "bytes": 36486,
+      "pass": true,
+      "containsTitle": true
+    },
+    {
+      "path": "/posts/unknown-upgrade-fixture/",
+      "kind": "http",
+      "status": 404,
+      "expectedStatus": 404,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 12896,
+      "pass": true
+    },
+    {
+      "path": "/keywords/unknown-upgrade-fixture/",
+      "kind": "http",
+      "status": 404,
+      "expectedStatus": 404,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 12896,
+      "pass": true
+    },
+    {
+      "path": "/test-feed/",
+      "kind": "http",
+      "status": 404,
+      "expectedStatus": 404,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 11383,
+      "pass": true
+    },
+    {
+      "path": "/api/test-feed/mixed/home-fresh-1",
+      "kind": "http",
+      "status": 404,
+      "expectedStatus": 404,
+      "contentType": null,
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 0,
+      "pass": true
+    },
+    {
+      "path": "/news",
+      "kind": "http",
+      "status": 308,
+      "expectedStatus": 308,
+      "contentType": null,
+      "cacheControl": null,
+      "location": "/news/",
+      "bytes": 0,
+      "pass": true,
+      "expectedTrailingSlash": true
+    },
+    {
+      "path": "/data/posts/v1/upgrade-fixture-001.json",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "application/json",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 1127,
+      "pass": true,
+      "validJson": true,
+      "expectedSha256": "54482c5b5056d834e6f85a95b6c78121569027d09cdca91fa512d08475390fc2",
+      "actualSha256": "54482c5b5056d834e6f85a95b6c78121569027d09cdca91fa512d08475390fc2",
+      "exactFixtureBytes": true,
+      "jsonFreshnessPolicy": true,
+      "jsonContentType": true,
+      "expectedPostId": true,
+      "containsBody": true,
+      "containsComment": true
+    },
+    {
+      "path": "/data/posts/v1/manifest.json",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "application/json",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 271,
+      "pass": true,
+      "validJson": true,
+      "expectedSha256": "aa546776af263fadf9c377e745c39895b36327b28e900892a8c4f9c42afe26ec",
+      "actualSha256": "aa546776af263fadf9c377e745c39895b36327b28e900892a8c4f9c42afe26ec",
+      "exactFixtureBytes": true,
+      "jsonFreshnessPolicy": true,
+      "jsonContentType": true
+    },
+    {
+      "path": "/data/keywords/manifest.json",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "application/json",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 103,
+      "pass": true,
+      "validJson": true,
+      "expectedSha256": "a3069dd265d19a69e005fcfc2b903c69edc1a80781726c4a036691d42a996057",
+      "actualSha256": "a3069dd265d19a69e005fcfc2b903c69edc1a80781726c4a036691d42a996057",
+      "exactFixtureBytes": true,
+      "jsonFreshnessPolicy": true,
+      "jsonContentType": true
+    },
+    {
+      "path": "/data/keywords/next16-fixture/v1/1w/page-1.json",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "application/json",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 819,
+      "pass": true,
+      "validJson": true,
+      "expectedSha256": "5996ceec54d3b9051d771384057888b9a2c23a91d4cdc49e2d363212abf9e8a7",
+      "actualSha256": "5996ceec54d3b9051d771384057888b9a2c23a91d4cdc49e2d363212abf9e8a7",
+      "exactFixtureBytes": true,
+      "jsonFreshnessPolicy": true,
+      "jsonContentType": true,
+      "expectedPostId": true
+    },
+    {
+      "path": "/data/keywords/next16-fixture/v1/1w/manifest.json",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "application/json",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 215,
+      "pass": true,
+      "validJson": true,
+      "expectedSha256": "ca0e5eec3347363bc0e306b073eeffeb042d40dc762a272de1b2d1bb6d8d67b9",
+      "actualSha256": "ca0e5eec3347363bc0e306b073eeffeb042d40dc762a272de1b2d1bb6d8d67b9",
+      "exactFixtureBytes": true,
+      "jsonFreshnessPolicy": true,
+      "jsonContentType": true
+    },
+    {
+      "path": "/data/category/news/v1/24h/page-1.json",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "application/json",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 811,
+      "pass": true,
+      "validJson": true,
+      "expectedSha256": "0854bab90fec1fed92e7a30885e66a3e2d2f5a8f549d00e2d12c8dbf40999eef",
+      "actualSha256": "0854bab90fec1fed92e7a30885e66a3e2d2f5a8f549d00e2d12c8dbf40999eef",
+      "exactFixtureBytes": true,
+      "jsonFreshnessPolicy": true,
+      "jsonContentType": true,
+      "expectedPostId": true
+    },
+    {
+      "path": "/data/category/news/v1/24h/manifest.json",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "application/json",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "bytes": 176,
+      "pass": true,
+      "validJson": true,
+      "expectedSha256": "015d3c4c9f0e32a264da957c992dccc1c4330a16f407ed0e453315b35a4fb5c0",
+      "actualSha256": "015d3c4c9f0e32a264da957c992dccc1c4330a16f407ed0e453315b35a4fb5c0",
+      "exactFixtureBytes": true,
+      "jsonFreshnessPolicy": true,
+      "jsonContentType": true
+    },
+    {
+      "path": "/posts/upgrade-fixture-001/?_rsc=invalid-local-hash",
+      "kind": "rsc",
+      "status": 307,
+      "expectedStatus": 307,
+      "contentType": null,
+      "cacheControl": null,
+      "location": "/posts/upgrade-fixture-001/?_rsc",
+      "bytes": 0,
+      "pass": true,
+      "rscHashNormalized": true
+    },
+    {
+      "path": "/news/?_rsc",
+      "kind": "rsc",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "text/x-component",
+      "cacheControl": "s-maxage=31536000",
+      "location": null,
+      "bytes": 16587,
+      "pass": true,
+      "rscContentType": true,
+      "containsTitle": true
+    },
+    {
+      "path": "/posts/upgrade-fixture-001/?_rsc",
+      "kind": "rsc",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "text/x-component",
+      "cacheControl": "s-maxage=31536000",
+      "location": null,
+      "bytes": 14702,
+      "pass": true,
+      "rscContentType": true,
+      "containsTitle": true,
+      "containsBody": true,
+      "containsComment": true
+    },
+    {
+      "path": "/keywords/next16-fixture/?_rsc",
+      "kind": "rsc",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "text/x-component",
+      "cacheControl": "s-maxage=31536000",
+      "location": null,
+      "bytes": 17006,
+      "pass": true,
+      "rscContentType": true,
+      "containsTitle": true
+    },
+    {
+      "path": "/_next/static/chunks/3p_indiq_fwxp.js",
+      "kind": "http",
+      "status": 200,
+      "expectedStatus": 200,
+      "contentType": "text/javascript; charset=utf-8",
+      "cacheControl": "public,max-age=31536000,immutable",
+      "location": null,
+      "bytes": 23484,
+      "pass": true,
+      "immutableAsset": true,
+      "nonEmptyAsset": true
+    }
+  ]
+}

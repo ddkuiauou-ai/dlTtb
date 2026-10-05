@@ -4,6 +4,13 @@ import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import { getAllPosts, getPostDetail } from "../lib/queries";
+import type { posts } from "../lib/schema";
+
+type PostDetails = NonNullable<Awaited<ReturnType<typeof getPostDetail>>>;
+type PostSnapshotMetadata = Partial<Pick<typeof posts.$inferSelect, "contentHash" | "commentCount" | "likeCount" | "viewCount">> & {
+  updatedAt?: (typeof posts.$inferSelect)["updatedAt"] | string;
+  imageEnrichmentUpdatedAt?: PostDetails["imageEnrichmentUpdatedAt"];
+};
 
 // ===== Helpers =====
 function atomicWriteJson(filepath: string, data: unknown) {
@@ -20,7 +27,7 @@ function readJson<T>(filepath: string): T | null {
   try {
     const raw = fs.readFileSync(filepath, "utf8");
     return JSON.parse(raw) as T;
-  } catch (_) {
+  } catch {
     return null;
   }
 }
@@ -41,7 +48,7 @@ async function mapWithConcurrency<T, R>(items: T[], limit: number, fn: (item: T,
 }
 
 // Decide if the on-disk JSON is identical enough to skip writing (incremental build)
-function isUnchanged(existing: any, incoming: any): boolean {
+function isUnchanged(existing: PostSnapshotMetadata | null, incoming: PostSnapshotMetadata | null): boolean {
   if (!existing || !incoming) return false;
   // Prefer strong keys if present; fall back to a few cheap comparators
   const keysToCheck = [
@@ -55,8 +62,8 @@ function isUnchanged(existing: any, incoming: any): boolean {
 
   let comparableFound = false;
   for (const [ek, ik] of keysToCheck) {
-    const ev = existing?.[ek as keyof typeof existing];
-    const iv = incoming?.[ik as keyof typeof incoming];
+    const ev = existing?.[ek];
+    const iv = incoming?.[ik];
     if (ev === undefined || iv === undefined) continue;
     comparableFound = true;
     if (ev !== iv) return false;
@@ -79,7 +86,7 @@ async function buildAllPosts() {
   // Fetch IDs to build. Keep using the existing query in getAllPosts.
   const pageSize = Number(process.env.BUILD_PAGE_SIZE ?? 10000);
   const allPosts = await getAllPosts({ page: 1, pageSize });
-  const ids: string[] = allPosts.map((p: any) => p.id);
+  const ids: string[] = allPosts.map((p) => p.id);
 
   // Concurrency limit (tune via env)
   const CONCURRENCY = Math.max(1, Number(process.env.BUILD_CONCURRENCY ?? 12));
@@ -90,7 +97,7 @@ async function buildAllPosts() {
   await mapWithConcurrency(ids, CONCURRENCY, async (postId) => {
     try {
       const filePath = path.join(outDir, `${postId}.json`);
-      const existing = readJson<any>(filePath);
+      const existing = readJson<PostSnapshotMetadata>(filePath);
       const postDetails = await getPostDetail(postId);
       if (!postDetails) return;
 
@@ -113,7 +120,7 @@ async function buildAllPosts() {
     if (!name.endsWith(".json") || name === "manifest.json") continue;
     const id = name.replace(/\.json$/, "");
     if (!keep.has(id)) {
-      try { fs.unlinkSync(path.join(outDir, name)); } catch (_) {}
+      try { fs.unlinkSync(path.join(outDir, name)); } catch {}
     }
   }
 

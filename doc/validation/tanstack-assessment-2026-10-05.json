@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-05",
+  "timezone": "Asia/Seoul",
+  "scope": "research and documentation only",
+  "userDecisions": {
+    "cloudflare": "retain",
+    "useCache": "do not introduce",
+    "cacheComponents": "do not enable",
+    "dataCache": "preserve existing JSON/IndexedDB/memory contracts"
+  },
+  "installed": {
+    "@tanstack/react-virtual": "3.13.12",
+    "@tanstack/virtual-core": "3.13.12"
+  },
+  "candidate": {
+    "@tanstack/react-virtual": "3.14.13",
+    "@tanstack/virtual-core": "3.17.11"
+  },
+  "reactPeerDependencies": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+  "engines": "not declared",
+  "unusedTanStackProducts": [
+    "Query",
+    "Router",
+    "Table",
+    "Start"
+  ],
+  "actualRendering": {
+    "homeLatest": "window virtualizer",
+    "homeTopSections": "ordinary grid/sample",
+    "categoryListAndGridCardViews": "row virtualizer",
+    "keyword": "ordinary grid"
+  },
+  "newOptionsNotAdopted": [
+    "useFlushSync:false",
+    "directDomUpdates",
+    "lanes",
+    "React Compiler"
+  ],
+  "coreBehaviorChanges": [
+    "cached size ref measurement deferred to ResizeObserver",
+    "initial measurement vs remeasurement scroll adjustment conditions",
+    "scrollToOffset state/reconciliation loop",
+    "iOS momentum adjustment deferral"
+  ],
+  "regressionGates": [
+    "row placement/scrollMargin",
+    "dynamic heights",
+    "append/filters/column changes",
+    "restore and user input cancellation",
+    "initial render/hydration",
+    "JSON generation and IDB contracts",
+    "WebKit and actual iOS coverage stated separately"
+  ],
+  "existingEvidence": {
+    "coordinateCombinations": 7560,
+    "successiveChanges": 360,
+    "chromiumTests": 33,
+    "measuredPlacementToleranceCssPx": 1,
+    "restoreViewportToleranceCssPx": 2,
+    "unmeasuredPrefixReferenceDifferenceCssPx": 66,
+    "rerunThisFollowup": false
+  },
+  "sources": [
+    "https://registry.npmjs.org/@tanstack/react-virtual/3.13.12",
+    "https://registry.npmjs.org/@tanstack/react-virtual/3.14.13",
+    "https://registry.npmjs.org/@tanstack/virtual-core/3.17.11",
+    "https://tanstack.com/virtual/latest/docs/introduction",
+    "https://tanstack.com/query/latest/docs/framework/react/overview",
+    "https://github.com/TanStack/virtual/releases/tag/%40tanstack%2Freact-virtual%403.14.13",
+    "https://github.com/TanStack/virtual/pull/1282",
+    "https://github.com/TanStack/virtual/blob/%40tanstack%2Freact-virtual%403.13.12/packages/virtual-core/src/index.ts",
+    "https://github.com/TanStack/virtual/blob/%40tanstack%2Freact-virtual%403.14.13/packages/virtual-core/src/index.ts",
+    "https://github.com/TanStack/virtual/blob/%40tanstack%2Freact-virtual%403.14.13/packages/react-virtual/src/index.tsx",
+    "https://github.com/TanStack/virtual/blob/%40tanstack%2Freact-virtual%403.14.13/packages/virtual-core/CHANGELOG.md",
+    "https://github.com/TanStack/virtual/issues/1119"
+  ]
+}

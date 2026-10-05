@@ -1,0 +1,7 @@
+# Copy to .dev.vars only when testing a local Worker. Never commit real secrets.
+# The production build is used by preview; load production Next.js env files.
+NEXTJS_ENV=production
+
+# Build-time POSTGRES_* and NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY belong in the
+# isolated build environment, not in this template. The current SSG routes do
+# not require a runtime PostgreSQL or Next incremental-cache R2 binding.

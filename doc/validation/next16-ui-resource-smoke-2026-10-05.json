@@ -1,0 +1,2291 @@
+{
+  "recordedAt": "2026-10-05T04:58:58.573Z",
+  "status": "completed-with-console-observations",
+  "runtime": "v24.19.0",
+  "browser": {
+    "version": "153.0.8010.12",
+    "executable": "/Users/craigchoi/Library/Caches/ms-playwright/chromium-1243/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "playwrightVersion": "1.63.0"
+  },
+  "variants": [
+    {
+      "name": "phase1",
+      "base": "http://127.0.0.1:5018",
+      "source": "/private/tmp/next16-phase1-browser-hp8arytt"
+    },
+    {
+      "name": "final",
+      "base": "http://127.0.0.1:5017",
+      "source": "/private/tmp/next16-final-browser-h_8hjms4"
+    }
+  ],
+  "samples": [
+    {
+      "variant": "phase1",
+      "round": 1,
+      "firstDisplayMs": 1800.021458,
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 679,
+        "liveFeedDomElements": 378
+      },
+      "appendTo120Ms": 391.827667,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 1280,
+        "liveFeedDomElements": 979
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 183.30000000447035,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 44.70000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 46.5,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 42.899999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 36.5,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 28.799999997019768,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 43.600000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 29.600000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 1280,
+        "liveFeedDomElements": 979
+      },
+      "heaps": [
+        {
+          "name": "initial40",
+          "beforeGC": {
+            "usedSize": 21467432,
+            "totalSize": 31326208,
+            "embedderHeapUsedSize": 6184472,
+            "backingStorageSize": 8773768
+          },
+          "afterGC": {
+            "usedSize": 15970232,
+            "totalSize": 17170432,
+            "embedderHeapUsedSize": 3208432,
+            "backingStorageSize": 8641462
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 132.16258400000015
+          },
+          "state": {
+            "loadedCount": 40,
+            "columns": 2,
+            "scrollY": 0,
+            "liveFeedCards": 10,
+            "liveFeedRows": 5,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 6,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 679,
+            "liveFeedDomElements": 378
+          }
+        },
+        {
+          "name": "fullyLoaded120",
+          "beforeGC": {
+            "usedSize": 24652160,
+            "totalSize": 41811968,
+            "embedderHeapUsedSize": 11388464,
+            "backingStorageSize": 8659515
+          },
+          "afterGC": {
+            "usedSize": 18110668,
+            "totalSize": 20054016,
+            "embedderHeapUsedSize": 4517168,
+            "backingStorageSize": 8643868
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 153.05041699999992
+          },
+          "state": {
+            "loadedCount": 120,
+            "columns": 2,
+            "scrollY": 2066,
+            "liveFeedCards": 26,
+            "liveFeedRows": 13,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 18,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 1280,
+            "liveFeedDomElements": 979
+          }
+        },
+        {
+          "name": "afterEightScrolls",
+          "beforeGC": {
+            "usedSize": 35586416,
+            "totalSize": 62521344,
+            "embedderHeapUsedSize": 20214368,
+            "backingStorageSize": 8646096
+          },
+          "afterGC": {
+            "usedSize": 18615920,
+            "totalSize": 20840448,
+            "embedderHeapUsedSize": 4705008,
+            "backingStorageSize": 8643972
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 148.0071250000001
+          },
+          "state": {
+            "loadedCount": 120,
+            "columns": 2,
+            "scrollY": 1829,
+            "liveFeedCards": 26,
+            "liveFeedRows": 13,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 18,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 1280,
+            "liveFeedDomElements": 979
+          }
+        }
+      ],
+      "observer": {
+        "supported": true,
+        "marks": [
+          {
+            "stage": "navigation-and-initial40",
+            "startTimeMs": 0
+          },
+          {
+            "stage": "initial40-before-gc",
+            "startTimeMs": 1799.3000000044703
+          },
+          {
+            "stage": "initial40-forced-gc",
+            "startTimeMs": 1800.6000000014901
+          },
+          {
+            "stage": "append-to120",
+            "startTimeMs": 1935.3999999985099
+          },
+          {
+            "stage": "fullyLoaded120-before-gc",
+            "startTimeMs": 2329.10000000149
+          },
+          {
+            "stage": "fullyLoaded120-forced-gc",
+            "startTimeMs": 2331.10000000149
+          },
+          {
+            "stage": "rapid-eight-scrolls",
+            "startTimeMs": 2488.8000000044703
+          },
+          {
+            "stage": "afterEightScrolls-before-gc",
+            "startTimeMs": 2967.39999999851
+          },
+          {
+            "stage": "afterEightScrolls-forced-gc",
+            "startTimeMs": 2968.2000000029802
+          },
+          {
+            "stage": "final-observer-delivery",
+            "startTimeMs": 3119.5
+          }
+        ],
+        "longTasks": [
+          {
+            "name": "self",
+            "startTimeMs": 236,
+            "durationMs": 66,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 391.6000000014901,
+            "durationMs": 60,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1378.3999999985099,
+            "durationMs": 79,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1938.1000000014901,
+            "durationMs": 68,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2045.5,
+            "durationMs": 67,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2267.5,
+            "durationMs": 50,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2495.89999999851,
+            "durationMs": 176,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          }
+        ]
+      },
+      "longTaskSummary": {
+        "count": 7,
+        "totalDurationMs": 566,
+        "maxDurationMs": 176,
+        "byStage": {
+          "navigation-and-initial40": {
+            "count": 3,
+            "totalDurationMs": 205,
+            "maxDurationMs": 79
+          },
+          "append-to120": {
+            "count": 3,
+            "totalDurationMs": 185,
+            "maxDurationMs": 68
+          },
+          "rapid-eight-scrolls": {
+            "count": 1,
+            "totalDurationMs": 176,
+            "maxDurationMs": 176
+          }
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "errorOverlayCount": 0,
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 116.70562500000005
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 74.6097920000002
+        },
+        {
+          "host": "",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 9.169374999999945
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 222.421875
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 555.028875
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 572.3927919999996
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 84.9353329999999
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 85.0864160000001
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 85.2660420000002
+        },
+        {
+          "host": "",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 87.05033300000014
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 20.248625000000175
+        }
+      ]
+    },
+    {
+      "variant": "final",
+      "round": 1,
+      "firstDisplayMs": 1163.263167,
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 680,
+        "liveFeedDomElements": 378
+      },
+      "appendTo120Ms": 445.5071250000001,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 1281,
+        "liveFeedDomElements": 979
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 71.89999999850988,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 51.399999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 83.30000000447035,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 108,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 28.5,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 32.70000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 34.69999999552965,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 22.399999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 1281,
+        "liveFeedDomElements": 979
+      },
+      "heaps": [
+        {
+          "name": "initial40",
+          "beforeGC": {
+            "usedSize": 21960168,
+            "totalSize": 32112640,
+            "embedderHeapUsedSize": 6681576,
+            "backingStorageSize": 9304965
+          },
+          "afterGC": {
+            "usedSize": 16550148,
+            "totalSize": 17432576,
+            "embedderHeapUsedSize": 3575368,
+            "backingStorageSize": 9136109
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 147.01629199999934
+          },
+          "state": {
+            "loadedCount": 40,
+            "columns": 2,
+            "scrollY": 0,
+            "liveFeedCards": 10,
+            "liveFeedRows": 5,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 6,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 680,
+            "liveFeedDomElements": 378
+          }
+        },
+        {
+          "name": "fullyLoaded120",
+          "beforeGC": {
+            "usedSize": 29555008,
+            "totalSize": 42860544,
+            "embedderHeapUsedSize": 12140680,
+            "backingStorageSize": 9155340
+          },
+          "afterGC": {
+            "usedSize": 18486576,
+            "totalSize": 20316160,
+            "embedderHeapUsedSize": 4870528,
+            "backingStorageSize": 9139051
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 146.91291699999965
+          },
+          "state": {
+            "loadedCount": 120,
+            "columns": 2,
+            "scrollY": 2066,
+            "liveFeedCards": 26,
+            "liveFeedRows": 13,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 18,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 1281,
+            "liveFeedDomElements": 979
+          }
+        },
+        {
+          "name": "afterEightScrolls",
+          "beforeGC": {
+            "usedSize": 33055052,
+            "totalSize": 66453504,
+            "embedderHeapUsedSize": 20308136,
+            "backingStorageSize": 9141106
+          },
+          "afterGC": {
+            "usedSize": 18974620,
+            "totalSize": 21364736,
+            "embedderHeapUsedSize": 4997024,
+            "backingStorageSize": 9139099
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 145.96662500000002
+          },
+          "state": {
+            "loadedCount": 120,
+            "columns": 2,
+            "scrollY": 1829,
+            "liveFeedCards": 26,
+            "liveFeedRows": 13,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 18,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 1281,
+            "liveFeedDomElements": 979
+          }
+        }
+      ],
+      "observer": {
+        "supported": true,
+        "marks": [
+          {
+            "stage": "navigation-and-initial40",
+            "startTimeMs": 0
+          },
+          {
+            "stage": "initial40-before-gc",
+            "startTimeMs": 1166.1000000014901
+          },
+          {
+            "stage": "initial40-forced-gc",
+            "startTimeMs": 1166.9000000059605
+          },
+          {
+            "stage": "append-to120",
+            "startTimeMs": 1316.3000000044703
+          },
+          {
+            "stage": "fullyLoaded120-before-gc",
+            "startTimeMs": 1764
+          },
+          {
+            "stage": "fullyLoaded120-forced-gc",
+            "startTimeMs": 1764.8000000044703
+          },
+          {
+            "stage": "rapid-eight-scrolls",
+            "startTimeMs": 1913.7000000029802
+          },
+          {
+            "stage": "afterEightScrolls-before-gc",
+            "startTimeMs": 2367.7000000029802
+          },
+          {
+            "stage": "afterEightScrolls-forced-gc",
+            "startTimeMs": 2368.4000000059605
+          },
+          {
+            "stage": "final-observer-delivery",
+            "startTimeMs": 2517
+          }
+        ],
+        "longTasks": [
+          {
+            "name": "self",
+            "startTimeMs": 139.40000000596046,
+            "durationMs": 54,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 268.40000000596046,
+            "durationMs": 57,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1024.6000000014901,
+            "durationMs": 76,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1317.4000000059605,
+            "durationMs": 61,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1409.1000000014901,
+            "durationMs": 66,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1927.4000000059605,
+            "durationMs": 58,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2046.1000000014901,
+            "durationMs": 82,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2142.4000000059605,
+            "durationMs": 95,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          }
+        ]
+      },
+      "longTaskSummary": {
+        "count": 8,
+        "totalDurationMs": 549,
+        "maxDurationMs": 95,
+        "byStage": {
+          "navigation-and-initial40": {
+            "count": 3,
+            "totalDurationMs": 187,
+            "maxDurationMs": 76
+          },
+          "append-to120": {
+            "count": 2,
+            "totalDurationMs": 127,
+            "maxDurationMs": 66
+          },
+          "rapid-eight-scrolls": {
+            "count": 3,
+            "totalDurationMs": 235,
+            "maxDurationMs": 95
+          }
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "errorOverlayCount": 0,
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 87.91091699999924
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 29.78008300000056
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 16.36945900000046
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 22.842249999999694
+        },
+        {
+          "host": "",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 2.930375000000822
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 218.89075000000048
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 253.01683400000002
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 254.49370799999997
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 80.74991599999976
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 80.81679200000053
+        },
+        {
+          "host": "",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 82.22966700000052
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 26.74041699999998
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 28.009374999999636
+        }
+      ]
+    },
+    {
+      "variant": "final",
+      "round": 2,
+      "firstDisplayMs": 1110.2172499999997,
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 680,
+        "liveFeedDomElements": 378
+      },
+      "appendTo120Ms": 373.66862500000025,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 1281,
+        "liveFeedDomElements": 979
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 75.70000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 59.899999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 50.600000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 66.5,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 91.20000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 81.30000000447035,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 36.29999999701977,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 35.20000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 1281,
+        "liveFeedDomElements": 979
+      },
+      "heaps": [
+        {
+          "name": "initial40",
+          "beforeGC": {
+            "usedSize": 22054304,
+            "totalSize": 32112640,
+            "embedderHeapUsedSize": 6682216,
+            "backingStorageSize": 9304922
+          },
+          "afterGC": {
+            "usedSize": 16555576,
+            "totalSize": 17694720,
+            "embedderHeapUsedSize": 3475912,
+            "backingStorageSize": 9136114
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 133.75916700000016
+          },
+          "state": {
+            "loadedCount": 40,
+            "columns": 2,
+            "scrollY": 0,
+            "liveFeedCards": 10,
+            "liveFeedRows": 5,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 6,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 680,
+            "liveFeedDomElements": 378
+          }
+        },
+        {
+          "name": "fullyLoaded120",
+          "beforeGC": {
+            "usedSize": 31991732,
+            "totalSize": 43122688,
+            "embedderHeapUsedSize": 11825504,
+            "backingStorageSize": 9155110
+          },
+          "afterGC": {
+            "usedSize": 18492492,
+            "totalSize": 19791872,
+            "embedderHeapUsedSize": 4864952,
+            "backingStorageSize": 9138820
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 153.14149999999972
+          },
+          "state": {
+            "loadedCount": 120,
+            "columns": 2,
+            "scrollY": 2066,
+            "liveFeedCards": 26,
+            "liveFeedRows": 13,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 18,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 1281,
+            "liveFeedDomElements": 979
+          }
+        },
+        {
+          "name": "afterEightScrolls",
+          "beforeGC": {
+            "usedSize": 32279184,
+            "totalSize": 60162048,
+            "embedderHeapUsedSize": 19712888,
+            "backingStorageSize": 9140862
+          },
+          "afterGC": {
+            "usedSize": 18981384,
+            "totalSize": 21102592,
+            "embedderHeapUsedSize": 4910064,
+            "backingStorageSize": 9138924
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 143.47616700000071
+          },
+          "state": {
+            "loadedCount": 120,
+            "columns": 2,
+            "scrollY": 1829,
+            "liveFeedCards": 26,
+            "liveFeedRows": 13,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 18,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 1281,
+            "liveFeedDomElements": 979
+          }
+        }
+      ],
+      "observer": {
+        "supported": true,
+        "marks": [
+          {
+            "stage": "navigation-and-initial40",
+            "startTimeMs": 0
+          },
+          {
+            "stage": "initial40-before-gc",
+            "startTimeMs": 1111.1000000014901
+          },
+          {
+            "stage": "initial40-forced-gc",
+            "startTimeMs": 1112.2000000029802
+          },
+          {
+            "stage": "append-to120",
+            "startTimeMs": 1248
+          },
+          {
+            "stage": "fullyLoaded120-before-gc",
+            "startTimeMs": 1624.3999999985099
+          },
+          {
+            "stage": "fullyLoaded120-forced-gc",
+            "startTimeMs": 1625.7999999970198
+          },
+          {
+            "stage": "rapid-eight-scrolls",
+            "startTimeMs": 1782.2000000029802
+          },
+          {
+            "stage": "afterEightScrolls-before-gc",
+            "startTimeMs": 2300.10000000149
+          },
+          {
+            "stage": "afterEightScrolls-forced-gc",
+            "startTimeMs": 2300.7000000029802
+          },
+          {
+            "stage": "final-observer-delivery",
+            "startTimeMs": 2446.5
+          }
+        ],
+        "longTasks": [
+          {
+            "name": "self",
+            "startTimeMs": 94.70000000298023,
+            "durationMs": 50,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 212.70000000298023,
+            "durationMs": 54,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 965.8999999985099,
+            "durationMs": 73,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1248.8999999985099,
+            "durationMs": 60,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1342.3999999985099,
+            "durationMs": 61,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1424.7000000029802,
+            "durationMs": 53,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1564.1000000014901,
+            "durationMs": 50,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1793.1000000014901,
+            "durationMs": 64,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1993,
+            "durationMs": 52,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2059,
+            "durationMs": 79,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2143,
+            "durationMs": 78,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          }
+        ]
+      },
+      "longTaskSummary": {
+        "count": 11,
+        "totalDurationMs": 674,
+        "maxDurationMs": 79,
+        "byStage": {
+          "navigation-and-initial40": {
+            "count": 3,
+            "totalDurationMs": 177,
+            "maxDurationMs": 73
+          },
+          "append-to120": {
+            "count": 4,
+            "totalDurationMs": 224,
+            "maxDurationMs": 61
+          },
+          "rapid-eight-scrolls": {
+            "count": 4,
+            "totalDurationMs": 273,
+            "maxDurationMs": 79
+          }
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [],
+      "errorOverlayCount": 0,
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 84.69858400000066
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 37.01350000000002
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 14.679457999998704
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 18.596291999998357
+        },
+        {
+          "host": "",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 3.1038339999995515
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 223.54562500000065
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 240.88962500000162
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 243.2134160000005
+        },
+        {
+          "host": "",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 78.27158400000008
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 77.65737500000068
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 77.77608300000065
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 18.635834000000614
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 19.778292000000874
+        }
+      ]
+    },
+    {
+      "variant": "phase1",
+      "round": 2,
+      "firstDisplayMs": 1138.6697089999998,
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 679,
+        "liveFeedDomElements": 378
+      },
+      "appendTo120Ms": 371.9551250000004,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 1280,
+        "liveFeedDomElements": 979
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 69.89999999850988,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 39.100000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 32.899999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 46.899999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 63.20000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 85.5,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 62.79999999701977,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 27.5,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0,
+        "allDomElements": 1280,
+        "liveFeedDomElements": 979
+      },
+      "heaps": [
+        {
+          "name": "initial40",
+          "beforeGC": {
+            "usedSize": 21440424,
+            "totalSize": 31064064,
+            "embedderHeapUsedSize": 6057088,
+            "backingStorageSize": 8773712
+          },
+          "afterGC": {
+            "usedSize": 15969520,
+            "totalSize": 17170432,
+            "embedderHeapUsedSize": 3211312,
+            "backingStorageSize": 8641511
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 134.23812499999985
+          },
+          "state": {
+            "loadedCount": 40,
+            "columns": 2,
+            "scrollY": 0,
+            "liveFeedCards": 10,
+            "liveFeedRows": 5,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 6,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 679,
+            "liveFeedDomElements": 378
+          }
+        },
+        {
+          "name": "fullyLoaded120",
+          "beforeGC": {
+            "usedSize": 30212172,
+            "totalSize": 42074112,
+            "embedderHeapUsedSize": 11526488,
+            "backingStorageSize": 8659652
+          },
+          "afterGC": {
+            "usedSize": 17719316,
+            "totalSize": 19005440,
+            "embedderHeapUsedSize": 4567624,
+            "backingStorageSize": 8643984
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 139.50545799999963
+          },
+          "state": {
+            "loadedCount": 120,
+            "columns": 2,
+            "scrollY": 2066,
+            "liveFeedCards": 26,
+            "liveFeedRows": 13,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 18,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 1280,
+            "liveFeedDomElements": 979
+          }
+        },
+        {
+          "name": "afterEightScrolls",
+          "beforeGC": {
+            "usedSize": 28140868,
+            "totalSize": 62259200,
+            "embedderHeapUsedSize": 19282928,
+            "backingStorageSize": 8645982
+          },
+          "afterGC": {
+            "usedSize": 18294992,
+            "totalSize": 20316160,
+            "embedderHeapUsedSize": 4670296,
+            "backingStorageSize": 8644065
+          },
+          "gc": {
+            "supported": true,
+            "elapsedMs": 160.46362500000032
+          },
+          "state": {
+            "loadedCount": 120,
+            "columns": 2,
+            "scrollY": 1829,
+            "liveFeedCards": 26,
+            "liveFeedRows": 13,
+            "hiddenReferenceCards": 120,
+            "expectedViewportCards": 18,
+            "missingViewportIds": [],
+            "maxAssignedRowPositionErrorPx": 0,
+            "allDomElements": 1280,
+            "liveFeedDomElements": 979
+          }
+        }
+      ],
+      "observer": {
+        "supported": true,
+        "marks": [
+          {
+            "stage": "navigation-and-initial40",
+            "startTimeMs": 0
+          },
+          {
+            "stage": "initial40-before-gc",
+            "startTimeMs": 1138.6999999955297
+          },
+          {
+            "stage": "initial40-forced-gc",
+            "startTimeMs": 1139.2999999970198
+          },
+          {
+            "stage": "append-to120",
+            "startTimeMs": 1275.3999999985099
+          },
+          {
+            "stage": "fullyLoaded120-before-gc",
+            "startTimeMs": 1649.3999999985099
+          },
+          {
+            "stage": "fullyLoaded120-forced-gc",
+            "startTimeMs": 1650.1999999955297
+          },
+          {
+            "stage": "rapid-eight-scrolls",
+            "startTimeMs": 1792
+          },
+          {
+            "stage": "afterEightScrolls-before-gc",
+            "startTimeMs": 2245.5999999940395
+          },
+          {
+            "stage": "afterEightScrolls-forced-gc",
+            "startTimeMs": 2246.1999999955297
+          },
+          {
+            "stage": "final-observer-delivery",
+            "startTimeMs": 2410.5
+          }
+        ],
+        "longTasks": [
+          {
+            "name": "self",
+            "startTimeMs": 113.39999999850988,
+            "durationMs": 53,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 236.89999999850988,
+            "durationMs": 55,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 933.8999999985099,
+            "durationMs": 72,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "navigation-and-initial40"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1276.7999999970198,
+            "durationMs": 61,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1370.1999999955297,
+            "durationMs": 62,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1452.8999999985099,
+            "durationMs": 54,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "append-to120"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 1803.2999999970198,
+            "durationMs": 58,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2003.2999999970198,
+            "durationMs": 58,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2069.1999999955297,
+            "durationMs": 79,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          },
+          {
+            "name": "self",
+            "startTimeMs": 2153.5,
+            "durationMs": 57,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "containerType": "window",
+                "containerId": "",
+                "containerName": "",
+                "containerSrcHost": null
+              }
+            ],
+            "stage": "rapid-eight-scrolls"
+          }
+        ]
+      },
+      "longTaskSummary": {
+        "count": 10,
+        "totalDurationMs": 609,
+        "maxDurationMs": 79,
+        "byStage": {
+          "navigation-and-initial40": {
+            "count": 3,
+            "totalDurationMs": 180,
+            "maxDurationMs": 72
+          },
+          "append-to120": {
+            "count": 3,
+            "totalDurationMs": 177,
+            "maxDurationMs": 62
+          },
+          "rapid-eight-scrolls": {
+            "count": 4,
+            "totalDurationMs": 252,
+            "maxDurationMs": 79
+          }
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [],
+      "errorOverlayCount": 0,
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 84.6297910000012
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 29.30487499999981
+        },
+        {
+          "host": "",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 2.617000000000189
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 253.8055829999994
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 263.38175000000047
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "finished",
+          "elapsedMs": 266.0118330000005
+        },
+        {
+          "host": "",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 76.86899999999878
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 76.95254099999875
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 76.90920899999946
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 77.00829199999862
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "status": "finished",
+          "elapsedMs": 28.721666999999798
+        }
+      ]
+    }
+  ],
+  "warmup": [
+    {
+      "variant": "phase1",
+      "path": "/test-feed?scenario=normal&top=629&fixed=1&columns=2",
+      "status": 200,
+      "elapsedMs": 107.07137499999999
+    },
+    {
+      "variant": "phase1",
+      "path": "/api/test-feed/normal/manifest.json",
+      "status": 200,
+      "elapsedMs": 9.779916999999841
+    },
+    {
+      "variant": "phase1",
+      "path": "/api/test-feed/normal/page-2.json",
+      "status": 200,
+      "elapsedMs": 5.042500000000018
+    },
+    {
+      "variant": "phase1",
+      "path": "/api/test-feed/normal/page-3.json",
+      "status": 200,
+      "elapsedMs": 5.053042000000005
+    },
+    {
+      "variant": "final",
+      "path": "/test-feed?scenario=normal&top=629&fixed=1&columns=2",
+      "status": 200,
+      "elapsedMs": 121.93237500000009
+    },
+    {
+      "variant": "final",
+      "path": "/api/test-feed/normal/manifest.json",
+      "status": 200,
+      "elapsedMs": 20.852583000000095
+    },
+    {
+      "variant": "final",
+      "path": "/api/test-feed/normal/page-2.json",
+      "status": 200,
+      "elapsedMs": 5.7180419999999685
+    },
+    {
+      "variant": "final",
+      "path": "/api/test-feed/normal/page-3.json",
+      "status": 200,
+      "elapsedMs": 5.847291999999925
+    }
+  ],
+  "errors": [],
+  "conditions": {
+    "viewport": {
+      "width": 1440,
+      "height": 983
+    },
+    "fixture": "/test-feed?scenario=normal&top=629&fixed=1&columns=2",
+    "seededCards": 40,
+    "fullyLoadedCards": 120,
+    "pageSize": 40,
+    "samplesPerVariant": 2,
+    "freshBrowserContextPerSample": true,
+    "sameBrowserProcess": true,
+    "order": "phase1/final in round1, final/phase1 in round2",
+    "steps": [
+      "initial40",
+      "scroll append to120",
+      "8 rapid viewport changes"
+    ],
+    "scrollOffsetsPx": [
+      0,
+      600,
+      1200,
+      300,
+      900,
+      0,
+      750,
+      1200
+    ],
+    "heapOrderForEveryCheckpoint": "Runtime.getHeapUsage -> HeapProfiler.collectGarbage -> two animation frames +100ms -> Runtime.getHeapUsage",
+    "localRoutesPrewarmed": true,
+    "heapUnit": "bytes",
+    "longTaskThresholdMs": 50,
+    "concurrentBrowserWork": "Fixture agent reported WebKit validation stopped; no other test browser workload during these four samples."
+  },
+  "limitations": [
+    "Small development-mode local synthetic smoke; not a production benchmark, memory-leak test, or Cloudflare measurement.",
+    "Phase1 already uses Next16/React19; comparison is of the later UI/Virtual dependency batch as a whole.",
+    "The page includes hidden reference120, development framework code and Clerk/CDN work. Heap and longtask entries cannot isolate application-only resource use or a package-specific effect.",
+    "Runtime.getHeapUsage measures approximate JavaScript heap for the CDP page target/isolate, not total browser RAM, all frame heaps, GPU memory, or all DOM/Blink allocations.",
+    "Garbage collection is forced by the harness at the same checkpoints. It changes execution timing; these timings do not replace the separate three-run performance evidence.",
+    "PerformanceObserver longtask captures tasks at least50ms and browsing-context attribution, not source-function or library attribution. Stage assignment uses task start time and is approximate for work spanning stages.",
+    "The fresh contexts, main-page telemetry and observer/harness objects also contribute to these values. Two samples do not support improvement percentages or conclusions about retained memory over long sessions.",
+    "Chromium headless desktop viewport only; physical iOS, momentum scrolling, and production auth/network workloads remain outside this smoke.",
+    "Both origins lack /favicon.ico. The first sample per origin logged one generic404; separate navigation diagnostics identify favicon404, with no unhandled page exceptions or development error overlay. Raw console observations remain preserved."
+  ],
+  "references": [
+    {
+      "title": "Chrome DevTools Protocol Runtime.getHeapUsage",
+      "url": "https://chromedevtools.github.io/devtools-protocol/tot/Runtime/#method-getHeapUsage"
+    },
+    {
+      "title": "Chrome DevTools Protocol HeapProfiler.collectGarbage",
+      "url": "https://chromedevtools.github.io/devtools-protocol/tot/HeapProfiler/#method-collectGarbage"
+    },
+    {
+      "title": "MDN PerformanceLongTaskTiming",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/PerformanceLongTaskTiming"
+    }
+  ],
+  "acceptanceChecks": {
+    "fourFreshContexts": true,
+    "observerSupported": true,
+    "initial40": true,
+    "allLoaded120": true,
+    "eightScrollsCovered": true,
+    "hiddenReference120": true,
+    "heapSnapshotsAvailable": true,
+    "noBrowserErrors": false,
+    "noUnhandledPageExceptionsOrOverlays": true
+  },
+  "finishedAt": "2026-10-05T04:59:11.605Z",
+  "consoleDiagnostic": {
+    "recordedAt": "2026-10-05T05:00:40.970Z",
+    "samples": [
+      {
+        "variant": "phase1",
+        "httpErrorResponses": [],
+        "consoleErrors": [
+          {
+            "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "resource": {
+              "host": "127.0.0.1",
+              "path": "/favicon.ico",
+              "lineNumber": 0,
+              "columnNumber": 0
+            }
+          }
+        ],
+        "faviconProbeStatus": 404,
+        "purpose": "Separate navigation diagnostic; not counted in the four memory/longtask samples."
+      },
+      {
+        "variant": "final",
+        "httpErrorResponses": [],
+        "consoleErrors": [
+          {
+            "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "resource": {
+              "host": "127.0.0.1",
+              "path": "/favicon.ico",
+              "lineNumber": 0,
+              "columnNumber": 0
+            }
+          }
+        ],
+        "faviconProbeStatus": 404,
+        "purpose": "Separate navigation diagnostic; not counted in the four memory/longtask samples."
+      }
+    ],
+    "inference": "The first two memory samples each logged a generic404. A separate fresh-browser navigation reproduces the404 for missing /favicon.ico on both origins. Historical console locations were not captured in the original four samples, so resource attribution is inferred from this diagnostic."
+  },
+  "summary": {
+    "phase1": {
+      "sampleCount": 2,
+      "fullyLoaded120AfterGcUsedSizeBytes": [
+        18110668,
+        17719316
+      ],
+      "afterEightScrollsAfterGcUsedSizeBytes": [
+        18615920,
+        18294992
+      ],
+      "longTaskCount": [
+        7,
+        10
+      ],
+      "longTaskMaxDurationMs": [
+        176,
+        79
+      ],
+      "rapidEightScrollLongTaskCount": [
+        1,
+        4
+      ],
+      "liveCardsAfter120": [
+        26,
+        26
+      ],
+      "hiddenReferenceCards": [
+        120,
+        120
+      ],
+      "fullyLoaded120AfterGcUsedSizeMiB": [
+        17.272,
+        16.898
+      ],
+      "afterEightScrollsAfterGcUsedSizeMiB": [
+        17.754,
+        17.447
+      ]
+    },
+    "final": {
+      "sampleCount": 2,
+      "fullyLoaded120AfterGcUsedSizeBytes": [
+        18486576,
+        18492492
+      ],
+      "afterEightScrollsAfterGcUsedSizeBytes": [
+        18974620,
+        18981384
+      ],
+      "longTaskCount": [
+        8,
+        11
+      ],
+      "longTaskMaxDurationMs": [
+        95,
+        79
+      ],
+      "rapidEightScrollLongTaskCount": [
+        3,
+        4
+      ],
+      "liveCardsAfter120": [
+        26,
+        26
+      ],
+      "hiddenReferenceCards": [
+        120,
+        120
+      ],
+      "fullyLoaded120AfterGcUsedSizeMiB": [
+        17.63,
+        17.636
+      ],
+      "afterEightScrollsAfterGcUsedSizeMiB": [
+        18.096,
+        18.102
+      ]
+    }
+  },
+  "measurementHarness": {
+    "scriptPath": "/private/tmp/next16-ui-resource-smoke.mjs",
+    "sha256": "4d9ba198ff96d041f6a7f2ec2d286e2aa43f5354785011ea1978cae9e8cf8f5e",
+    "diagnosticScriptPath": "/private/tmp/next16-ui-resource-diagnostic.mjs",
+    "diagnosticSha256": "3b6f081d1797d18913f8fb043d850b223ff3a2cf642918833f1dbc8e310cc85f"
+  },
+  "relatedEvidence": {
+    "unchangedThreeRunPerformancePath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-performance-2026-10-05.json",
+    "sha256": "b272f796c597954c9574d764f83d692dd1be3e4dd4b93916421d4ee4367a21e2",
+    "uiApiSmokePath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-api-smoke-2026-10-05.json"
+  },
+  "measurementAcceptanceChecks": {
+    "fourFreshContexts": true,
+    "observerSupported": true,
+    "initial40": true,
+    "allLoaded120": true,
+    "eightScrollsCovered": true,
+    "hiddenReference120": true,
+    "heapSnapshotsAvailable": true,
+    "noUnhandledPageExceptionsOrOverlays": true
+  }
+}

@@ -9,6 +9,7 @@ import { PostCard } from '@/components/post-card';
 import { useModal } from '@/context/modal-context';
 import { markNavigateToPost } from '@/lib/restore-session';
 import { idbCache } from '@/lib/idb-cache';
+import { ReadPostList } from '@/components/ReadPostList.client';
 import { FIXTURE_PAGE_SIZE, fixtureCardHeight, isFixtureScenario, makeFixturePosts } from '@/lib/testing/feed-fixture';
 
 declare global {
@@ -67,6 +68,7 @@ export default function FeedFixture({ scenario, topHeight, mixed, legacy, column
       {fixed ? <div data-testid="reference" aria-hidden="true" style={{ position: 'absolute', left: -20000, top: 0, width: 'min(1200px, 100%)' }}>
         {posts.map((post, index) => <div key={post.id} data-reference-id={post.id} data-card-height={fixtureCardHeight(index, mixed)} style={{ height: fixtureCardHeight(index, mixed) }}>{post.title}</div>)}
       </div> : <NaturalReference scenario={safeScenario} columns={columns} layout={cardLayout} />}
+      <aside data-testid="read-posts" style={{ position: 'fixed', left: -20000, top: 0 }}><ReadPostList /></aside>
     </main>
   );
 }

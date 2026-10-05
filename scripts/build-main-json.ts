@@ -16,7 +16,7 @@ import path from "path";
 import { db } from "../lib/db";
 import { posts, postImages, postEmbeds, clusterTrends, clusters, clusterPosts, sites, postEnrichment, postComments } from "../lib/schema";
 import { and, desc, eq, inArray, gt } from "drizzle-orm";
-import { sql } from "drizzle-orm";
+import { sql, type SQL } from "drizzle-orm";
 import { createHomeFeedManifest, createHomeFeedStagingDirectory, publishHomeFeedGeneration } from "./utils/home-feed-generation";
 
 // ===== 설정 =====
@@ -40,27 +40,17 @@ const FRESH_WEIGHT_BY_RANGE: Record<string, number> = { "3h": 10, "6h": 8, "24h"
 const FRESH_DECAY_HOURS = 24; // decay constant for recent-activity boost
 
 // ===== 타입 =====
-type RankedRow = {
-  id: string;
-  site: string;
-  title: string | null;
-  comment_count: number | null;
-  like_count: number | null;
-  viewCount: number | null; // (2)
-  timestamp: string;
+type PostRow = typeof posts.$inferSelect;
+type RankedRow = Pick<PostRow, "id" | "site" | "title" | "viewCount" | "timestamp"> & {
+  comment_count: PostRow["commentCount"];
+  like_count: PostRow["likeCount"];
   score: number;
 };
 
-export type Row = {
-  id: string;
-  title: string | null;
-  site: string | null;
-  siteName?: string | null;
-  commentCount: number | null;
-  likeCount: number | null;
-  viewCount: number | null;   // (4)
-  timestamp: Date | string | null;
-  content: string | null;     // (4)
+export type Row = Pick<PostRow, "id" | "title" | "site" | "commentCount" | "likeCount" | "viewCount" | "timestamp" | "content"> & {
+  // The legacy ranked branch does not select url or siteName.
+  url?: PostRow["url"];
+  siteName?: (typeof sites.$inferSelect)["name"] | null;
 };
 
 // ===== 랭킹 후보 =====
@@ -117,7 +107,7 @@ async function fetchRankedCandidates(limit: number): Promise<RankedRow[]> {
     ORDER BY score DESC
     LIMIT ${limit};
   `;
-  const res: any = await db.execute(sql.raw(q));
+  const res = await db.execute<RankedRow>(sql.raw(q));
   const rows: RankedRow[] = (res?.rows ?? res) as RankedRow[];
   return rows ?? [];
 }
@@ -193,7 +183,7 @@ async function loadClusterSizesByPostIds(ids: string[]) {
     .leftJoin(clusters, eq(clusters.id, clusterPosts.clusterId))
     .where(inArray(clusterPosts.postId, ids));
   const m = new Map<string, number>();
-  for (const r of rows as any[]) {
+  for (const r of rows) {
     if (!m.has(r.postId) && typeof r.size === "number") m.set(r.postId, r.size);
   }
   return m;
@@ -250,7 +240,7 @@ async function hydrateThumbnails(rows: Row[]) {
 }
 
 function mapToClientPost(
-  row: any,
+  row: Row & { _clusterSize?: number },
   imagesMap: Map<string, string>,
   ytMap: Map<string, string>,
   ytUrlMap?: Map<string, string>,
@@ -308,7 +298,7 @@ async function fetchClusterPage(offset: number) {
     : base.orderBy(desc(clusterTrends.hotScore));
 
   const rows = await ordered.limit(PAGE_SIZE).offset(offset);
-  if (rows.length === 0) return [] as any[];
+  if (rows.length === 0) return [];
 
   const ids = rows.map(r => r.repPostId).filter(Boolean) as string[];
   const postsRows = await db
@@ -334,10 +324,10 @@ async function fetchClusterPage(offset: number) {
   return repList.map(r => ({
     ...r,
     _clusterSize: rows.find(x => x.repPostId === r.id)?.size ?? 1,
-  })).map(r => mapToClientPost(r as any, imagesMap, ytMap, ytUrlMap, mp4UrlMap, xMap));
+  })).map(r => mapToClientPost(r, imagesMap, ytMap, ytUrlMap, mp4UrlMap, xMap));
 }
 
-async function fetchPage(offset: number, whereClause: any) {
+async function fetchPage(offset: number, whereClause: SQL | undefined) {
   const rows = await db
     .select({
       id: posts.id,
@@ -412,7 +402,7 @@ async function fetchFreshScorePage(offset: number, siteId?: string) {
     LIMIT ${PAGE_SIZE}
     OFFSET ${offset};
   `;
-  const res: any = await db.execute(sql.raw(q));
+  const res = await db.execute<Row>(sql.raw(q));
   const rows = (res?.rows ?? res) as Row[];
   return rows;
 }
@@ -430,10 +420,10 @@ async function buildGlobalPages(excludeIds: Set<string>, outputDirectory: string
       if (filteredRows.length === 0) { offset += PAGE_SIZE; continue; }
       const ids = filteredRows.map(r => r.id);
       const csize = await loadClusterSizesByPostIds(ids);
-      const augmented = filteredRows.map(r => ({ ...r, _clusterSize: csize.get(r.id) ?? 1 })) as any[];
+      const augmented = filteredRows.map(r => ({ ...r, _clusterSize: csize.get(r.id) ?? 1 }));
       const { imagesMap, ytMap, ytUrlMap, mp4UrlMap, xMap } = await hydrateThumbnails(augmented as Row[]);
       const mapped = augmented.map((r) => mapToClientPost(r, imagesMap, ytMap, ytUrlMap, mp4UrlMap, xMap));
-      const filtered = mapped.filter((r: any) => !excludeIds.has(r.id));
+      const filtered = mapped.filter((r) => !excludeIds.has(r.id));
       if (filtered.length === 0) { offset += PAGE_SIZE; continue; }
       const payload = { page, pageSize: PAGE_SIZE, range: RANGE, section: SECTION, generatedAt, posts: filtered };
       atomicWriteJson(path.join(outputDirectory, `page-${page}.json`), payload);
@@ -477,7 +467,7 @@ async function buildGlobalPages(excludeIds: Set<string>, outputDirectory: string
     // 기본(클러스터 기반: trending/top)
     const mapped = await fetchClusterPage(offset);
     if (mapped.length === 0) break;
-    const filtered = mapped.filter((r: any) => !excludeIds.has(r.id));
+    const filtered = mapped.filter((r) => !excludeIds.has(r.id));
     if (filtered.length === 0) { offset += PAGE_SIZE; continue; }
     const payload = { page, pageSize: PAGE_SIZE, range: RANGE, section: SECTION, generatedAt, posts: filtered };
     atomicWriteJson(path.join(outputDirectory, `page-${page}.json`), payload);

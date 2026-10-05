@@ -1,0 +1,75 @@
+/* Keep the existing palette and effects when compiling the UI with Tailwind 4. */
+@theme {
+  --color-amber-100: #fef3c7;
+  --color-amber-800: #92400e;
+  --color-blue-100: #dbeafe;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-cyan-100: #cffafe;
+  --color-cyan-800: #155e75;
+  --color-fuchsia-100: #fae8ff;
+  --color-fuchsia-800: #86198f;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-400: #9ca3af;
+  --color-gray-50: #f9fafb;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-green-100: #dcfce7;
+  --color-green-800: #166534;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-50: #eef2ff;
+  --color-indigo-700: #4338ca;
+  --color-indigo-800: #3730a3;
+  --color-lime-100: #ecfccb;
+  --color-lime-800: #3f6212;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  --color-orange-100: #ffedd5;
+  --color-orange-800: #9a3412;
+  --color-pink-100: #fce7f3;
+  --color-pink-800: #9d174d;
+  --color-purple-100: #f3e8ff;
+  --color-purple-800: #6b21a8;
+  --color-red-100: #fee2e2;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-50: #fef2f2;
+  --color-red-800: #991b1b;
+  --color-rose-100: #ffe4e6;
+  --color-rose-800: #9f1239;
+  --color-teal-100: #ccfbf1;
+  --color-teal-800: #115e59;
+  --color-yellow-100: #fef9c3;
+  --color-yellow-800: #854d0e;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --blur-sm: 4px;
+}
+
+/* Tailwind 4 preflight changed these defaults; preserve the existing UI. */
+@layer base {
+  ::before,
+  ::after,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-gray-400);
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+}

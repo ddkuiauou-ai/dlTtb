@@ -1,0 +1,28 @@
+
+Running 16 tests using 1 worker
+
+  ✓   1 tests/browser/feed.spec.ts:122:7 › correct coordinates and visible rows at width 390 (4.3s)
+  ✓   2 tests/browser/feed.spec.ts:122:7 › correct coordinates and visible rows at width 820 (3.0s)
+  ✓   3 tests/browser/feed.spec.ts:122:7 › correct coordinates and visible rows at width 1440 (3.0s)
+  ✓   4 tests/browser/feed.spec.ts:154:5 › late upper height changes preserve the reader while top readers stay at top (4.4s)
+  ✓   5 tests/browser/feed.spec.ts:229:5 › mixed measured rows remain positioned after append and return to the start (3.1s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:50:44.118Z] scroll:coarse { row: 40, count: 60, offset: 5349, margin: 629 }
+  ✓   6 tests/browser/feed.spec.ts:244:5 › direct page 3 access loads the target and recycled sentinels update the URL (3.0s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:50:47.123Z] scroll:coarse { row: 31, count: 60, offset: 4365, margin: 629 }
+  ✓   7 tests/browser/feed.spec.ts:266:5 › a detail return marker runs the actual restore hook and consumes its session keys (2.2s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:50:49.333Z] scroll:coarse { row: 31, count: 60, offset: 4365, margin: 629 }
+  ✓   8 tests/browser/feed.spec.ts:283:5 › detail restoration chooses the active feed card when an upper section has the same post ID (833ms)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:50:52.120Z] scroll:coarse { row: 15, count: 120, offset: 2444, margin: 629 }
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:50:52.366Z] scroll:coarse { row: 5, count: 40, offset: 1709, margin: 629 }
+  ✓   9 tests/browser/feed.spec.ts:319:5 › width and column changes preserve the same reading anchor (3.2s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:50:55.207Z] scroll:coarse { row: 15, count: 120, offset: 2444, margin: 629 }
+  ✓  10 tests/browser/feed.spec.ts:331:5 › wheel intent during a column change keeps the reader chosen position (3.6s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:50:57.105Z] scroll:coarse { row: 15, count: 40, offset: 3869, margin: 629 }
+  ✓  11 tests/browser/feed.spec.ts:345:5 › a pending append cannot revive column anchoring cancelled by a wheel event (1.8s)
+  ✓  12 tests/browser/feed.spec.ts:371:5 › read filtering and switching the list/grid path retain feed IDs (2.7s)
+  ✓  13 tests/browser/feed.spec.ts:394:5 › closing the actual modal clears the detail return marker (2.5s)
+  ✓  14 tests/browser/feed.spec.ts:599:7 › wheel intent cancels a pending url restoration before a delayed page arrives (2.1s)
+  ✓  15 tests/browser/feed.spec.ts:599:7 › wheel intent cancels a pending detail restoration before a delayed page arrives (2.1s)
+  ✓  16 tests/browser/feed.spec.ts:632:5 › a real middle mouse input cancels pending URL restoration (1.9s)
+
+  16 passed (49.7s)

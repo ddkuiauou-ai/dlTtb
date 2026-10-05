@@ -1,0 +1,210 @@
+{
+  "scope": "Local YAML and exact official action.yml input validation; no remote CI run",
+  "workflowSha256": "a0e7577e4f25930ed5fe76a0dde999708d998aaccfd6d66a694d51509e4b44dd",
+  "errors": [],
+  "actionSteps": [
+    {
+      "job": "build_singular",
+      "action": "actions/checkout@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_singular",
+      "action": "pnpm/action-setup@v6.1.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_singular",
+      "action": "actions/setup-node@v7.0.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_singular",
+      "action": "actions/upload-artifact@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_singular",
+      "action": "actions/upload-artifact@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_singular",
+      "action": "actions/upload-artifact@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main",
+      "action": "actions/checkout@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main",
+      "action": "pnpm/action-setup@v6.1.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main",
+      "action": "actions/setup-node@v7.0.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main",
+      "action": "actions/upload-artifact@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_categories",
+      "action": "actions/checkout@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_categories",
+      "action": "pnpm/action-setup@v6.1.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_categories",
+      "action": "actions/setup-node@v7.0.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_categories",
+      "action": "actions/upload-artifact@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_all_posts",
+      "action": "actions/checkout@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_all_posts",
+      "action": "pnpm/action-setup@v6.1.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_all_posts",
+      "action": "actions/setup-node@v7.0.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_all_posts",
+      "action": "actions/upload-artifact@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main_site",
+      "action": "actions/checkout@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main_site",
+      "action": "pnpm/action-setup@v6.1.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main_site",
+      "action": "actions/setup-node@v7.0.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main_site",
+      "action": "actions/download-artifact@v8.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main_site",
+      "action": "actions/download-artifact@v8.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main_site",
+      "action": "actions/download-artifact@v8.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main_site",
+      "action": "actions/download-artifact@v8.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main_site",
+      "action": "actions/download-artifact@v8.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "build_main_site",
+      "action": "actions/upload-artifact@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "deploy_main_site",
+      "action": "actions/checkout@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "deploy_main_site",
+      "action": "pnpm/action-setup@v6.1.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "deploy_main_site",
+      "action": "actions/setup-node@v7.0.0",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "deploy_main_site",
+      "action": "actions/download-artifact@v8.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "upload_json_to_r2",
+      "action": "actions/checkout@v7.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    },
+    {
+      "job": "upload_json_to_r2",
+      "action": "actions/download-artifact@v8.0.1",
+      "runtime": "node24",
+      "validInputs": true
+    }
+  ],
+  "manualDeploy": "github.event_name == 'workflow_dispatch' && inputs.deploy_site",
+  "deployDefault": "false",
+  "ciNodeVersions": [
+    "24"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-05",
+  "scope": "Fresh temporary directory with no existing node_modules, operational .env files or generated Next types",
+  "command": "Node24.19.0 + pnpm12.9.1 install --frozen-lockfile",
+  "installExitCode": 0,
+  "installationDurationSeconds": 7.8,
+  "manifestHashes": {
+    "package.json": "791927fbb79ce23f9de68a9670c041b13c94d2ae87f5f5670413bd97b1dabfcd",
+    "pnpm-lock.yaml": "9658d564dd7e73749e24a01054c089cf38e7adb79a6998418c159f335287beea",
+    "pnpm-workspace.yaml": "0ab0fba818b610c4ab2696378f44e56cee48960c49eee4b3ef86b74387775476"
+  },
+  "lockfileUnchanged": true,
+  "freshSourceTypecheck": {
+    "command": "tsc --noEmit --incremental false",
+    "jsx": "react-jsx",
+    "nextEnvPresent": false,
+    "nextBuildTypesPresent": false,
+    "exitCode": 0
+  },
+  "logs": [
+    "next16-clean-install-2026-10-05.log",
+    "next16-clean-source-types-2026-10-05.log"
+  ],
+  "temporaryInstallDirectoryRemoved": true
+}

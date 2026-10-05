@@ -3,7 +3,7 @@ import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle, ThumbsUp, Clock, Eye } from "lucide-react";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { Show } from "@clerk/react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -773,7 +773,7 @@ export const PostCard = React.memo(
     const Badges = () => {
       const isClustered = typeof post.clusterSize === "number" && post.clusterSize > 1;
       return (
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           {isClustered && post.clusterSize && (
             <Badge variant="secondary" className="bg-amber-100 text-amber-800 border-0">
               통합 +{post.clusterSize - 1}
@@ -784,26 +784,26 @@ export const PostCard = React.memo(
               variant="secondary"
               className={cn(
                 communityColors[post.communityLabel || post.community || ''] || "bg-gray-100 text-gray-800",
-                "hidden @[10rem]:inline-flex"
+                "hidden @min-[10rem]:inline-flex"
               )}
             >
               {post.communityLabel || post.community || ''}
             </Badge>
           )}
           {post.hasYouTube && (
-            <span title="YouTube 임베드" className="hidden @[10rem]:inline-flex items-center">
+            <span title="YouTube 임베드" className="hidden @min-[10rem]:inline-flex items-center">
               <BrandIcon name="youtube" useBrandColor className="h-3.5 w-3.5" />
             </span>
           )}
           {post.hasX && (
-            <span title="X 임베드" className="hidden @[10rem]:inline-flex items-center">
+            <span title="X 임베드" className="hidden @min-[10rem]:inline-flex items-center">
               <BrandIcon name="X" useBrandColor className="h-3.5 w-3.5" />
             </span>
           )}
           {post.hoverPlayerKind === 'mp4' && (
             <Badge
               variant="secondary"
-              className="hidden md:@[12rem]:inline-flex bg-gray-100 text-gray-800 border-0"
+              className="hidden md:@min-[12rem]:inline-flex bg-gray-100 text-gray-800 border-0"
             >
               MP4
             </Badge>
@@ -817,7 +817,7 @@ export const PostCard = React.memo(
       layout === "list"
         ? (
           <CardContent className="flex p-0 h-24">
-            <div className="relative flex-shrink-0 w-20 overflow-hidden rounded-l-lg">
+            <div className="relative shrink-0 w-20 overflow-hidden rounded-l-lg">
               <HoverCard openDelay={1000} onOpenChange={handleHoverCardOpenChange}>
                 <HoverCardTrigger asChild>
                   <InlinePreviewMedia
@@ -940,7 +940,7 @@ export const PostCard = React.memo(
       layout === "list"
         ? (
           <CardContent className="flex p-0 h-24">
-            <div className="relative flex-shrink-0 w-20 overflow-hidden rounded-l-lg">
+            <div className="relative shrink-0 w-20 overflow-hidden rounded-l-lg">
               <InlinePreviewMedia
                 post={post}
                 priority={isPriority}
@@ -1045,7 +1045,7 @@ export const PostCard = React.memo(
 
     return (
       <>
-        <SignedIn>
+        <Show when="signed-in">
           <Link
             id={`post-${post.id}`}
             href={`/posts/${post.id}`}
@@ -1058,8 +1058,8 @@ export const PostCard = React.memo(
               <SignedInCardContent />
             </Card>
           </Link>
-        </SignedIn>
-        <SignedOut>
+        </Show>
+        <Show when="signed-out">
           <a
             id={`post-${post.id}`}
             href={post.url}
@@ -1073,7 +1073,7 @@ export const PostCard = React.memo(
               <SignedOutCardContent />
             </Card>
           </a>
-        </SignedOut>
+        </Show>
       </>
     );
   });

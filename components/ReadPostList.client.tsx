@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
+import { Show } from '@clerk/react';
+import { READ_POSTS_KEY, subscribeToReadPosts } from '@/lib/read-marker';
 
 interface ReadRecord {
   ts: number;
@@ -21,8 +22,7 @@ export function ReadPostList() {
 
   const loadReadPosts = () => {
     try {
-      const KEY = "readPosts:v2";
-      const raw = localStorage.getItem(KEY);
+      const raw = localStorage.getItem(READ_POSTS_KEY);
       const parsed = raw ? JSON.parse(raw) : {};
       if (!parsed || typeof parsed !== "object") {
         setReadPosts([]);
@@ -52,11 +52,7 @@ export function ReadPostList() {
   };
 
   useEffect(() => {
-    loadReadPosts();
-    window.addEventListener("readPosts:updated", loadReadPosts);
-    return () => {
-      window.removeEventListener("readPosts:updated", loadReadPosts);
-    };
+    return subscribeToReadPosts(loadReadPosts);
   }, []);
 
   if (readPosts.length === 0) {
@@ -69,7 +65,7 @@ export function ReadPostList() {
       <ul className="space-y-2">
         {readPosts.map(post => (
           <li key={post.id}>
-            <SignedIn>
+            <Show when="signed-in">
               <Link
                 href={`/posts/${post.id}`}
                 className={linkClassName}
@@ -77,8 +73,8 @@ export function ReadPostList() {
               >
                 {post.title}
               </Link>
-            </SignedIn>
-            <SignedOut>
+            </Show>
+            <Show when="signed-out">
               <a
                 href={post.url ?? `/posts/${post.id}`}
                 className={linkClassName}
@@ -88,7 +84,7 @@ export function ReadPostList() {
               >
                 {post.title}
               </a>
-            </SignedOut>
+            </Show>
           </li>
         ))}
       </ul>

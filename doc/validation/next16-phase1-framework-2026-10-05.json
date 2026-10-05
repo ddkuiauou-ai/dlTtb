@@ -1,0 +1,512 @@
+{
+  "date": "2026-10-05",
+  "verifiedAt": "2026-10-05T04:35:40.649653+00:00",
+  "phase": "Next16 framework first; old TanStack retained only for this validation phase",
+  "nodeVersion": "24.19.0",
+  "versions": {
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "@tanstack/react-virtual": "3.13.12",
+    "typescript": "6.0.3",
+    "playwright": "1.62.1"
+  },
+  "sourceRoot": "/private/tmp/next16-phase1-source-nwxdoyee",
+  "browserSourceRoot": "/private/tmp/next16-phase1-browser-hp8arytt",
+  "businessEnvCopied": false,
+  "publicEnvironmentSelection": [
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY only; parsed without printing value"
+  ],
+  "database": {
+    "host": "127.0.0.1",
+    "port": 55442,
+    "user": "fixture",
+    "name": "iss_web_fixture",
+    "readOnlyBuild": true,
+    "businessWrites": 0
+  },
+  "types": {
+    "exitCode": 0,
+    "command": "Pinned Node24 direct TypeScript CLI --noEmit --incremental false"
+  },
+  "build": {
+    "exitCode": 0,
+    "command": "Pinned Node24 next build; default Turbopack",
+    "httpStatus": {
+      "/": 200,
+      "/test-feed/": 404,
+      "/api/test-feed/normal/manifest.json/": {
+        "initial": 308,
+        "afterCanonicalRedirect": 404
+      }
+    },
+    "prerenderedRoutes": [
+      {
+        "path": "/",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/"
+      },
+      {
+        "path": "/_global-error",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/_global-error"
+      },
+      {
+        "path": "/_not-found",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/_not-found"
+      },
+      {
+        "path": "/all",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/back",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/debate",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/etc",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/game",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/humor",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/info",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/it",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/news",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/politics",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/qna",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/review",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/search",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/search"
+      },
+      {
+        "path": "/shopping",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/sports",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/video",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/youtube",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      },
+      {
+        "path": "/zzal",
+        "initialRevalidateSeconds": false,
+        "srcRoute": "/[category]"
+      }
+    ],
+    "dynamicRoutes": [
+      {
+        "path": "/keywords/[keyword]",
+        "fallback": false
+      },
+      {
+        "path": "/posts/[id]",
+        "fallback": false
+      },
+      {
+        "path": "/[category]",
+        "fallback": false
+      }
+    ],
+    "comparisonToNext15": {
+      "all20BaselinePrerenderedRoutesRetained": true,
+      "additionalFrameworkRoute": "/_global-error",
+      "noISR": true,
+      "all3DynamicFallbacksFalse": true
+    }
+  },
+  "browser": {
+    "exitCode": 0,
+    "stats": {
+      "startTime": "2026-10-05T04:31:11.545Z",
+      "duration": 88676.49799999999,
+      "expected": 33,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "total": 33,
+    "passed": 33,
+    "failed": 0,
+    "retriesConfigured": 0,
+    "browserVersions": [
+      "151.0.7922.34"
+    ],
+    "cases": [
+      {
+        "name": "explicit margin 0 remains a failing positive-offset control",
+        "status": "passed",
+        "durationMs": 5629,
+        "retry": 0
+      },
+      {
+        "name": "correct coordinates and visible rows at width 390",
+        "status": "passed",
+        "durationMs": 2093,
+        "retry": 0
+      },
+      {
+        "name": "correct coordinates and visible rows at width 820",
+        "status": "passed",
+        "durationMs": 2364,
+        "retry": 0
+      },
+      {
+        "name": "correct coordinates and visible rows at width 1440",
+        "status": "passed",
+        "durationMs": 2514,
+        "retry": 0
+      },
+      {
+        "name": "initial empty, short, and tall upper sections retain every visible feed ID",
+        "status": "passed",
+        "durationMs": 2962,
+        "retry": 0
+      },
+      {
+        "name": "late upper height changes preserve the reader while top readers stay at top",
+        "status": "passed",
+        "durationMs": 3739,
+        "retry": 0
+      },
+      {
+        "name": "returning to top and growing upper content in the same task does not reuse a stale anchor",
+        "status": "passed",
+        "durationMs": 2089,
+        "retry": 0
+      },
+      {
+        "name": "append normal: IDs survive, deduplicate, and terminate",
+        "status": "passed",
+        "durationMs": 3001,
+        "retry": 0
+      },
+      {
+        "name": "append delayed: IDs survive, deduplicate, and terminate",
+        "status": "passed",
+        "durationMs": 4129,
+        "retry": 0
+      },
+      {
+        "name": "append duplicates: IDs survive, deduplicate, and terminate",
+        "status": "passed",
+        "durationMs": 2959,
+        "retry": 0
+      },
+      {
+        "name": "append missing: IDs survive, deduplicate, and terminate",
+        "status": "passed",
+        "durationMs": 2903,
+        "retry": 0
+      },
+      {
+        "name": "append error: IDs survive, deduplicate, and terminate",
+        "status": "passed",
+        "durationMs": 4268,
+        "retry": 0
+      },
+      {
+        "name": "append duplicate-only: IDs survive, deduplicate, and terminate",
+        "status": "passed",
+        "durationMs": 3038,
+        "retry": 0
+      },
+      {
+        "name": "mixed measured rows remain positioned after append and return to the start",
+        "status": "passed",
+        "durationMs": 2504,
+        "retry": 0
+      },
+      {
+        "name": "direct page 3 access loads the target and recycled sentinels update the URL",
+        "status": "passed",
+        "durationMs": 2762,
+        "retry": 0
+      },
+      {
+        "name": "a detail return marker runs the actual restore hook and consumes its session keys",
+        "status": "passed",
+        "durationMs": 1843,
+        "retry": 0
+      },
+      {
+        "name": "detail restoration chooses the active feed card when an upper section has the same post ID",
+        "status": "passed",
+        "durationMs": 697,
+        "retry": 0
+      },
+      {
+        "name": "width and column changes preserve the same reading anchor",
+        "status": "passed",
+        "durationMs": 3430,
+        "retry": 0
+      },
+      {
+        "name": "wheel intent during a column change keeps the reader chosen position",
+        "status": "passed",
+        "durationMs": 3444,
+        "retry": 0
+      },
+      {
+        "name": "a pending append cannot revive column anchoring cancelled by a wheel event",
+        "status": "passed",
+        "durationMs": 1628,
+        "retry": 0
+      },
+      {
+        "name": "read filtering and switching the list/grid path retain feed IDs",
+        "status": "passed",
+        "durationMs": 2295,
+        "retry": 0
+      },
+      {
+        "name": "closing the actual modal clears the detail return marker",
+        "status": "passed",
+        "durationMs": 2211,
+        "retry": 0
+      },
+      {
+        "name": "same-section empty seed adopts newly supplied first-page posts",
+        "status": "passed",
+        "durationMs": 1812,
+        "retry": 0
+      },
+      {
+        "name": "different JSON generation preserves current posts and presents an update notice",
+        "status": "passed",
+        "durationMs": 2097,
+        "retry": 0
+      },
+      {
+        "name": "natural upper cards and actual list/grid cards preserve coordinates and the reader",
+        "status": "passed",
+        "durationMs": 5192,
+        "retry": 0
+      },
+      {
+        "name": "a manual retry after a failed page appends the remaining generation once",
+        "status": "passed",
+        "durationMs": 5145,
+        "retry": 0
+      },
+      {
+        "name": "a late manifest from base A cannot replace base B generation or fetching state",
+        "status": "passed",
+        "durationMs": 1134,
+        "retry": 0
+      },
+      {
+        "name": "a stale captured base A navigation callback cannot lock base B loading",
+        "status": "passed",
+        "durationMs": 780,
+        "retry": 0
+      },
+      {
+        "name": "IndexedDB keeps ordered page payloads isolated across bases and generations",
+        "status": "passed",
+        "durationMs": 1797,
+        "retry": 0
+      },
+      {
+        "name": "denied IndexedDB still allows a fresh manifest from the network",
+        "status": "passed",
+        "durationMs": 1747,
+        "retry": 0
+      },
+      {
+        "name": "wheel intent cancels a pending url restoration before a delayed page arrives",
+        "status": "passed",
+        "durationMs": 1862,
+        "retry": 0
+      },
+      {
+        "name": "wheel intent cancels a pending detail restoration before a delayed page arrives",
+        "status": "passed",
+        "durationMs": 1837,
+        "retry": 0
+      },
+      {
+        "name": "a real middle mouse input cancels pending URL restoration",
+        "status": "passed",
+        "durationMs": 1619,
+        "retry": 0
+      }
+    ],
+    "uncaughtBrowserExceptions": "Each test asserts empty pageerror list; all passed",
+    "sourceFiles": [
+      {
+        "path": "components/infinite-post-list.tsx",
+        "sha256": "6f8b577dfd883b20446c55389a0ce706e3ff700b9cbc707d67f0f672f842903a",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "hooks/use-feed-scroll-margin.ts",
+        "sha256": "d3250f1eccc557e57c8549ffa153e38d6030fe2adcc313e08ffec3a69f65b33b",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "lib/virtual-feed-geometry.ts",
+        "sha256": "2dc123adcb114795f03c959ddd0c18595ed75b0298084e3a2770ccdf8c4d3b2a",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "lib/feed-refresh.ts",
+        "sha256": "d10e9417cb72370981cc270b9eb95376936ec963f6fd45d9b9c4f216f117f5f8",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "lib/idb-cache.ts",
+        "sha256": "6d4dfb7cc7171fff07ba664247ccb605637bcda36f0d2a0f09aa0cead31229b1",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "lib/page-cache-entry.ts",
+        "sha256": "69932deccdf3d600c1284460fb3e4a5721dce20cd24ce949217f7b1ba8a91498",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "context/modal-context.tsx",
+        "sha256": "c704d8e328862789026d5bb00644391f431bfa1668d540217531ed25426fc45b",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "components/post-grid.tsx",
+        "sha256": "4714d35f6ed66a843c68bc1bce3fb102c39ddc8b5408ba4d67f773f8780e1cd0",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "app/test-feed/page.tsx",
+        "sha256": "aff6230fc3cb6540744444d2844de9e9f3602960426fe0adffcffeb32fbc4675",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "app/test-feed/feed-fixture.tsx",
+        "sha256": "169b37ce3f9d32c60e4001c9e878d452d57991140f80afba51e5431d41e46649",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "lib/testing/feed-fixture.ts",
+        "sha256": "e8a41a88f1aa3fe2f3c38e4d00a32d799c47a0df2477f29a3632b4f3d3a04f6d",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      },
+      {
+        "path": "app/api/test-feed/[scenario]/[file]/route.ts",
+        "sha256": "3bc93182833eace2425b3c78135a77a381efcad81a148ec81fc9abeb375053d8",
+        "matchesProductionSource": true,
+        "matchesNext15Baseline": true
+      }
+    ],
+    "measurements": {
+      "sampleCount": 47,
+      "maxMissingVisibleIds": 0,
+      "maxDocumentOffsetVsMarginCssPx": 0,
+      "maxAssignedRowPlacementCssPx": 0,
+      "maxFullyMeasuredPrefixReferenceDifferenceCssPx": 66,
+      "prefixDifferencesOver1px": [
+        {
+          "case": "a detail return marker runs the actual restore hook and consumes its session keys",
+          "attachment": "final-coordinate-state",
+          "maxErrorCssPx": 66
+        },
+        {
+          "case": "detail restoration chooses the active feed card when an upper section has the same post ID",
+          "attachment": "final-coordinate-state",
+          "maxErrorCssPx": 66
+        }
+      ],
+      "duplicateIdScope": [
+        {
+          "case": "detail restoration chooses the active feed card when an upper section has the same post ID",
+          "activeFeedTop": 126,
+          "upperCopyTop": -4127,
+          "expectedAlignment": 126,
+          "documentLookupChoosesUpper": true,
+          "sourceLookupScope": "active feed root"
+        }
+      ]
+    },
+    "knownIncorrectZeroMarginControlExcludedFromCorrectedMeasurements": true,
+    "limitations": [
+      "Chromium viewport emulation; no physical mobile device, Safari, native scrollbar/autoscroll acceptance, or external media verification.",
+      "Geometry harness baseline supplies exact sizes and is independent of React/DOM/ResizeObserver integration.",
+      "Rows outside the viewport may be virtualized; viewport coverage is the criterion.",
+      "No global two-second stabilization SLA is measured or certified. The old-base race allows 20 seconds for real network/page commit; its original 10-second boundary failure is preserved."
+    ]
+  },
+  "externalAcceptance": {
+    "cloudflareDeployment": false,
+    "realClerkLogin": false,
+    "r2CredentialsOrExternalReads": false,
+    "physicalDeviceSafari": false,
+    "description": "Local synthetic fixture; login/domain/R2 production connectivity remains manual deployment acceptance."
+  },
+  "artifacts": {
+    "rawBrowserReport": "/Users/craigchoi/silla/is/doc/validation/next16-phase1-browser-results-2026-10-05.json",
+    "browserAttachmentsRoot": "/private/tmp/next16-phase1-browser-hp8arytt/test-results",
+    "browserHtmlReport": "/private/tmp/next16-phase1-browser-hp8arytt/playwright-report/index.html"
+  }
+}

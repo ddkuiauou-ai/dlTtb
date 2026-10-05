@@ -1,0 +1,145 @@
+{"mode":"build","sourceRoot":"/private/tmp/next16-final-build-8lzzeb5k","node":"/Users/craigchoi/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node","isolatedPostgres":"127.0.0.1:55442/iss_web_fixture","readOnlyDatabase":true,"businessEnvCopied":false,"cloudflareCredentialsProvided":false,"remotePreview":false}
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+App directory: /private/tmp/next16-final-build-8lzzeb5k
+Next.js version : 16.3.8
+@opennextjs/cloudflare version: 1.20.8
+@opennextjs/aws version: 4.1.7
+workerd compatibility_date: 2026-10-05
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+$ next build
+▲ Next.js 16.3.8 (Turbopack)
+✓ Running next.config.mjs took 10ms
+
+  Creating an optimized production build ...
+(node:27188) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/next16-final-build-8lzzeb5k/tailwind.config.ts?id=1791175546911 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/next16-final-build-8lzzeb5k/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✓ Compiled successfully in 5.0s
+  Running TypeScript ...
+
+  We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+  The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+  	- include was updated to add '.next/dev/types/**/*.ts'
+
+  The following mandatory changes were made to your tsconfig.json:
+
+  	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+
+  Finished TypeScript in 8.6s ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/23) ...
+[Clerk] NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_tes… (len=56). NODE_ENV=production
+[getMainPagePosts][ranked 3h] base=0 afterExclude=0
+[getMainPagePosts][ranked 3h] mv_diag { cnt: '0', max_ts: null }
+11111 [ranked|24h] 뉴스
+[getMainPagePosts][ranked 3h] post_trends_diag { max_ts: null }
+[getMainPagePosts][ranked 3h] merged=0
+[getMainPagePosts][ranked 3h] dedup=0 sites=0
+[getMainPagePosts][ranked 3h] final=0
+[Home][rising] posts=0 newUnique=0 duplicates=0 usedBefore=0
+[getMainPagePosts][ranked 24h] base=0 afterExclude=0
+[getMainPagePosts][ranked 24h] mv_diag { cnt: '0', max_ts: null }
+[getMainPagePosts][ranked 24h] post_trends_diag { max_ts: null }
+[getMainPagePosts][ranked 24h] merged=0
+[getMainPagePosts][ranked 24h] dedup=0 sites=0
+[getMainPagePosts][ranked 24h] final=0
+[Home][spotlight] posts=0 newUnique=0 duplicates=0 usedBefore=0
+[getClusterTopPosts][24h] base=0 (no clusters returned)
+[Home][todayClusters] posts=0 newUnique=0 duplicates=0 usedBefore=0
+[getClusterTopPosts][1w] base=0 (no clusters returned)
+[Home][weekClusters] posts=0 newUnique=0 duplicates=0 usedBefore=0
+[getMainPagePosts][fresh 24h] base=1 afterExclude=1
+[ getMainPagePosts][fresh 24h] dedup=1 final=1
+[Home][fresh] posts=1 newUnique=1 duplicates=0 usedBefore=0
+11111 [ranked|3h] 급상승 (최근 3시간 급상승)
+11111 [ranked|24h] 지금 주목 (선택한 범위 랭킹)
+11111 [ranked|24h] 오늘의 이슈 (24시간 이슈 묶음)
+11111 [ranked|1w] 이번주 (1주 이슈 묶음)
+11111 [fresh|24h] 최신
+  Generating static pages using 9 workers (5/23) 
+  Generating static pages using 9 workers (11/23) 
+11111 [ranked|24h] 전체
+11111 [ranked|1w] next16-fixture
+  Generating static pages using 9 workers (17/23) 
+✓ Generating static pages using 9 workers (23/23) in 478ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├   /[category]
+│ ├ ● /news
+│ ├ ● /humor
+│ ├ ● /info
+│ └ ● [+14 more paths]
+├ ƒ /api/test-feed/[scenario]/[file]
+├   /keywords/[keyword]
+│ └ ● /keywords/next16-fixture
+├   /posts/[id]
+│ └ ● /posts/upgrade-fixture-001
+├ ○ /search
+└ ƒ /test-feed
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+┌──────────────────────────────┐
+│ OpenNext — Generating bundle │
+└──────────────────────────────┘
+
+Bundling middleware function...
+Bundling static assets...
+Bundling cache assets...
+Building server function: default...
+Applying code patches: 2.236s
+# copyPackageTemplateFiles
+[35m⚙️ Bundling the OpenNext server...
+[0m
+✘ [ERROR] Could not resolve "pg-cloudflare"
+
+    .open-next/server-functions/default/node_modules/.pnpm/pg@8.23.1/node_modules/pg/lib/stream.js:41:41:
+      41 │     const { CloudflareSocket } = require('pg-cloudflare')
+         ╵                                          ~~~~~~~~~~~~~~~
+
+  The module "./dist/index.js" was not found on the file system:
+
+    .open-next/server-functions/default/node_modules/.pnpm/pg@8.23.1/node_modules/pg-cloudflare/package.json:16:19:
+      16 │         "require": "./dist/index.js"
+         ╵                    ~~~~~~~~~~~~~~~~~
+
+  You can mark the path "pg-cloudflare" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle. You can also surround this "require" call with a try/catch block to handle this failure at run-time instead of bundle-time.
+
+/private/tmp/next16-final-build-8lzzeb5k/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/lib/main.js:1467
+  let error = new Error(text);
+              ^
+
+Error: Build failed with 1 error:
+.open-next/server-functions/default/node_modules/.pnpm/pg@8.23.1/node_modules/pg/lib/stream.js:41:41: ERROR: Could not resolve "pg-cloudflare"
+    at failureErrorWithLog (/private/tmp/next16-final-build-8lzzeb5k/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/lib/main.js:1467:15)
+    at /private/tmp/next16-final-build-8lzzeb5k/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/lib/main.js:926:25
+    at runOnEndCallbacks (/private/tmp/next16-final-build-8lzzeb5k/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/lib/main.js:1307:45)
+    at buildResponseToResult (/private/tmp/next16-final-build-8lzzeb5k/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/lib/main.js:924:7)
+    at /private/tmp/next16-final-build-8lzzeb5k/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/lib/main.js:951:16
+    at responseCallbacks.<computed> (/private/tmp/next16-final-build-8lzzeb5k/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/lib/main.js:603:9)
+    at handleIncomingPacket (/private/tmp/next16-final-build-8lzzeb5k/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/lib/main.js:658:12)
+    at Socket.readFromStdout (/private/tmp/next16-final-build-8lzzeb5k/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:509:28)
+    at Socket.emit (node:domain:489:12) {
+  errors: [Getter/Setter],
+  warnings: [Getter/Setter]
+}
+
+Node.js v24.19.0

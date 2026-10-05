@@ -1,0 +1,43 @@
+`next lint` is deprecated and will be removed in Next.js 16.
+For new projects, use create-next-app to choose your preferred linter.
+For existing projects, migrate to the ESLint CLI:
+npx @next/codemod@canary next-lint-to-eslint-cli .
+
+
+./app/keywords/[keyword]/[[...range]]/KeywordFeed.client.tsx
+4:10  Warning: 'useEffect' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/search/SearchPageClient.tsx
+78:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/header-client.tsx
+26:10  Warning: 'selectedCommunity' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+29:10  Warning: 'showKeyHint' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/infinite-post-list.tsx
+956:6  Warning: React Hook useEffect has missing dependencies: 'sectionKey', 'seenIdsRef', and 'visiblePosts.length'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+1314:9  Warning: 'searchParams' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/post-grid.tsx
+41:3  Warning: 'perSiteCap' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/post-hover-card.tsx
+73:9  Warning: 'isShort' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/search-bar.tsx
+110:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/ui/calendar.tsx
+57:25  Warning: 'props' is defined but never used.  @typescript-eslint/no-unused-vars
+58:26  Warning: 'props' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/ui/glowing-shadow.tsx
+3:10  Warning: 'useEffect' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/ui/use-toast.ts
+21:7  Warning: 'actionTypes' is assigned a value but only used as a type.  @typescript-eslint/no-unused-vars
+
+./lib/feed-prefs.ts
+80:19  Warning: 'prev' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

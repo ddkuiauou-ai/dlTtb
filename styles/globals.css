@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss" source(none);
+@import "./tailwind-compat.css";
+@config "../tailwind.config.ts";
 
 body {
   font-family: Arial, Helvetica, sans-serif;

@@ -4,7 +4,7 @@ import type { PropsWithChildren } from "react";
 import { useRouter } from "next/navigation";
 import {
   ClerkProvider as ReactClerkProvider,
-} from "@clerk/clerk-react";
+} from "@clerk/react";
 
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 

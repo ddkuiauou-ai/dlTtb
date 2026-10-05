@@ -1,0 +1,50 @@
+{"mode":"browser","sourceRoot":"/private/tmp/next16-final-browser-h_8hjms4","node":"/Users/craigchoi/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node","isolatedPostgres":"127.0.0.1:55442/iss_web_fixture","readOnlyDatabase":true,"businessEnvCopied":false}
+
+Running 33 tests using 1 worker
+
+  ✓   1 tests/browser/feed.spec.ts:114:5 › explicit margin 0 remains a failing positive-offset control (5.9s)
+  ✓   2 tests/browser/feed.spec.ts:122:7 › correct coordinates and visible rows at width 390 (2.3s)
+  ✓   3 tests/browser/feed.spec.ts:122:7 › correct coordinates and visible rows at width 820 (2.6s)
+  ✓   4 tests/browser/feed.spec.ts:122:7 › correct coordinates and visible rows at width 1440 (2.8s)
+  ✓   5 tests/browser/feed.spec.ts:140:5 › initial empty, short, and tall upper sections retain every visible feed ID (1.9s)
+  ✓   6 tests/browser/feed.spec.ts:154:5 › late upper height changes preserve the reader while top readers stay at top (4.0s)
+  ✓   7 tests/browser/feed.spec.ts:180:5 › returning to top and growing upper content in the same task does not reuse a stale anchor (2.2s)
+  ✓   8 tests/browser/feed.spec.ts:195:7 › append normal: IDs survive, deduplicate, and terminate (3.1s)
+  ✓   9 tests/browser/feed.spec.ts:195:7 › append delayed: IDs survive, deduplicate, and terminate (4.0s)
+  ✓  10 tests/browser/feed.spec.ts:195:7 › append duplicates: IDs survive, deduplicate, and terminate (3.0s)
+  ✓  11 tests/browser/feed.spec.ts:195:7 › append missing: IDs survive, deduplicate, and terminate (3.1s)
+  ✓  12 tests/browser/feed.spec.ts:195:7 › append error: IDs survive, deduplicate, and terminate (4.6s)
+  ✓  13 tests/browser/feed.spec.ts:195:7 › append duplicate-only: IDs survive, deduplicate, and terminate (3.1s)
+  ✓  14 tests/browser/feed.spec.ts:229:5 › mixed measured rows remain positioned after append and return to the start (2.9s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:28.782Z] scroll:coarse { row: 40, count: 60, offset: 5349, margin: 629 }
+  ✓  15 tests/browser/feed.spec.ts:244:5 › direct page 3 access loads the target and recycled sentinels update the URL (2.8s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:31.447Z] scroll:coarse { row: 31, count: 60, offset: 4365, margin: 629 }
+  ✓  16 tests/browser/feed.spec.ts:266:5 › a detail return marker runs the actual restore hook and consumes its session keys (2.0s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:33.445Z] scroll:coarse { row: 31, count: 60, offset: 4365, margin: 629 }
+  ✓  17 tests/browser/feed.spec.ts:283:5 › detail restoration chooses the active feed card when an upper section has the same post ID (768ms)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:36.228Z] scroll:coarse { row: 15, count: 120, offset: 2444, margin: 629 }
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:36.405Z] scroll:coarse { row: 5, count: 40, offset: 1709, margin: 629 }
+  ✓  18 tests/browser/feed.spec.ts:319:5 › width and column changes preserve the same reading anchor (3.0s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:39.141Z] scroll:coarse { row: 15, count: 120, offset: 2444, margin: 629 }
+  ✓  19 tests/browser/feed.spec.ts:331:5 › wheel intent during a column change keeps the reader chosen position (3.6s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:40.934Z] scroll:coarse { row: 15, count: 40, offset: 3869, margin: 629 }
+  ✓  20 tests/browser/feed.spec.ts:345:5 › a pending append cannot revive column anchoring cancelled by a wheel event (1.7s)
+  ✓  21 tests/browser/feed.spec.ts:371:5 › read filtering and switching the list/grid path retain feed IDs (2.7s)
+  ✓  22 tests/browser/feed.spec.ts:394:5 › closing the actual modal clears the detail return marker (2.5s)
+  ✓  23 tests/browser/feed.spec.ts:406:5 › same-section empty seed adopts newly supplied first-page posts (2.0s)
+  ✓  24 tests/browser/feed.spec.ts:416:5 › different JSON generation preserves current posts and presents an update notice (2.2s)
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:55.802Z] scroll:coarse { row: 1, count: 60, offset: 631, margin: 76 }
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:55.879Z] scroll:coarse { row: 1, count: 60, offset: 631, margin: 76 }
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:56.248Z] scroll:coarse { row: 1, count: 60, offset: 189, margin: 76 }
+Fixture coarse jump: [InfinitePostList 2026-10-05T04:43:56.378Z] scroll:coarse { row: 1, count: 60, offset: 189, margin: 76 }
+  ✓  25 tests/browser/feed.spec.ts:439:5 › natural upper cards and actual list/grid cards preserve coordinates and the reader (5.3s)
+  ✓  26 tests/browser/feed.spec.ts:470:5 › a manual retry after a failed page appends the remaining generation once (4.5s)
+  ✓  27 tests/browser/feed.spec.ts:491:5 › a late manifest from base A cannot replace base B generation or fetching state (1.0s)
+  ✓  28 tests/browser/feed.spec.ts:521:5 › a stale captured base A navigation callback cannot lock base B loading (782ms)
+  ✓  29 tests/browser/feed.spec.ts:551:5 › IndexedDB keeps ordered page payloads isolated across bases and generations (1.9s)
+  ✓  30 tests/browser/feed.spec.ts:587:5 › denied IndexedDB still allows a fresh manifest from the network (1.9s)
+  ✓  31 tests/browser/feed.spec.ts:599:7 › wheel intent cancels a pending url restoration before a delayed page arrives (2.0s)
+  ✓  32 tests/browser/feed.spec.ts:599:7 › wheel intent cancels a pending detail restoration before a delayed page arrives (1.9s)
+  ✓  33 tests/browser/feed.spec.ts:632:5 › a real middle mouse input cancels pending URL restoration (1.7s)
+
+  33 passed (1.5m)

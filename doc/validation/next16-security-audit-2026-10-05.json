@@ -1,0 +1,2172 @@
+{
+  "snapshot": {
+    "date": "2026-10-05",
+    "timezone": "Asia/Seoul",
+    "gitHead": "35c645b52e46b3456127809b0233cf3839cc6fa1",
+    "scope": "is",
+    "source": "npm registry read-only queries; no dependency changes"
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 12,
+      "moderate": 52,
+      "high": 69,
+      "critical": 4
+    },
+    "dependencies": 828,
+    "devDependencies": 0,
+    "optionalDependencies": 0,
+    "totalDependencies": 828
+  },
+  "advisories": [
+    {
+      "name": "esbuild",
+      "severity": "moderate",
+      "title": "esbuild enables any website to send any requests to the development server and read the response",
+      "vulnerable": "<=0.24.2",
+      "patched": ">=0.25.0",
+      "url": "https://github.com/advisories/GHSA-67mh-4wv8-2f99",
+      "findings": [
+        {
+          "version": "0.15.18",
+          "paths": [
+            ".>@cloudflare/next-on-pages>esbuild"
+          ]
+        },
+        {
+          "version": "0.18.20",
+          "paths": [
+            ".>drizzle-kit>@esbuild-kit/esm-loader>@esbuild-kit/core-utils>esbuild"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cookie",
+      "severity": "low",
+      "title": "cookie accepts cookie name, path, and domain with out of bounds characters",
+      "vulnerable": "<0.7.0",
+      "patched": ">=0.7.0",
+      "url": "https://github.com/advisories/GHSA-pxg6-pf52-xh8x",
+      "findings": [
+        {
+          "version": "0.5.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>cookie"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "glob",
+      "severity": "high",
+      "title": "glob CLI: Command injection via -c/--cmd executes matches with shell:true",
+      "vulnerable": ">=10.2.0 <10.5.0",
+      "patched": ">=10.5.0",
+      "url": "https://github.com/advisories/GHSA-5j98-mcp5-4vw2",
+      "findings": [
+        {
+          "version": "10.4.5",
+          "paths": [
+            ".>tailwindcss>sucrase>glob"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "critical",
+      "title": "Next.js is vulnerable to RCE in React flight protocol",
+      "vulnerable": ">=15.5.0-canary.0 <15.5.7",
+      "patched": ">=15.5.7",
+      "url": "https://github.com/advisories/GHSA-9qr9-h5gf-34mp",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next Server Actions Source Code Exposure ",
+      "vulnerable": ">=15.5.1-canary.0 <15.5.8",
+      "patched": ">=15.5.8",
+      "url": "https://github.com/advisories/GHSA-w37m-7fhw-fmv9",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next Vulnerable to Denial of Service with Server Components",
+      "vulnerable": ">=15.5.1-canary.0 <15.5.8",
+      "patched": ">=15.5.8",
+      "url": "https://github.com/advisories/GHSA-mwv6-3258-q52c",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wrangler",
+      "severity": "high",
+      "title": "Wrangler affected by OS Command Injection in `wrangler pages deploy`",
+      "vulnerable": ">=4.0.0 <4.59.1",
+      "patched": ">=4.59.1",
+      "url": "https://github.com/advisories/GHSA-36p8-mvp6-cv38",
+      "findings": [
+        {
+          "version": "4.40.3",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "Undici has an unbounded decompression chain in HTTP responses on Node.js Fetch API via Content-Encoding leads to resource exhaustion",
+      "vulnerable": "<6.23.0",
+      "patched": ">=6.23.0",
+      "url": "https://github.com/advisories/GHSA-g9mf-h72j-4rw9",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "Undici has an unbounded decompression chain in HTTP responses on Node.js Fetch API via Content-Encoding leads to resource exhaustion",
+      "vulnerable": ">=7.0.0 <7.18.2",
+      "patched": ">=7.18.2",
+      "url": "https://github.com/advisories/GHSA-g9mf-h72j-4rw9",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js self-hosted applications vulnerable to DoS via Image Optimizer remotePatterns configuration",
+      "vulnerable": ">=10.0.0 <15.5.10",
+      "patched": ">=15.5.10",
+      "url": "https://github.com/advisories/GHSA-9g9p-9gw9-jx7f",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js HTTP request deserialization can lead to DoS when using insecure React Server Components",
+      "vulnerable": ">=15.5.1-canary.0 <15.5.10",
+      "patched": ">=15.5.10",
+      "url": "https://github.com/advisories/GHSA-h25m-26qc-wcjf",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "js-yaml",
+      "severity": "moderate",
+      "title": "js-yaml has prototype pollution in merge (<<)",
+      "vulnerable": ">=4.0.0 <4.1.1",
+      "patched": ">=4.1.1",
+      "url": "https://github.com/advisories/GHSA-mh29-5h37-fv8m",
+      "findings": [
+        {
+          "version": "4.1.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>js-yaml"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "minimatch",
+      "severity": "high",
+      "title": "minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern",
+      "vulnerable": "<3.1.3",
+      "patched": ">=3.1.3",
+      "url": "https://github.com/advisories/GHSA-3ppc-4f35-3m26",
+      "findings": [
+        {
+          "version": "3.1.2",
+          "paths": [
+            ".>eslint>minimatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "minimatch",
+      "severity": "high",
+      "title": "minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern",
+      "vulnerable": ">=9.0.0 <9.0.6",
+      "patched": ">=9.0.6",
+      "url": "https://github.com/advisories/GHSA-3ppc-4f35-3m26",
+      "findings": [
+        {
+          "version": "9.0.5",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "minimatch",
+      "severity": "high",
+      "title": "minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments",
+      "vulnerable": "<3.1.3",
+      "patched": ">=3.1.3",
+      "url": "https://github.com/advisories/GHSA-7r86-cg39-jmmj",
+      "findings": [
+        {
+          "version": "3.1.2",
+          "paths": [
+            ".>eslint>minimatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "minimatch",
+      "severity": "high",
+      "title": "minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments",
+      "vulnerable": ">=9.0.0 <9.0.7",
+      "patched": ">=9.0.7",
+      "url": "https://github.com/advisories/GHSA-7r86-cg39-jmmj",
+      "findings": [
+        {
+          "version": "9.0.5",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "minimatch",
+      "severity": "high",
+      "title": "minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions",
+      "vulnerable": "<3.1.4",
+      "patched": ">=3.1.4",
+      "url": "https://github.com/advisories/GHSA-23c5-xmqv-rm74",
+      "findings": [
+        {
+          "version": "3.1.2",
+          "paths": [
+            ".>eslint>minimatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "minimatch",
+      "severity": "high",
+      "title": "minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions",
+      "vulnerable": ">=9.0.0 <9.0.7",
+      "patched": ">=9.0.7",
+      "url": "https://github.com/advisories/GHSA-23c5-xmqv-rm74",
+      "findings": [
+        {
+          "version": "9.0.5",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ajv",
+      "severity": "moderate",
+      "title": "ajv has ReDoS when using `$data` option",
+      "vulnerable": "<6.14.0",
+      "patched": ">=6.14.0",
+      "url": "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6",
+      "findings": [
+        {
+          "version": "6.12.6",
+          "paths": [
+            ".>eslint>ajv"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flatted",
+      "severity": "high",
+      "title": "flatted vulnerable to unbounded recursion DoS in parse() revive phase",
+      "vulnerable": "<3.4.0",
+      "patched": ">=3.4.0",
+      "url": "https://github.com/advisories/GHSA-25h7-pfq9-p65f",
+      "findings": [
+        {
+          "version": "3.3.3",
+          "paths": [
+            ".>eslint>file-entry-cache>flat-cache>flatted"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "high",
+      "title": "Undici: Malicious WebSocket 64-bit length overflows parser and crashes the client",
+      "vulnerable": ">=7.0.0 <7.24.0",
+      "patched": ">=7.24.0",
+      "url": "https://github.com/advisories/GHSA-f269-vfmq-vjvj",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "Undici has an HTTP Request/Response Smuggling issue",
+      "vulnerable": ">=7.0.0 <7.24.0",
+      "patched": ">=7.24.0",
+      "url": "https://github.com/advisories/GHSA-2mjp-6q6p-2qxm",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "Undici has an HTTP Request/Response Smuggling issue",
+      "vulnerable": "<6.24.0",
+      "patched": ">=6.24.0",
+      "url": "https://github.com/advisories/GHSA-2mjp-6q6p-2qxm",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "high",
+      "title": "Undici has Unbounded Memory Consumption in WebSocket permessage-deflate Decompression",
+      "vulnerable": ">=7.0.0 <7.24.0",
+      "patched": ">=7.24.0",
+      "url": "https://github.com/advisories/GHSA-vrm6-8vpv-qv8q",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "high",
+      "title": "Undici has Unbounded Memory Consumption in WebSocket permessage-deflate Decompression",
+      "vulnerable": "<6.24.0",
+      "patched": ">=6.24.0",
+      "url": "https://github.com/advisories/GHSA-vrm6-8vpv-qv8q",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "high",
+      "title": "Undici has Unhandled Exception in WebSocket Client Due to Invalid server_max_window_bits Validation",
+      "vulnerable": ">=7.0.0 <7.24.0",
+      "patched": ">=7.24.0",
+      "url": "https://github.com/advisories/GHSA-v9p9-hfj2-hcw8",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "high",
+      "title": "Undici has Unhandled Exception in WebSocket Client Due to Invalid server_max_window_bits Validation",
+      "vulnerable": "<6.24.0",
+      "patched": ">=6.24.0",
+      "url": "https://github.com/advisories/GHSA-v9p9-hfj2-hcw8",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "Undici has CRLF Injection in undici via `upgrade` option",
+      "vulnerable": ">=7.0.0 <7.24.0",
+      "patched": ">=7.24.0",
+      "url": "https://github.com/advisories/GHSA-4992-7rv2-5pvq",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "Undici has CRLF Injection in undici via `upgrade` option",
+      "vulnerable": "<6.24.0",
+      "patched": ">=6.24.0",
+      "url": "https://github.com/advisories/GHSA-4992-7rv2-5pvq",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js: HTTP request smuggling in rewrites",
+      "vulnerable": ">=9.5.0 <15.5.13",
+      "patched": ">=15.5.13",
+      "url": "https://github.com/advisories/GHSA-ggv3-7p47-pfv8",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js: Unbounded next/image disk cache growth can exhaust storage",
+      "vulnerable": ">=10.0.0 <15.5.14",
+      "patched": ">=15.5.14",
+      "url": "https://github.com/advisories/GHSA-3x4c-7xq6-9pq8",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flatted",
+      "severity": "high",
+      "title": "Prototype Pollution via parse() in NodeJS flatted",
+      "vulnerable": "<=3.4.1",
+      "patched": ">=3.4.2",
+      "url": "https://github.com/advisories/GHSA-rf6f-7fwh-wjgh",
+      "findings": [
+        {
+          "version": "3.3.3",
+          "paths": [
+            ".>eslint>file-entry-cache>flat-cache>flatted"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "moderate",
+      "title": "brace-expansion: Zero-step sequence causes process hang and memory exhaustion",
+      "vulnerable": "<1.1.13",
+      "patched": ">=1.1.13",
+      "url": "https://github.com/advisories/GHSA-f886-m6hf-6m8v",
+      "findings": [
+        {
+          "version": "1.1.12",
+          "paths": [
+            ".>eslint>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "moderate",
+      "title": "brace-expansion: Zero-step sequence causes process hang and memory exhaustion",
+      "vulnerable": ">=2.0.0 <2.0.3",
+      "patched": ">=2.0.3",
+      "url": "https://github.com/advisories/GHSA-f886-m6hf-6m8v",
+      "findings": [
+        {
+          "version": "2.0.2",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "picomatch",
+      "severity": "moderate",
+      "title": "Picomatch: Method Injection in POSIX Character Classes causes incorrect Glob Matching",
+      "vulnerable": "<2.3.2",
+      "patched": ">=2.3.2",
+      "url": "https://github.com/advisories/GHSA-3v7f-55p6-f55p",
+      "findings": [
+        {
+          "version": "2.3.1",
+          "paths": [
+            ".>@cloudflare/next-on-pages>chokidar>anymatch>picomatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "picomatch",
+      "severity": "moderate",
+      "title": "Picomatch: Method Injection in POSIX Character Classes causes incorrect Glob Matching",
+      "vulnerable": ">=4.0.0 <4.0.4",
+      "patched": ">=4.0.4",
+      "url": "https://github.com/advisories/GHSA-3v7f-55p6-f55p",
+      "findings": [
+        {
+          "version": "4.0.3",
+          "paths": [
+            ".>eslint-config-next>eslint-import-resolver-typescript>tinyglobby>picomatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "picomatch",
+      "severity": "high",
+      "title": "Picomatch has a ReDoS vulnerability via extglob quantifiers",
+      "vulnerable": "<2.3.2",
+      "patched": ">=2.3.2",
+      "url": "https://github.com/advisories/GHSA-c2c7-rcm5-vvqj",
+      "findings": [
+        {
+          "version": "2.3.1",
+          "paths": [
+            ".>@cloudflare/next-on-pages>chokidar>anymatch>picomatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "picomatch",
+      "severity": "high",
+      "title": "Picomatch has a ReDoS vulnerability via extglob quantifiers",
+      "vulnerable": ">=4.0.0 <4.0.4",
+      "patched": ">=4.0.4",
+      "url": "https://github.com/advisories/GHSA-c2c7-rcm5-vvqj",
+      "findings": [
+        {
+          "version": "4.0.3",
+          "paths": [
+            ".>eslint-config-next>eslint-import-resolver-typescript>tinyglobby>picomatch"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "yaml",
+      "severity": "moderate",
+      "title": "yaml is vulnerable to Stack Overflow via deeply nested YAML collections",
+      "vulnerable": ">=2.0.0 <2.8.3",
+      "patched": ">=2.8.3",
+      "url": "https://github.com/advisories/GHSA-48c2-rrv3-qjmp",
+      "findings": [
+        {
+          "version": "2.8.0",
+          "paths": [
+            ".>tailwindcss>postcss-load-config>yaml"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lodash",
+      "severity": "high",
+      "title": "lodash vulnerable to Code Injection via `_.template` imports key names",
+      "vulnerable": ">=4.0.0 <=4.17.23",
+      "patched": ">=4.18.0",
+      "url": "https://github.com/advisories/GHSA-r5fr-rjxr-66jc",
+      "findings": [
+        {
+          "version": "4.17.21",
+          "paths": [
+            ".>recharts>lodash"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lodash",
+      "severity": "moderate",
+      "title": "lodash vulnerable to Prototype Pollution via array path bypass in `_.unset` and `_.omit`",
+      "vulnerable": "<=4.17.23",
+      "patched": ">=4.18.0",
+      "url": "https://github.com/advisories/GHSA-f23m-r3pf-42rh",
+      "findings": [
+        {
+          "version": "4.17.21",
+          "paths": [
+            ".>recharts>lodash"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "defu",
+      "severity": "high",
+      "title": "defu: Prototype pollution via `__proto__` key in defaults argument",
+      "vulnerable": "<=6.1.4",
+      "patched": ">=6.1.5",
+      "url": "https://github.com/advisories/GHSA-737v-mqg7-c878",
+      "findings": [
+        {
+          "version": "6.1.4",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>unenv>defu"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "drizzle-orm",
+      "severity": "high",
+      "title": "Drizzle ORM has SQL injection via improperly escaped SQL identifiers",
+      "vulnerable": "<0.45.2",
+      "patched": ">=0.45.2",
+      "url": "https://github.com/advisories/GHSA-gpj5-g38j-94v9",
+      "findings": [
+        {
+          "version": "0.44.4",
+          "paths": [
+            ".>drizzle-orm"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js has a Denial of Service with Server Components",
+      "vulnerable": ">=13.0.0 <15.5.15",
+      "patched": ">=15.5.15",
+      "url": "https://github.com/advisories/GHSA-q4gf-8mx6-v5v3",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "postcss",
+      "severity": "moderate",
+      "title": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output",
+      "vulnerable": "<8.5.10",
+      "patched": ">=8.5.10",
+      "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+      "findings": [
+        {
+          "version": "8.5.6",
+          "paths": [
+            ".>postcss"
+          ]
+        },
+        {
+          "version": "8.4.31",
+          "paths": [
+            ".>next>postcss"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@clerk/shared",
+      "severity": "critical",
+      "title": "Official Clerk JavaScript SDKs: Middleware-based route protection bypass",
+      "vulnerable": ">=3.0.0-canary.v20250225091530 <3.47.4",
+      "patched": ">=3.47.4",
+      "url": "https://github.com/advisories/GHSA-vqx2-fgx2-5wq9",
+      "findings": [
+        {
+          "version": "3.25.0",
+          "paths": [
+            ".>@clerk/clerk-react>@clerk/shared"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js Vulnerable to Denial of Service with Server Components",
+      "vulnerable": ">=13.0.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-8h8q-6873-q5fj",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js has a Middleware / Proxy bypass in App Router applications via segment-prefetch routes - Incomplete Fix Follow-Up",
+      "vulnerable": ">=15.2.0 <15.5.18",
+      "patched": ">=15.5.18",
+      "url": "https://github.com/advisories/GHSA-26hh-7cqf-hhc6",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "low",
+      "title": "Next.js's Middleware / Proxy redirects can be cache-poisoned",
+      "vulnerable": ">=12.2.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-3g8h-86w9-wvmq",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js vulnerable to cross-site scripting in App Router applications using CSP nonces",
+      "vulnerable": ">=13.4.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-ffhc-5mcf-pf4q",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "low",
+      "title": "Next.js vulnerable to cache poisoning via collisions in React Server Component cache-busting",
+      "vulnerable": ">=13.4.6 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-vfv6-92ff-j949",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js has cross-site scripting in beforeInteractive scripts with untrusted input",
+      "vulnerable": ">=13.0.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-gx5p-jg67-6x7h",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js vulnerable to Denial of Service via connection exhaustion in applications using Cache Components",
+      "vulnerable": ">=15.0.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-mg66-mrh9-m8jx",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js has a Denial of Service in the Image Optimization API",
+      "vulnerable": ">=10.0.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-h64f-5h5j-jqjh",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js vulnerable to server-side request forgery in applications using WebSocket upgrades",
+      "vulnerable": ">=13.4.13 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-c4j6-fc7j-m34r",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js has a Middleware / Proxy bypass through dynamic route parameter injection",
+      "vulnerable": ">=15.4.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-492v-c6pp-mqqv",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js vulnerable to cache poisoning in React Server Component responses",
+      "vulnerable": ">=14.2.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-wfc6-r584-vfw7",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js has a Middleware / Proxy bypass in App Router applications via segment-prefetch routes",
+      "vulnerable": ">=15.2.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-267c-6grr-h53f",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js has a Middleware / Proxy bypass in Pages Router applications using i18n",
+      "vulnerable": ">=12.2.0 <15.5.16",
+      "patched": ">=15.5.16",
+      "url": "https://github.com/advisories/GHSA-36qx-fr4f-26g5",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ws",
+      "severity": "moderate",
+      "title": "ws: Uninitialized memory disclosure",
+      "vulnerable": ">=8.0.0 <8.20.1",
+      "patched": ">=8.20.1",
+      "url": "https://github.com/advisories/GHSA-58qx-3vcg-4xpx",
+      "findings": [
+        {
+          "version": "8.18.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>ws"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@clerk/clerk-react",
+      "severity": "high",
+      "title": "Clerk has an authorization bypass when combining organization, billing, or reverification checks",
+      "vulnerable": ">=5.9.0 <=5.61.5",
+      "patched": ">=5.61.6",
+      "url": "https://github.com/advisories/GHSA-w24r-5266-9c3c",
+      "findings": [
+        {
+          "version": "5.47.0",
+          "paths": [
+            ".>@clerk/clerk-react"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@clerk/shared",
+      "severity": "high",
+      "title": "Clerk has an authorization bypass when combining organization, billing, or reverification checks",
+      "vulnerable": ">=3.0.0 <=3.47.4",
+      "patched": ">=3.47.5",
+      "url": "https://github.com/advisories/GHSA-w24r-5266-9c3c",
+      "findings": [
+        {
+          "version": "3.25.0",
+          "paths": [
+            ".>@clerk/clerk-react>@clerk/shared"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lodash",
+      "severity": "moderate",
+      "title": "Lodash has Prototype Pollution Vulnerability in `_.unset` and `_.omit` functions",
+      "vulnerable": ">=4.0.0 <=4.17.22",
+      "patched": ">=4.17.23",
+      "url": "https://github.com/advisories/GHSA-xxjr-mmjv-4gpg",
+      "findings": [
+        {
+          "version": "4.17.21",
+          "paths": [
+            ".>recharts>lodash"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "js-cookie",
+      "severity": "high",
+      "title": "JavaScript Cookie: Per-instance prototype hijack in assign() enables cookie-attribute injection",
+      "vulnerable": "<=3.0.5",
+      "patched": ">=3.0.7",
+      "url": "https://github.com/advisories/GHSA-qjx8-664m-686j",
+      "findings": [
+        {
+          "version": "3.0.5",
+          "paths": [
+            ".>@clerk/clerk-react>@clerk/shared>js-cookie"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to HTTP header injection via Set-Cookie percent-decoding",
+      "vulnerable": ">=7.0.0 <7.28.0",
+      "patched": ">=7.28.0",
+      "url": "https://github.com/advisories/GHSA-p88m-4jfj-68fv",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to HTTP header injection via Set-Cookie percent-decoding",
+      "vulnerable": "<6.27.0",
+      "patched": ">=6.27.0",
+      "url": "https://github.com/advisories/GHSA-p88m-4jfj-68fv",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "high",
+      "title": "undici WebSocket client vulnerable to denial of service via fragment count bypass",
+      "vulnerable": ">=7.0.0 <7.28.0",
+      "patched": ">=7.28.0",
+      "url": "https://github.com/advisories/GHSA-vxpw-j846-p89q",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "high",
+      "title": "undici WebSocket client vulnerable to denial of service via fragment count bypass",
+      "vulnerable": "<6.27.0",
+      "patched": ">=6.27.0",
+      "url": "https://github.com/advisories/GHSA-vxpw-j846-p89q",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "low",
+      "title": "undici vulnerable to Set-Cookie SameSite attribute downgrade via permissive substring matching",
+      "vulnerable": ">=7.0.0 <7.28.0",
+      "patched": ">=7.28.0",
+      "url": "https://github.com/advisories/GHSA-g8m3-5g58-fq7m",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "low",
+      "title": "undici vulnerable to Set-Cookie SameSite attribute downgrade via permissive substring matching",
+      "vulnerable": "<6.27.0",
+      "patched": ">=6.27.0",
+      "url": "https://github.com/advisories/GHSA-g8m3-5g58-fq7m",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to cross-user information disclosure via shared cache whitespace bypass",
+      "vulnerable": ">=7.0.0 <7.28.0",
+      "patched": ">=7.28.0",
+      "url": "https://github.com/advisories/GHSA-pr7r-676h-xcf6",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "js-yaml",
+      "severity": "moderate",
+      "title": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+      "vulnerable": ">=4.0.0 <=4.1.1",
+      "patched": ">=4.2.0",
+      "url": "https://github.com/advisories/GHSA-h67p-54hq-rp68",
+      "findings": [
+        {
+          "version": "4.1.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>js-yaml"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ws",
+      "severity": "high",
+      "title": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
+      "vulnerable": ">=8.0.0 <8.21.0",
+      "patched": ">=8.21.0",
+      "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
+      "findings": [
+        {
+          "version": "8.18.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>ws"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+      "vulnerable": ">=2.0.0 <2.1.2",
+      "patched": ">=2.1.2",
+      "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+      "findings": [
+        {
+          "version": "2.0.2",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+      "vulnerable": "<1.1.16",
+      "patched": ">=1.1.16",
+      "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+      "findings": [
+        {
+          "version": "1.1.12",
+          "paths": [
+            ".>eslint>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "js-yaml",
+      "severity": "high",
+      "title": "js-yaml: YAML merge-key chains can force quadratic CPU consumption",
+      "vulnerable": ">=4.0.0 <4.3.0",
+      "patched": ">=4.3.0",
+      "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m",
+      "findings": [
+        {
+          "version": "4.1.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>js-yaml"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sharp",
+      "severity": "high",
+      "title": "sharp inherited vulnerabilities in libvips: CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591",
+      "vulnerable": "<0.35.0",
+      "patched": ">=0.35.0",
+      "url": "https://github.com/advisories/GHSA-f88m-g3jw-g9cj",
+      "findings": [
+        {
+          "version": "0.33.5",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>sharp"
+          ]
+        },
+        {
+          "version": "0.34.4",
+          "paths": [
+            ".>next>sharp"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js: Denial of Service in App Router using Server Actions",
+      "vulnerable": ">=13.0.0 <15.5.21",
+      "patched": ">=15.5.21",
+      "url": "https://github.com/advisories/GHSA-m99w-x7hq-7vfj",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js: Server-Side Request Forgery in Server Actions on custom servers",
+      "vulnerable": ">=14.1.1 <15.5.21",
+      "patched": ">=15.5.21",
+      "url": "https://github.com/advisories/GHSA-89xv-2m56-2m9x",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js: Cache confusion of response bodies for requests with bodies",
+      "vulnerable": ">=13.0.0 <15.5.21",
+      "patched": ">=15.5.21",
+      "url": "https://github.com/advisories/GHSA-68g3-v927-f742",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js: Cache confusion of response bodies for requests with bodies containing invalid UTF-8 byte sequences",
+      "vulnerable": ">=13.0.0 <15.5.21",
+      "patched": ">=15.5.21",
+      "url": "https://github.com/advisories/GHSA-4633-3j49-mh5q",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js: Unbounded Server Action payload in Edge runtime",
+      "vulnerable": ">=13.0.0 <15.5.21",
+      "patched": ">=15.5.21",
+      "url": "https://github.com/advisories/GHSA-4c39-4ccg-62r3",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "high",
+      "title": "Next.js: Server-Side Request Forgery in rewrites via attacker-controlled destination hostname",
+      "vulnerable": ">=12.0.0 <15.5.21",
+      "patched": ">=15.5.21",
+      "url": "https://github.com/advisories/GHSA-p9j2-gv94-2wf4",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js: Denial of Service in the Image Optimization API using SVGs",
+      "vulnerable": ">=15.5.0 <15.5.21",
+      "patched": ">=15.5.21",
+      "url": "https://github.com/advisories/GHSA-q8wf-6r8g-63ch",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "moderate",
+      "title": "Next.js: Unauthenticated disclosure of internal Server Function endpoints",
+      "vulnerable": ">=13.0.0 <15.5.21",
+      "patched": ">=15.5.21",
+      "url": "https://github.com/advisories/GHSA-955p-x3mx-jcvp",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "postcss",
+      "severity": "high",
+      "title": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments",
+      "vulnerable": "<=8.5.11",
+      "patched": ">=8.5.12",
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "findings": [
+        {
+          "version": "8.5.6",
+          "paths": [
+            ".>postcss"
+          ]
+        },
+        {
+          "version": "8.4.31",
+          "paths": [
+            ".>next>postcss"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+      "vulnerable": "<1.1.17",
+      "patched": ">=1.1.17",
+      "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+      "findings": [
+        {
+          "version": "1.1.12",
+          "paths": [
+            ".>eslint>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+      "vulnerable": ">=2.0.0 <2.1.3",
+      "patched": ">=2.1.3",
+      "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+      "findings": [
+        {
+          "version": "2.0.2",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "postcss",
+      "severity": "moderate",
+      "title": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset",
+      "vulnerable": "<=8.5.22",
+      "patched": ">=8.5.23",
+      "url": "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+      "findings": [
+        {
+          "version": "8.5.6",
+          "paths": [
+            ".>postcss"
+          ]
+        },
+        {
+          "version": "8.4.31",
+          "paths": [
+            ".>next>postcss"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to downstream response desynchronization via retry interceptor",
+      "vulnerable": ">=7.0.0 <7.29.0",
+      "patched": ">=7.29.0",
+      "url": "https://github.com/advisories/GHSA-8xcm-r25x-g524",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to downstream response desynchronization via retry interceptor",
+      "vulnerable": "<6.28.0",
+      "patched": ">=6.28.0",
+      "url": "https://github.com/advisories/GHSA-8xcm-r25x-g524",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "high",
+      "title": "undici vulnerable to cross-user information disclosure and parse-time crash via degenerate private cache directives",
+      "vulnerable": ">=7.0.0 <7.29.0",
+      "patched": ">=7.29.0",
+      "url": "https://github.com/advisories/GHSA-4cwx-7wf7-3272",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to CRLF Injection via blob-like body 'type' property",
+      "vulnerable": ">=7.0.0 <7.29.0",
+      "patched": ">=7.29.0",
+      "url": "https://github.com/advisories/GHSA-m8rv-5g2x-5cg5",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to CRLF Injection via blob-like body 'type' property",
+      "vulnerable": "<6.28.0",
+      "patched": ">=6.28.0",
+      "url": "https://github.com/advisories/GHSA-m8rv-5g2x-5cg5",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to cross-user information disclosure via whitespace around equals in Cache-Control directives",
+      "vulnerable": ">=7.0.0 <7.29.0",
+      "patched": ">=7.29.0",
+      "url": "https://github.com/advisories/GHSA-jr45-8vmc-qm54",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to cookie attribute injection via unsanitized domain and unparsed setCookie fields",
+      "vulnerable": ">=7.0.0 <7.29.0",
+      "patched": ">=7.29.0",
+      "url": "https://github.com/advisories/GHSA-v3r7-h72x-cjcm",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to cookie attribute injection via unsanitized domain and unparsed setCookie fields",
+      "vulnerable": "<6.28.0",
+      "patched": ">=6.28.0",
+      "url": "https://github.com/advisories/GHSA-v3r7-h72x-cjcm",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+      "vulnerable": ">=2.0.0 <2.1.4",
+      "patched": ">=2.1.4",
+      "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+      "findings": [
+        {
+          "version": "2.0.2",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+      "vulnerable": "<1.1.18",
+      "patched": ">=1.1.18",
+      "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+      "findings": [
+        {
+          "version": "1.1.12",
+          "paths": [
+            ".>eslint>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "low",
+      "title": "undici vulnerable to HTTP response queue poisoning via keep-alive socket reuse",
+      "vulnerable": ">=7.0.0 <7.28.0",
+      "patched": ">=7.28.0",
+      "url": "https://github.com/advisories/GHSA-35p6-xmwp-9g52",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "low",
+      "title": "undici vulnerable to HTTP response queue poisoning via keep-alive socket reuse",
+      "vulnerable": "<6.27.0",
+      "patched": ">=6.27.0",
+      "url": "https://github.com/advisories/GHSA-35p6-xmwp-9g52",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "js-yaml",
+      "severity": "high",
+      "title": "JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) — CVE-2026-59870 fix not backported",
+      "vulnerable": ">=4.0.0 <4.3.1",
+      "patched": ">=4.3.1",
+      "url": "https://github.com/advisories/GHSA-5p4m-2wfm-xmqj",
+      "findings": [
+        {
+          "version": "4.1.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>js-yaml"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nanoid",
+      "severity": "high",
+      "title": "nanoid: non-secure generators can loop indefinitely with negative size",
+      "vulnerable": "<3.3.16",
+      "patched": ">=3.3.16",
+      "url": "https://github.com/advisories/GHSA-28wg-ghj8-5hjv",
+      "findings": [
+        {
+          "version": "3.3.11",
+          "paths": [
+            ".>postcss>nanoid"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nanoid",
+      "severity": "high",
+      "title": "nanoid: custom generators can loop indefinitely when size is zero",
+      "vulnerable": "<3.3.18",
+      "patched": ">=3.3.18",
+      "url": "https://github.com/advisories/GHSA-2v37-7h3g-55p8",
+      "findings": [
+        {
+          "version": "3.3.11",
+          "paths": [
+            ".>postcss>nanoid"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "postcss",
+      "severity": "high",
+      "title": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+      "vulnerable": "<=8.5.17",
+      "patched": ">=8.5.18",
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "findings": [
+        {
+          "version": "8.5.6",
+          "paths": [
+            ".>postcss"
+          ]
+        },
+        {
+          "version": "8.4.31",
+          "paths": [
+            ".>next>postcss"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "postcss-selector-parser",
+      "severity": "low",
+      "title": "postcss-selector-parser allows denial of service through uncontrolled AST recursion",
+      "vulnerable": ">=6.1.0 <6.1.3",
+      "patched": ">=6.1.3",
+      "url": "https://github.com/advisories/GHSA-w9m9-85wc-3x92",
+      "findings": [
+        {
+          "version": "6.1.2",
+          "paths": [
+            ".>tailwindcss>postcss-selector-parser"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "browserslist",
+      "severity": "high",
+      "title": "Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM",
+      "vulnerable": "<=4.28.6",
+      "patched": ">=4.28.7",
+      "url": "https://github.com/advisories/GHSA-c83g-rgw3-j3cx",
+      "findings": [
+        {
+          "version": "4.25.0",
+          "paths": [
+            ".>autoprefixer>browserslist"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "browserslist",
+      "severity": "high",
+      "title": "Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)",
+      "vulnerable": "<=4.28.6",
+      "patched": ">=4.28.7",
+      "url": "https://github.com/advisories/GHSA-73wf-gq98-2v4g",
+      "findings": [
+        {
+          "version": "4.25.0",
+          "paths": [
+            ".>autoprefixer>browserslist"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nanoid",
+      "severity": "high",
+      "title": "nanoid: Integer Overflow or Wraparound",
+      "vulnerable": "<3.3.12",
+      "patched": ">=3.3.12",
+      "url": "https://github.com/advisories/GHSA-xwg4-73v4-xw9w",
+      "findings": [
+        {
+          "version": "3.3.11",
+          "paths": [
+            ".>postcss>nanoid"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@humanfs/node",
+      "severity": "moderate",
+      "title": "humanfs: Recursive copy follows symlinked files and copies data from outside the source tree",
+      "vulnerable": "<0.16.8",
+      "patched": ">=0.16.8",
+      "url": "https://github.com/advisories/GHSA-p498-v437-472g",
+      "findings": [
+        {
+          "version": "0.16.7",
+          "paths": [
+            ".>eslint>@humanfs/node"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "critical",
+      "title": "Next.js: Unauthenticated Remote Code Execution on windows-hosted servers",
+      "vulnerable": ">=13.4.0 <15.5.24",
+      "patched": ">=15.5.24",
+      "url": "https://github.com/advisories/GHSA-p293-qw3h-jr36",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sharp",
+      "severity": "high",
+      "title": "sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545",
+      "vulnerable": "<0.35.4",
+      "patched": ">=0.35.4",
+      "url": "https://github.com/advisories/GHSA-rgj7-g3m4-5g8c",
+      "findings": [
+        {
+          "version": "0.33.5",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>sharp"
+          ]
+        },
+        {
+          "version": "0.34.4",
+          "paths": [
+            ".>next>sharp"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "js-yaml",
+      "severity": "high",
+      "title": "js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources",
+      "vulnerable": ">=4.0.0 <4.3.2",
+      "patched": ">=4.3.2",
+      "url": "https://github.com/advisories/GHSA-2883-xcg3-v3hh",
+      "findings": [
+        {
+          "version": "4.1.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>js-yaml"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next",
+      "severity": "critical",
+      "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used",
+      "vulnerable": ">=10.0.0 <15.5.24",
+      "patched": ">=15.5.24",
+      "url": "https://github.com/advisories/GHSA-2xp9-vwfh-vxw4",
+      "findings": [
+        {
+          "version": "15.5.4",
+          "paths": [
+            ".>next"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to Denial of Service via orphaned RetryHandler response body",
+      "vulnerable": ">=7.11.0 <7.29.1",
+      "patched": ">=7.29.1",
+      "url": "https://github.com/advisories/GHSA-pmjh-fq2x-6v4x",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "low",
+      "title": "undici vulnerable to downstream response splitting via retry interceptor",
+      "vulnerable": ">=7.0.0 <7.29.1",
+      "patched": ">=7.29.1",
+      "url": "https://github.com/advisories/GHSA-r53p-7pc4-xj5r",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "low",
+      "title": "undici vulnerable to downstream response splitting via retry interceptor",
+      "vulnerable": "<6.28.1",
+      "patched": ">=6.28.1",
+      "url": "https://github.com/advisories/GHSA-r53p-7pc4-xj5r",
+      "findings": [
+        {
+          "version": "5.29.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "high",
+      "title": "undici vulnerable to Denial of Service via unrequested WebSocket subprotocol",
+      "vulnerable": ">=7.0.0 <7.29.1",
+      "patched": ">=7.29.1",
+      "url": "https://github.com/advisories/GHSA-rfgv-xxqx-mfg5",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to cross-user cookie disclosure via Set-Cookie caching in shared caches",
+      "vulnerable": ">=7.0.0 <7.29.1",
+      "patched": ">=7.29.1",
+      "url": "https://github.com/advisories/GHSA-2jfj-6hjv-fm6j",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "low",
+      "title": "undici vulnerable to response truncation via oversized chunked responses in the dump interceptor",
+      "vulnerable": ">=7.1.0 <7.29.1",
+      "patched": ">=7.29.1",
+      "url": "https://github.com/advisories/GHSA-2gqq-gqf2-x968",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "low",
+      "title": "undici vulnerable to caching and replay of unsafe HTTP method responses",
+      "vulnerable": ">=7.0.0 <7.29.1",
+      "patched": ">=7.29.1",
+      "url": "https://github.com/advisories/GHSA-8436-99hf-9mmv",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "severity": "moderate",
+      "title": "undici vulnerable to Denial of Service via WebSocketStream unclean close",
+      "vulnerable": ">=7.0.0 <7.29.1",
+      "patched": ">=7.29.1",
+      "url": "https://github.com/advisories/GHSA-rx4f-c7p8-82vq",
+      "findings": [
+        {
+          "version": "7.14.0",
+          "paths": [
+            ".>@cloudflare/next-on-pages>wrangler>miniflare>undici"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "moderate",
+      "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+      "vulnerable": "<1.1.21",
+      "patched": ">=1.1.21",
+      "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+      "findings": [
+        {
+          "version": "1.1.12",
+          "paths": [
+            ".>eslint>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "moderate",
+      "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+      "vulnerable": ">=2.0.0 <2.1.7",
+      "patched": ">=2.1.7",
+      "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+      "findings": [
+        {
+          "version": "2.0.2",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+      "vulnerable": "<1.1.20",
+      "patched": ">=1.1.20",
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "findings": [
+        {
+          "version": "1.1.12",
+          "paths": [
+            ".>eslint>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+      "vulnerable": ">=2.0.0 <2.1.6",
+      "patched": ">=2.1.6",
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "findings": [
+        {
+          "version": "2.0.2",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+      "vulnerable": "<1.1.19",
+      "patched": ">=1.1.19",
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "findings": [
+        {
+          "version": "1.1.12",
+          "paths": [
+            ".>eslint>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "severity": "high",
+      "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+      "vulnerable": ">=2.0.0 <2.1.5",
+      "patched": ">=2.1.5",
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "findings": [
+        {
+          "version": "2.0.2",
+          "paths": [
+            ".>eslint-config-next>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch>brace-expansion"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@fastify/busboy",
+      "severity": "high",
+      "title": "@fastify/busboy vulnerable to Denial of Service via prototype-named multipart part header",
+      "vulnerable": ">=1.0.0 <3.2.1",
+      "patched": ">=3.2.1",
+      "url": "https://github.com/advisories/GHSA-x8mw-p69m-v3mx",
+      "findings": [
+        {
+          "version": "2.1.1",
+          "paths": [
+            ".>@cloudflare/next-on-pages>miniflare>undici>@fastify/busboy"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "braces",
+      "severity": "high",
+      "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+      "vulnerable": "<=3.0.3",
+      "patched": "<0.0.0",
+      "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+      "findings": [
+        {
+          "version": "3.0.3",
+          "paths": [
+            ".>@cloudflare/next-on-pages>chokidar>braces"
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "advisoryRecords": 130,
+    "uniqueAdvisoryUrls": 104,
+    "criticalRecords": [
+      {
+        "package": "next",
+        "title": "Next.js is vulnerable to RCE in React flight protocol",
+        "url": "https://github.com/advisories/GHSA-9qr9-h5gf-34mp"
+      },
+      {
+        "package": "@clerk/shared",
+        "title": "Official Clerk JavaScript SDKs: Middleware-based route protection bypass",
+        "url": "https://github.com/advisories/GHSA-vqx2-fgx2-5wq9"
+      },
+      {
+        "package": "next",
+        "title": "Next.js: Unauthenticated Remote Code Execution on windows-hosted servers",
+        "url": "https://github.com/advisories/GHSA-p293-qw3h-jr36"
+      },
+      {
+        "package": "next",
+        "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used",
+        "url": "https://github.com/advisories/GHSA-2xp9-vwfh-vxw4"
+      }
+    ]
+  }
+}

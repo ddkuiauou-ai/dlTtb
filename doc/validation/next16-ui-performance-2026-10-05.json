@@ -1,0 +1,3955 @@
+{
+  "recordedAt": "2026-10-05T04:48:32.925Z",
+  "status": "completed",
+  "browser": {
+    "version": "153.0.8010.12",
+    "executable": "/Users/craigchoi/Library/Caches/ms-playwright/chromium-1243/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+  },
+  "variants": [
+    {
+      "name": "phase1",
+      "base": "http://127.0.0.1:5018",
+      "source": "/private/tmp/next16-phase1-browser-hp8arytt"
+    },
+    {
+      "name": "final",
+      "base": "http://127.0.0.1:5017",
+      "source": "/private/tmp/next16-final-browser-h_8hjms4"
+    }
+  ],
+  "conditions": {
+    "runtime": "v24.19.0",
+    "sameBrowserProcess": true,
+    "contexts": "separate and fresh for each visual/performance sample",
+    "visual": {
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 983
+        },
+        {
+          "width": 390,
+          "height": 983
+        }
+      ],
+      "fixture": "/test-feed?scenario=normal&top=180&fixed=0&columns=3",
+      "layouts": [
+        "list",
+        "grid"
+      ],
+      "fixedCardHeights": false
+    },
+    "benchmark": {
+      "viewport": {
+        "width": 1440,
+        "height": 983
+      },
+      "fixture": "/test-feed?scenario=normal&top=629&fixed=1&columns=2",
+      "totalFixtureCards": 120,
+      "pageSize": 40,
+      "samplesPerVariant": 3,
+      "order": "alternating phase1/final; reverse the order on the second round",
+      "network": "local fixture routes prewarmed; external Clerk requests recorded separately",
+      "scrollTiming": "after append to120, elapsed to two consecutive animation frames with full expected viewport coverage; includes frame scheduling",
+      "appendTiming": "from the initial seeded40 cards, scroll-driven load until120 IDs; includes localnetwork/browser-roundtrips/frame pacing"
+    }
+  },
+  "limitations": [
+    "Development-mode local synthetic workload; results do not certify production speed or Cloudflare performance.",
+    "Phase1 already uses Next16/React19; comparison isolates the later dependency batch as a whole, not one package.",
+    "Small sample count; no improvement percentage is inferred.",
+    "Clerk/CDN responses are external variability; local first-display measurements include whichever auth loading work occurs.",
+    "Chromium mobile viewport emulation; Safari/WebKit and physical iOS are not measured.",
+    "Natural-height fixture contains 120 offscreen reference cards; live virtual DOM and reference DOM counts are reported separately."
+  ],
+  "warmup": [
+    {
+      "variant": "phase1",
+      "path": "/test-feed?scenario=normal&top=180&fixed=0&columns=3",
+      "status": 200,
+      "elapsedMs": 84.68204199999991
+    },
+    {
+      "variant": "phase1",
+      "path": "/test-feed?scenario=normal&top=629&fixed=1&columns=2",
+      "status": 200,
+      "elapsedMs": 34.2087919999999
+    },
+    {
+      "variant": "phase1",
+      "path": "/api/test-feed/normal/manifest.json",
+      "status": 200,
+      "elapsedMs": 11.108584000000064
+    },
+    {
+      "variant": "phase1",
+      "path": "/api/test-feed/normal/page-2.json",
+      "status": 200,
+      "elapsedMs": 6.926375000000007
+    },
+    {
+      "variant": "phase1",
+      "path": "/api/test-feed/normal/page-3.json",
+      "status": 200,
+      "elapsedMs": 7.454791999999998
+    },
+    {
+      "variant": "final",
+      "path": "/test-feed?scenario=normal&top=180&fixed=0&columns=3",
+      "status": 200,
+      "elapsedMs": 91.33145800000011
+    },
+    {
+      "variant": "final",
+      "path": "/test-feed?scenario=normal&top=629&fixed=1&columns=2",
+      "status": 200,
+      "elapsedMs": 32.40837499999998
+    },
+    {
+      "variant": "final",
+      "path": "/api/test-feed/normal/manifest.json",
+      "status": 200,
+      "elapsedMs": 14.324166999999989
+    },
+    {
+      "variant": "final",
+      "path": "/api/test-feed/normal/page-2.json",
+      "status": 200,
+      "elapsedMs": 6.066250000000082
+    },
+    {
+      "variant": "final",
+      "path": "/api/test-feed/normal/page-3.json",
+      "status": 200,
+      "elapsedMs": 7.088625000000093
+    }
+  ],
+  "visual": [
+    {
+      "variant": "phase1",
+      "viewport": {
+        "width": 1440,
+        "height": 983
+      },
+      "layout": "list",
+      "card": {
+        "width": 389.328125,
+        "height": 98,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "1px",
+        "borderRadius": "8px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "visibleBoxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      },
+      "title": {
+        "width": 275.328125,
+        "height": 24.03125,
+        "color": "rgb(17, 24, 39)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "content": {
+        "width": 307.328125,
+        "height": 96,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "16px",
+        "paddingRight": "16px",
+        "paddingBottom": "16px",
+        "paddingLeft": "16px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "metadata": {
+        "width": 275.328125,
+        "height": 22,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "badge": {
+        "width": 42.765625,
+        "height": 22,
+        "color": "rgb(31, 41, 55)",
+        "backgroundColor": "rgb(243, 244, 246)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "borderRadius": "9999px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "paddingTop": "2px",
+        "paddingRight": "10px",
+        "paddingBottom": "2px",
+        "paddingLeft": "10px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "body": {
+        "width": 1440,
+        "height": 4803,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "liveFeedCards": 33,
+      "hiddenReferenceCards": 120,
+      "badgeThresholds": [
+        {
+          "metadataWidthPx": 159,
+          "badgeDisplay": "none"
+        },
+        {
+          "metadataWidthPx": 160,
+          "badgeDisplay": "flex"
+        },
+        {
+          "metadataWidthPx": 192,
+          "badgeDisplay": "flex"
+        }
+      ],
+      "errorOverlayCount": 0,
+      "screenshotPath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-phase1-1440-list-2026-10-05.png",
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 301.9082080000003,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 31.844959000000017,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 26.238083000000188,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 18.466166999999587,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 213.89508300000034,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 214.63700000000017,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 237.88025000000016,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 244.37408300000016,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.7873329999997623,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 247.68145800000002,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 461.72749999999996,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 474.2140000000004,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 474.26870899999994,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 474.361167,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 476.82062499999984,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 41.34129200000007,
+          "status": "finished"
+        }
+      ]
+    },
+    {
+      "variant": "phase1",
+      "viewport": {
+        "width": 1440,
+        "height": 983
+      },
+      "layout": "grid",
+      "card": {
+        "width": 389.328125,
+        "height": 374.875,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "1px",
+        "borderRadius": "8px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "visibleBoxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      },
+      "title": {
+        "width": 355.328125,
+        "height": 24.03125,
+        "color": "rgb(17, 24, 39)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "content": {
+        "width": 387.328125,
+        "height": 372.875,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "16px",
+        "paddingRight": "16px",
+        "paddingBottom": "16px",
+        "paddingLeft": "16px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "metadata": null,
+      "badge": {
+        "width": 42.765625,
+        "height": 22,
+        "color": "rgb(31, 41, 55)",
+        "backgroundColor": "rgb(243, 244, 246)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "borderRadius": "9999px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "paddingTop": "2px",
+        "paddingRight": "10px",
+        "paddingBottom": "2px",
+        "paddingLeft": "10px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "body": {
+        "width": 1440,
+        "height": 15951,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "liveFeedCards": 15,
+      "hiddenReferenceCards": 120,
+      "badgeThresholds": null,
+      "errorOverlayCount": 0,
+      "screenshotPath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-phase1-1440-grid-2026-10-05.png",
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 301.9082080000003,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 31.844959000000017,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 26.238083000000188,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 18.466166999999587,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 213.89508300000034,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 214.63700000000017,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 237.88025000000016,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 244.37408300000016,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.7873329999997623,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 247.68145800000002,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 461.72749999999996,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 474.2140000000004,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 474.26870899999994,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 474.361167,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 476.82062499999984,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 41.34129200000007,
+          "status": "finished"
+        }
+      ]
+    },
+    {
+      "variant": "final",
+      "viewport": {
+        "width": 1440,
+        "height": 983
+      },
+      "layout": "list",
+      "card": {
+        "width": 389.328125,
+        "height": 98,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "1px",
+        "borderRadius": "8px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "visibleBoxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      },
+      "title": {
+        "width": 275.328125,
+        "height": 24.03125,
+        "color": "rgb(17, 24, 39)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "content": {
+        "width": 307.328125,
+        "height": 96,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "16px",
+        "paddingRight": "16px",
+        "paddingBottom": "16px",
+        "paddingLeft": "16px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "metadata": {
+        "width": 275.328125,
+        "height": 22,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "badge": {
+        "width": 42.765625,
+        "height": 22,
+        "color": "rgb(31, 41, 55)",
+        "backgroundColor": "rgb(243, 244, 246)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "borderRadius": "3.35544e+07px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "paddingTop": "2px",
+        "paddingRight": "10px",
+        "paddingBottom": "2px",
+        "paddingLeft": "10px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "body": {
+        "width": 1440,
+        "height": 4803,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "liveFeedCards": 33,
+      "hiddenReferenceCards": 120,
+      "badgeThresholds": [
+        {
+          "metadataWidthPx": 159,
+          "badgeDisplay": "none"
+        },
+        {
+          "metadataWidthPx": 160,
+          "badgeDisplay": "flex"
+        },
+        {
+          "metadataWidthPx": 192,
+          "badgeDisplay": "flex"
+        }
+      ],
+      "errorOverlayCount": 0,
+      "screenshotPath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-final-1440-list-2026-10-05.png",
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 215.11120799999935,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 37.46995800000059,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 17.354333000000224,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 20.99529099999927,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.848790999999437,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.31762499999968,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 210.41041600000062,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 252.89737500000047,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 238.6710410000005,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 220.85691700000007,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 226.67141600000014,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 688.8798749999996,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 463.8405840000005,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 464.4367090000005,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 468.32774999999947,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 7.2806659999996555,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 21.180624999999964,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 25.031041000000187,
+          "status": "finished"
+        }
+      ]
+    },
+    {
+      "variant": "final",
+      "viewport": {
+        "width": 1440,
+        "height": 983
+      },
+      "layout": "grid",
+      "card": {
+        "width": 389.328125,
+        "height": 374.875,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "1px",
+        "borderRadius": "8px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "visibleBoxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      },
+      "title": {
+        "width": 355.328125,
+        "height": 24.03125,
+        "color": "rgb(17, 24, 39)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "content": {
+        "width": 387.328125,
+        "height": 372.875,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "16px",
+        "paddingRight": "16px",
+        "paddingBottom": "16px",
+        "paddingLeft": "16px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "metadata": null,
+      "badge": {
+        "width": 42.765625,
+        "height": 22,
+        "color": "rgb(31, 41, 55)",
+        "backgroundColor": "rgb(243, 244, 246)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "borderRadius": "3.35544e+07px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "paddingTop": "2px",
+        "paddingRight": "10px",
+        "paddingBottom": "2px",
+        "paddingLeft": "10px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "body": {
+        "width": 1440,
+        "height": 15951,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "liveFeedCards": 15,
+      "hiddenReferenceCards": 120,
+      "badgeThresholds": null,
+      "errorOverlayCount": 0,
+      "screenshotPath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-final-1440-grid-2026-10-05.png",
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 215.11120799999935,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 37.46995800000059,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 17.354333000000224,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 20.99529099999927,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.848790999999437,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.31762499999968,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 210.41041600000062,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 252.89737500000047,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 238.6710410000005,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 220.85691700000007,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 226.67141600000014,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 688.8798749999996,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 463.8405840000005,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 464.4367090000005,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 468.32774999999947,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 7.2806659999996555,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 21.180624999999964,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 25.031041000000187,
+          "status": "finished"
+        }
+      ]
+    },
+    {
+      "variant": "phase1",
+      "viewport": {
+        "width": 390,
+        "height": 983
+      },
+      "layout": "list",
+      "card": {
+        "width": 390,
+        "height": 98,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "1px",
+        "borderRadius": "8px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "visibleBoxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      },
+      "title": {
+        "width": 284,
+        "height": 24.03125,
+        "color": "rgb(17, 24, 39)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "content": {
+        "width": 308,
+        "height": 96,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "12px",
+        "paddingRight": "12px",
+        "paddingBottom": "12px",
+        "paddingLeft": "12px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "metadata": {
+        "width": 284,
+        "height": 22,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "badge": {
+        "width": 42.765625,
+        "height": 22,
+        "color": "rgb(31, 41, 55)",
+        "backgroundColor": "rgb(243, 244, 246)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "borderRadius": "9999px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "paddingTop": "2px",
+        "paddingRight": "10px",
+        "paddingBottom": "2px",
+        "paddingLeft": "10px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "body": {
+        "width": 390,
+        "height": 13870,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "liveFeedCards": 26,
+      "hiddenReferenceCards": 120,
+      "badgeThresholds": [
+        {
+          "metadataWidthPx": 159,
+          "badgeDisplay": "none"
+        },
+        {
+          "metadataWidthPx": 160,
+          "badgeDisplay": "flex"
+        },
+        {
+          "metadataWidthPx": 192,
+          "badgeDisplay": "flex"
+        }
+      ],
+      "errorOverlayCount": 0,
+      "screenshotPath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-phase1-390-list-2026-10-05.png",
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 229.31904200000008,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 37.298124999999345,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.9794590000001335,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 6.219208000000435,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 254.43674999999985,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 239.65962500000023,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 258.5119169999998,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 259.2069999999994,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 396.61775000000034,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 396.40449999999964,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 396.4188749999994,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 398.79670799999985,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 635.0212089999995,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 636.7662500000006,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 1.594583000000057,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 22.79254199999923,
+          "status": "finished"
+        }
+      ]
+    },
+    {
+      "variant": "phase1",
+      "viewport": {
+        "width": 390,
+        "height": 983
+      },
+      "layout": "grid",
+      "card": {
+        "width": 390,
+        "height": 366.6875,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "1px",
+        "borderRadius": "8px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "visibleBoxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      },
+      "title": {
+        "width": 364,
+        "height": 24.03125,
+        "color": "rgb(17, 24, 39)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "content": {
+        "width": 388,
+        "height": 364.6875,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "12px",
+        "paddingRight": "12px",
+        "paddingBottom": "12px",
+        "paddingLeft": "12px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "metadata": null,
+      "badge": {
+        "width": 42.765625,
+        "height": 22,
+        "color": "rgb(31, 41, 55)",
+        "backgroundColor": "rgb(243, 244, 246)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "borderRadius": "9999px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "paddingTop": "2px",
+        "paddingRight": "10px",
+        "paddingBottom": "2px",
+        "paddingLeft": "10px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "body": {
+        "width": 390,
+        "height": 46546,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "liveFeedCards": 5,
+      "hiddenReferenceCards": 120,
+      "badgeThresholds": null,
+      "errorOverlayCount": 0,
+      "screenshotPath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-phase1-390-grid-2026-10-05.png",
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 229.31904200000008,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 37.298124999999345,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.9794590000001335,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 6.219208000000435,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 254.43674999999985,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 239.65962500000023,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 258.5119169999998,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 259.2069999999994,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 396.61775000000034,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 396.40449999999964,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 396.4188749999994,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 398.79670799999985,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 635.0212089999995,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 636.7662500000006,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 1.594583000000057,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 22.79254199999923,
+          "status": "finished"
+        }
+      ]
+    },
+    {
+      "variant": "final",
+      "viewport": {
+        "width": 390,
+        "height": 983
+      },
+      "layout": "list",
+      "card": {
+        "width": 390,
+        "height": 98,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "1px",
+        "borderRadius": "8px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "visibleBoxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      },
+      "title": {
+        "width": 284,
+        "height": 24.03125,
+        "color": "rgb(17, 24, 39)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "content": {
+        "width": 308,
+        "height": 96,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "12px",
+        "paddingRight": "12px",
+        "paddingBottom": "12px",
+        "paddingLeft": "12px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "metadata": {
+        "width": 284,
+        "height": 22,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "badge": {
+        "width": 42.765625,
+        "height": 22,
+        "color": "rgb(31, 41, 55)",
+        "backgroundColor": "rgb(243, 244, 246)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "borderRadius": "3.35544e+07px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "paddingTop": "2px",
+        "paddingRight": "10px",
+        "paddingBottom": "2px",
+        "paddingLeft": "10px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "body": {
+        "width": 390,
+        "height": 13870,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "liveFeedCards": 26,
+      "hiddenReferenceCards": 120,
+      "badgeThresholds": [
+        {
+          "metadataWidthPx": 159,
+          "badgeDisplay": "none"
+        },
+        {
+          "metadataWidthPx": 160,
+          "badgeDisplay": "flex"
+        },
+        {
+          "metadataWidthPx": 192,
+          "badgeDisplay": "flex"
+        }
+      ],
+      "errorOverlayCount": 0,
+      "screenshotPath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-final-390-list-2026-10-05.png",
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 228.47883300000103,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 36.12187500000073,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 21.72137500000099,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 25.459458999999697,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.5200409999997646,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.2162919999991573,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 226.67774999999892,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 220.27641699999913,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 246.89350000000013,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 251.6729579999992,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.3924170000009326,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 231.8758340000004,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 435.7641249999997,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 377.6704580000005,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 380.0559169999997,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 380.178249999999,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 19.671915999999328,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 19.588416999999026,
+          "status": "finished"
+        }
+      ]
+    },
+    {
+      "variant": "final",
+      "viewport": {
+        "width": 390,
+        "height": 983
+      },
+      "layout": "grid",
+      "card": {
+        "width": 390,
+        "height": 366.6875,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "1px",
+        "borderRadius": "8px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "visibleBoxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      },
+      "title": {
+        "width": 364,
+        "height": 24.03125,
+        "color": "rgb(17, 24, 39)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "content": {
+        "width": 388,
+        "height": 364.6875,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "12px",
+        "paddingRight": "12px",
+        "paddingBottom": "12px",
+        "paddingLeft": "12px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "metadata": null,
+      "badge": {
+        "width": 42.765625,
+        "height": 22,
+        "color": "rgb(31, 41, 55)",
+        "backgroundColor": "rgb(243, 244, 246)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "borderRadius": "3.35544e+07px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "paddingTop": "2px",
+        "paddingRight": "10px",
+        "paddingBottom": "2px",
+        "paddingLeft": "10px",
+        "display": "flex",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "body": {
+        "width": 390,
+        "height": 46546,
+        "color": "rgb(10, 10, 10)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "borderColor": "rgb(229, 229, 229)",
+        "borderWidth": "0px",
+        "borderRadius": "0px",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "display": "block",
+        "boxShadow": "none",
+        "visibleBoxShadow": "none"
+      },
+      "liveFeedCards": 5,
+      "hiddenReferenceCards": 120,
+      "badgeThresholds": null,
+      "errorOverlayCount": 0,
+      "screenshotPath": "/Users/craigchoi/silla/is/doc/validation/next16-ui-final-390-grid-2026-10-05.png",
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 228.47883300000103,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 36.12187500000073,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 21.72137500000099,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 25.459458999999697,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.5200409999997646,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.2162919999991573,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 226.67774999999892,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 220.27641699999913,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 246.89350000000013,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 251.6729579999992,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.3924170000009326,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 231.8758340000004,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 435.7641249999997,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 377.6704580000005,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 380.0559169999997,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 380.178249999999,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 19.671915999999328,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 19.588416999999026,
+          "status": "finished"
+        }
+      ]
+    }
+  ],
+  "benchmark": [
+    {
+      "variant": "phase1",
+      "round": 1,
+      "firstDisplayMs": 1122.8376659999994,
+      "navigation": {
+        "responseStartMs": 48.899999998509884,
+        "domContentLoadedMs": 81.10000000149012,
+        "loadEventEndMs": 175.29999999701977,
+        "paintEntries": [
+          {
+            "name": "first-paint",
+            "startTimeMs": 84
+          },
+          {
+            "name": "first-contentful-paint",
+            "startTimeMs": 84
+          }
+        ]
+      },
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 73.10000000149012,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 30.899999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 30,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 45.600000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 34.69999999552965,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 33.20000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 33.600000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 41,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "appendTo120Ms": 362.57374999999956,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "page2CacheHit": true,
+      "detailRestoreMs": 355.0187499999993,
+      "restore": {
+        "targetId": "post-fixture-normal-063",
+        "actualViewportTopPx": 126,
+        "expectedViewportTopPx": 126,
+        "sessionMarkerConsumed": true
+      },
+      "final": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 4227,
+        "liveFeedCards": 28,
+        "liveFeedRows": 14,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "apiResponses": [
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-3.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        }
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 80.23237499999959,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 29.355208999999377,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.9878330000010465,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 220.40333299999838,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 235.40087499999936,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 240.24725000000035,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 76.90191699999923,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 76.69495899999856,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 76.76416700000118,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 76.91908299999886,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 23.450417000000016,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 14.281166999999186,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 53.24524999999994,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 4.703625000000102,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 3.492833000000246,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        }
+      ]
+    },
+    {
+      "variant": "final",
+      "round": 1,
+      "firstDisplayMs": 1109.1209589999999,
+      "navigation": {
+        "responseStartMs": 36.80000000447035,
+        "domContentLoadedMs": 59.80000000447035,
+        "loadEventEndMs": 169.10000000149012,
+        "paintEntries": [
+          {
+            "name": "first-paint",
+            "startTimeMs": 96
+          },
+          {
+            "name": "first-contentful-paint",
+            "startTimeMs": 96
+          }
+        ]
+      },
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 60.100000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 35,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 28.700000002980232,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 47.29999999701977,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 33,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 33.600000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 34.399999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 37.19999999552965,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "appendTo120Ms": 350.6200829999998,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "page2CacheHit": true,
+      "detailRestoreMs": 322.94737499999974,
+      "restore": {
+        "targetId": "post-fixture-normal-063",
+        "actualViewportTopPx": 126,
+        "expectedViewportTopPx": 126,
+        "sessionMarkerConsumed": true
+      },
+      "final": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 4227,
+        "liveFeedCards": 28,
+        "liveFeedRows": 14,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "apiResponses": [
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-3.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        }
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 82.67654199999924,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 28.763417000000118,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 16.974459000000934,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 26.05999999999949,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.9447090000012395,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 229.54824999999983,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 246.56766699999935,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 246.8025830000006,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 73.67779200000041,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 73.79270800000086,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 73.74112500000047,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 22.327833000001192,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 28.21320899999955,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 12.59991600000103,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 53.682832999998936,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 13.108500000000276,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 32.15795799999978,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.4825419999997393,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        }
+      ]
+    },
+    {
+      "variant": "final",
+      "round": 2,
+      "firstDisplayMs": 1121.9171250000018,
+      "navigation": {
+        "responseStartMs": 40.79999999701977,
+        "domContentLoadedMs": 69.69999999552965,
+        "loadEventEndMs": 180.79999999701977,
+        "paintEntries": [
+          {
+            "name": "first-paint",
+            "startTimeMs": 116
+          },
+          {
+            "name": "first-contentful-paint",
+            "startTimeMs": 116
+          }
+        ]
+      },
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 72.40000000596046,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 32.400000005960464,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 31.299999997019768,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 45.5,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 34.600000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 31.100000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 38.70000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 35.5,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "appendTo120Ms": 362.5242499999986,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "page2CacheHit": true,
+      "detailRestoreMs": 323.1532499999994,
+      "restore": {
+        "targetId": "post-fixture-normal-063",
+        "actualViewportTopPx": 126,
+        "expectedViewportTopPx": 126,
+        "sessionMarkerConsumed": true
+      },
+      "final": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 4227,
+        "liveFeedCards": 28,
+        "liveFeedRows": 14,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "apiResponses": [
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-3.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        }
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 77.8891249999997,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 30.605792000000292,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 15.299042000002373,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 24.567584000000352,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.81970800000272,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 224.70000000000073,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 235.39304099999936,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 242.91108299999905,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 74.99395799999911,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 74.76608399999895,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 74.80025000000023,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 17.320125000002008,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 17.44458400000076,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 13.724416000000929,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 51.755042000000685,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 13.173249999999825,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 2.5531670000018494,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.4109579999967536,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        }
+      ]
+    },
+    {
+      "variant": "phase1",
+      "round": 2,
+      "firstDisplayMs": 1087.0586250000015,
+      "navigation": {
+        "responseStartMs": 34.80000000447035,
+        "domContentLoadedMs": 69.5,
+        "loadEventEndMs": 162.89999999850988,
+        "paintEntries": [
+          {
+            "name": "first-paint",
+            "startTimeMs": 84
+          },
+          {
+            "name": "first-contentful-paint",
+            "startTimeMs": 84
+          }
+        ]
+      },
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 66.70000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 40,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 49.399999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 57,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 29.200000002980232,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 33.20000000298023,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 35.69999999552965,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 37.100000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "appendTo120Ms": 369.9278329999979,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "page2CacheHit": true,
+      "detailRestoreMs": 358.7508749999979,
+      "restore": {
+        "targetId": "post-fixture-normal-063",
+        "actualViewportTopPx": 126,
+        "expectedViewportTopPx": 126,
+        "sessionMarkerConsumed": true
+      },
+      "final": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 4227,
+        "liveFeedCards": 28,
+        "liveFeedRows": 14,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "apiResponses": [
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-3.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        }
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 79.63345800000025,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 23.91045899999881,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 4.446082999998907,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 218.29945800000132,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 237.9379590000026,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 240.74504199999865,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 77.6831250000032,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 78.28929199999766,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 78.33124999999927,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 78.29862499999945,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 19.026458000000275,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 12.351458000001003,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 55.101167000000714,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.8216670000001614,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 3.9069170000002487,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        }
+      ]
+    },
+    {
+      "variant": "phase1",
+      "round": 3,
+      "firstDisplayMs": 1106.0967500000006,
+      "navigation": {
+        "responseStartMs": 33.29999999701977,
+        "domContentLoadedMs": 71.10000000149012,
+        "loadEventEndMs": 184.10000000149012,
+        "paintEntries": [
+          {
+            "name": "first-paint",
+            "startTimeMs": 88
+          },
+          {
+            "name": "first-contentful-paint",
+            "startTimeMs": 88
+          }
+        ]
+      },
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 57.899999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 34.100000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 32.80000000447035,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 60.399999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 31.900000005960464,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 31.900000005960464,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 36.100000001490116,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 37.29999999701977,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "appendTo120Ms": 362.0283339999987,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "page2CacheHit": true,
+      "detailRestoreMs": 356.426875000001,
+      "restore": {
+        "targetId": "post-fixture-normal-063",
+        "actualViewportTopPx": 126,
+        "expectedViewportTopPx": 126,
+        "sessionMarkerConsumed": true
+      },
+      "final": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 4227,
+        "liveFeedCards": 28,
+        "liveFeedRows": 14,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "apiResponses": [
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-3.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        }
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 80.79791699999987,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 30.56550000000061,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.848207999999431,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 231.2661670000016,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 239.9293749999997,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 242.20987500000047,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 79.7109580000033,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 79.78374999999869,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 79.79045799999949,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 79.94525000000067,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 19.897792000003392,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 13.150166999999783,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 52.99287499999991,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 3.921875,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 3.594959000001836,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        }
+      ]
+    },
+    {
+      "variant": "final",
+      "round": 3,
+      "firstDisplayMs": 1250.9542919999985,
+      "navigation": {
+        "responseStartMs": 96.10000000149012,
+        "domContentLoadedMs": 156.39999999850988,
+        "loadEventEndMs": 300.79999999701977,
+        "paintEntries": [
+          {
+            "name": "first-paint",
+            "startTimeMs": 164
+          },
+          {
+            "name": "first-contentful-paint",
+            "startTimeMs": 164
+          }
+        ]
+      },
+      "initial": {
+        "loadedCount": 40,
+        "columns": 2,
+        "scrollY": 0,
+        "liveFeedCards": 10,
+        "liveFeedRows": 5,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 6,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "scrolls": [
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 70.19999999552965,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 600,
+          "elapsedMs": 46.400000005960464,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1229
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 30,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        },
+        {
+          "relativeOffsetPx": 300,
+          "elapsedMs": 45.80000000447035,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 929
+        },
+        {
+          "relativeOffsetPx": 900,
+          "elapsedMs": 32.80000000447035,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1529
+        },
+        {
+          "relativeOffsetPx": 0,
+          "elapsedMs": 31.299999997019768,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 22,
+          "scrollY": 629
+        },
+        {
+          "relativeOffsetPx": 750,
+          "elapsedMs": 31.799999997019768,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1379
+        },
+        {
+          "relativeOffsetPx": 1200,
+          "elapsedMs": 22.899999998509884,
+          "missingViewportIds": [],
+          "expectedViewportCards": 18,
+          "liveFeedCards": 26,
+          "scrollY": 1829
+        }
+      ],
+      "afterScrolls": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 1829,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "appendTo120Ms": 355.2418749999997,
+      "appendSteps": 6,
+      "afterAppend": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 2066,
+        "liveFeedCards": 26,
+        "liveFeedRows": 13,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "page2CacheHit": true,
+      "detailRestoreMs": 341.90699999999924,
+      "restore": {
+        "targetId": "post-fixture-normal-063",
+        "actualViewportTopPx": 126,
+        "expectedViewportTopPx": 126,
+        "sessionMarkerConsumed": true
+      },
+      "final": {
+        "loadedCount": 120,
+        "columns": 2,
+        "scrollY": 4227,
+        "liveFeedCards": 28,
+        "liveFeedRows": 14,
+        "hiddenReferenceCards": 120,
+        "expectedViewportCards": 18,
+        "missingViewportIds": [],
+        "maxAssignedRowPositionErrorPx": 0
+      },
+      "apiResponses": [
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-3.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/manifest.json",
+          "status": 200
+        },
+        {
+          "path": "/api/test-feed/normal/page-2.json",
+          "status": 200
+        }
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "externalRequests": [
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 79.56679200000144,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 30.08916699999827,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 16.08508299999812,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 26.534750000002532,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 3.3702090000006137,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 212.9785840000004,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 236.1981670000023,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "durationMs": 238.84999999999854,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 83.09341700000004,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 83.24991599999703,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 84.75033299999996,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 16.60504199999923,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 20.08891600000061,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 12.744915999999648,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 53.85241700000188,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 13.322541999998066,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "script",
+          "durationMs": 2.5317079999986163,
+          "status": "finished"
+        },
+        {
+          "host": "",
+          "type": "script",
+          "durationMs": 2.3750830000026326,
+          "status": "finished"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        },
+        {
+          "host": "usable-muskox-19.clerk.accounts.dev",
+          "type": "fetch",
+          "status": "pending-at-close"
+        }
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "viewport": 1440,
+      "layout": "list",
+      "part": "badge",
+      "property": "borderRadius",
+      "before": "9999px",
+      "after": "3.35544e+07px",
+      "classification": "equivalent-fully-rounded-shape",
+      "reason": "Both values exceed half the badge dimensions and resolve to the same fully rounded pill corners after CSS radius clamping.",
+      "minimumSaturatingRadiusPx": 11
+    },
+    {
+      "viewport": 1440,
+      "layout": "grid",
+      "part": "badge",
+      "property": "borderRadius",
+      "before": "9999px",
+      "after": "3.35544e+07px",
+      "classification": "equivalent-fully-rounded-shape",
+      "reason": "Both values exceed half the badge dimensions and resolve to the same fully rounded pill corners after CSS radius clamping.",
+      "minimumSaturatingRadiusPx": 11
+    },
+    {
+      "viewport": 390,
+      "layout": "list",
+      "part": "badge",
+      "property": "borderRadius",
+      "before": "9999px",
+      "after": "3.35544e+07px",
+      "classification": "equivalent-fully-rounded-shape",
+      "reason": "Both values exceed half the badge dimensions and resolve to the same fully rounded pill corners after CSS radius clamping.",
+      "minimumSaturatingRadiusPx": 11
+    },
+    {
+      "viewport": 390,
+      "layout": "grid",
+      "part": "badge",
+      "property": "borderRadius",
+      "before": "9999px",
+      "after": "3.35544e+07px",
+      "classification": "equivalent-fully-rounded-shape",
+      "reason": "Both values exceed half the badge dimensions and resolve to the same fully rounded pill corners after CSS radius clamping.",
+      "minimumSaturatingRadiusPx": 11
+    }
+  ],
+  "errors": [],
+  "summary": {
+    "phase1": {
+      "sampleCount": 3,
+      "firstDisplayMs": {
+        "median": 1106.0967500000006,
+        "range": [
+          1122.8376659999994,
+          1087.0586250000015,
+          1106.0967500000006
+        ]
+      },
+      "appendTo120Ms": {
+        "median": 362.57374999999956,
+        "range": [
+          362.57374999999956,
+          369.9278329999979,
+          362.0283339999987
+        ]
+      },
+      "detailRestoreMs": {
+        "median": 356.426875000001,
+        "range": [
+          355.0187499999993,
+          358.7508749999979,
+          356.426875000001
+        ]
+      },
+      "scrollCoverageMs": {
+        "median": 35.899999998509884,
+        "max": 73.10000000149012
+      },
+      "missingViewportIds": [],
+      "liveCardsAfterAppend": [
+        26,
+        26,
+        26
+      ],
+      "loadedCardsAfterAppend": [
+        120,
+        120,
+        120
+      ]
+    },
+    "final": {
+      "sampleCount": 3,
+      "firstDisplayMs": {
+        "median": 1121.9171250000018,
+        "range": [
+          1109.1209589999999,
+          1121.9171250000018,
+          1250.9542919999985
+        ]
+      },
+      "appendTo120Ms": {
+        "median": 355.2418749999997,
+        "range": [
+          350.6200829999998,
+          362.5242499999986,
+          355.2418749999997
+        ]
+      },
+      "detailRestoreMs": {
+        "median": 323.1532499999994,
+        "range": [
+          322.94737499999974,
+          323.1532499999994,
+          341.90699999999924
+        ]
+      },
+      "scrollCoverageMs": {
+        "median": 34.5,
+        "max": 72.40000000596046
+      },
+      "missingViewportIds": [],
+      "liveCardsAfterAppend": [
+        26,
+        26,
+        26
+      ],
+      "loadedCardsAfterAppend": [
+        120,
+        120,
+        120
+      ]
+    }
+  },
+  "finishedAt": "2026-10-05T04:48:58.059Z",
+  "sourceMetadata": {
+    "phase1": {
+      "hashes": {
+        "app/test-feed/feed-fixture.tsx": "169b37ce3f9d32c60e4001c9e878d452d57991140f80afba51e5431d41e46649",
+        "app/test-feed/page.tsx": "aff6230fc3cb6540744444d2844de9e9f3602960426fe0adffcffeb32fbc4675",
+        "lib/testing/feed-fixture.ts": "e8a41a88f1aa3fe2f3c38e4d00a32d799c47a0df2477f29a3632b4f3d3a04f6d",
+        "app/api/test-feed/[scenario]/[file]/route.ts": "3bc93182833eace2425b3c78135a77a381efcad81a148ec81fc9abeb375053d8"
+      },
+      "declaredDependencies": {
+        "next": "16.3.8",
+        "react": "19.3.0",
+        "react-dom": "19.3.0",
+        "@tanstack/react-virtual": "3.13.12",
+        "tailwindcss": "^3.4.17",
+        "tailwind-merge": "^2.5.5",
+        "@clerk/react": null,
+        "@clerk/clerk-react": "^5.47.0",
+        "playwright": "1.62.1"
+      },
+      "installedVersions": {
+        "next": "16.3.8",
+        "react": "19.3.0",
+        "react-dom": "19.3.0",
+        "@tanstack/react-virtual": "3.13.12",
+        "tailwindcss": "3.4.17",
+        "tailwind-merge": "2.6.0",
+        "@clerk/react": null,
+        "@clerk/clerk-react": "5.47.0",
+        "playwright": "1.62.1"
+      }
+    },
+    "final": {
+      "hashes": {
+        "app/test-feed/feed-fixture.tsx": "169b37ce3f9d32c60e4001c9e878d452d57991140f80afba51e5431d41e46649",
+        "app/test-feed/page.tsx": "aff6230fc3cb6540744444d2844de9e9f3602960426fe0adffcffeb32fbc4675",
+        "lib/testing/feed-fixture.ts": "e8a41a88f1aa3fe2f3c38e4d00a32d799c47a0df2477f29a3632b4f3d3a04f6d",
+        "app/api/test-feed/[scenario]/[file]/route.ts": "3bc93182833eace2425b3c78135a77a381efcad81a148ec81fc9abeb375053d8"
+      },
+      "declaredDependencies": {
+        "next": "16.3.8",
+        "react": "19.3.0",
+        "react-dom": "19.3.0",
+        "@tanstack/react-virtual": "3.14.13",
+        "tailwindcss": "4.3.3",
+        "tailwind-merge": "3.7.0",
+        "@clerk/react": "6.17.5",
+        "@clerk/clerk-react": null,
+        "playwright": "1.63.0"
+      },
+      "installedVersions": {
+        "next": "16.3.8",
+        "react": "19.3.0",
+        "react-dom": "19.3.0",
+        "@tanstack/react-virtual": "3.14.13",
+        "tailwindcss": "4.3.3",
+        "tailwind-merge": "3.7.0",
+        "@clerk/react": "6.17.5",
+        "@clerk/clerk-react": null,
+        "playwright": "1.63.0"
+      }
+    }
+  },
+  "sameSyntheticInputHashes": true,
+  "acceptanceChecks": {
+    "sameSyntheticInputHashes": true,
+    "allInitialLoadedCounts40": true,
+    "allAppendCounts120": true,
+    "allAppendStepsPositive": true,
+    "allWarmRestorePage2CacheHit": true,
+    "allRestoreAlignmentWithin2px": true,
+    "allMarkersConsumed": true,
+    "allScrollCoverageNoMissingIds": true,
+    "allAssignedRowsWithin1px": true,
+    "noUncaughtBrowserErrors": true,
+    "noErrorOverlay": true,
+    "noMaterialStyleDifferences": true
+  },
+  "measurementHarness": {
+    "path": "/private/tmp/next16-ui-comparison.mjs",
+    "sha256": "819e681999d03325005848fa9968275c2108596c98100015009dc7583def49cf",
+    "correctedOrder": "initial40→append120→8fastscrolls→warm detail-return restore",
+    "supersededFirstPass": "doc/validation/next16-ui-performance-first-pass-2026-10-05.json",
+    "correctionReason": "The first pass measured append after fast scrolling had already loaded120 posts, so its no-op append timings are invalid and superseded."
+  },
+  "interpretation": "Existing card presentation and virtual-feed correctness are preserved in this Chromium fixture. First display, append and restore timings remain of the same local-development order; three samples do not establish a production improvement. No performance percentage claim is made.",
+  "apiSmokeEvidence": "doc/validation/next16-ui-api-smoke-2026-10-05.json",
+  "visualInspection": {
+    "screenshotsReviewed": [
+      "next16-ui-final-1440-list-2026-10-05.png",
+      "next16-ui-phase1-390-grid-2026-10-05.png",
+      "next16-ui-final-390-grid-2026-10-05.png"
+    ],
+    "result": "Card appearance matched in the reviewed captures. Development fixture controls, existing debug banners and Next dev indicators remain visible in the captures; they are not product layout regression evidence."
+  }
+}

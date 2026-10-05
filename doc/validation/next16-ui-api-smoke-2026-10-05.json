@@ -1,0 +1,99 @@
+{
+  "recordedAt": "2026-10-05T04:49:48.625287+00:00",
+  "scope": "Local UI API compatibility and SSR markup smoke during the dependency upgrade. Calendar, Resizable and Chart wrappers currently have no application import usage.",
+  "runtime": "Node24.19.0",
+  "sourceRoot": "/Users/craigchoi/silla/is",
+  "sourceHashes": {
+    "components/ui/calendar.tsx": "1461b3a2cd09224f2f55021637f554ab05c723f13a50429334cd44b98fd8911e",
+    "components/ui/resizable.tsx": "f676b4281dd1e435cff8d7fd8d43d5fab943104ee35e120e6233636ef0915fdb",
+    "components/ui/chart.tsx": "6a27451a6c057d47429e7339eac40c84d9e4c9dca57018af18f72a27470256e2",
+    "styles/tailwind-compat.css": "e42e6b0f024f2f4af45c3f96a7808da19900aa29e2c8e3915cf433659d8808fb",
+    "tailwind.config.ts": "7cf987111621df9beeaaa80ab7582b53c5479ffd65d10fb299a85b7455168302",
+    "postcss.config.mjs": "ab4805b77935e8d8a2036e5de3d3a15d6e21229e8e3a1a4aea10b09327709460"
+  },
+  "checks": [
+    {
+      "name": "TypeScript compatibility",
+      "command": "Node24 node_modules/typescript/bin/tsc --noEmit --incremental false",
+      "exitCode": 0,
+      "result": "Calendar, Resizable, Chart and application compiled against the new package types"
+    },
+    {
+      "name": "Tailwind4 PostCSS compilation",
+      "exitCode": 0,
+      "cssWarnings": [],
+      "bytes": 108716,
+      "checks": {
+        "semanticBackgroundClass": true,
+        "animationPluginClass": true,
+        "containerQuery10rem": true,
+        "usedV3Palette": true,
+        "v3ShadowSmall": true,
+        "v3BlurSmall": true
+      },
+      "note": "Direct compilation emitted a Node typeless-module notice for legacy tailwind.config.ts; no CSS warnings. Temporary compiled stylesheet is /private/tmp/is-tailwind4-compiled.css."
+    },
+    {
+      "name": "Calendar SSR markup",
+      "library": "@daypicker/react10.0.2",
+      "conditions": {
+        "month": "2026-10",
+        "selectedDay": "2026-10-05",
+        "mode": "single"
+      },
+      "checks": {
+        "selectedDayAriaSelected": true,
+        "previousMonthAccessibleButton": true,
+        "nextMonthAccessibleButton": true
+      }
+    },
+    {
+      "name": "Resizable SSR markup",
+      "library": "react-resizable-panels4.14.2",
+      "conditions": {
+        "orientation": "vertical",
+        "panels": 2,
+        "defaultSizes": [
+          "50%",
+          "50%"
+        ]
+      },
+      "checks": {
+        "groupInlineFlexDirectionColumn": true,
+        "separatorAriaOrientationHorizontal": true
+      }
+    },
+    {
+      "name": "Chart API types",
+      "library": "recharts3.10.1",
+      "checks": {
+        "defaultTooltipContentTypes": true,
+        "defaultLegendContentPayloadTypes": true,
+        "tooltipFormatterReadonlyPayloadContract": true
+      },
+      "runtimeInteractionTested": false
+    },
+    {
+      "name": "ESLint changed UI scope",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 22,
+      "note": "Includes two ignored CSS files; other warnings are pre-existing source issues or newly enabled React hooks diagnostics. No rules were disabled by UI migration."
+    },
+    {
+      "name": "Whitespace validation",
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "smokeHarness": {
+    "command": "TSX_TSCONFIG_PATH=/private/tmp/is-ui-smoke-tsconfig.json Node24 --import tsx --input-type=module",
+    "jsx": "react-jsx in a temporary harness configuration only",
+    "appTsconfigModified": false
+  },
+  "limitations": [
+    "SSR markup and types do not verify browser selection, keyboard navigation, pointer resizing or chart tooltip interaction.",
+    "The wrappers are not currently rendered by application routes; no additional product routes were introduced solely for this smoke.",
+    "This record complements the separate actual PostCard computed-style and browser regression evidence."
+  ]
+}

@@ -1,0 +1,64 @@
+{"mode":"unit","sourceRoot":"/private/tmp/next16-final-browser-h_8hjms4","node":"/Users/craigchoi/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node","isolatedPostgres":"127.0.0.1:55442/iss_web_fixture","readOnlyDatabase":false,"businessEnvCopied":false}
+✔ an empty mounted feed adopts a new first-page seed (5.304083ms)
+✔ a same-generation seed refresh retains appended pages and cursor (0.145209ms)
+✔ seed data wins overlapping IDs and duplicate IDs never appear twice (0.099208ms)
+✔ removes absent old seed items without dropping unrelated appended items (0.0805ms)
+✔ explicit generation replacement clears old pages and resets all feed metadata (0.344875ms)
+✔ identical input retains the posts reference and does not mutate old metadata (0.110125ms)
+✔ anchor preservation prefers the same ID and then its closest surviving neighbor (0.090292ms)
+✔ cached pages retain ordered payloads when the same ID is written by another base or generation (0.919667ms)
+✔ an empty complete page is a hit and a legacy ID-only page is a miss (0.992459ms)
+✔ a partial, reordered, or invalid cached payload is rejected as a whole (0.785834ms)
+✔ denied IndexedDB does not prevent a network manifest or turn page cache into an error (18.371916ms)
+✔ ranked candidates query filters by activity window (0.595416ms)
+✔ ranked candidates query no longer filters by post timestamp (0.507ms)
+✔ ranked candidates query decays by activity timestamp (1.626541ms)
+✔ document position is independent of current window scroll, including fractional pixels (0.489708ms)
+✔ paired document margin and local row placement cover all visible rows across layouts (127.157958ms)
+✔ legacy zero margin and margin-only placement reproduce the regression controls (0.557ms)
+✔ 360 successive position and count changes retain visible coverage on the same virtualizer (3.513792ms)
+✔ position changes and appended rows preserve existing measured heights (0.87075ms)
+✔ default window scroller applies corrections when a measured row above the viewport grows (0.504209ms)
+✔ a retained feed anchor is selected within its root when an upper section repeats the same ID (0.18425ms)
+▶ fixture projections reach actual home queries with correct empty/stale/suppressed/deleted behavior
+  ✔ fixed materialized views expose the expected delta and exclude future input (2.236292ms)
+[getClusterTopPosts][24h] base=1 excludeSet=0 dropped=0
+[getClusterTopPosts][24h] filtered=1 picked=1 pageSize=20 perSiteCap=20
+  ✔ cluster consumers include only current eligible representatives (45.521833ms)
+[getMainPagePosts][ranked 24h] base=2 afterExclude=2
+[getMainPagePosts][ranked 24h] mv_diag { cnt: '4', max_ts: '2026-10-05 13:40:00+09' }
+[getMainPagePosts][ranked 24h] post_trends_diag { max_ts: '2026-10-06 13:40:00+09' }
+[getMainPagePosts][ranked 24h] merged=2
+[getMainPagePosts][ranked 24h] dedup=2 sites=1
+[getMainPagePosts][ranked 24h] final=2
+  ✔ ranked consumers use activity time and exclude stale, deleted and suppressed posts (22.206042ms)
+[getMainPagePosts][fresh 24h] base=4 afterExclude=4
+[ getMainPagePosts][fresh 24h] dedup=4 final=4
+  ✔ fresh consumers retain valid current originals even without current ranked activity (7.55325ms)
+[getMainPagePosts][ranked 24h] base=0 afterExclude=0
+[getMainPagePosts][ranked 24h] mv_diag { cnt: '0', max_ts: null }
+[getMainPagePosts][ranked 24h] post_trends_diag { max_ts: null }
+[getMainPagePosts][ranked 24h] merged=0
+[getMainPagePosts][ranked 24h] dedup=0 sites=0
+[getMainPagePosts][ranked 24h] final=0
+[getClusterTopPosts][24h] base=0 (no clusters returned)
+  ✔ no current projections produce an explicit empty result (7.639584ms)
+✔ fixture projections reach actual home queries with correct empty/stale/suppressed/deleted behavior (326.017ms)
+✔ actual home JSON builder publishes complete fixture generations without predicted SSR exclusions (30816.808917ms)
+✔ validates contiguous pages starting at 2 with no first-page JSON (3.715125ms)
+✔ permits an explicitly empty tail but rejects metadata without a page contract (2.158667ms)
+✔ rejects missing pages and leaves the published generation untouched (6.481583ms)
+✔ rejects a mixed generation, duplicate IDs, and malformed posts (1.755125ms)
+✔ repeated publication removes stale tail pages and supports an empty next generation (4.157209ms)
+✔ rejects unexpected stale files and incompatible feed metadata (1.192125ms)
+✔ the continuation contract retains candidates beyond an independently selected live seed (1.177083ms)
+✔ rejects a manifest that claims an unsupported seed relationship (1.741625ms)
+✔ actual SSR 36 and actual upper IDs are excluded without losing unseen continuation candidates (11.542834ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 31348.605833

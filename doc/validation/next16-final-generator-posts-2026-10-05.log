@@ -1,0 +1,5 @@
+Starting build for all posts.
+Building all post pages (incremental, concurrent)...
+Wrote /private/tmp/next16-final-build-8lzzeb5k/public/data/posts/v1/upgrade-fixture-001.json
+Manifest written with 1 ids. written=1 skipped=0 failed=0
+Finished building all posts.

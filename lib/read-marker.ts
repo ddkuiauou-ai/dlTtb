@@ -10,6 +10,37 @@ interface ReadRecord {
   url?: string;
 }
 
+export const READ_POSTS_KEY = "readPosts:v2";
+
+// Keep every read-state consumer in sync, including after a tab resumes.
+export function subscribeToReadPosts(onChange: () => void): () => void {
+    if (typeof window === "undefined") return () => {};
+
+    const onStorage = (event: StorageEvent) => {
+        if (event.key !== READ_POSTS_KEY && event.key !== null) return;
+        try {
+            if (event.storageArea !== window.localStorage) return;
+        } catch { return; }
+        onChange();
+    };
+    const onVisible = () => {
+        if (document.visibilityState === "visible") onChange();
+    };
+
+    window.addEventListener("readPosts:updated", onChange);
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("pageshow", onChange);
+    document.addEventListener("visibilitychange", onVisible);
+    onChange();
+
+    return () => {
+        window.removeEventListener("readPosts:updated", onChange);
+        window.removeEventListener("storage", onStorage);
+        window.removeEventListener("pageshow", onChange);
+        document.removeEventListener("visibilitychange", onVisible);
+    };
+}
+
 function coerceUrl(candidate: unknown): string | undefined {
   return typeof candidate === "string" && candidate.trim() ? candidate : undefined;
 }
@@ -18,7 +49,7 @@ export function markPostAsRead(post: PostInfo) {
     if (!post || !post.id || !post.title) return;
 
     try {
-        const KEY = "readPosts:v2"; // v2 for new data structure
+        const KEY = READ_POSTS_KEY;
         const raw = localStorage.getItem(KEY);
         const data: Record<string, ReadRecord> = raw ? JSON.parse(raw) : {};
         const now = Date.now();

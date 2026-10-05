@@ -1,182 +1,104 @@
-# 배포 설정 가이드
+# Cloudflare Workers 수동 배포 가이드
 
-> **문서 상태 — 2026-10-04:** 아래 배포 가이드의 JSON 저장 대상과 현재 워크플로에는 차이가 있습니다. [프로젝트 README](README.md)와 [문서 싱크 차이](doc/DOCUMENTATION_DRIFT.md)를 함께 읽으세요. 본문의 현행화는 후속 라이브러리 업데이트 이후 진행할 작업입니다.
+기준일: 2026-10-05. Next.js 16 사이트는 **Workers + OpenNext**로 빌드한다. 실제 계정 배포·도메인 전환·R2 연결은 사용자가 이 문서의 확인을 거쳐 진행한다. 로컬 build/preview 결과는 운영 배포 성공을 의미하지 않는다. 이전 Pages 배포는 첫 운영 확인과 복구 기간 동안 유지한다.
 
-이 프로젝트는 Cloudflare Pages와 R2를 사용하여 배포됩니다:
+## 배포 구성
 
-## 1. 메인 사이트 (HTML 페이지들)
+| 구성 | 산출물/역할 |
+| --- | --- |
+| Next.js / OpenNext | `.open-next/worker.js`, `.open-next/assets` |
+| 사전 생성 HTML/RSC | Workers Static Assets 기반 읽기 전용 incremental cache |
+| 검색·홈·카테고리·전체·키워드 JSON | `public/data`에서 생성해 Workers 자산에 포함 |
+| 상세 JSON | 기존 R2 버킷의 `data/posts/v1/{id}.json`에 별도로 업로드 |
+| 클라이언트 데이터 캐시 | 기존 manifest·IndexedDB·메모리·읽음/복원 동작 유지 |
 
-- **Cloudflare Pages 프로젝트**: 메인 웹사이트
-- **내용**: Next.js로 빌드된 HTML 페이지들 + 검색 인덱스
-- **환경변수**: `CLOUDFLARE_PAGES_PROJECT_MAIN`
+`use cache`, Cache Components, PPR, ISR/태그 재검증과 새 R2/DO/D1/Queue 캐시는 도입하지 않는다. OpenNext의 읽기 전용 SSG 저장소는 빌드 결과를 전달하는 수단이다. 상세 JSON R2 저장소와 별개다. 이 저장소는 재검증을 지원하지 않으므로 콘텐츠 갱신에는 새로운 JSON 생성과 사이트 빌드·배포가 필요하다. 정적 해시 자산에만 `public/_headers`의 1년 immutable 캐시를 적용하며 JSON/manifest 캐시 정책은 유지한다. [OpenNext SSG 캐시](https://opennext.js.org/cloudflare/caching)
 
-## 2. 모든 JSON 데이터
+`next.config.mjs`의 `serverExternalPackages: ["pg-cloudflare"]`는 node-postgres의 Cloudflare 전용 조건부 export 파일을 OpenNext가 함께 복사하도록 한다. 이 설정이 없으면 최신 드라이버의 Node용 빈 파일만 추적되어 Worker 패키징이 실패한다. [OpenNext workerd 패키지 설정](https://opennext.js.org/cloudflare/howtos/workerd)
 
-- **Cloudflare R2 버킷**: 모든 JSON 데이터 저장소
-- **내용**: 포스트 미리보기 + 무한스크롤 JSON 데이터 모두
-- **환경변수**: `CLOUDFLARE_R2_BUCKET`
+## 로컬 검증
 
-## GitHub Secrets 설정
+Node 24.19.0과 `package.json`에 고정된 pnpm 12.9.1을 사용한다. `.nvmrc`의 Node 버전을 선택하고 실제 CLI 버전을 확인한 뒤 의존성을 설치한다.
 
-GitHub 리포지토리의 **Settings > Secrets and variables > Actions**에서 다음 시크릿들을 추가하세요:
-
-### 필수 시크릿들:
-
-- `CLOUDFLARE_API_TOKEN` - Cloudflare API 토큰
-- `CLOUDFLARE_ACCOUNT_ID` - Cloudflare 계정 ID
-- `TOKEN_GITHUB_COM` - GitHub 토큰
-
-### 프로젝트별 시크릿들 (신규):
-
-- `R2_ACCESS_KEY_ID`: Cloudflare에서 생성한 R2 API 토큰의 Access Key ID
-- `R2_SECRET_ACCESS_KEY`: Cloudflare에서 생성한 R2 API 토큰의 Secret Access Key
-- `R2_ACCOUNT_ID`: Cloudflare 계정 ID
-- `R2_BUCKET_NAME`: 생성한 R2 버킷의 이름
-- `R2_ENDPOINT`: R2 엔드포인트 URL (선택사항, 직접 구성 가능)
-
-### 데이터베이스 시크릿들:
-
-- `POSTGRES_HOST`
-- `POSTGRES_PORT`
-- `POSTGRES_USER`
-- `POSTGRES_PASSWORD`
-- `POSTGRES_DB`
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-
-## Cloudflare 설정
-
-### Pages 프로젝트 생성
-
-메인 사이트를 위한 Cloudflare Pages 프로젝트를 생성하세요:
-
-1. **메인 사이트 프로젝트**: 일반적인 웹사이트 설정
-
-### R2 버킷 생성
-
-JSON 데이터를 저장할 Cloudflare R2 버킷과 API 토큰을 생성하세요:
-
-1. **R2 버킷 생성**:
-
-   - Cloudflare Dashboard → R2 → Create bucket
-   - 버킷 이름을 설정하고 생성
-   - 버킷 이름은 `R2_BUCKET_NAME` 시크릿에 저장될 값입니다
-
-2. **R2 API 토큰 생성**:
-   - R2 메뉴에서 **Manage R2 API Tokens** 클릭
-   - **Create API Token** 선택
-   - 권한(Permissions)은 **Object Read & Write**로 설정
-   - 원하는 버킷을 지정하거나 모든 버킷에 적용
-   - 생성된 토큰에서 다음 정보들을 복사:
-     - **Access Key ID** → `R2_ACCESS_KEY_ID` 시크릿
-     - **Secret Access Key** → `R2_SECRET_ACCESS_KEY` 시크릿
-   - **Account ID** → `R2_ACCOUNT_ID` 시크릿 (R2 개요 페이지에서 확인)
-
-## 배포 구조
-
-```
-메인 사이트 (CLOUDFLARE_PAGES_PROJECT_MAIN):
-├── index.html, about.html, ... (Next.js 빌드 결과)
-└── data/
-    └── search-index.json
-
-R2 버킷 (R2_BUCKET_NAME):
-└── data/
-    ├── posts/
-    │   └── v1/
-    │       ├── abc123.json
-    │       ├── def456.json
-    │       └── ...
-    ├── home/
-    │   └── v1/
-    │       ├── 3h/
-    │       ├── 6h/
-    │       ├── 24h/
-    │       └── 1w/
-    ├── category/
-    │   └── [category]/
-    │       └── v1/
-    │           ├── 3h/
-    │           ├── 6h/
-    │           ├── 24h/
-    │           └── 1w/
-    ├── all/
-    │   └── v1/
-    │       ├── 3h/
-    │       ├── 6h/
-    │       ├── 24h/
-    │       └── 1w/
-    └── keywords/
-        └── [keyword]/
-            └── ...
+```sh
+nvm install
+nvm use
+node --version # v24.19.0
+# 필요한 경우 이 Node 환경에 pnpm 설치: npm install --global pnpm@12.9.1
+pnpm --version # 12.9.1
+pnpm install --frozen-lockfile
 ```
 
-## 페이지 수 제한 해결
+기존 개발 서버는 자동 재시작하지 않았다. 업그레이드 버전을 사용하려면 이 환경에서 서버를 재시작한다.
 
-기존에는 모든 데이터가 하나의 Pages 프로젝트에 포함되어 2만 페이지 제한에 걸렸습니다. 이제 메인 사이트는 Pages에 배포하고, 모든 JSON 데이터는 R2 버킷에 저장하여 제한을 해결했습니다:
+Next 빌드는 PostgreSQL 데이터를 조회하며 홈 데이터 쿼리는 노출 기록을 쓸 수 있다. 테스트에서는 업무 `.env`를 복사하지 않고 별도의 로컬 fixture DB와 환경을 사용한다. `build:data`도 실제 데이터 생산 명령이므로 검증 환경을 확인한 후 실행한다. `POSTGRES_*`와 `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`는 빌드 환경에 필요하며, `NEXT_PUBLIC_*`는 빌드 시 브라우저 코드에 들어간다.
 
-- **메인 사이트**: 수백 페이지 (HTML + 검색 인덱스)
-- **JSON 데이터**: 무제한 (R2 버킷에 저장)
+```sh
+# 안전한 fixture 환경에서 수행. Next build도 이 명령 안에서 실행된다.
+pnpm build:cloudflare
 
-## R2 업로드 방식
-
-JSON 데이터는 AWS CLI를 사용하여 R2 버킷에 업로드됩니다. R2는 S3 호환 API를 제공하므로 표준 AWS CLI 명령어를 사용할 수 있습니다:
-
-```bash
-# 환경 변수 설정 (job-level)
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_REGION: ap-northeast-2
-
-# 업로드 명령어
-aws s3 sync ./data s3://버킷이름/data/ --endpoint-url https://계정ID.r2.cloudflarestorage.com
+# 이미 만든 산출물만 로컬 Workers 런타임으로 실행한다.
+pnpm preview:cloudflare
 ```
 
-**중요**: `aws-actions/configure-aws-credentials` 액션은 사용하지 않습니다. 이 액션은 AWS STS를 통해 인증을 검증하기 때문에 Cloudflare R2 키로는 항상 실패합니다. 대신 job-level 환경 변수를 사용하여 AWS CLI에 직접 인증 정보를 제공합니다.
+`.dev.vars.example`은 비밀값이 없는 환경 선택 템플릿이다. 필요하면 `.dev.vars`로 복사하며 git에 넣지 않는다. `NEXTJS_ENV=production`은 production Next 환경 파일을 선택한다. 검증 전용 복사본에서는 업무 `.env*`를 제외하고 fixture 변수를 명시한다. `next dev`는 Node 개발 서버이므로 Workers runtime 검증을 대신하지 않는다. [OpenNext 환경 변수](https://opennext.js.org/cloudflare/howtos/env-vars), [build/preview/deploy 차이](https://opennext.js.org/cloudflare/cli)
 
-이 방식은 더 표준적이고 안정적이며, 대용량 파일 업로드에 적합합니다.
+확인할 경로는 홈, 카테고리, 검색, 빌드된 키워드/상세 페이지, 목록 JSON/manifest, `_next/static` 자산, 미생성 키워드/상세 404다. 개발 fixture인 `/test-feed/`와 `/api/test-feed/...`는 production에서 404여야 한다. 미생성 상세 URL은 현재 `dynamicParams=false` 계약을 유지하며 실시간 DB fallback으로 바꾸지 않는다.
 
-## 디버깅 및 테스트
+2026-10-05 검증에서는 실제 `pnpm build:cloudflare`가 성공했고, 합성 글·댓글·키워드가 있는 전용 DB에서 생성한 23개 정적 경로의 재검증 설정은 모두 `false`였다. DB 환경 변수를 주지 않은 로컬 Worker에서 HTML/RSC, JSON 7개의 바이트·캐시 정책, 미생성 경로와 production 테스트 경로의 404 등 22개 점검을 통과했다. [Worker 응답 검증](/Users/craigchoi/silla/is/doc/validation/next16-final-worker-smoke-2026-10-05.json), [제품 설정 SHA·번들 검증](/Users/craigchoi/silla/is/doc/validation/next16-final-worker-bundle-2026-10-05.json)에 증거를 기록했다. 실제 콘텐츠 규모의 빌드와 운영 R2 경로는 아래 수동 인수 항목으로 확인한다.
 
-R2 업로드가 제대로 작동하는지 확인하려면 디버그 워크플로우를 사용할 수 있습니다:
+## 첫 수동 배포 준비
 
-1. **디버그 워크플로우 실행**:
+1. `wrangler.jsonc`의 `name`을 실제 사용할 Worker 이름으로 확인한다. 기본값은 `silla-is`이며 운영 도메인 route는 아직 지정하지 않았다. 계정/플랜의 CPU·크기·정적 자산 제한도 실제 콘텐츠를 포함한 산출물로 확인한다.
+2. 기존 콘텐츠 생성 환경의 `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`와 Clerk publishable key를 빌드 환경에 설정한다. SSG 소비 경로에는 빌드 시 생성된 값을 사용한다. 런타임 PostgreSQL 연결이나 새 Next 캐시용 R2 바인딩을 기본 설정으로 추가하지 않는다.
+3. 기존 생성 JSON과 HTML이 같은 데이터 세대를 사용하도록 `public/data`를 준비하고 OpenNext 산출물을 빌드한다. 개발용 placeholder Clerk key로 만든 산출물을 운영에 배포하지 않는다.
+4. 실제 Cloudflare 계정에 필요한 Worker 배포 권한이 있는 `CLOUDFLARE_API_TOKEN`과 `CLOUDFLARE_ACCOUNT_ID`를 사용자 환경에 설정한다. 토큰을 저장소 파일이나 출력에 넣지 않는다.
+5. 기존 Cloudflare 대시보드의 runtime 변수가 있다면 유지 정책을 확인한다. 필요하면 OpenNext CLI의 `-- --keep-vars` 옵션으로 기존 값을 보존한다.
 
-   - GitHub 리포지토리 → Actions 탭 → "DEBUG - Upload to Cloudflare R2" 워크플로우 선택
-   - "Run workflow" 버튼 클릭 (수동 실행)
+아래 명령은 **실제로 원격 사이트를 배포**하며 이번 로컬 검증에서는 실행하지 않는다. 빌드는 다시 실행하지 않으므로 준비한 산출물을 먼저 확인한다.
 
-2. **디버그 워크플로우 기능**:
+```sh
+pnpm deploy:cloudflare
+```
 
-   - 환경 변수 및 시크릿 값 검증 (길이 및 형식 확인)
-   - AWS CLI 인증 테스트 (실제 API 호출로 검증)
-   - 테스트 파일 생성 및 업로드
-   - R2 연결 및 권한 테스트
-   - 업로드 결과 검증
+기존 대시보드 runtime 값을 보존해야 할 때는 다음 CLI 형태를 사용한다.
 
-3. **메인 워크플로우 디버깅**:
+```sh
+pnpm exec opennextjs-cloudflare deploy -- --keep-vars
+```
 
-   - 빌드 과정에서도 동일한 인증 및 설정 검증 수행
-   - 인증 실패 시 즉시 워크플로우 중단 (빠른 문제 파악)
+`migrate`, `upload`, `populateCache remote`, 버킷 생성 명령은 로컬 검증에 필요하지 않다. 특히 공식 `migrate`는 계정에 R2가 활성화되어 있으면 버킷도 생성할 수 있으므로 실행 범위를 확인해야 한다. [OpenNext CLI](https://opennext.js.org/cloudflare/cli)
 
-4. **문제 해결**:
+## 상세 JSON의 같은 origin 연결
 
-   **시크릿 접근 권한 문제 (가장 흔한 원인)**:
+현재 상세 모달은 **`/data/posts/v1/{id}.json`**을 상대 URL로 요청한다. CI는 상세 JSON을 사이트 자산에서 제외해 별도 R2에 올린다. 따라서 Worker 배포만으로 이 URL과 실제 R2가 연결되지는 않는다.
 
-   - 시크릿이 Organization 또는 Environment 수준에서 설정된 경우
-   - 워크플로우에 `environment` 설정이 누락된 경우
-   - 해결: job에 `environment: your-environment-name` 추가
+기존 운영의 R2 프록시/라우팅 구성을 확인하고 새 운영 도메인에서도 `/data/posts/v1/*`가 **기존 R2 버킷의 `data/posts/v1/*` 객체**를 반환하게 연결한다. 새 Next incremental-cache 버킷을 만들거나 모달을 다른 origin으로 바꾸는 작업으로 대체하지 않는다. R2 custom domain만 연결하면 앱의 같은 origin 경로가 자동으로 만들어지는 것은 아니다.
 
-   ```yaml
-   jobs:
-     upload_json_to_r2:
-       runs-on: ubuntu-latest
-       environment: production # 또는 실제 environment 이름
-       # ... 나머지 설정
-   ```
+Worker 테스트 URL에서도 이 경로를 검증하려면 별도의 동일 경로 전달 구성이 필요하다. 운영 연결 방식을 선택하기 전까지 기본 `workers.dev` 주소에서 실제 R2 상세 조회가 성공한다고 가정하지 않는다. 로컬 fixture는 동일 URL의 응답 형태만 확인한다.
 
-   **기타 문제 해결**:
+운영 연결 후 다음을 확인한다.
 
-   - AWS CLI 오류 시 R2 엔드포인트 URL 확인
-   - 권한 오류 시 R2 API 토큰 재생성 및 Object Read & Write 권한 확인
-   - 시크릿 값에 공백/줄바꿈 있는 경우 재입력
-   - 디버그 로그에서 "leading/trailing whitespace" 경고 확인
+- 존재하는 상세 JSON의 직접 URL이 200과 JSON Content-Type을 반환한다.
+- 홈·카테고리에서 상세 모달을 열어 본문/댓글/관련 글을 조회할 수 있다.
+- 존재하지 않는 JSON은 올바른 404이며 사이트 HTML을 JSON 대신 반환하지 않는다.
+- 목록/manifest와 상세가 같은 데이터 세대를 보며, 새 콘텐츠 업로드 후 실제 응답이 갱신된다.
+- 쿠키/Clerk origin·리디렉션·trailing slash·브라우저 console·Worker 로그를 확인한다.
+
+첫 확인이 통과한 뒤 기존 운영 도메인을 새 Worker로 전환한다. 실패하면 기존 Pages 라우팅과 데이터 경로로 복구할 수 있도록 이전 설정을 보존한다.
+
+## GitHub Actions와 데이터 생산
+
+`.github/workflows/build-contents.yml`은 `main` push와 수동 기동으로 콘텐츠를 생성한다. Node 24 / 고정 pnpm을 사용하며 다음 역할을 유지한다.
+
+- `build_singular`: 검색 인덱스, 상세 JSON, 키워드 JSON을 생성한다.
+- `build_main`, `build_categories`, `build_all_posts`: 목록/manifest를 생성한다.
+- `build_main_site`: 상세 JSON을 제외한 자산을 합쳐 OpenNext 사이트를 빌드하고 산출물을 artifact로 보관한다.
+- `upload_json_to_r2`: 기존 상세 JSON을 기존 R2에 업로드한다.
+- `deploy_main_site`: **수동 workflow_dispatch에서 `deploy_site=true`를 선택한 경우에만** 앞선 사이트 산출물을 Workers로 배포한다. 기본값은 false이며 main push는 새 사이트를 자동 배포하지 않는다.
+
+첫 운영 확인 전에는 수동 배포 입력을 켜지 않는다. `deploy_site=false`라도 콘텐츠 생산과 기존 R2 업로드는 수행되므로 검증만 원하는 경우 이 워크플로를 원격 실행하지 않는다. 첫 배포 후 자동 배포를 다시 활성화하는 변경은 후속으로 판단한다.
+
+GitHub Secrets는 기존 `POSTGRES_*`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ACCOUNT_ID`, `R2_BUCKET_NAME`을 유지한다. 수동 Worker 배포에는 `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`가 필요하다. Pages project secret은 새 Worker 배포에서 사용하지 않는다. R2 업로드는 기존 S3 호환 AWS CLI 방식이며 AWS STS 인증용 액션은 사용하지 않는다.
+
+원격 CI 성공, 실제 계정 바인딩, R2 연결과 운영 도메인 전환 결과는 로컬 업그레이드 검증과 별도로 기록한다.

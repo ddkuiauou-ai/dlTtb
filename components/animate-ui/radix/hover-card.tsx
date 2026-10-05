@@ -122,7 +122,7 @@ function HoverCardContent({
               exit={{ opacity: 0, scale: 0.5, ...initialPosition }}
               transition={transition}
               className={cn(
-                'w-auto min-w-[20rem] max-w-[min(95vw,80rem)] rounded-lg border bg-popover p-4 text-popover-foreground shadow-md outline-none',
+                'w-auto min-w-[20rem] max-w-[min(95vw,80rem)] rounded-lg border bg-popover p-4 text-popover-foreground shadow-md outline-hidden',
                 className,
               )}
               {...props}

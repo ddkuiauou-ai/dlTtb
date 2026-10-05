@@ -1,0 +1,2130 @@
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/app/(feed)/page.tsx
+  122:33  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/app/(feed)/page.tsx:122:33
+  120 |                   sampleMax={3}
+  121 |                   randomizeOnEachMount={true}
+> 122 |                   refreshToken={Date.now()}
+      |                                 ^^^^^^^^^^ Cannot call impure function
+  123 |                 />
+  124 |               </Suspense>
+  125 |  react-hooks/purity
+  141:33  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/app/(feed)/page.tsx:141:33
+  139 |                   rows={2}
+  140 |                   randomizeOnEachMount={true}
+> 141 |                   refreshToken={Date.now()}
+      |                                 ^^^^^^^^^^ Cannot call impure function
+  142 |                 />
+  143 |               </Suspense>
+  144 |       react-hooks/purity
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/app/keywords/[keyword]/[[...range]]/KeywordFeed.client.tsx
+  4:10  warning  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/app/keywords/[keyword]/page.tsx
+  30:12  error  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/app/keywords/[keyword]/page.tsx:30:12
+  28 |     const initialPosts = await getPostsByKeyword(decodedKeyword, { page: 1, pageSize: 20, range: initialRange });
+  29 |
+> 30 |     return <KeywordFeed
+     |            ^^^^^^^^^^^^
+> 31 |       initialPosts={initialPosts}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 32 |       keyword={decodedKeyword}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 33 |       initialRange={initialRange}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 34 |     />;
+     | ^^^^^^^ Avoid constructing JSX within try/catch
+  35 |   } catch (error) {
+  36 |     console.error("Error in keyword page render:", error);
+  37 |     return <div>Error rendering page. See build logs for details.</div>  react-hooks/error-boundaries
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/app/search/SearchPageClient.tsx
+  27:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/app/search/SearchPageClient.tsx:27:5
+  25 |
+  26 |   useEffect(() => {
+> 27 |     setIsLoading(true);
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  28 |     fetch('/data/search-index.json')
+  29 |       .then(res => res.text()) // Use .text() to get the raw JSON string
+  30 |       .then(data => {  react-hooks/set-state-in-effect
+  49:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/app/search/SearchPageClient.tsx:49:7
+  47 |     if (query) {
+  48 |       const searchResults = miniSearch.search(query, { prefix: true, fuzzy: 0.2 });
+> 49 |       setResults(searchResults);
+     |       ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  50 |     } else {
+  51 |       setResults([]);
+  52 |     }   react-hooks/set-state-in-effect
+  78:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @next/next/no-img-element
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/CategoryFeed.client.tsx
+  61:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/CategoryFeed.client.tsx:61:7
+  59 |   useEffect(() => {
+  60 |     if (urlRange && urlRange !== range) {
+> 61 |       setRange(urlRange);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  62 |     }
+  63 |   }, [urlRange, range]);
+  64 |                                  react-hooks/set-state-in-effect
+  67:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/CategoryFeed.client.tsx:67:7
+  65 |   useEffect(() => {
+  66 |     if (range === initialRange) {
+> 67 |       setPosts(initialPosts);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  68 |       setIsLoading(false);
+  69 |       setDataReady(true);
+  70 |       return;  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/KeywordFeed.client.tsx
+  33:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/KeywordFeed.client.tsx:33:7
+  31 |   useEffect(() => {
+  32 |     if (urlRange && urlRange !== range) {
+> 33 |       setRange(urlRange);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  34 |     }
+  35 |   }, [urlRange, range]);
+  36 |  react-hooks/set-state-in-effect
+  39:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/KeywordFeed.client.tsx:39:7
+  37 |   useEffect(() => {
+  38 |     if (range === initialRange) {
+> 39 |       setPosts(initialPosts);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  40 |       return;
+  41 |     }
+  42 |                 react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ReadPostList.client.tsx
+  55:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ReadPostList.client.tsx:55:5
+  53 |
+  54 |   useEffect(() => {
+> 55 |     loadReadPosts();
+     |     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  56 |     window.addEventListener("readPosts:updated", loadReadPosts);
+  57 |     return () => {
+  58 |       window.removeEventListener("readPosts:updated", loadReadPosts);  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/components/tooltip.tsx
+  266:25  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/components/tooltip.tsx:266:25
+  264 | function TooltipPortal({ children }: TooltipPortalProps) {
+  265 |   const [isMounted, setIsMounted] = React.useState(false);
+> 266 |   React.useEffect(() => setIsMounted(true), []);
+      |                         ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  267 |   return isMounted ? createPortal(children, document.body) : null;
+  268 | }
+  269 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/icons/icon.tsx
+  261:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/icons/icon.tsx:261:5
+  259 |   React.useEffect(() => {
+  260 |     if (animate === undefined) return;
+> 261 |     setCurrentAnimation(typeof animate === 'string' ? animate : animation);
+      |     ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  262 |     if (animate) startAnimation(animate as TriggerProp);
+  263 |     else stopAnimation();
+  264 |     // eslint-disable-next-line react-hooks/exhaustive-deps  react-hooks/set-state-in-effect
+  287:19  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/icons/icon.tsx:287:19
+  285 |   React.useEffect(() => {
+  286 |     if (!animateOnView) return;
+> 287 |     if (isInView) startAnimation(animateOnView);
+      |                   ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  288 |     else stopAnimation();
+  289 |   }, [isInView, animateOnView, startAnimation, stopAnimation]);
+  290 |                                                                               react-hooks/set-state-in-effect
+  344:5   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/icons/icon.tsx:344:5
+  342 |   const handleMouseEnter = composeEventHandlers<React.MouseEvent<HTMLElement>>(
+  343 |     childProps.onMouseEnter,
+> 344 |     () => {
+      |     ^^^^^^^
+> 345 |       if (animateOnHover) startAnimation(animateOnHover);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 346 |     },
+      | ^^^^^^ Passing a ref to a function may read its value during render
+  347 |   );
+  348 |
+  349 |   const handleMouseLeave = composeEventHandlers<React.MouseEvent<HTMLElement>>(                                                                                                                                                                                                                                                                              react-hooks/refs
+  351:5   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/icons/icon.tsx:351:5
+  349 |   const handleMouseLeave = composeEventHandlers<React.MouseEvent<HTMLElement>>(
+  350 |     childProps.onMouseLeave,
+> 351 |     () => {
+      |     ^^^^^^^
+> 352 |       if (animateOnHover || animateOnTap) stopAnimation();
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 353 |     },
+      | ^^^^^^ Passing a ref to a function may read its value during render
+  354 |   );
+  355 |
+  356 |   const handlePointerDown = composeEventHandlers<                                                                                                                                                                                                                                                                                                          react-hooks/refs
+  358:31  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/icons/icon.tsx:358:31
+  356 |   const handlePointerDown = composeEventHandlers<
+  357 |     React.PointerEvent<HTMLElement>
+> 358 |   >(childProps.onPointerDown, () => {
+      |                               ^^^^^^^
+> 359 |     if (animateOnTap) startAnimation(animateOnTap);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 360 |   });
+      | ^^^^ Passing a ref to a function may read its value during render
+  361 |
+  362 |   const handlePointerUp = composeEventHandlers<React.PointerEvent<HTMLElement>>(
+  363 |     childProps.onPointerUp,                                                                                                                                                                                                                                       react-hooks/refs
+  364:5   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/icons/icon.tsx:364:5
+  362 |   const handlePointerUp = composeEventHandlers<React.PointerEvent<HTMLElement>>(
+  363 |     childProps.onPointerUp,
+> 364 |     () => {
+      |     ^^^^^^^
+> 365 |       if (animateOnTap) stopAnimation();
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 366 |     },
+      | ^^^^^^ Passing a ref to a function may read its value during render
+  367 |   );
+  368 |
+  369 |   const content = asChild ? (                                                                                                                                                                                                                                                                                                                                                                  react-hooks/refs
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/radix/dialog.tsx
+  39:36  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/radix/dialog.tsx:39:36
+  37 |
+  38 |   React.useEffect(() => {
+> 39 |     if (props?.open !== undefined) setIsOpen(props.open);
+     |                                    ^^^^^^^^^ Avoid calling setState() directly within an effect
+  40 |   }, [props?.open]);
+  41 |
+  42 |   const handleOpenChange = React.useCallback(  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/radix/hover-card.tsx
+  53:36  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/animate-ui/radix/hover-card.tsx:53:36
+  51 |
+  52 |   React.useEffect(() => {
+> 53 |     if (props?.open !== undefined) setIsOpen(props.open);
+     |                                    ^^^^^^^^^ Avoid calling setState() directly within an effect
+  54 |   }, [props?.open]);
+  55 |
+  56 |   const handleOpenChange = React.useCallback(  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/category-list.client.tsx
+  34:6   error  Error: This value cannot be modified
+
+Modifying a variable defined outside a component or hook is not allowed. Consider using an effect.
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/category-list.client.tsx:34:6
+  32 |   const handleCategoryClick = (slug: string) => {
+  33 |     // Set a global timestamp to signal that a navigation is in progress.
+> 34 |     (window as Window & { lastNavigationTime?: number }).lastNavigationTime = Date.now();
+     |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ value cannot be modified
+  35 |
+  36 |     // 1. Get the stored range for this category, defaulting to 24h
+  37 |     const range = getScopedRange('category', slug, '24h');                                                                                                                                                                                                                            react-hooks/immutability
+  34:79  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/category-list.client.tsx:34:79
+  32 |   const handleCategoryClick = (slug: string) => {
+  33 |     // Set a global timestamp to signal that a navigation is in progress.
+> 34 |     (window as Window & { lastNavigationTime?: number }).lastNavigationTime = Date.now();
+     |                                                                               ^^^^^^^^^^ Cannot call impure function
+  35 |
+  36 |     // 1. Get the stored range for this category, defaulting to 24h
+  37 |     const range = getScopedRange('category', slug, '24h');  react-hooks/purity
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/clerk-provider.tsx
+  26:7  error  Error: Cannot reassign variables declared outside of the component/hook
+
+Variable `missingKeyWarningLogged` is declared outside of the component/hook. Reassigning this value during render is a form of side effect, which can cause unpredictable behavior depending on when the component happens to re-render. If this variable is used in rendering, use useState instead. Otherwise, consider updating it in an effect. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#side-effects-must-run-outside-of-render).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/clerk-provider.tsx:26:7
+  24 |   if (!publishableKey) {
+  25 |     if (process.env.NODE_ENV !== "production" && !missingKeyWarningLogged) {
+> 26 |       missingKeyWarningLogged = true;
+     |       ^^^^^^^^^^^^^^^^^^^^^^^ `missingKeyWarningLogged` cannot be reassigned
+  27 |       console.warn("Clerk publishable key is not configured. Authentication is disabled.");
+  28 |     }
+  29 |     return <>{children}</>;  react-hooks/globals
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/client-random-clamp.tsx
+   86:62  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/client-random-clamp.tsx:86:62
+  84 |     // - randomizeOnEachMount: 마운트마다 고정된 난수 씨드
+  85 |     // - 아니면 시간 버킷 씨드(예: seedIntervalMs 단위로 바뀜; 새로고침 기준)
+> 86 |     const seedRef = useRef<number>(initialSeed ?? Math.floor(Math.random() * 1e9));
+     |                                                              ^^^^^^^^^^^^^ Cannot call impure function
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+  89 |             return seedRef.current;                                                                                                                                                                                                react-hooks/purity
+   89:20  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/client-random-clamp.tsx:89:20
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+> 89 |             return seedRef.current;
+     |                    ^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  90 |         }
+  91 |         if (initialSeed != null) {
+  92 |             return initialSeed;                                                                                                                                                                                                                                                                                                   react-hooks/refs
+   89:20  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/client-random-clamp.tsx:89:20
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+> 89 |             return seedRef.current;
+     |                    ^^^^^^^^^^^^^^^ Cannot access ref value during render
+  90 |         }
+  91 |         if (initialSeed != null) {
+  92 |             return initialSeed;                                                                                                                                                                                                                                                                                                                          react-hooks/refs
+   89:20  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/client-random-clamp.tsx:89:20
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+> 89 |             return seedRef.current;
+     |                    ^^^^^^^^^^^^^^^ Cannot access ref value during render
+  90 |         }
+  91 |         if (initialSeed != null) {
+  92 |             return initialSeed;                                                                                                                                                                                                                                                                                                                          react-hooks/refs
+   89:20  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/client-random-clamp.tsx:89:20
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+> 89 |             return seedRef.current;
+     |                    ^^^^^^^^^^^^^^^ Cannot access ref value during render
+  90 |         }
+  91 |         if (initialSeed != null) {
+  92 |             return initialSeed;                                                                                                                                                                                                                                                                                                                          react-hooks/refs
+   94:27  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/client-random-clamp.tsx:94:27
+  92 |             return initialSeed;
+  93 |         }
+> 94 |         return Math.floor(Date.now() / seedIntervalMs);
+     |                           ^^^^^^^^^^ Cannot call impure function
+  95 |     }, [initialSeed, randomizeOnEachMount, seedIntervalMs]);
+  96 |     const sampled = useMemo(() => {
+  97 |         if (initialSampled && initialSampled.length > 0) {                                                                                                                                                                                                                                                                                react-hooks/purity
+  144:23  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/client-random-clamp.tsx:144:23
+  142 |     }, []);
+  143 |
+> 144 |     useEffect(() => { setMounted(true); }, []);
+      |                       ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  145 |
+  146 |     // 컨테이너 실측 기반으로 컬럼 계산 (브레이크 전/후 구간 안정)
+  147 |     useEffect(() => {  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/community-presence-selector.tsx
+  166:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/community-presence-selector.tsx:166:5
+  164 |   // Animate on hover change
+  165 |   React.useEffect(() => {
+> 166 |     setIsAnimating(true);
+      |     ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  167 |     animationTimer.current = setTimeout(() => setIsAnimating(false), ANIMATION_DURATION);
+  168 |     return () => {
+  169 |       if (animationTimer.current) clearTimeout(animationTimer.current);  react-hooks/set-state-in-effect
+  186:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/community-presence-selector.tsx:186:7
+  184 |   React.useEffect(() => {
+  185 |     if (!controlled) {
+> 186 |       setInternalSelectedIds(items.map(i => i.id));
+      |       ^^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  187 |       onChange?.(null);
+  188 |     }
+  189 |   }, [itemIds, controlled, onChange, items]);                                                                             react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/feed-controls.tsx
+  62:25  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  73:25  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/header-client.tsx
+  26:10  warning  'selectedCommunity' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+  29:10  warning  'showKeyHint' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  40:19  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/header-client.tsx:40:19
+  38 |     try {
+  39 |       const raw = localStorage.getItem(KEYHINT_KEY);
+> 40 |       if (!raw) { setShowKeyHint(true); return; }
+     |                   ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  41 |       const ts = Number(raw);
+  42 |       if (!Number.isFinite(ts)) { setShowKeyHint(true); return; }
+  43 |       const elapsedDays = (Date.now() - ts) / (1000 * 60 * 60 * 24);                                             react-hooks/set-state-in-effect
+  59:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/header-client.tsx:59:7
+  57 |       const allIds = Array.from(new Set(sites.map(s => s.id)));
+  58 |       const clamped = saved ? saved.filter(id => allIds.includes(id)) : null;
+> 59 |       setSelectedIds(clamped);
+     |       ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  60 |       // Emit to consumers so views reflect saved selection immediately
+  61 |       if (!clamped || clamped.length === allIds.length) {
+  62 |         emitCommunities(null);  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/infinite-post-list.tsx
+    96:5   warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+   513:21  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/infinite-post-list.tsx:513:21
+  511 |   }, [cols, initialPage, layout, storageKeyPrefix, enablePaging, initialPosts.length]);
+  512 |
+> 513 |   useEffect(() => { setHasMounted(true); }, []);
+      |                     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  514 |
+  515 |   useEffect(() => {
+  516 |     const unsubscribe = subscribeToPreviewActivations((ids) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/set-state-in-effect
+   646:32  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/infinite-post-list.tsx:646:32
+  644 |   const bufferMetrics = useMemo(
+  645 |     () => {
+> 646 |       const estimated = Number(estimateRowSize());
+      |                                ^^^^^^^^^^^^^^^ This function accesses a ref value
+  647 |       return deriveVirtualBufferSizing({
+  648 |         estimatedRowHeight: estimated,
+  649 |         viewportHeight,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react-hooks/refs
+   876:6   warning  React Hook useEffect has missing dependencies: 'sectionKey', 'seenIdsRef', and 'visiblePosts.length'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/exhaustive-deps
+  1078:22  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/infinite-post-list.tsx:1078:22
+  1076 |       <div ref={rootRef}>
+  1077 |         <div style={{ height: virtualizer.getTotalSize(), width: '100%', position: 'relative' }}>
+> 1078 |           {items.map((vi) => {
+       |                      ^^^^^^^^^
+> 1079 |             const start = vi.index * cols;
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1080 |             const rowPosts = visiblePosts.slice(start, start + cols);
+       …
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1125 |             );
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1126 |           })}
+       | ^^^^^^^^^^^^ Cannot access ref value during render
+  1127 |         </div>
+  1128 |
+  1129 |         {enablePaging && <div ref={loaderRef} aria-label="infinite-loader" className="h-1" />}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react-hooks/refs
+  1209:9   warning  'searchParams' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  1475:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/infinite-post-list.tsx:1475:7
+  1473 |   useEffect(() => {
+  1474 |     if (community !== undefined) {
+> 1475 |       setActiveCommunity(community || "전체");
+       |       ^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  1476 |       setActiveCommunities(null);
+  1477 |       return;
+  1478 |     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react-hooks/set-state-in-effect
+  1784:15  error    Error: Cannot access variable before it is declared
+
+`loadMore` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/infinite-post-list.tsx:1784:15
+  1782 |           setTimeout(() => {
+  1783 |             if (!isFetchingRef.current && hasMoreRef.current) {
+> 1784 |               loadMore();
+       |               ^^^^^^^^ `loadMore` accessed before it is declared
+  1785 |             }
+  1786 |           }, 0);
+  1787 |         }
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/infinite-post-list.tsx:1610:3
+  1608 |   );
+  1609 |
+> 1610 |   const loadMore = useCallback(async () => {
+       |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1611 |     if (isFetchingRef.current || !hasMoreRef.current) return;
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1612 |
+       …
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1791 |     }
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1792 |   }, [loadPage, addPostsToSection, jsonBase, maybeRefreshManifest, sectionKey]);
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `loadMore` is declared here
+  1793 |
+  1794 |   const ensureBelowBufferRows = useCallback(async (anchorId: string) => {
+  1795 |     const metrics = bufferMetricsRef.current;                                                                                                                                                                                                                               react-hooks/immutability
+  2066:27  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/infinite-post-list.tsx:2066:27
+  2064 |           : { gridTemplateColumns: `repeat(auto-fit, minmax(min(100%, 22rem), 1fr))` }}
+  2065 |       >
+> 2066 |         {visiblePosts.map((post, index) => (
+       |                           ^^^^^^^^^^^^^^^^^^
+> 2067 |           <div key={post.id} id={`post-${post.id}`} className="post-anchor relative isolate" style={{ scrollMarginTop: 'var(--sticky-top, 0px)' }}>
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 2068 |             {(() => {
+       …
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 2087 |           </div>
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 2088 |         ))}
+       | ^^^^^^^^^^ Cannot access ref value during render
+  2089 |         {enablePaging && <div ref={loaderRef} aria-label="infinite-loader" className="col-span-full h-1" />}
+  2090 |         {isFetching && hasMore && (
+  2091 |           <div className="text-center text-gray-400 py-4 col-span-full">불러오는 중...</div>  react-hooks/refs
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-card.tsx
+   179:53  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-card.tsx:179:53
+  177 |   const [fits, setFits] = React.useState<boolean | null>(null);
+  178 |   const [ready, setReady] = React.useState(false);
+> 179 |   const startDelay = React.useMemo(() => Math.floor(Math.random() * 1200), []);
+      |                                                     ^^^^^^^^^^^^^ Cannot call impure function
+  180 |   React.useEffect(() => {
+  181 |     if (segmentsLength <= 1) return; // 단일 세그먼트면 타이머 불필요
+  182 |     const t = setTimeout(() => setReady(true), startDelay);                                                                                                                                                                                                                                                                                                                                                         react-hooks/purity
+   468:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-card.tsx:468:7
+  466 |     React.useEffect(() => {
+  467 |       const activated = activatedHoverPreviewIds.has(post.id);
+> 468 |       setPrefetched(activated);
+      |       ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  469 |       setHasActivated(activated);
+  470 |       setIsVisible(false);
+  471 |       setIframeLoaded(false);                                                                                                                            react-hooks/set-state-in-effect
+   478:9   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-card.tsx:478:9
+  476 |     React.useEffect(() => {
+  477 |       if (!enablePreview) {
+> 478 |         setPrefetched(false);
+      |         ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  479 |         setIsVisible(false);
+  480 |         setHasActivated(false);
+  481 |         activatedHoverPreviewIds.delete(post.id);                                                                                                                                           react-hooks/set-state-in-effect
+   538:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-card.tsx:538:7
+  536 |       if (!prefetched) return;
+  537 |       if (hasActivated) return;
+> 538 |       setHasActivated(true);
+      |       ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  539 |       activatedHoverPreviewIds.add(post.id);
+  540 |     }, [enablePreview, prefetched, hasActivated, post.id]);
+  541 |                                                                                                                                           react-hooks/set-state-in-effect
+  1058:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-card.tsx:1058:16
+  1056 |           >
+  1057 |             <Card className="transition-shadow cursor-pointer hover:shadow-md">
+> 1058 |               <SignedInCardContent />
+       |                ^^^^^^^^^^^^^^^^^^^ This component is created during render
+  1059 |             </Card>
+  1060 |           </Link>
+  1061 |         </SignedIn>
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-card.tsx:816:33
+  814 |
+  815 |
+> 816 |     const SignedInCardContent = () => (
+      |                                 ^^^^^^^
+> 817 |       layout === "list"
+      | ^^^^^^^^^^^^^^^^^^^^^^^
+> 818 |         ? (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^
+> 936 |         )
+      | ^^^^^^^^^^^^^^^^^^^^^^^
+> 937 |     );
+      | ^^^^^^ The component is created during render here
+  938 |
+  939 |     const SignedOutCardContent = () => (
+  940 |       layout === "list"                                                                                                                      react-hooks/static-components
+  1073:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-card.tsx:1073:16
+  1071 |           >
+  1072 |             <Card className="transition-shadow cursor-pointer hover:shadow-md">
+> 1073 |               <SignedOutCardContent />
+       |                ^^^^^^^^^^^^^^^^^^^^ This component is created during render
+  1074 |             </Card>
+  1075 |           </a>
+  1076 |         </SignedOut>
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-card.tsx:939:34
+   937 |     );
+   938 |
+>  939 |     const SignedOutCardContent = () => (
+       |                                  ^^^^^^^
+>  940 |       layout === "list"
+       | ^^^^^^^^^^^^^^^^^^^^^^^
+>  941 |         ? (
+       …
+       | ^^^^^^^^^^^^^^^^^^^^^^^
+> 1027 |         )
+       | ^^^^^^^^^^^^^^^^^^^^^^^
+> 1028 |     );
+       | ^^^^^^ The component is created during render here
+  1029 |
+  1030 |     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  1031 |       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;  react-hooks/static-components
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-detail.tsx
+  602:23  warning  Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-grid.tsx
+  40:3  warning  'perSiteCap' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-hover-card.tsx
+  73:9  warning  'isShort' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-viewer-modal.tsx
+  59:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-viewer-modal.tsx:59:7
+  57 |   useEffect(() => {
+  58 |     if (postId) {
+> 59 |       setIsLoading(true);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  60 |       setPost(null);
+  61 |       getStaticPost(postId)
+  62 |         .then(data => {                                                                                                    react-hooks/set-state-in-effect
+  83:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/post-viewer-modal.tsx:83:7
+  81 |   useEffect(() => {
+  82 |     if (isOpen) {
+> 83 |       setShowHelp(true);
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  84 |       const timer = setTimeout(() => setShowHelp(false), 6000);
+  85 |       const hide = () => setShowHelp(false);
+  86 |       window.addEventListener("keydown", hide, { once: true });  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/search-bar.tsx
+  110:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/sidebar-stats.client.tsx
+   82:44  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/sidebar-stats.client.tsx:82:44
+  80 |   const [initialValue, setInitialValue] = React.useState(current);
+  81 |   const residualRef = React.useRef(0);
+> 82 |   const lastBumpRef = React.useRef<number>(Date.now());
+     |                                            ^^^^^^^^^^ Cannot call impure function
+  83 |   const baselineRef = React.useRef(current);
+  84 |   const hydratedRef = React.useRef(false);
+  85 |                                                                                                                                                                                                                                                                                                                                                                   react-hooks/purity
+  134:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/sidebar-stats.client.tsx:134:7
+  132 |       residualRef.current = 0;
+  133 |       lastBumpRef.current = Date.now();
+> 134 |       setInitialValue(adjusted);
+      |       ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  135 |       setDisplayValue(adjusted);
+  136 |     } catch (error) {
+  137 |       console.warn("Failed to restore sidebar stat from storage", error);  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ui/calendar.tsx
+  57:25  warning  'props' is defined but never used  @typescript-eslint/no-unused-vars
+  58:26  warning  'props' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ui/carousel.tsx
+  114:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ui/carousel.tsx:114:7
+  112 |       }
+  113 |
+> 114 |       onSelect(api)
+      |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  115 |       api.on("reInit", onSelect)
+  116 |       api.on("select", onSelect)
+  117 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ui/glowing-shadow.tsx
+  3:10  warning  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ui/sidebar.tsx
+  655:26  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ui/sidebar.tsx:655:26
+  653 |   // Random width between 50 to 90%.
+  654 |   const width = React.useMemo(() => {
+> 655 |     return `${Math.floor(Math.random() * 40) + 50}%`
+      |                          ^^^^^^^^^^^^^ Cannot call impure function
+  656 |   }, [])
+  657 |
+  658 |   return (  react-hooks/purity
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ui/use-mobile.tsx
+  14:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ui/use-mobile.tsx:14:5
+  12 |     }
+  13 |     mql.addEventListener("change", onChange)
+> 14 |     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  15 |     return () => mql.removeEventListener("change", onChange)
+  16 |   }, [])
+  17 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/components/ui/use-toast.ts
+  21:7  warning  'actionTypes' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/hooks/use-keyword-manifest.ts
+  19:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/hooks/use-keyword-manifest.ts:19:7
+  17 |   useEffect(() => {
+  18 |     if (manifestCache) {
+> 19 |       setManifest(manifestCache);
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |       return;
+  21 |     }
+  22 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/hooks/use-mobile.tsx
+  14:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/hooks/use-mobile.tsx:14:5
+  12 |     }
+  13 |     mql.addEventListener("change", onChange)
+> 14 |     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  15 |     return () => mql.removeEventListener("change", onChange)
+  16 |   }, [])
+  17 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/hooks/use-toast.ts
+  21:7  warning  'actionTypes' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/lib/feed-prefs.ts
+  41:13  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  80:19  warning  'prev' is assigned a value but never used                                      @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/lib/read-marker.ts
+  60:13  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/scripts/build-main-json.ts
+   16:103  warning  'postComments' is defined but never used                     @typescript-eslint/no-unused-vars
+   17:34   warning  'gt' is defined but never used                               @typescript-eslint/no-unused-vars
+   20:10   warning  'manifestFsPathForBaseFromPublic' is defined but never used  @typescript-eslint/no-unused-vars
+  120:14   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  207:27   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  264:8    error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  321:39   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  347:37   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  350:16   warning  'fetchPage' is defined but never used                        @typescript-eslint/no-unused-vars
+  350:55   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  374:16   warning  'fetchCategoryPage' is defined but never used                @typescript-eslint/no-unused-vars
+  425:14   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  444:98   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  447:42   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  489:40   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  507:41   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  508:42   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  509:44   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  510:43   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  511:42   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  523:24   error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/scripts/build-post-json.ts
+   23:12  warning  '_' is defined but never used             @typescript-eslint/no-unused-vars
+   44:32  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   44:47  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:42  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   93:33  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  116:62  warning  '_' is defined but never used             @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/scripts/utils/manifest.ts
+  24:1  warning  Assign object to a variable before exporting as module default  import/no-anonymous-default-export
+
+/Users/craigchoi/silla/is/.kilo/worktrees/coherent-celery/tailwind.config.ts
+  94:13  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  94:45  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+/Users/craigchoi/silla/is/app/(feed)/page.tsx
+  122:33  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/app/(feed)/page.tsx:122:33
+  120 |                   sampleMax={3}
+  121 |                   randomizeOnEachMount={true}
+> 122 |                   refreshToken={Date.now()}
+      |                                 ^^^^^^^^^^ Cannot call impure function
+  123 |                 />
+  124 |               </Suspense>
+  125 |  react-hooks/purity
+  141:33  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/app/(feed)/page.tsx:141:33
+  139 |                   rows={2}
+  140 |                   randomizeOnEachMount={true}
+> 141 |                   refreshToken={Date.now()}
+      |                                 ^^^^^^^^^^ Cannot call impure function
+  142 |                 />
+  143 |               </Suspense>
+  144 |       react-hooks/purity
+
+/Users/craigchoi/silla/is/app/keywords/[keyword]/[[...range]]/KeywordFeed.client.tsx
+  4:10  warning  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/app/keywords/[keyword]/page.tsx
+  30:12  error  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/Users/craigchoi/silla/is/app/keywords/[keyword]/page.tsx:30:12
+  28 |     const initialPosts = await getPostsByKeyword(decodedKeyword, { page: 1, pageSize: 20, range: initialRange });
+  29 |
+> 30 |     return <KeywordFeed
+     |            ^^^^^^^^^^^^
+> 31 |       initialPosts={initialPosts}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 32 |       keyword={decodedKeyword}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 33 |       initialRange={initialRange}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 34 |     />;
+     | ^^^^^^^ Avoid constructing JSX within try/catch
+  35 |   } catch (error) {
+  36 |     console.error("Error in keyword page render:", error);
+  37 |     return <div>Error rendering page. See build logs for details.</div>  react-hooks/error-boundaries
+
+/Users/craigchoi/silla/is/app/search/SearchPageClient.tsx
+  27:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/app/search/SearchPageClient.tsx:27:5
+  25 |
+  26 |   useEffect(() => {
+> 27 |     setIsLoading(true);
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  28 |     fetch('/data/search-index.json')
+  29 |       .then(res => res.text()) // Use .text() to get the raw JSON string
+  30 |       .then(data => {  react-hooks/set-state-in-effect
+  49:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/app/search/SearchPageClient.tsx:49:7
+  47 |     if (query) {
+  48 |       const searchResults = miniSearch.search(query, { prefix: true, fuzzy: 0.2 });
+> 49 |       setResults(searchResults);
+     |       ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  50 |     } else {
+  51 |       setResults([]);
+  52 |     }   react-hooks/set-state-in-effect
+  78:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @next/next/no-img-element
+
+/Users/craigchoi/silla/is/components/CategoryFeed.client.tsx
+  61:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/CategoryFeed.client.tsx:61:7
+  59 |   useEffect(() => {
+  60 |     if (urlRange && urlRange !== range) {
+> 61 |       setRange(urlRange);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  62 |     }
+  63 |   }, [urlRange, range]);
+  64 |                                  react-hooks/set-state-in-effect
+  67:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/CategoryFeed.client.tsx:67:7
+  65 |   useEffect(() => {
+  66 |     if (range === initialRange) {
+> 67 |       setPosts(initialPosts);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  68 |       setIsLoading(false);
+  69 |       setDataReady(true);
+  70 |       return;  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/KeywordFeed.client.tsx
+  33:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/KeywordFeed.client.tsx:33:7
+  31 |   useEffect(() => {
+  32 |     if (urlRange && urlRange !== range) {
+> 33 |       setRange(urlRange);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  34 |     }
+  35 |   }, [urlRange, range]);
+  36 |  react-hooks/set-state-in-effect
+  39:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/KeywordFeed.client.tsx:39:7
+  37 |   useEffect(() => {
+  38 |     if (range === initialRange) {
+> 39 |       setPosts(initialPosts);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  40 |       return;
+  41 |     }
+  42 |                 react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/ReadPostList.client.tsx
+  55:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/ReadPostList.client.tsx:55:5
+  53 |
+  54 |   useEffect(() => {
+> 55 |     loadReadPosts();
+     |     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  56 |     window.addEventListener("readPosts:updated", loadReadPosts);
+  57 |     return () => {
+  58 |       window.removeEventListener("readPosts:updated", loadReadPosts);  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/animate-ui/components/tooltip.tsx
+  266:25  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/animate-ui/components/tooltip.tsx:266:25
+  264 | function TooltipPortal({ children }: TooltipPortalProps) {
+  265 |   const [isMounted, setIsMounted] = React.useState(false);
+> 266 |   React.useEffect(() => setIsMounted(true), []);
+      |                         ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  267 |   return isMounted ? createPortal(children, document.body) : null;
+  268 | }
+  269 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/animate-ui/icons/icon.tsx
+  261:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/animate-ui/icons/icon.tsx:261:5
+  259 |   React.useEffect(() => {
+  260 |     if (animate === undefined) return;
+> 261 |     setCurrentAnimation(typeof animate === 'string' ? animate : animation);
+      |     ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  262 |     if (animate) startAnimation(animate as TriggerProp);
+  263 |     else stopAnimation();
+  264 |     // eslint-disable-next-line react-hooks/exhaustive-deps  react-hooks/set-state-in-effect
+  287:19  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/animate-ui/icons/icon.tsx:287:19
+  285 |   React.useEffect(() => {
+  286 |     if (!animateOnView) return;
+> 287 |     if (isInView) startAnimation(animateOnView);
+      |                   ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  288 |     else stopAnimation();
+  289 |   }, [isInView, animateOnView, startAnimation, stopAnimation]);
+  290 |                                                                               react-hooks/set-state-in-effect
+  344:5   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/animate-ui/icons/icon.tsx:344:5
+  342 |   const handleMouseEnter = composeEventHandlers<React.MouseEvent<HTMLElement>>(
+  343 |     childProps.onMouseEnter,
+> 344 |     () => {
+      |     ^^^^^^^
+> 345 |       if (animateOnHover) startAnimation(animateOnHover);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 346 |     },
+      | ^^^^^^ Passing a ref to a function may read its value during render
+  347 |   );
+  348 |
+  349 |   const handleMouseLeave = composeEventHandlers<React.MouseEvent<HTMLElement>>(                                                                                                                                                                                                                                                                              react-hooks/refs
+  351:5   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/animate-ui/icons/icon.tsx:351:5
+  349 |   const handleMouseLeave = composeEventHandlers<React.MouseEvent<HTMLElement>>(
+  350 |     childProps.onMouseLeave,
+> 351 |     () => {
+      |     ^^^^^^^
+> 352 |       if (animateOnHover || animateOnTap) stopAnimation();
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 353 |     },
+      | ^^^^^^ Passing a ref to a function may read its value during render
+  354 |   );
+  355 |
+  356 |   const handlePointerDown = composeEventHandlers<                                                                                                                                                                                                                                                                                                          react-hooks/refs
+  358:31  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/animate-ui/icons/icon.tsx:358:31
+  356 |   const handlePointerDown = composeEventHandlers<
+  357 |     React.PointerEvent<HTMLElement>
+> 358 |   >(childProps.onPointerDown, () => {
+      |                               ^^^^^^^
+> 359 |     if (animateOnTap) startAnimation(animateOnTap);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 360 |   });
+      | ^^^^ Passing a ref to a function may read its value during render
+  361 |
+  362 |   const handlePointerUp = composeEventHandlers<React.PointerEvent<HTMLElement>>(
+  363 |     childProps.onPointerUp,                                                                                                                                                                                                                                       react-hooks/refs
+  364:5   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/animate-ui/icons/icon.tsx:364:5
+  362 |   const handlePointerUp = composeEventHandlers<React.PointerEvent<HTMLElement>>(
+  363 |     childProps.onPointerUp,
+> 364 |     () => {
+      |     ^^^^^^^
+> 365 |       if (animateOnTap) stopAnimation();
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 366 |     },
+      | ^^^^^^ Passing a ref to a function may read its value during render
+  367 |   );
+  368 |
+  369 |   const content = asChild ? (                                                                                                                                                                                                                                                                                                                                                                  react-hooks/refs
+
+/Users/craigchoi/silla/is/components/animate-ui/radix/dialog.tsx
+  39:36  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/animate-ui/radix/dialog.tsx:39:36
+  37 |
+  38 |   React.useEffect(() => {
+> 39 |     if (props?.open !== undefined) setIsOpen(props.open);
+     |                                    ^^^^^^^^^ Avoid calling setState() directly within an effect
+  40 |   }, [props?.open]);
+  41 |
+  42 |   const handleOpenChange = React.useCallback(  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/animate-ui/radix/hover-card.tsx
+  53:36  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/animate-ui/radix/hover-card.tsx:53:36
+  51 |
+  52 |   React.useEffect(() => {
+> 53 |     if (props?.open !== undefined) setIsOpen(props.open);
+     |                                    ^^^^^^^^^ Avoid calling setState() directly within an effect
+  54 |   }, [props?.open]);
+  55 |
+  56 |   const handleOpenChange = React.useCallback(  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/category-list.client.tsx
+  34:6   error  Error: This value cannot be modified
+
+Modifying a variable defined outside a component or hook is not allowed. Consider using an effect.
+
+/Users/craigchoi/silla/is/components/category-list.client.tsx:34:6
+  32 |   const handleCategoryClick = (slug: string) => {
+  33 |     // Set a global timestamp to signal that a navigation is in progress.
+> 34 |     (window as Window & { lastNavigationTime?: number }).lastNavigationTime = Date.now();
+     |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ value cannot be modified
+  35 |
+  36 |     // 1. Get the stored range for this category, defaulting to 24h
+  37 |     const range = getScopedRange('category', slug, '24h');                                                                                                                                                                                                                            react-hooks/immutability
+  34:79  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/components/category-list.client.tsx:34:79
+  32 |   const handleCategoryClick = (slug: string) => {
+  33 |     // Set a global timestamp to signal that a navigation is in progress.
+> 34 |     (window as Window & { lastNavigationTime?: number }).lastNavigationTime = Date.now();
+     |                                                                               ^^^^^^^^^^ Cannot call impure function
+  35 |
+  36 |     // 1. Get the stored range for this category, defaulting to 24h
+  37 |     const range = getScopedRange('category', slug, '24h');  react-hooks/purity
+
+/Users/craigchoi/silla/is/components/clerk-provider.tsx
+  26:7  error  Error: Cannot reassign variables declared outside of the component/hook
+
+Variable `missingKeyWarningLogged` is declared outside of the component/hook. Reassigning this value during render is a form of side effect, which can cause unpredictable behavior depending on when the component happens to re-render. If this variable is used in rendering, use useState instead. Otherwise, consider updating it in an effect. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#side-effects-must-run-outside-of-render).
+
+/Users/craigchoi/silla/is/components/clerk-provider.tsx:26:7
+  24 |   if (!publishableKey) {
+  25 |     if (process.env.NODE_ENV !== "production" && !missingKeyWarningLogged) {
+> 26 |       missingKeyWarningLogged = true;
+     |       ^^^^^^^^^^^^^^^^^^^^^^^ `missingKeyWarningLogged` cannot be reassigned
+  27 |       console.warn("Clerk publishable key is not configured. Authentication is disabled.");
+  28 |     }
+  29 |     return <>{children}</>;  react-hooks/globals
+
+/Users/craigchoi/silla/is/components/client-random-clamp.tsx
+   86:62  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/components/client-random-clamp.tsx:86:62
+  84 |     // - randomizeOnEachMount: 마운트마다 고정된 난수 씨드
+  85 |     // - 아니면 시간 버킷 씨드(예: seedIntervalMs 단위로 바뀜; 새로고침 기준)
+> 86 |     const seedRef = useRef<number>(initialSeed ?? Math.floor(Math.random() * 1e9));
+     |                                                              ^^^^^^^^^^^^^ Cannot call impure function
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+  89 |             return seedRef.current;                                                                                                                                                                                                react-hooks/purity
+   89:20  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/client-random-clamp.tsx:89:20
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+> 89 |             return seedRef.current;
+     |                    ^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  90 |         }
+  91 |         if (initialSeed != null) {
+  92 |             return initialSeed;                                                                                                                                                                                                                                                                                                   react-hooks/refs
+   89:20  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/client-random-clamp.tsx:89:20
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+> 89 |             return seedRef.current;
+     |                    ^^^^^^^^^^^^^^^ Cannot access ref value during render
+  90 |         }
+  91 |         if (initialSeed != null) {
+  92 |             return initialSeed;                                                                                                                                                                                                                                                                                                                          react-hooks/refs
+   89:20  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/client-random-clamp.tsx:89:20
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+> 89 |             return seedRef.current;
+     |                    ^^^^^^^^^^^^^^^ Cannot access ref value during render
+  90 |         }
+  91 |         if (initialSeed != null) {
+  92 |             return initialSeed;                                                                                                                                                                                                                                                                                                                          react-hooks/refs
+   89:20  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/client-random-clamp.tsx:89:20
+  87 |     const seed = useMemo(() => {
+  88 |         if (randomizeOnEachMount) {
+> 89 |             return seedRef.current;
+     |                    ^^^^^^^^^^^^^^^ Cannot access ref value during render
+  90 |         }
+  91 |         if (initialSeed != null) {
+  92 |             return initialSeed;                                                                                                                                                                                                                                                                                                                          react-hooks/refs
+   94:27  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/components/client-random-clamp.tsx:94:27
+  92 |             return initialSeed;
+  93 |         }
+> 94 |         return Math.floor(Date.now() / seedIntervalMs);
+     |                           ^^^^^^^^^^ Cannot call impure function
+  95 |     }, [initialSeed, randomizeOnEachMount, seedIntervalMs]);
+  96 |     const sampled = useMemo(() => {
+  97 |         if (initialSampled && initialSampled.length > 0) {                                                                                                                                                                                                                                                                                react-hooks/purity
+  144:23  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/client-random-clamp.tsx:144:23
+  142 |     }, []);
+  143 |
+> 144 |     useEffect(() => { setMounted(true); }, []);
+      |                       ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  145 |
+  146 |     // 컨테이너 실측 기반으로 컬럼 계산 (브레이크 전/후 구간 안정)
+  147 |     useEffect(() => {  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/community-presence-selector.tsx
+  166:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/community-presence-selector.tsx:166:5
+  164 |   // Animate on hover change
+  165 |   React.useEffect(() => {
+> 166 |     setIsAnimating(true);
+      |     ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  167 |     animationTimer.current = setTimeout(() => setIsAnimating(false), ANIMATION_DURATION);
+  168 |     return () => {
+  169 |       if (animationTimer.current) clearTimeout(animationTimer.current);  react-hooks/set-state-in-effect
+  186:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/community-presence-selector.tsx:186:7
+  184 |   React.useEffect(() => {
+  185 |     if (!controlled) {
+> 186 |       setInternalSelectedIds(items.map(i => i.id));
+      |       ^^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  187 |       onChange?.(null);
+  188 |     }
+  189 |   }, [itemIds, controlled, onChange, items]);                                                                             react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/feed-controls.tsx
+  62:25  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  73:25  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/Users/craigchoi/silla/is/components/header-client.tsx
+  26:10  warning  'selectedCommunity' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+  29:10  warning  'showKeyHint' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  40:19  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/header-client.tsx:40:19
+  38 |     try {
+  39 |       const raw = localStorage.getItem(KEYHINT_KEY);
+> 40 |       if (!raw) { setShowKeyHint(true); return; }
+     |                   ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  41 |       const ts = Number(raw);
+  42 |       if (!Number.isFinite(ts)) { setShowKeyHint(true); return; }
+  43 |       const elapsedDays = (Date.now() - ts) / (1000 * 60 * 60 * 24);                                             react-hooks/set-state-in-effect
+  59:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/header-client.tsx:59:7
+  57 |       const allIds = Array.from(new Set(sites.map(s => s.id)));
+  58 |       const clamped = saved ? saved.filter(id => allIds.includes(id)) : null;
+> 59 |       setSelectedIds(clamped);
+     |       ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  60 |       // Emit to consumers so views reflect saved selection immediately
+  61 |       if (!clamped || clamped.length === allIds.length) {
+  62 |         emitCommunities(null);  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx
+    99:5   warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+   168:3   error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:168:3
+  166 |   } = params;
+  167 |   const currentColsRef = useRef(cols);
+> 168 |   currentColsRef.current = cols;
+      |   ^^^^^^^^^^^^^^^^^^^^^^ Cannot update ref during render
+  169 |
+  170 |   useEffect(() => {
+  171 |     if (!layoutReady || !storageKeyPrefix || restoringRef.current) return;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/refs
+   552:3   error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:552:3
+  550 |   const [cols, setCols] = useState(1);
+  551 |   const colsRef = useRef(cols);
+> 552 |   colsRef.current = cols;
+      |   ^^^^^^^^^^^^^^^ Cannot update ref during render
+  553 |   const [containerWidth, setContainerWidth] = useState(0);
+  554 |   const [hasMounted, setHasMounted] = useState(false);
+  555 |   const [viewportHeight, setViewportHeight] = useState(() => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react-hooks/refs
+   579:21  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:579:21
+  577 |   }, [cols, initialPage, layout, storageKeyPrefix, enablePaging, initialPosts.length]);
+  578 |
+> 579 |   useEffect(() => { setHasMounted(true); }, []);
+      |                     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  580 |
+  581 |   useEffect(() => {
+  582 |     const unsubscribe = subscribeToPreviewActivations((ids) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/set-state-in-effect
+   709:32  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:709:32
+  707 |   const bufferMetrics = useMemo(
+  708 |     () => {
+> 709 |       const estimated = Number(estimateRowSize());
+      |                                ^^^^^^^^^^^^^^^ This function accesses a ref value
+  710 |       return deriveVirtualBufferSizing({
+  711 |         estimatedRowHeight: estimated,
+  712 |         viewportHeight,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react-hooks/refs
+   811:19  error    Error: Cannot modify local variables after render completes
+
+This argument is a function which may reassign or mutate `virtualizer` after render, which can cause inconsistent behavior on subsequent renders. Consider using state instead.
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:811:19
+  809 |   const measuredLayoutRef = useRef<string | null>(null);
+  810 |   const previousFeedIdsRef = useRef<string[]>([]);
+> 811 |   useLayoutEffect(() => {
+      |                   ^^^^^^^
+> 812 |     if (!positionReady || !containerWidth) return;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 813 |     const key = `${cardLayoutOverride ?? layout}|${cols}|${containerWidth}`;
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 885 |     return () => cancelAnimationFrame(frame);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 886 |   }, [anchorRef, captureAnchor, cardLayoutOverride, cols, containerWidth, layout, positionReady, restoringRef, rootRef, userIntentRef, virtualizer, visiblePosts]);
+      | ^^^^ This function may (indirectly) reassign or modify `virtualizer` after render
+  887 |
+  888 |   useEffect(() => () => {
+  889 |     layoutAnchoringRef.current = false;
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:825:7
+  823 |       pendingLayoutAnchorRef.current = null;
+  824 |       layoutAnchoringRef.current = false;
+> 825 |       virtualizer.shouldAdjustScrollPositionOnItemSizeChange = undefined;
+      |       ^^^^^^^^^^^ This modifies `virtualizer`
+  826 |       setAnchoredRow(null);
+  827 |       if (previous !== key) virtualizer.measure();
+  828 |       return;           react-hooks/immutability
+   825:7   error    Error: This value cannot be modified
+
+Modifying a value returned from a hook is not allowed. Consider moving the modification into the hook where the value is constructed.
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:825:7
+  823 |       pendingLayoutAnchorRef.current = null;
+  824 |       layoutAnchoringRef.current = false;
+> 825 |       virtualizer.shouldAdjustScrollPositionOnItemSizeChange = undefined;
+      |       ^^^^^^^^^^^ `virtualizer` cannot be modified
+  826 |       setAnchoredRow(null);
+  827 |       if (previous !== key) virtualizer.measure();
+  828 |       return;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react-hooks/immutability
+   826:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:826:7
+  824 |       layoutAnchoringRef.current = false;
+  825 |       virtualizer.shouldAdjustScrollPositionOnItemSizeChange = undefined;
+> 826 |       setAnchoredRow(null);
+      |       ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  827 |       if (previous !== key) virtualizer.measure();
+  828 |       return;
+  829 |     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/set-state-in-effect
+   908:62  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:908:62
+  906 |
+  907 |   const items = virtualizer.getVirtualItems();
+> 908 |   const layoutReady = positionReady && containerWidth > 0 && colsReadyRef.current;
+      |                                                              ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  909 |
+  910 |   useEffect(() => {
+  911 |     if (restoringRef.current) return;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              react-hooks/refs
+   908:62  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:908:62
+  906 |
+  907 |   const items = virtualizer.getVirtualItems();
+> 908 |   const layoutReady = positionReady && containerWidth > 0 && colsReadyRef.current;
+      |                                                              ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  909 |
+  910 |   useEffect(() => {
+  911 |     if (restoringRef.current) return;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              react-hooks/refs
+   908:62  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:908:62
+  906 |
+  907 |   const items = virtualizer.getVirtualItems();
+> 908 |   const layoutReady = positionReady && containerWidth > 0 && colsReadyRef.current;
+      |                                                              ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  909 |
+  910 |   useEffect(() => {
+  911 |     if (restoringRef.current) return;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              react-hooks/refs
+   956:6   warning  React Hook useEffect has missing dependencies: 'sectionKey', 'seenIdsRef', and 'visiblePosts.length'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/exhaustive-deps
+   986:24  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:986:24
+   984 |   }, []);
+   985 |
+>  986 |   useRestoreFromDetail({
+       |                        ^
+>  987 |     storageKeyPrefix,
+       | ^^^^^^^^^^^^^^^^^^^^^
+>  988 |     initialPage,
+       …
+       | ^^^^^^^^^^^^^^^^^^^^^
+> 1002 |     ensureBelowBufferRows,
+       | ^^^^^^^^^^^^^^^^^^^^^
+> 1003 |   });
+       | ^^^^ Cannot access ref value during render
+  1004 |
+  1005 |   useEffect(() => {
+  1006 |     if (!enablePaging || !layoutReady) return;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/refs
+  1128:6   error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:1128:6
+  1126 |       restoringRef.current = false;
+  1127 |     };
+> 1128 |   }, [enablePaging, layoutReady, loadMore, virtualizer, restoringRef, rootRef, urlBootstrapDoneRef, pageRef, hasMoreRef, ensureBelowBufferRows, postIdToPageNumRef, userIntentRef, visiblePostsRef]);
+       |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  1129 |
+  1130 |   return (
+  1131 |     <>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              react-hooks/refs
+  1183:22  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:1183:22
+  1181 |       <div ref={rootRef} data-virtual-feed data-scroll-margin={effectiveScrollMargin} data-layout-ready={layoutReady}>
+  1182 |         <div style={{ height: virtualizer.getTotalSize(), width: '100%', position: 'relative' }}>
+> 1183 |           {items.map((vi) => {
+       |                      ^^^^^^^^^
+> 1184 |             const start = vi.index * cols;
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1185 |             const rowPosts = visiblePosts.slice(start, start + cols);
+       …
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1230 |             );
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1231 |           })}
+       | ^^^^^^^^^^^^ Cannot access ref value during render
+  1232 |         </div>
+  1233 |
+  1234 |         {enablePaging && <div ref={loaderRef} aria-label="infinite-loader" className="h-1" />}                                                                                                                                                                                                                                                                                                                                                                                                                  react-hooks/refs
+  1314:9   warning  'searchParams' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  1650:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:1650:7
+  1648 |   useEffect(() => {
+  1649 |     if (community !== undefined) {
+> 1650 |       setActiveCommunity(community || "전체");
+       |       ^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  1651 |       setActiveCommunities(null);
+  1652 |       return;
+  1653 |     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react-hooks/set-state-in-effect
+  2000:20  error    Error: Cannot access variable before it is declared
+
+`loadMore` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:2000:20
+  1998 |           setTimeout(() => {
+  1999 |             if (sectionEpochRef.current === epoch && prevSectionKeyRef.current === sectionKey && !isFetchingRef.current && hasMoreRef.current) {
+> 2000 |               void loadMore();
+       |                    ^^^^^^^^ `loadMore` accessed before it is declared
+  2001 |             }
+  2002 |           }, 0);
+  2003 |         }
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:1801:3
+  1799 |   );
+  1800 |
+> 1801 |   const loadMore = useCallback(async () => {
+       |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1802 |     // A caller may retain an exported navigation API after the section changes.
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 1803 |     // Reject it before it can abort or lock the new section's active request.
+       …
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 2020 |     }
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 2021 |   }, [loadPage, addPostsToSection, jsonBase, maybeRefreshManifest, sectionKey]);
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `loadMore` is declared here
+  2022 |
+  2023 |   const ensureBelowBufferRows = useCallback(async (anchorId: string) => {
+  2024 |     const metrics = bufferMetricsRef.current;         react-hooks/immutability
+  2347:27  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/craigchoi/silla/is/components/infinite-post-list.tsx:2347:27
+  2345 |           : { gridTemplateColumns: `repeat(auto-fit, minmax(min(100%, 22rem), 1fr))` }}
+  2346 |       >
+> 2347 |         {visiblePosts.map((post, index) => (
+       |                           ^^^^^^^^^^^^^^^^^^
+> 2348 |           <div key={post.id} id={`post-${post.id}`} className="post-anchor relative isolate" style={{ scrollMarginTop: 'var(--sticky-top, 0px)' }}>
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 2349 |             {(() => {
+       …
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 2368 |           </div>
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 2369 |         ))}
+       | ^^^^^^^^^^ Cannot access ref value during render
+  2370 |         {enablePaging && <div ref={loaderRef} aria-label="infinite-loader" className="col-span-full h-1" />}
+  2371 |         {isFetching && hasMore && (
+  2372 |           <div className="text-center text-gray-400 py-4 col-span-full">불러오는 중...</div>  react-hooks/refs
+
+/Users/craigchoi/silla/is/components/post-card.tsx
+   179:53  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/components/post-card.tsx:179:53
+  177 |   const [fits, setFits] = React.useState<boolean | null>(null);
+  178 |   const [ready, setReady] = React.useState(false);
+> 179 |   const startDelay = React.useMemo(() => Math.floor(Math.random() * 1200), []);
+      |                                                     ^^^^^^^^^^^^^ Cannot call impure function
+  180 |   React.useEffect(() => {
+  181 |     if (segmentsLength <= 1) return; // 단일 세그먼트면 타이머 불필요
+  182 |     const t = setTimeout(() => setReady(true), startDelay);                                                                                                                                                                                                                                                                                                                         react-hooks/purity
+   468:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/post-card.tsx:468:7
+  466 |     React.useEffect(() => {
+  467 |       const activated = activatedHoverPreviewIds.has(post.id);
+> 468 |       setPrefetched(activated);
+      |       ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  469 |       setHasActivated(activated);
+  470 |       setIsVisible(false);
+  471 |       setIframeLoaded(false);                                                                                            react-hooks/set-state-in-effect
+   478:9   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/post-card.tsx:478:9
+  476 |     React.useEffect(() => {
+  477 |       if (!enablePreview) {
+> 478 |         setPrefetched(false);
+      |         ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  479 |         setIsVisible(false);
+  480 |         setHasActivated(false);
+  481 |         activatedHoverPreviewIds.delete(post.id);                                                                                                           react-hooks/set-state-in-effect
+   538:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/post-card.tsx:538:7
+  536 |       if (!prefetched) return;
+  537 |       if (hasActivated) return;
+> 538 |       setHasActivated(true);
+      |       ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  539 |       activatedHoverPreviewIds.add(post.id);
+  540 |     }, [enablePreview, prefetched, hasActivated, post.id]);
+  541 |                                                                                                           react-hooks/set-state-in-effect
+  1058:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+/Users/craigchoi/silla/is/components/post-card.tsx:1058:16
+  1056 |           >
+  1057 |             <Card className="transition-shadow cursor-pointer hover:shadow-md">
+> 1058 |               <SignedInCardContent />
+       |                ^^^^^^^^^^^^^^^^^^^ This component is created during render
+  1059 |             </Card>
+  1060 |           </Link>
+  1061 |         </SignedIn>
+
+/Users/craigchoi/silla/is/components/post-card.tsx:816:33
+  814 |
+  815 |
+> 816 |     const SignedInCardContent = () => (
+      |                                 ^^^^^^^
+> 817 |       layout === "list"
+      | ^^^^^^^^^^^^^^^^^^^^^^^
+> 818 |         ? (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^
+> 936 |         )
+      | ^^^^^^^^^^^^^^^^^^^^^^^
+> 937 |     );
+      | ^^^^^^ The component is created during render here
+  938 |
+  939 |     const SignedOutCardContent = () => (
+  940 |       layout === "list"                                                                                                                      react-hooks/static-components
+  1073:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+/Users/craigchoi/silla/is/components/post-card.tsx:1073:16
+  1071 |           >
+  1072 |             <Card className="transition-shadow cursor-pointer hover:shadow-md">
+> 1073 |               <SignedOutCardContent />
+       |                ^^^^^^^^^^^^^^^^^^^^ This component is created during render
+  1074 |             </Card>
+  1075 |           </a>
+  1076 |         </SignedOut>
+
+/Users/craigchoi/silla/is/components/post-card.tsx:939:34
+   937 |     );
+   938 |
+>  939 |     const SignedOutCardContent = () => (
+       |                                  ^^^^^^^
+>  940 |       layout === "list"
+       | ^^^^^^^^^^^^^^^^^^^^^^^
+>  941 |         ? (
+       …
+       | ^^^^^^^^^^^^^^^^^^^^^^^
+> 1027 |         )
+       | ^^^^^^^^^^^^^^^^^^^^^^^
+> 1028 |     );
+       | ^^^^^^ The component is created during render here
+  1029 |
+  1030 |     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  1031 |       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;  react-hooks/static-components
+
+/Users/craigchoi/silla/is/components/post-detail.tsx
+  602:23  warning  Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+
+/Users/craigchoi/silla/is/components/post-grid.tsx
+  41:3  warning  'perSiteCap' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/components/post-hover-card.tsx
+  73:9  warning  'isShort' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/components/post-viewer-modal.tsx
+  59:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/post-viewer-modal.tsx:59:7
+  57 |   useEffect(() => {
+  58 |     if (postId) {
+> 59 |       setIsLoading(true);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  60 |       setPost(null);
+  61 |       getStaticPost(postId)
+  62 |         .then(data => {                                                                                                    react-hooks/set-state-in-effect
+  83:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/post-viewer-modal.tsx:83:7
+  81 |   useEffect(() => {
+  82 |     if (isOpen) {
+> 83 |       setShowHelp(true);
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  84 |       const timer = setTimeout(() => setShowHelp(false), 6000);
+  85 |       const hide = () => setShowHelp(false);
+  86 |       window.addEventListener("keydown", hide, { once: true });  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/search-bar.tsx
+  110:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/craigchoi/silla/is/components/sidebar-stats.client.tsx
+   82:44  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/components/sidebar-stats.client.tsx:82:44
+  80 |   const [initialValue, setInitialValue] = React.useState(current);
+  81 |   const residualRef = React.useRef(0);
+> 82 |   const lastBumpRef = React.useRef<number>(Date.now());
+     |                                            ^^^^^^^^^^ Cannot call impure function
+  83 |   const baselineRef = React.useRef(current);
+  84 |   const hydratedRef = React.useRef(false);
+  85 |                                                                                                                                                                                                                                                                                                                                                                   react-hooks/purity
+  134:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/sidebar-stats.client.tsx:134:7
+  132 |       residualRef.current = 0;
+  133 |       lastBumpRef.current = Date.now();
+> 134 |       setInitialValue(adjusted);
+      |       ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  135 |       setDisplayValue(adjusted);
+  136 |     } catch (error) {
+  137 |       console.warn("Failed to restore sidebar stat from storage", error);  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/ui/calendar.tsx
+  57:25  warning  'props' is defined but never used  @typescript-eslint/no-unused-vars
+  58:26  warning  'props' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/components/ui/carousel.tsx
+  114:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/ui/carousel.tsx:114:7
+  112 |       }
+  113 |
+> 114 |       onSelect(api)
+      |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  115 |       api.on("reInit", onSelect)
+  116 |       api.on("select", onSelect)
+  117 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/ui/glowing-shadow.tsx
+  3:10  warning  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/components/ui/sidebar.tsx
+  655:26  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/craigchoi/silla/is/components/ui/sidebar.tsx:655:26
+  653 |   // Random width between 50 to 90%.
+  654 |   const width = React.useMemo(() => {
+> 655 |     return `${Math.floor(Math.random() * 40) + 50}%`
+      |                          ^^^^^^^^^^^^^ Cannot call impure function
+  656 |   }, [])
+  657 |
+  658 |   return (  react-hooks/purity
+
+/Users/craigchoi/silla/is/components/ui/use-mobile.tsx
+  14:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/components/ui/use-mobile.tsx:14:5
+  12 |     }
+  13 |     mql.addEventListener("change", onChange)
+> 14 |     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  15 |     return () => mql.removeEventListener("change", onChange)
+  16 |   }, [])
+  17 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/components/ui/use-toast.ts
+  21:7  warning  'actionTypes' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/hooks/use-keyword-manifest.ts
+  19:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/hooks/use-keyword-manifest.ts:19:7
+  17 |   useEffect(() => {
+  18 |     if (manifestCache) {
+> 19 |       setManifest(manifestCache);
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |       return;
+  21 |     }
+  22 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/hooks/use-mobile.tsx
+  14:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/craigchoi/silla/is/hooks/use-mobile.tsx:14:5
+  12 |     }
+  13 |     mql.addEventListener("change", onChange)
+> 14 |     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  15 |     return () => mql.removeEventListener("change", onChange)
+  16 |   }, [])
+  17 |  react-hooks/set-state-in-effect
+
+/Users/craigchoi/silla/is/hooks/use-toast.ts
+  21:7  warning  'actionTypes' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/lib/feed-prefs.ts
+  41:13  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  80:19  warning  'prev' is assigned a value but never used                                      @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/lib/read-marker.ts
+  60:13  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/Users/craigchoi/silla/is/scripts/build-main-json.ts
+   17:103  warning  'postComments' is defined but never used       @typescript-eslint/no-unused-vars
+   18:34   warning  'gt' is defined but never used                 @typescript-eslint/no-unused-vars
+  120:14   error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  196:27   error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  253:8    error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  311:39   error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  337:37   error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  340:16   warning  'fetchPage' is defined but never used          @typescript-eslint/no-unused-vars
+  340:55   error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  364:16   warning  'fetchCategoryPage' is defined but never used  @typescript-eslint/no-unused-vars
+  415:14   error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  433:98   error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  436:42   error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  480:40   error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+
+/Users/craigchoi/silla/is/scripts/build-post-json.ts
+   23:12  warning  '_' is defined but never used             @typescript-eslint/no-unused-vars
+   44:32  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   44:47  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:42  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   93:33  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  116:62  warning  '_' is defined but never used             @typescript-eslint/no-unused-vars
+
+/Users/craigchoi/silla/is/scripts/utils/manifest.ts
+  24:1  warning  Assign object to a variable before exporting as module default  import/no-anonymous-default-export
+
+/Users/craigchoi/silla/is/tailwind.config.ts
+  94:13  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  94:45  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+✖ 213 problems (156 errors, 57 warnings)
+  0 errors and 10 warnings potentially fixable with the `--fix` option.
+

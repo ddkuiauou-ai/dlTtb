@@ -1,5 +1,5 @@
 'use client'
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { Show, SignInButton, UserButton } from "@clerk/react";
 
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -107,7 +107,7 @@ export function HeaderClient({ sites }: HeaderClientProps) {
         <div className="flex items-center h-16">
           {/* Left: Logo */}
           <div className="flex-1 flex items-center space-x-4">
-            <Link href="/" className="focus:outline-none">
+            <Link href="/" className="focus:outline-hidden">
               <h1 className="text-2xl font-bold text-blue-600 cursor-pointer hover:opacity-80 transition">
                 Isshoo <span className="text-xs text-gray-500 align-top">이슈</span>
               </h1>
@@ -153,18 +153,18 @@ export function HeaderClient({ sites }: HeaderClientProps) {
             <div className="w-80">
               <SearchBar />
             </div>
-            <SignedOut>
+            <Show when="signed-out">
               <SignInButton>
-                <button className="outline-none">
+                <button className="outline-hidden">
                   <AnimateIcon animateOnHover>
                     <LogIn className="h-5 w-5" />
                   </AnimateIcon>
                 </button>
               </SignInButton>
-            </SignedOut>
-            <SignedIn>
+            </Show>
+            <Show when="signed-in">
               <UserButton />
-            </SignedIn>
+            </Show>
           </div>
 
           {/* Mobile Menu Button */}

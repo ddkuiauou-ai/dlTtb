@@ -1,0 +1,18 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "files": [
+          "app/globals.css",
+          "styles/globals.css"
+        ],
+        "createdAt": "2026-10-05T05:10:49.703Z",
+        "reason": "Agent decision: the approved Next.js upgrade preserves the existing UI; both files already used Arial in commit 35c645b52e46b3456127809b0233cf3839cc6fa1 and the font declarations were not changed."
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+allowBuilds:
+  '@clerk/shared': false
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - lucide-react@1.52.0

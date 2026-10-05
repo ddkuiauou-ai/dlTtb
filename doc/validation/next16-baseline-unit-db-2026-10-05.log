@@ -1,0 +1,213 @@
+TAP version 13
+# Subtest: an empty mounted feed adopts a new first-page seed
+ok 1 - an empty mounted feed adopts a new first-page seed
+  ---
+  duration_ms: 0.863291
+  ...
+# Subtest: a same-generation seed refresh retains appended pages and cursor
+ok 2 - a same-generation seed refresh retains appended pages and cursor
+  ---
+  duration_ms: 0.102666
+  ...
+# Subtest: seed data wins overlapping IDs and duplicate IDs never appear twice
+ok 3 - seed data wins overlapping IDs and duplicate IDs never appear twice
+  ---
+  duration_ms: 0.141125
+  ...
+# Subtest: removes absent old seed items without dropping unrelated appended items
+ok 4 - removes absent old seed items without dropping unrelated appended items
+  ---
+  duration_ms: 1.222459
+  ...
+# Subtest: explicit generation replacement clears old pages and resets all feed metadata
+ok 5 - explicit generation replacement clears old pages and resets all feed metadata
+  ---
+  duration_ms: 0.396583
+  ...
+# Subtest: identical input retains the posts reference and does not mutate old metadata
+ok 6 - identical input retains the posts reference and does not mutate old metadata
+  ---
+  duration_ms: 0.209916
+  ...
+# Subtest: anchor preservation prefers the same ID and then its closest surviving neighbor
+ok 7 - anchor preservation prefers the same ID and then its closest surviving neighbor
+  ---
+  duration_ms: 0.259625
+  ...
+# Subtest: cached pages retain ordered payloads when the same ID is written by another base or generation
+ok 8 - cached pages retain ordered payloads when the same ID is written by another base or generation
+  ---
+  duration_ms: 0.834625
+  ...
+# Subtest: an empty complete page is a hit and a legacy ID-only page is a miss
+ok 9 - an empty complete page is a hit and a legacy ID-only page is a miss
+  ---
+  duration_ms: 0.081959
+  ...
+# Subtest: a partial, reordered, or invalid cached payload is rejected as a whole
+ok 10 - a partial, reordered, or invalid cached payload is rejected as a whole
+  ---
+  duration_ms: 0.127958
+  ...
+# Subtest: denied IndexedDB does not prevent a network manifest or turn page cache into an error
+ok 11 - denied IndexedDB does not prevent a network manifest or turn page cache into an error
+  ---
+  duration_ms: 18.714583
+  ...
+# Subtest: ranked candidates query filters by activity window
+ok 12 - ranked candidates query filters by activity window
+  ---
+  duration_ms: 1.391417
+  ...
+# Subtest: ranked candidates query no longer filters by post timestamp
+ok 13 - ranked candidates query no longer filters by post timestamp
+  ---
+  duration_ms: 0.215917
+  ...
+# Subtest: ranked candidates query decays by activity timestamp
+ok 14 - ranked candidates query decays by activity timestamp
+  ---
+  duration_ms: 0.087916
+  ...
+# Subtest: document position is independent of current window scroll, including fractional pixels
+ok 15 - document position is independent of current window scroll, including fractional pixels
+  ---
+  duration_ms: 0.481208
+  ...
+# Subtest: paired document margin and local row placement cover all visible rows across layouts
+ok 16 - paired document margin and local row placement cover all visible rows across layouts
+  ---
+  duration_ms: 146.687584
+  ...
+# Subtest: legacy zero margin and margin-only placement reproduce the regression controls
+ok 17 - legacy zero margin and margin-only placement reproduce the regression controls
+  ---
+  duration_ms: 0.431667
+  ...
+# Subtest: 360 successive position and count changes retain visible coverage on the same virtualizer
+ok 18 - 360 successive position and count changes retain visible coverage on the same virtualizer
+  ---
+  duration_ms: 6.257709
+  ...
+# Subtest: position changes and appended rows preserve existing measured heights
+ok 19 - position changes and appended rows preserve existing measured heights
+  ---
+  duration_ms: 1.3295
+  ...
+# Subtest: default window scroller applies corrections when a measured row above the viewport grows
+ok 20 - default window scroller applies corrections when a measured row above the viewport grows
+  ---
+  duration_ms: 1.70625
+  ...
+# Subtest: a retained feed anchor is selected within its root when an upper section repeats the same ID
+ok 21 - a retained feed anchor is selected within its root when an upper section repeats the same ID
+  ---
+  duration_ms: 0.348208
+  ...
+# Subtest: fixture projections reach actual home queries with correct empty/stale/suppressed/deleted behavior
+    # Subtest: fixed materialized views expose the expected delta and exclude future input
+    ok 1 - fixed materialized views expose the expected delta and exclude future input
+      ---
+      duration_ms: 2.247125
+      ...
+# [getClusterTopPosts][24h] base=1 excludeSet=0 dropped=0
+# [getClusterTopPosts][24h] filtered=1 picked=1 pageSize=20 perSiteCap=20
+    # Subtest: cluster consumers include only current eligible representatives
+    ok 2 - cluster consumers include only current eligible representatives
+      ---
+      duration_ms: 28.132083
+      ...
+# [getMainPagePosts][ranked 24h] base=2 afterExclude=2
+# [getMainPagePosts][ranked 24h] mv_diag { cnt: '4', max_ts: '2026-10-05 13:20:00+09' }
+# [getMainPagePosts][ranked 24h] post_trends_diag { max_ts: '2026-10-06 13:20:00+09' }
+# [getMainPagePosts][ranked 24h] merged=2
+# [getMainPagePosts][ranked 24h] dedup=2 sites=1
+# [getMainPagePosts][ranked 24h] final=2
+    # Subtest: ranked consumers use activity time and exclude stale, deleted and suppressed posts
+    ok 3 - ranked consumers use activity time and exclude stale, deleted and suppressed posts
+      ---
+      duration_ms: 20.406167
+      ...
+# [getMainPagePosts][fresh 24h] base=4 afterExclude=4
+# [ getMainPagePosts][fresh 24h] dedup=4 final=4
+    # Subtest: fresh consumers retain valid current originals even without current ranked activity
+    ok 4 - fresh consumers retain valid current originals even without current ranked activity
+      ---
+      duration_ms: 4.7935
+      ...
+# [getMainPagePosts][ranked 24h] base=0 afterExclude=0
+# [getMainPagePosts][ranked 24h] mv_diag { cnt: '0', max_ts: null }
+# [getMainPagePosts][ranked 24h] post_trends_diag { max_ts: null }
+# [getMainPagePosts][ranked 24h] merged=0
+# [getMainPagePosts][ranked 24h] dedup=0 sites=0
+# [getMainPagePosts][ranked 24h] final=0
+# [getClusterTopPosts][24h] base=0 (no clusters returned)
+    # Subtest: no current projections produce an explicit empty result
+    ok 5 - no current projections produce an explicit empty result
+      ---
+      duration_ms: 5.661041
+      ...
+    1..5
+ok 22 - fixture projections reach actual home queries with correct empty/stale/suppressed/deleted behavior
+  ---
+  duration_ms: 1533.178833
+  ...
+# Subtest: actual home JSON builder publishes complete fixture generations without predicted SSR exclusions
+ok 23 - actual home JSON builder publishes complete fixture generations without predicted SSR exclusions
+  ---
+  duration_ms: 31524.259791
+  ...
+# Subtest: validates contiguous pages starting at 2 with no first-page JSON
+ok 24 - validates contiguous pages starting at 2 with no first-page JSON
+  ---
+  duration_ms: 8.778583
+  ...
+# Subtest: permits an explicitly empty tail but rejects metadata without a page contract
+ok 25 - permits an explicitly empty tail but rejects metadata without a page contract
+  ---
+  duration_ms: 1.205833
+  ...
+# Subtest: rejects missing pages and leaves the published generation untouched
+ok 26 - rejects missing pages and leaves the published generation untouched
+  ---
+  duration_ms: 5.257625
+  ...
+# Subtest: rejects a mixed generation, duplicate IDs, and malformed posts
+ok 27 - rejects a mixed generation, duplicate IDs, and malformed posts
+  ---
+  duration_ms: 2.739625
+  ...
+# Subtest: repeated publication removes stale tail pages and supports an empty next generation
+ok 28 - repeated publication removes stale tail pages and supports an empty next generation
+  ---
+  duration_ms: 8.039125
+  ...
+# Subtest: rejects unexpected stale files and incompatible feed metadata
+ok 29 - rejects unexpected stale files and incompatible feed metadata
+  ---
+  duration_ms: 2.637917
+  ...
+# Subtest: the continuation contract retains candidates beyond an independently selected live seed
+ok 30 - the continuation contract retains candidates beyond an independently selected live seed
+  ---
+  duration_ms: 2.968708
+  ...
+# Subtest: rejects a manifest that claims an unsupported seed relationship
+ok 31 - rejects a manifest that claims an unsupported seed relationship
+  ---
+  duration_ms: 0.876042
+  ...
+# Subtest: actual SSR 36 and actual upper IDs are excluded without losing unseen continuation candidates
+ok 32 - actual SSR 36 and actual upper IDs are excluded without losing unseen continuation candidates
+  ---
+  duration_ms: 19.872
+  ...
+1..32
+# tests 37
+# suites 0
+# pass 37
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 32250.846667

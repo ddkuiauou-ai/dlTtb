@@ -1,0 +1,109 @@
+{
+  "source": "/private/tmp/next16-final-build-8lzzeb5k",
+  "nodeVersion": "v24.19.0",
+  "packageVersions": {
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "@tanstack/react-virtual": "3.14.13",
+    "@opennextjs/cloudflare": "1.20.8",
+    "wrangler": "4.147.0",
+    "pg": "8.23.1"
+  },
+  "scriptBuild": {
+    "mode": "cloudflare-script",
+    "sourceRoot": "/private/tmp/next16-final-build-8lzzeb5k",
+    "startedAt": "2026-10-05T04:52:08.631Z",
+    "finishedAt": "2026-10-05T04:52:22.556Z",
+    "durationMs": 13923.479917,
+    "exitCode": 0
+  },
+  "config": [
+    {
+      "path": "next.config.mjs",
+      "workspaceSha256": "3f5a32a6e0bc549b999c52bf2fde0e72854e62784c15b06c6c4132b773e608bb",
+      "snapshotSha256": "3f5a32a6e0bc549b999c52bf2fde0e72854e62784c15b06c6c4132b773e608bb",
+      "sameBytes": true
+    },
+    {
+      "path": "tsconfig.json",
+      "workspaceSha256": "c81c433b39cb449b0c5c639873b7e5ec6dbbd4acc628ff1ef5e4824a99e5b764",
+      "snapshotSha256": "c81c433b39cb449b0c5c639873b7e5ec6dbbd4acc628ff1ef5e4824a99e5b764",
+      "sameBytes": true
+    },
+    {
+      "path": "package.json",
+      "workspaceSha256": "791927fbb79ce23f9de68a9670c041b13c94d2ae87f5f5670413bd97b1dabfcd",
+      "snapshotSha256": "791927fbb79ce23f9de68a9670c041b13c94d2ae87f5f5670413bd97b1dabfcd",
+      "sameBytes": true
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "workspaceSha256": "9658d564dd7e73749e24a01054c089cf38e7adb79a6998418c159f335287beea",
+      "snapshotSha256": "9658d564dd7e73749e24a01054c089cf38e7adb79a6998418c159f335287beea",
+      "sameBytes": true
+    },
+    {
+      "path": "open-next.config.ts",
+      "workspaceSha256": "313df465c8e1c89ae5363285442850eabedb5ab89151d5ee109f23ff3b069e64",
+      "snapshotSha256": "313df465c8e1c89ae5363285442850eabedb5ab89151d5ee109f23ff3b069e64",
+      "sameBytes": true
+    },
+    {
+      "path": "wrangler.jsonc",
+      "workspaceSha256": "bfd5322a52ef02d1b71eb748ef8cc4966eb1f28c0d01190a7456d9983ea80381",
+      "snapshotSha256": "bfd5322a52ef02d1b71eb748ef8cc4966eb1f28c0d01190a7456d9983ea80381",
+      "sameBytes": true
+    },
+    {
+      "path": "public/_headers",
+      "workspaceSha256": "90137f0fac2f988faf25c5910b0cfa1b6df9d31596a6b21f4ce4bba6ede5b569",
+      "snapshotSha256": "90137f0fac2f988faf25c5910b0cfa1b6df9d31596a6b21f4ce4bba6ede5b569",
+      "sameBytes": true
+    }
+  ],
+  "workerModules": [
+    {
+      "path": ".open-next/worker.js",
+      "bytes": 2278,
+      "gzipBytes": 734,
+      "sha256": "d05223bf4d44c84108a102ab62aa3bc9c5568f0c3ac2064c37be5cc65c64bc45"
+    },
+    {
+      "path": ".open-next/server-functions/default/handler.mjs",
+      "bytes": 4783839,
+      "gzipBytes": 1279911,
+      "sha256": "a784ffd412c64860a4bb180a0126daaae371f34f18baa8e56bad3608258ee3eb"
+    },
+    {
+      "path": ".open-next/middleware/handler.mjs",
+      "bytes": 135070,
+      "gzipBytes": 30755,
+      "sha256": "4eee26d36872ace9a07b2057634fefbb9d94c197ae93b5cf4a2b3ed5422cda53"
+    }
+  ],
+  "workerModulesCombinedBytes": 4921187,
+  "workerModulesCombinedGzipBytes": 1311400,
+  "gzipMeasurementScope": "Local Node zlib gzip sizes of entry/server/middleware modules; not a Wrangler upload report. Worker plan limits and remote startup remain operational gates.",
+  "staticAssets": {
+    "fileCount": 902,
+    "totalBytes": 31482453,
+    "fixtureDataIncluded": true
+  },
+  "runtimeDependencyEvidence": {
+    "metafilePath": ".open-next/server-functions/default/handler.mjs.meta.json",
+    "metafileSha256": "1db9f779f84d05cb53ad8683e128ebab34439290e1833469d59cb1276245085e",
+    "metafileInputCount": 433,
+    "bracesInputs": [],
+    "esbuildInputs": [],
+    "oldEsbuildKitInputs": [],
+    "pgCloudflareInputs": [
+      ".open-next/server-functions/default/node_modules/.pnpm/pg-cloudflare@1.4.1/node_modules/pg-cloudflare/dist/index.js"
+    ],
+    "nftTraceCount": 9,
+    "nftBracesFiles": [],
+    "nftOldEsbuildKitFiles": [],
+    "qualification": "The two remaining audit advisories concern the dev-tool dependency graph (ESLint braces3.0.3 and drizzle-kit esbuild0.18.20). Their package inputs and trace files are absent from this Worker server bundle. This does not claim elimination of the dev-tool advisories."
+  },
+  "remoteCloudflareWorkPerformed": false,
+  "businessDatabaseAccessPerformed": false
+}

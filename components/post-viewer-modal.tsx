@@ -7,6 +7,7 @@ import { PostDetail } from '@/components/post-detail';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollProgress } from '@/components/animate-ui/components/scroll-progress';
+import { markPostAsRead } from '@/lib/read-marker';
 
 // Helper to check if the user is typing in an input
 const isTyping = (el: Element | null) => {
@@ -48,27 +49,32 @@ function PostDetailSkeleton() {
 
 export function PostViewerModal() {
   const { isOpen, closeModal, postId, navigateToPost } = useModal();
-  const [post, setPost] = useState<Post | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [postResult, setPostResult] = useState<{ requestedId: string; post: Post | null } | null>(null);
+  const post = isOpen && postResult?.requestedId === postId ? postResult.post : null;
+  const isLoading = isOpen && !!postId && postResult?.requestedId !== postId;
   const [showHelp, setShowHelp] = useState(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   // Data fetching effect
   useEffect(() => {
-    if (postId) {
-      setIsLoading(true);
-      setPost(null);
-      getStaticPost(postId)
-        .then(data => {
-          setPost(data);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      setPost(null);
+    setPostResult(null);
+    if (!isOpen || !postId) return;
+
+    let cancelled = false;
+    getStaticPost(postId).then(data => {
+      if (!cancelled) setPostResult({ requestedId: postId, post: data });
+    });
+    return () => { cancelled = true; };
+  }, [isOpen, postId]);
+
+  // Record only the detail that is actually displayed, including keyboard navigation.
+  useEffect(() => {
+    if (!isOpen || !postId || !post) return;
+    markPostAsRead({ id: post.id, title: post.title, url: post.url });
+    if (post.id !== postId) {
+      markPostAsRead({ id: postId, title: post.title, url: post.url });
     }
-  }, [postId]);
+  }, [isOpen, postId, post]);
 
   // Scroll to top when post changes
   useEffect(() => {

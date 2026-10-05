@@ -1,0 +1,75 @@
+{
+  "checkedAt": "2026-10-05T05:30:41.344Z",
+  "scope": "Local homepage feed JSON recovery; no source changes, Temporal changes, or remote deployment",
+  "before": {
+    "generatedAt": "2025-09-29T23:25:36.142Z",
+    "files": [
+      "manifest.json"
+    ],
+    "lastPage": null,
+    "backupDirectory": "/private/var/folders/j4/m7kfc3yj0g952lk91dxwtd480000gn/T/isshoo-home-json-recovery-eSvO2c/before"
+  },
+  "generation": {
+    "script": "scripts/build-main-json.ts",
+    "node": "24.19.0",
+    "range": "24h",
+    "section": "fresh",
+    "databaseReadOnly": true,
+    "pgoptions": "-c default_transaction_read_only=on -c statement_timeout=30000",
+    "manifest": {
+      "generatedAt": "2026-10-05T05:28:15.155Z",
+      "pageSize": 20,
+      "maxPages": 50,
+      "lastPage": 3,
+      "range": "24h",
+      "section": "fresh",
+      "pages": 2,
+      "hasMore": true,
+      "seedPolicy": "live-seed-dedupe",
+      "mode": "fresh",
+      "windowMinutes": 1440,
+      "baseDir": "/public/data/home/v1/24h/fresh",
+      "excludedFromPage1": 0
+    },
+    "files": [
+      "page-2.json",
+      "page-3.json"
+    ],
+    "postCount": 29,
+    "uniquePostCount": 29
+  },
+  "validation": {
+    "command": "node --import tsx scripts/validate-main-json.ts public/data/home/v1/24h/fresh",
+    "exitCode": 0
+  },
+  "browser": {
+    "url": "http://localhost:5005/",
+    "errorNoticeCount": 0,
+    "endNoticeCount": 1,
+    "endNotice": "더 이상 글이 없습니다.",
+    "pageBatches": [
+      "ok-dup",
+      "ok-dup"
+    ],
+    "interpretation": "Both continuation pages overlapped existing SSR/upper IDs; no new posts were expected. Paging stopped normally at lastPage=3."
+  },
+  "remote": {
+    "latestRun": "https://github.com/ddkuiauou-ai/dlTtb/actions/runs/37260872963/job/111607634679",
+    "latestRunDateKst": "2026-10-05 12:48",
+    "job": "build_main",
+    "step": "Build main pages (fresh|24h only)",
+    "result": "failure",
+    "errorClasses": [
+      "DrizzleQueryError",
+      "ETIMEDOUT"
+    ],
+    "validationAndArtifactUpload": "skipped",
+    "earlierFailedRun": "https://github.com/ddkuiauou-ai/dlTtb/actions/runs/37252272024",
+    "automaticTriggers": [
+      "push to main"
+    ],
+    "manualTrigger": "workflow_dispatch",
+    "scheduledTrigger": false,
+    "remoteRunOrDeployTriggered": false
+  }
+}

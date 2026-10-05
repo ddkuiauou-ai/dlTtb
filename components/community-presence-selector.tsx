@@ -161,14 +161,22 @@ export default function CommunityPresenceSelector({ items, className, size = 'md
   const [isAnimating, setIsAnimating] = React.useState(false);
   const animationTimer = React.useRef<NodeJS.Timeout | undefined>(undefined);
 
-  // Animate on hover change
-  React.useEffect(() => {
+  // Start transitions only when the pointer enters or leaves the selector.
+  const handleHoverChange = React.useCallback((hovered: boolean) => {
+    if (animationTimer.current) clearTimeout(animationTimer.current);
+    setIsHovered(hovered);
     setIsAnimating(true);
-    animationTimer.current = setTimeout(() => setIsAnimating(false), ANIMATION_DURATION);
+    animationTimer.current = setTimeout(() => {
+      setIsAnimating(false);
+      animationTimer.current = undefined;
+    }, ANIMATION_DURATION);
+  }, []);
+
+  React.useEffect(() => {
     return () => {
       if (animationTimer.current) clearTimeout(animationTimer.current);
     };
-  }, [isHovered]);
+  }, []);
 
   // Sync state with props
   const effectiveSelectedIds: string[] = React.useMemo(() => {
@@ -230,8 +238,8 @@ export default function CommunityPresenceSelector({ items, className, size = 'md
     <TooltipProvider>
       <div
         className={cn('flex items-center justify-center min-h-[64px]', className)}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => handleHoverChange(true)}
+        onMouseLeave={() => handleHoverChange(false)}
       >
         <LayoutGroup>{renderContent()}</LayoutGroup>
       </div>

@@ -42,14 +42,15 @@ export default function RootLayout({
     var HREF_RE = new RegExp('^/posts/([^/?#]+)');
     function markAnchor(a){
       // quick exits
-      if (!a || a.getAttribute('data-read') === '1') return;
+      if (!a) return;
       var href = a.getAttribute('href') || '';
       var m = href.match(HREF_RE);
       if (!m) return;
       var id = decodeURIComponent(m[1]);
-      if (!readSet.has(id)) return;
-      if (!a.classList.contains('is-read')) a.classList.add('is-read');
-      a.setAttribute('data-read','1');
+      var isRead = readSet.has(id);
+      a.classList.toggle('is-read', isRead);
+      if (isRead) a.setAttribute('data-read','1');
+      else a.removeAttribute('data-read');
     }
 
     // --- Scan scheduler (batch/RAF) ---
@@ -89,12 +90,12 @@ export default function RootLayout({
     obs.observe(document.documentElement, { subtree: true, childList: true });
 
     // --- Navigation/visibility/storage hooks ---
-    window.addEventListener('pageshow', function(){ scheduleScan(); });
+    window.addEventListener('pageshow', function(){ refreshReadSet(); scheduleScan(); });
     document.addEventListener('visibilitychange', function(){
       if (document.visibilityState === 'visible') { refreshReadSet(); scheduleScan(); }
     });
     window.addEventListener('storage', function(e){
-      if (e && e.key === KEY) { refreshReadSet(); scheduleScan(); }
+      if (e && e.storageArea === localStorage && (e.key === KEY || e.key === null)) { refreshReadSet(); scheduleScan(); }
     });
     window.addEventListener('readPosts:updated', function(){ refreshReadSet(); scheduleScan(); });
 

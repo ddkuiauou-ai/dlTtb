@@ -1,0 +1,15 @@
+✔ document position is independent of current window scroll, including fractional pixels (0.532209ms)
+✔ paired document margin and local row placement cover all visible rows across layouts (127.099416ms)
+✔ legacy zero margin and margin-only placement reproduce the regression controls (0.53975ms)
+✔ 360 successive position and count changes retain visible coverage on the same virtualizer (5.152875ms)
+✔ position changes and appended rows preserve existing measured heights (1.843417ms)
+✔ default window scroller applies corrections when a measured row above the viewport grows (0.477583ms)
+✔ a retained feed anchor is selected within its root when an upper section repeats the same ID (0.189542ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 437.169208

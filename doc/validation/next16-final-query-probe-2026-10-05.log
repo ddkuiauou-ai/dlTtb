@@ -1,0 +1,8 @@
+[getMainPagePosts][ranked 24h] base=0 afterExclude=0
+[getMainPagePosts][ranked 24h] mv_diag { cnt: '0', max_ts: null }
+[getMainPagePosts][ranked 24h] post_trends_diag { max_ts: null }
+[getMainPagePosts][ranked 24h] merged=0
+[getMainPagePosts][ranked 24h] dedup=0 sites=0
+[getMainPagePosts][ranked 24h] final=0
+[getClusterTopPosts][24h] base=0 (no clusters returned)
+{"detailId":"upgrade-fixture-001","contentBody":true,"commentBody":true,"keywordIds":["upgrade-fixture-001"],"categoryIds":["upgrade-fixture-001"],"generatedKeywordParams":["next16-fixture"],"rankedEmptyWithoutTrendInput":true,"clusterEmptyWithoutTrendInput":true,"databaseReadOnly":true}

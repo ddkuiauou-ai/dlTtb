@@ -19,13 +19,13 @@ import { subscribeToPreviewActivations } from "@/lib/preview-activation-store";
 import { useFeedScrollMargin } from '@/hooks/use-feed-scroll-margin';
 import { correctFeedViewportAnchor, findFeedAnchorElement, virtualRowOffset } from '@/lib/virtual-feed-geometry';
 import { findSurvivingFeedAnchor, reconcileFeedSeed } from '@/lib/feed-refresh';
+import { READ_POSTS_KEY, subscribeToReadPosts } from '@/lib/read-marker';
 
 // --- Constants ---
 const MISSING_LIMIT = 2;
 const RETRY_BACKOFFS = [200, 400, 800];
 const FAILED_PAGE_RETRY_WINDOW = 10000; // 10s
 const MAX_PAGES_PER_CALL = 2;
-const READ_POSTS_KEY = 'readPosts:v2';
 
 const FALLBACK_VIEWPORT_HEIGHT = 900;
 const FALLBACK_ROW_ESTIMATE = 200;
@@ -106,8 +106,9 @@ type LoadStatus = "ok-new" | "ok-dup" | "missing" | "error";
 type LoadResult = { status: LoadStatus; newPosts: Post[] };
 type ManifestSnapshot = { generatedAt: string; lastPage?: number; hasMore?: boolean; seedPolicy?: string; fetchedAt: number };
 
-// Perform one coarse jump. TanStack's scrollToIndex schedules retries that
-// cannot observe a reader cancelling our restore; DOM anchoring follows here.
+// Jump to an absolute measured offset before our cancellable DOM anchoring.
+// Unlike scrollToIndex, scrollToOffset does not retarget the row when later
+// measurements change. Core 3.17 still reconciles the absolute scroll command.
 function scrollToFeedRow(virtualizer: ReturnType<typeof useWindowVirtualizer>, row: number) {
   virtualizer.getVirtualItems();
   const target = virtualizer.getOffsetForIndex(row, 'start');
@@ -2101,9 +2102,6 @@ export default function InfinitePostList({
       window.dispatchEvent(new CustomEvent<FeedMetrics>('feed:metrics', { detail } satisfies CustomEventInit<FeedMetrics>));
     } catch { /* no-op */ }
   }, [communityFilteredPosts, readPostIds, navRegistryKey]);
-  const emitMetricsRef = useRef(emitMetrics);
-  useEffect(() => { emitMetricsRef.current = emitMetrics; }, [emitMetrics]);
-
   // Emit on initial mount and whenever list or read set changes (coalesced to next frame)
   useLayoutEffect(() => {
     if (metricsRafRef.current != null) cancelAnimationFrame(metricsRafRef.current);
@@ -2122,28 +2120,11 @@ export default function InfinitePostList({
   useEffect(() => {
     const onReadUpdated = () => {
       const next = getReadSet();
-      let changed = false;
-      setReadPostIds((prev) => {
-        if (areSetsEqual(prev, next)) return prev;
-        changed = true;
-        return next;
-      });
-      if (!changed && metricsRafRef.current === null) {
-        return;
-      }
-      if (metricsRafRef.current != null) {
-        cancelAnimationFrame(metricsRafRef.current);
-      }
-      metricsRafRef.current = requestAnimationFrame(() => {
-        metricsRafRef.current = null;
-        emitMetricsRef.current();
-      });
+      // The metrics layout effect reacts to this state change as well.
+      setReadPostIds((prev) => areSetsEqual(prev, next) ? prev : next);
     };
 
-    window.addEventListener("readPosts:updated", onReadUpdated);
-    return () => {
-      window.removeEventListener("readPosts:updated", onReadUpdated);
-    };
+    return subscribeToReadPosts(onReadUpdated);
   }, []);
 
   // Register feed order + loadMore hook for modal navigation while dialog is open

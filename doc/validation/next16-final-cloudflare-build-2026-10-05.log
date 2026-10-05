@@ -1,0 +1,104 @@
+{"mode":"cloudflare-script","sourceRoot":"/private/tmp/next16-final-build-8lzzeb5k","node":"/Users/craigchoi/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node","isolatedPostgres":"127.0.0.1:55442/iss_web_fixture","readOnlyDatabase":true,"businessEnvCopied":false,"cloudflareCredentialsProvided":false,"remotePreview":false}
+$ opennextjs-cloudflare build
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+App directory: /private/tmp/next16-final-build-8lzzeb5k
+Next.js version : 16.3.8
+@opennextjs/cloudflare version: 1.20.8
+@opennextjs/aws version: 4.1.7
+workerd compatibility_date: 2026-10-05
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+$ next build
+▲ Next.js 16.3.8 (Turbopack)
+✓ Running next.config.mjs took 18ms
+
+  Creating an optimized production build ...
+(node:36654) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/next16-final-build-8lzzeb5k/tailwind.config.ts?id=1791175933021 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/next16-final-build-8lzzeb5k/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✓ Compiled successfully in 1462ms
+  Running TypeScript ...
+  Finished TypeScript in 3.0s ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/23) ...
+[Clerk] NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_tes… (len=56). NODE_ENV=production
+[getMainPagePosts][ranked 3h] base=0 afterExclude=0
+11111 [ranked|24h] 뉴스
+[getMainPagePosts][ranked 3h] mv_diag { cnt: '0', max_ts: null }
+[getMainPagePosts][ranked 3h] post_trends_diag { max_ts: null }
+[getMainPagePosts][ranked 3h] merged=0
+[getMainPagePosts][ranked 3h] dedup=0 sites=0
+[getMainPagePosts][ranked 3h] final=0
+[Home][rising] posts=0 newUnique=0 duplicates=0 usedBefore=0
+[getMainPagePosts][ranked 24h] base=0 afterExclude=0
+[getMainPagePosts][ranked 24h] mv_diag { cnt: '0', max_ts: null }
+[getMainPagePosts][ranked 24h] post_trends_diag { max_ts: null }
+[getMainPagePosts][ranked 24h] merged=0
+[getMainPagePosts][ranked 24h] dedup=0 sites=0
+[getMainPagePosts][ranked 24h] final=0
+[Home][spotlight] posts=0 newUnique=0 duplicates=0 usedBefore=0
+[getClusterTopPosts][24h] base=0 (no clusters returned)
+[Home][todayClusters] posts=0 newUnique=0 duplicates=0 usedBefore=0
+[getClusterTopPosts][1w] base=0 (no clusters returned)
+[Home][weekClusters] posts=0 newUnique=0 duplicates=0 usedBefore=0
+[getMainPagePosts][fresh 24h] base=1 afterExclude=1
+[ getMainPagePosts][fresh 24h] dedup=1 final=1
+[Home][fresh] posts=1 newUnique=1 duplicates=0 usedBefore=0
+11111 [ranked|3h] 급상승 (최근 3시간 급상승)
+11111 [ranked|24h] 지금 주목 (선택한 범위 랭킹)
+11111 [ranked|24h] 오늘의 이슈 (24시간 이슈 묶음)
+11111 [ranked|1w] 이번주 (1주 이슈 묶음)
+11111 [fresh|24h] 최신
+  Generating static pages using 9 workers (5/23) 
+  Generating static pages using 9 workers (11/23) 
+11111 [ranked|24h] 전체
+11111 [ranked|1w] next16-fixture
+  Generating static pages using 9 workers (17/23) 
+✓ Generating static pages using 9 workers (23/23) in 554ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├   /[category]
+│ ├ ● /news
+│ ├ ● /humor
+│ ├ ● /info
+│ └ ● [+14 more paths]
+├ ƒ /api/test-feed/[scenario]/[file]
+├   /keywords/[keyword]
+│ └ ● /keywords/next16-fixture
+├   /posts/[id]
+│ └ ● /posts/upgrade-fixture-001
+├ ○ /search
+└ ƒ /test-feed
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+┌──────────────────────────────┐
+│ OpenNext — Generating bundle │
+└──────────────────────────────┘
+
+Bundling middleware function...
+Bundling static assets...
+Bundling cache assets...
+Building server function: default...
+Applying code patches: 2.205s
+# copyPackageTemplateFiles
+[35m⚙️ Bundling the OpenNext server...
+[0m
+[35mWorker saved in `.open-next/worker.js` 🚀
+[0m
+OpenNext build complete.

@@ -1,0 +1,167 @@
+{
+  "date": "2026-10-05",
+  "scope": "Class-based dark theme and existing compiled dark utility; no new product UI",
+  "browser": "153.0.8010.12",
+  "samples": [
+    {
+      "variant": "phase1",
+      "states": [
+        {
+          "dark": false,
+          "body": {
+            "color": "rgb(10, 10, 10)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(229, 229, 229)",
+            "boxShadow": "none"
+          },
+          "card": {
+            "color": "rgb(10, 10, 10)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(229, 229, 229)",
+            "boxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+          },
+          "title": {
+            "color": "rgb(17, 24, 39)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgb(229, 229, 229)",
+            "boxShadow": "none"
+          },
+          "badge": {
+            "color": "rgb(31, 41, 55)",
+            "backgroundColor": "rgb(243, 244, 246)",
+            "borderColor": "rgba(0, 0, 0, 0)",
+            "boxShadow": "none"
+          },
+          "probe": {
+            "color": "rgb(10, 10, 10)",
+            "backgroundColor": "rgb(229, 231, 235)",
+            "borderColor": "rgb(229, 229, 229)",
+            "boxShadow": "none"
+          }
+        },
+        {
+          "dark": true,
+          "body": {
+            "color": "rgb(250, 250, 250)",
+            "backgroundColor": "rgb(10, 10, 10)",
+            "borderColor": "rgb(38, 38, 38)",
+            "boxShadow": "none"
+          },
+          "card": {
+            "color": "rgb(250, 250, 250)",
+            "backgroundColor": "rgb(10, 10, 10)",
+            "borderColor": "rgb(38, 38, 38)",
+            "boxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+          },
+          "title": {
+            "color": "rgb(17, 24, 39)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgb(38, 38, 38)",
+            "boxShadow": "none"
+          },
+          "badge": {
+            "color": "rgb(31, 41, 55)",
+            "backgroundColor": "rgb(243, 244, 246)",
+            "borderColor": "rgba(0, 0, 0, 0)",
+            "boxShadow": "none"
+          },
+          "probe": {
+            "color": "rgb(250, 250, 250)",
+            "backgroundColor": "rgb(55, 65, 81)",
+            "borderColor": "rgb(38, 38, 38)",
+            "boxShadow": "none"
+          }
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "variant": "final",
+      "states": [
+        {
+          "dark": false,
+          "body": {
+            "color": "rgb(10, 10, 10)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(229, 229, 229)",
+            "boxShadow": "none"
+          },
+          "card": {
+            "color": "rgb(10, 10, 10)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(229, 229, 229)",
+            "boxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+          },
+          "title": {
+            "color": "rgb(17, 24, 39)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgb(229, 229, 229)",
+            "boxShadow": "none"
+          },
+          "badge": {
+            "color": "rgb(31, 41, 55)",
+            "backgroundColor": "rgb(243, 244, 246)",
+            "borderColor": "rgba(0, 0, 0, 0)",
+            "boxShadow": "none"
+          },
+          "probe": {
+            "color": "rgb(10, 10, 10)",
+            "backgroundColor": "rgb(229, 231, 235)",
+            "borderColor": "rgb(229, 229, 229)",
+            "boxShadow": "none"
+          }
+        },
+        {
+          "dark": true,
+          "body": {
+            "color": "rgb(250, 250, 250)",
+            "backgroundColor": "rgb(10, 10, 10)",
+            "borderColor": "rgb(38, 38, 38)",
+            "boxShadow": "none"
+          },
+          "card": {
+            "color": "rgb(250, 250, 250)",
+            "backgroundColor": "rgb(10, 10, 10)",
+            "borderColor": "rgb(38, 38, 38)",
+            "boxShadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+          },
+          "title": {
+            "color": "rgb(17, 24, 39)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgb(38, 38, 38)",
+            "boxShadow": "none"
+          },
+          "badge": {
+            "color": "rgb(31, 41, 55)",
+            "backgroundColor": "rgb(243, 244, 246)",
+            "borderColor": "rgba(0, 0, 0, 0)",
+            "boxShadow": "none"
+          },
+          "probe": {
+            "color": "rgb(250, 250, 250)",
+            "backgroundColor": "rgb(55, 65, 81)",
+            "borderColor": "rgb(38, 38, 38)",
+            "boxShadow": "none"
+          }
+        }
+      ],
+      "pageErrors": []
+    }
+  ],
+  "comparisons": [
+    {
+      "dark": false,
+      "sameStyles": true
+    },
+    {
+      "dark": true,
+      "sameStyles": true
+    }
+  ],
+  "limitations": [
+    "Synthetic development PostCard route; does not test an application theme button or persistence",
+    "One fresh context per dependency batch; no physical device acceptance"
+  ],
+  "darkApplied": true,
+  "pass": true
+}
