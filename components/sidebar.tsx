@@ -5,6 +5,7 @@ import { CategoryList } from "./category-list.client";
 import { TrendingKeywordList } from "./TrendingKeywordList.client";
 import { ReadPostList } from "./ReadPostList.client";
 import { SidebarStats } from "./sidebar-stats.client";
+import { ServerTimeDisplay } from "./server-time.client";
 
 export const dynamic = "force-static";
 export const revalidate = false;
@@ -52,7 +53,7 @@ export async function Sidebar() {
       {/* Statistics */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">오늘의 통계</CardTitle>
+          <CardTitle className="text-lg">오늘의 통계 · 서버 <ServerTimeDisplay /></CardTitle>
           <div className="text-xs text-gray-500">
             지난 24시간 내 · 빌드 {builtLabel}
           </div>
