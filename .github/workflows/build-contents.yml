@@ -156,7 +156,7 @@ jobs:
       - name: Validate output layout
         run: |
           set -euo pipefail
-          test -d "public/data/home/v1/24h/fresh"
+          node --import tsx scripts/validate-main-json.ts "public/data/home/v1/24h/fresh"
           if [ -d public/data/v1 ]; then
             echo "::error::Found unexpected 'public/data/v1'."
             exit 1

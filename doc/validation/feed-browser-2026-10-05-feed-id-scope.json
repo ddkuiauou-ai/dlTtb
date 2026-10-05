@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-05",
+  "command": "FEED_TEST_BASE_URL=http://127.0.0.1:5007 pnpm test:browser",
+  "finalSourceAggregateSha256": "04fa18f2f277687efd583d58dbc9a4f521e940f33cf16b826b3b86fd5f712796",
+  "sourceVerifiedAfterRun": true,
+  "result": {
+    "total": 33,
+    "passed": 33,
+    "failed": 0,
+    "skipped": 0,
+    "unexpectedRunnerErrors": 0,
+    "durationMs": 75195.394,
+    "startedAt": "2026-10-05T03:41:52.659Z",
+    "retriesConfigured": 0,
+    "browserVersions": [
+      "151.0.7922.34"
+    ],
+    "playwrightVersion": "1.62.1",
+    "reactVirtualVersion": "3.13.12",
+    "uncaughtBrowserExceptions": "Every test asserts an empty pageerror list; no silent retry allowance."
+  },
+  "duplicateIdScope": [
+    {
+      "case": "detail restoration chooses the active feed card when an upper section has the same post ID",
+      "activeFeedTop": 126,
+      "upperCopyTop": -4127,
+      "expectedAlignment": 126,
+      "documentLookupChoosesUpper": true,
+      "sourceLookupScope": "active feed root",
+      "measuredAlignmentErrorCssPx": 0
+    }
+  ],
+  "previousFull31Evidence": "/Users/craigchoi/silla/is/doc/validation/feed-browser-2026-10-05-full31.json",
+  "measured": {
+    "sampleCount": 47,
+    "sampleCountWithVisibleExpectedIds": 43,
+    "caseCount": 32,
+    "maxMissingVisibleIdCount": 0,
+    "maxRowPositionErrorCssPx": 66,
+    "maxDocumentOffsetVsMarginErrorCssPx": 0,
+    "assignedRowSampleCount": 508,
+    "maxAssignedRowPlacementErrorCssPx": 0,
+    "assignedRowCoordinateBasis": "Actual DOM row top versus root viewport top plus the inline vi.start - scrollMargin transform; separate from the fully measured prefix reference.",
+    "coreReferenceSampleCount": 15,
+    "coreReferenceMaxRowPositionErrorCssPx": 0,
+    "absolutePositionSamplesAboveOneCssPx": [
+      {
+        "case": "a detail return marker runs the actual restore hook and consumes its session keys",
+        "attachment": "final-coordinate-state",
+        "maxErrorCssPx": 66,
+        "scrollY": 4227,
+        "documentOffset": 629,
+        "columns": 2
+      },
+      {
+        "case": "detail restoration chooses the active feed card when an upper section has the same post ID",
+        "attachment": "final-coordinate-state",
+        "maxErrorCssPx": 66,
+        "scrollY": 4227,
+        "documentOffset": 629,
+        "columns": 2
+      }
+    ],
+    "absolutePositionCaveat": "Detail restoration retains a global fully-measured-prefix difference while passing separate viewport-alignment and assigned-row-placement assertions. An estimated, unmeasured prefix is the likely cause; no claim that all restored absolute document coordinates are within 1px. Exact measured differences are retained above.",
+    "scope": "Retained coordinate attachments after settling; this is not a maximum across every frame or every assertCoverage call.",
+    "maxReadingAnchorErrorCssPx": null,
+    "anchorScope": "Suite-wide numeric anchor deltas were not retained; thresholds are reported. The duplicate-ID attachment records its actual alignment delta. The separately retained older-source detail diagnostic has its own source hash."
+  },
+  "caseNames": [
+    "explicit margin 0 remains a failing positive-offset control",
+    "correct coordinates and visible rows at width 390",
+    "correct coordinates and visible rows at width 820",
+    "correct coordinates and visible rows at width 1440",
+    "initial empty, short, and tall upper sections retain every visible feed ID",
+    "late upper height changes preserve the reader while top readers stay at top",
+    "returning to top and growing upper content in the same task does not reuse a stale anchor",
+    "append normal: IDs survive, deduplicate, and terminate",
+    "append delayed: IDs survive, deduplicate, and terminate",
+    "append duplicates: IDs survive, deduplicate, and terminate",
+    "append missing: IDs survive, deduplicate, and terminate",
+    "append error: IDs survive, deduplicate, and terminate",
+    "append duplicate-only: IDs survive, deduplicate, and terminate",
+    "mixed measured rows remain positioned after append and return to the start",
+    "direct page 3 access loads the target and recycled sentinels update the URL",
+    "a detail return marker runs the actual restore hook and consumes its session keys",
+    "detail restoration chooses the active feed card when an upper section has the same post ID",
+    "width and column changes preserve the same reading anchor",
+    "wheel intent during a column change keeps the reader chosen position",
+    "a pending append cannot revive column anchoring cancelled by a wheel event",
+    "read filtering and switching the list/grid path retain feed IDs",
+    "closing the actual modal clears the detail return marker",
+    "same-section empty seed adopts newly supplied first-page posts",
+    "different JSON generation preserves current posts and presents an update notice",
+    "natural upper cards and actual list/grid cards preserve coordinates and the reader",
+    "a manual retry after a failed page appends the remaining generation once",
+    "a late manifest from base A cannot replace base B generation or fetching state",
+    "a stale captured base A navigation callback cannot lock base B loading",
+    "IndexedDB keeps ordered page payloads isolated across bases and generations",
+    "denied IndexedDB still allows a fresh manifest from the network",
+    "wheel intent cancels a pending url restoration before a delayed page arrives",
+    "wheel intent cancels a pending detail restoration before a delayed page arrives",
+    "a real middle mouse input cancels pending URL restoration"
+  ],
+  "canonicalEvidence": "/Users/craigchoi/silla/is/doc/validation/feed-browser-2026-10-05.json"
+}

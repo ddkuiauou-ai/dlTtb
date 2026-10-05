@@ -16,6 +16,9 @@ import type { Range, Virtualizer } from "@tanstack/react-virtual";
 import { readAndClearRestore } from "@/lib/restore-session";
 import { usePostCache } from "@/context/post-cache-context";
 import { subscribeToPreviewActivations } from "@/lib/preview-activation-store";
+import { useFeedScrollMargin } from '@/hooks/use-feed-scroll-margin';
+import { correctFeedViewportAnchor, findFeedAnchorElement, virtualRowOffset } from '@/lib/virtual-feed-geometry';
+import { findSurvivingFeedAnchor, reconcileFeedSeed } from '@/lib/feed-refresh';
 
 // --- Constants ---
 const MISSING_LIMIT = 2;
@@ -101,7 +104,16 @@ const dlog = (...args: unknown[]) => {
 // --- Types ---
 type LoadStatus = "ok-new" | "ok-dup" | "missing" | "error";
 type LoadResult = { status: LoadStatus; newPosts: Post[] };
-type ManifestSnapshot = { generatedAt: string; lastPage?: number; fetchedAt: number };
+type ManifestSnapshot = { generatedAt: string; lastPage?: number; hasMore?: boolean; seedPolicy?: string; fetchedAt: number };
+
+// Perform one coarse jump. TanStack's scrollToIndex schedules retries that
+// cannot observe a reader cancelling our restore; DOM anchoring follows here.
+function scrollToFeedRow(virtualizer: ReturnType<typeof useWindowVirtualizer>, row: number) {
+  virtualizer.getVirtualItems();
+  const target = virtualizer.getOffsetForIndex(row, 'start');
+  dlog('scroll:coarse', { row, count: virtualizer.options.count, offset: target?.[0], margin: virtualizer.options.scrollMargin });
+  if (target) virtualizer.scrollToOffset(target[0], { align: 'start', behavior: 'auto' });
+}
 
 type FeedNavigationApi = {
   getIds: () => string[];
@@ -120,6 +132,7 @@ function useRestoreFromDetail(params: {
   storageKeyPrefix: string | undefined;
   initialPage: number;
   cols: number;
+  layoutReady: boolean;
   virtualizer: ReturnType<typeof useWindowVirtualizer>;
   loadMore: () => Promise<void>;
   hasMoreRef: React.MutableRefObject<boolean>;
@@ -131,11 +144,13 @@ function useRestoreFromDetail(params: {
   rootRef: React.MutableRefObject<HTMLDivElement | null>;
   restoringRef: React.MutableRefObject<boolean>;
   ensureBelowBufferRows: (anchorId: string) => Promise<void>;
+  userIntentRef: React.MutableRefObject<number>;
 }) {
   const {
     storageKeyPrefix,
     initialPage,
     cols,
+    layoutReady,
     virtualizer,
     loadMore,
     hasMoreRef,
@@ -147,29 +162,40 @@ function useRestoreFromDetail(params: {
     rootRef,
     restoringRef,
     ensureBelowBufferRows,
+    userIntentRef,
   } = params;
+  const currentColsRef = useRef(cols);
+  currentColsRef.current = cols;
 
   useEffect(() => {
-    if (!storageKeyPrefix || restoringRef.current) return;
+    if (!layoutReady || !storageKeyPrefix || restoringRef.current) return;
 
     const restore = readAndClearRestore(storageKeyPrefix);
     if (!restore.should) return;
 
     restoringRef.current = true;
+    let cancelled = false;
+    const intent = userIntentRef.current;
+    const isCancelled = () => cancelled || intent !== userIntentRef.current;
+    const prevScrollBehavior = document.documentElement.style.scrollBehavior;
+    let lateObserver: ResizeObserver | null = null;
+    let lateFrame = 0;
+    let lateTimeout: ReturnType<typeof setTimeout> | undefined;
 
     const run = async () => {
-      const prevScrollBehavior = document.documentElement.style.scrollBehavior;
       document.documentElement.style.scrollBehavior = 'auto';
 
       const waitFrames = (n: number) => new Promise<void>((res) => {
-        let i = 0; const step = () => { if (++i >= n) return res(); requestAnimationFrame(step); };
+        let i = 0; const step = () => { if (isCancelled() || ++i >= n) return res(); requestAnimationFrame(step); };
         requestAnimationFrame(step);
       });
+      const checkActive = () => { if (isCancelled()) throw new Error('feed restore cancelled'); };
 
       const waitForAnchorStable = async (id: string) => {
         let el: HTMLElement | null = null;
         for (let i = 0; i < 60; i++) {
-          el = document.getElementById(`post-${id}`) as HTMLElement | null;
+          checkActive();
+          el = findFeedAnchorElement(rootRef.current, `post-${id}`);
           if (el) break;
           await waitFrames(1);
         }
@@ -178,6 +204,7 @@ function useRestoreFromDetail(params: {
         let stable = 0;
         let prev = -99999;
         for (let i = 0; i < 60; i++) {
+          checkActive();
           const top = el.getBoundingClientRect().top;
           if (Math.abs(top - prev) <= 0.5) {
             stable++;
@@ -229,6 +256,7 @@ function useRestoreFromDetail(params: {
 
         // 컬럼 측정 + 가상행 생성까지 대기
         for (let i = 0; i < 60; i++) {
+          checkActive();
           try {
             if (colsReadyRef.current && virtualizer.getVirtualItems().length > 0) break;
           } catch { /* ignore */ }
@@ -237,6 +265,7 @@ function useRestoreFromDetail(params: {
 
         // 타겟 페이지까지 로딩
         while (pageRef.current < targetPage && hasMoreRef.current) {
+          checkActive();
           await loadMore();
           await waitFrames(2);
         }
@@ -245,6 +274,7 @@ function useRestoreFromDetail(params: {
         if (anchorId) {
           let guard = 0;
           while (!seenIdsRef.current.has(anchorId) && hasMoreRef.current && guard < 50) {
+            checkActive();
             guard++;
             await loadMore();
             await waitFrames(2);
@@ -252,26 +282,43 @@ function useRestoreFromDetail(params: {
         }
 
         // 1차: 해당 행으로 거칠게 이동
+        checkActive();
         if (anchorId) {
-          const idx = visiblePostsRef.current.findIndex((p) => p.id === anchorId);
-          if (idx >= 0) {
-            const rowIndex = Math.floor(idx / Math.max(1, cols));
-            try { virtualizer.scrollToIndex(rowIndex, { align: 'start' } as Parameters<typeof virtualizer.scrollToIndex>[1]); } catch { /* ignore */ }
-            await waitFrames(2);
+          // Loading updates the raw IDs before React commits the filtered list.
+          // Wait for that list and its virtual rows even when the last page ended.
+          let rowIndex = -1;
+          for (let i = 0; i < 60; i++) {
+            checkActive();
+            const idx = visiblePostsRef.current.findIndex((p) => p.id === anchorId);
+            const candidateRow = Math.floor(idx / Math.max(1, currentColsRef.current));
+            if (idx >= 0 && candidateRow < virtualizer.options.count) {
+              rowIndex = candidateRow;
+              break;
+            }
+            await waitFrames(1);
           }
+          checkActive();
+          if (rowIndex < 0) {
+            dlog('restore:anchor-unavailable', { anchorId });
+            return;
+          }
+          try { scrollToFeedRow(virtualizer, rowIndex); } catch { /* ignore */ }
+          await waitFrames(2);
 
           // 2차: 요소가 DOM에 안정적으로 올라온 뒤 scroll-margin-top으로 정확히 맞추기
           const el2 = await waitForAnchorStable(anchorId);
+          checkActive();
           if (el2) {
             const off = computeScrollOffset();
             el2.style.scrollMarginTop = `${off}px`;
             el2.scrollIntoView({ behavior: 'auto', block: 'start' });
             // post-correct on the next frame if we still ended up too high/low
             await waitFrames(1);
+            checkActive();
             try {
               const top = el2.getBoundingClientRect().top;
               const delta = top - off; // negative => scroll up a bit; positive => scroll down a bit
-              if (Math.abs(delta) > 6) {
+              if (Math.abs(delta) > 0.5) {
                 window.scrollBy({ top: delta, behavior: 'auto' });
               }
             } catch { /* ignore */ }
@@ -281,17 +328,16 @@ function useRestoreFromDetail(params: {
 
           // Second-pass correction after tail priming & potential re-measure
           await waitFrames(2);
-          try { virtualizer.measure(); } catch { /* ignore */ }
+          checkActive();
           await waitFrames(1);
+          checkActive();
           try {
-            const el3 = document.getElementById(`post-${anchorId}`) as HTMLElement | null;
+            const el3 = findFeedAnchorElement(rootRef.current, `post-${anchorId}`);
             if (el3) {
               const off = computeScrollOffset();
               const rect = el3.getBoundingClientRect();
               const topDelta = rect.top - off; // negative => need to scroll up; positive => scroll down
-              const bottomGuard = 16;
-              const outOfView = (topDelta < -6) || (rect.bottom > window.innerHeight - bottomGuard);
-              if (outOfView) {
+              if (Math.abs(topDelta) > 0.5) {
                 window.scrollBy({ top: topDelta, behavior: 'auto' });
               }
             }
@@ -299,32 +345,35 @@ function useRestoreFromDetail(params: {
 
           // Third-pass: watch for late reflow on the anchor for a short window
           try {
-            const anchorEl = document.getElementById(`post-${anchorId}`) as HTMLElement | null;
+            const anchorEl = findFeedAnchorElement(rootRef.current, `post-${anchorId}`);
             if (anchorEl && 'ResizeObserver' in window) {
               const desiredTop = computeScrollOffset();
-              let raf = 0;
               const ro = new ResizeObserver(() => {
-                if (raf) cancelAnimationFrame(raf);
-                raf = requestAnimationFrame(() => {
+                if (isCancelled()) return;
+                if (lateFrame) cancelAnimationFrame(lateFrame);
+                lateFrame = requestAnimationFrame(() => {
+                  if (isCancelled()) return;
                   try {
                     const rect = anchorEl.getBoundingClientRect();
                     const delta = rect.top - desiredTop;
-                    if (Math.abs(delta) > 10) {
+                    if (Math.abs(delta) > 0.5) {
                       window.scrollBy({ top: delta, behavior: 'auto' });
                     }
                   } catch { /* ignore */ }
                 });
               });
+              lateObserver = ro;
               ro.observe(anchorEl);
-              setTimeout(() => {
+              lateTimeout = setTimeout(() => {
                 try { ro.disconnect(); } catch { }
-                if (raf) cancelAnimationFrame(raf);
+                if (lateFrame) cancelAnimationFrame(lateFrame);
               }, 800);
             }
           } catch { /* ignore */ }
 
 
           // 복원 완료 후 URL의 ?page=를 앵커 카드의 JSON 페이지로 정규화
+          checkActive();
           try {
             const setPageInUrl = (n: number) => {
               const u = new URL(window.location.href);
@@ -346,16 +395,19 @@ function useRestoreFromDetail(params: {
           } catch { /* noop */ }
         }
       } finally {
-        document.documentElement.style.scrollBehavior = prevScrollBehavior || '';
-        restoringRef.current = false;
+        if (!cancelled) {
+          document.documentElement.style.scrollBehavior = prevScrollBehavior || '';
+          restoringRef.current = false;
+        }
         // Schedule neon highlight AFTER all scrolling/restoration is complete
         try {
           const id = anchorId;
-          if (id) {
+          if (id && !isCancelled()) {
             const RESTORE_MS = 850; // keep in sync with CSS --restore-ms
             requestAnimationFrame(() => {
               requestAnimationFrame(() => {
-                const t = document.getElementById(`post-${id}`) as HTMLElement | null;
+                if (isCancelled()) return;
+                const t = findFeedAnchorElement(rootRef.current, `post-${id}`);
                 if (t) {
                   t.classList.remove('restore-glow');
                   void t.offsetWidth; // restart animation timeline without layout shifts
@@ -369,9 +421,17 @@ function useRestoreFromDetail(params: {
       }
     };
 
-    run();
+    void run().catch(error => { if (!isCancelled()) dlog('restore:error', String(error)); });
+    return () => {
+      cancelled = true;
+      lateObserver?.disconnect();
+      if (lateFrame) cancelAnimationFrame(lateFrame);
+      if (lateTimeout) clearTimeout(lateTimeout);
+      document.documentElement.style.scrollBehavior = prevScrollBehavior || '';
+      restoringRef.current = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storageKeyPrefix, initialPage, cols, virtualizer, loadMore]);
+  }, [storageKeyPrefix, initialPage, layoutReady, virtualizer, loadMore]);
 }
 
 // --- Read Status Helpers ---
@@ -446,7 +506,8 @@ interface ListVirtualizedFeedProps {
   urlBootstrapDoneRef: React.MutableRefObject<boolean>;
   lastLoadTriggerRef: React.MutableRefObject<{ rowCount: number; page: number }>;
   isFetchingRef: React.MutableRefObject<boolean>;
-  windowScrollMargin: number;
+  windowScrollMargin: number | 'auto';
+  pagingNotice: React.ReactNode;
 }
 
 function ListVirtualizedFeed({
@@ -481,12 +542,14 @@ function ListVirtualizedFeed({
   lastLoadTriggerRef,
   isFetchingRef,
   windowScrollMargin,
+  pagingNotice,
 }: ListVirtualizedFeedProps) {
   // Instance ID for debugging React Strict Mode double mounting
   const instanceIdRef = useRef(++instanceCounter);
   
   const [cols, setCols] = useState(1);
   const colsRef = useRef(cols);
+  colsRef.current = cols;
   const [containerWidth, setContainerWidth] = useState(0);
   const [hasMounted, setHasMounted] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(() => {
@@ -495,6 +558,9 @@ function ListVirtualizedFeed({
     return initial > 0 ? initial : FALLBACK_VIEWPORT_HEIGHT;
   });
   const [activePreviewIds, setActivePreviewIds] = useState<Set<string>>(() => new Set());
+  const layoutAnchoringRef = useRef(false);
+  const pendingLayoutAnchorRef = useRef<{ id: string; top: number; intent: number } | null>(null);
+  const [anchoredRow, setAnchoredRow] = useState<number | null>(null);
 
   useEffect(() => { 
     colsRef.current = cols; 
@@ -543,8 +609,6 @@ function ListVirtualizedFeed({
   }, []);
 
   const estimateCacheRef = useRef<Record<string, number>>({});
-  const highestMeasuredRowRef = useRef(-1);
-  const lastMeasuredColsRef = useRef(cols);
   const lastCacheResetKeyRef = useRef<{ cols: number; width: number } | null>(null);
   const getEstimateKey = useCallback(
     (colCount: number) => `${cardLayoutOverride ?? layout}|${Math.max(1, colCount)}`,
@@ -557,7 +621,6 @@ function ListVirtualizedFeed({
     if (!prev || prev.cols !== cols || prev.width !== widthKey) {
       lastCacheResetKeyRef.current = { cols, width: widthKey };
       estimateCacheRef.current = {};
-      highestMeasuredRowRef.current = -1;
     }
   }, [cols, containerWidth]);
 
@@ -705,22 +768,14 @@ function ListVirtualizedFeed({
     [getEstimateKey, readEntryHeight],
   );
 
-  const scrollToFn = useCallback((offset: number) => {
-    try {
-      const y = Math.max(0, Math.round(offset));
-      window.scrollTo({ top: y, behavior: 'auto' });
-    } catch {
-      window.scrollTo({ top: Math.max(0, Math.round(offset)), behavior: 'auto' as ScrollBehavior });
-    }
-  }, []);
-
   const rangeExtractor = useCallback(
     (range: Range) => {
       const base = defaultRangeExtractor(range);
-      if (activePreviewRowIndexes.length === 0) {
+      if (activePreviewRowIndexes.length === 0 && anchoredRow == null) {
         return base;
       }
       const merged = new Set(base);
+      if (anchoredRow != null && anchoredRow < range.count) merged.add(anchoredRow);
       for (const rowIndex of activePreviewRowIndexes) {
         if (rowIndex >= 0 && rowIndex < range.count) {
           merged.add(rowIndex);
@@ -731,35 +786,109 @@ function ListVirtualizedFeed({
       }
       return Array.from(merged).sort((a, b) => a - b);
     },
-    [activePreviewRowIndexes],
+    [activePreviewRowIndexes, anchoredRow],
   );
 
+  const feedPosition = useFeedScrollMargin(rootRef, windowScrollMargin, restoringRef, layoutAnchoringRef);
+  const { margin: effectiveScrollMargin, ready: positionReady, anchorRef, userIntentRef, captureAnchor } = feedPosition;
   const virtualizer = useWindowVirtualizer({
     count: rowCount,
     estimateSize: estimateRowSize,
     overscan: bufferMetrics.overscanRows,
-    scrollToFn,
     measureElement: measureRow,
     getItemKey: (row) => {
       const idx0 = row * cols;
       return visiblePosts[idx0]?.id ?? row;
     },
     rangeExtractor,
-    scrollMargin: windowScrollMargin,
+    scrollMargin: effectiveScrollMargin,
   });
 
-  const prevScrollMarginRef = useRef<number | null>(null);
-  useEffect(() => {
-    if (prevScrollMarginRef.current === windowScrollMargin) {
+  // Only a changed row layout invalidates measured sizes. Position changes and
+  // appended rows are handled by the virtualizer without clearing earlier rows.
+  const measuredLayoutRef = useRef<string | null>(null);
+  const previousFeedIdsRef = useRef<string[]>([]);
+  useLayoutEffect(() => {
+    if (!positionReady || !containerWidth) return;
+    const key = `${cardLayoutOverride ?? layout}|${cols}|${containerWidth}`;
+    const previous = measuredLayoutRef.current;
+    const nextIds = visiblePosts.map(post => post.id);
+    const previousIds = previousFeedIdsRef.current;
+    const reordered = previousIds.length > nextIds.length || previousIds.some((id, index) => nextIds[index] !== id);
+    previousFeedIdsRef.current = nextIds;
+    if (previous === key && !reordered && !pendingLayoutAnchorRef.current) return;
+    measuredLayoutRef.current = key;
+    if (window.scrollY <= 0.5) {
+      anchorRef.current = null;
+      pendingLayoutAnchorRef.current = null;
+      layoutAnchoringRef.current = false;
+      virtualizer.shouldAdjustScrollPositionOnItemSizeChange = undefined;
+      setAnchoredRow(null);
+      if (previous !== key) virtualizer.measure();
       return;
     }
-
-    if (prevScrollMarginRef.current !== null || windowScrollMargin !== 0) {
-      virtualizer.measure();
+    if (pendingLayoutAnchorRef.current && pendingLayoutAnchorRef.current.intent !== userIntentRef.current) {
+      pendingLayoutAnchorRef.current = null;
+      layoutAnchoringRef.current = false;
+      virtualizer.shouldAdjustScrollPositionOnItemSizeChange = undefined;
+      setAnchoredRow(null);
+      if (previous !== key) virtualizer.measure();
+      captureAnchor();
+      return;
     }
+    const previousAnchor = pendingLayoutAnchorRef.current ?? anchorRef.current;
+    const survivingId = findSurvivingFeedAnchor(previousIds, new Set(nextIds), previousAnchor?.id.replace(/^post-/, '') ?? null);
+    const anchor = previousAnchor && survivingId ? { id: `post-${survivingId}`, top: previousAnchor.top } : null;
+    const intent = userIntentRef.current;
+    if (!previous || !anchor || restoringRef.current) {
+      pendingLayoutAnchorRef.current = null;
+      layoutAnchoringRef.current = false;
+      virtualizer.shouldAdjustScrollPositionOnItemSizeChange = undefined;
+      setAnchoredRow(null);
+      if (previous !== key) virtualizer.measure();
+      return;
+    }
+    const index = visiblePosts.findIndex(post => `post-${post.id}` === anchor.id);
+    if (index < 0) return;
+    const row = Math.floor(index / Math.max(1, cols));
+    pendingLayoutAnchorRef.current = { ...anchor, intent };
+    layoutAnchoringRef.current = true;
+    // DOM anchoring owns these corrections. The normal measured-size scroller
+    // resumes once this layout has settled or the reader cancels it.
+    virtualizer.shouldAdjustScrollPositionOnItemSizeChange = () => false;
+    setAnchoredRow(row);
+    if (previous !== key) virtualizer.measure();
+    scrollToFeedRow(virtualizer, row);
+    let frame = 0;
+    let attempts = 0;
+    let stableFrames = 0;
+    const finish = () => {
+      pendingLayoutAnchorRef.current = null;
+      layoutAnchoringRef.current = false;
+      virtualizer.shouldAdjustScrollPositionOnItemSizeChange = undefined;
+      setAnchoredRow(null);
+      captureAnchor();
+    };
+    const correct = () => {
+      if (window.scrollY <= 0.5 || restoringRef.current || userIntentRef.current !== intent) { finish(); return; }
+      const element = findFeedAnchorElement(rootRef.current, anchor.id);
+      const delta = element ? element.getBoundingClientRect().top - anchor.top : Infinity;
+      if (rootRef.current && correctFeedViewportAnchor(rootRef.current, anchor)) {
+        stableFrames = Math.abs(delta) <= 0.5 ? stableFrames + 1 : 0;
+      } else {
+        stableFrames = 0;
+      }
+      if (stableFrames >= 8 || ++attempts >= 60) { finish(); return; }
+      frame = requestAnimationFrame(correct);
+    };
+    frame = requestAnimationFrame(correct);
+    return () => cancelAnimationFrame(frame);
+  }, [anchorRef, captureAnchor, cardLayoutOverride, cols, containerWidth, layout, positionReady, restoringRef, rootRef, userIntentRef, virtualizer, visiblePosts]);
 
-    prevScrollMarginRef.current = windowScrollMargin;
-  }, [windowScrollMargin, virtualizer]);
+  useEffect(() => () => {
+    layoutAnchoringRef.current = false;
+    virtualizer.shouldAdjustScrollPositionOnItemSizeChange = undefined;
+  }, [virtualizer]);
 
   useEffect(() => {
     if (!DEBUG_IPL) return;
@@ -776,56 +905,7 @@ function ListVirtualizedFeed({
   }, [virtualizer, cols, bufferMetrics]);
 
   const items = virtualizer.getVirtualItems();
-
-  useEffect(() => {
-    const prevCols = lastMeasuredColsRef.current;
-    const maxIndex = rowCount - 1;
-    if (maxIndex < 0) {
-      highestMeasuredRowRef.current = -1;
-      lastMeasuredColsRef.current = cols;
-      return;
-    }
-
-    const needsFullMeasure = prevCols !== cols;
-    const lastMeasured = needsFullMeasure ? -1 : highestMeasuredRowRef.current;
-
-    const runMeasureRange = (start: number, end: number) => {
-      const maybeMeasureRange = (virtualizer as typeof virtualizer & {
-        measureRange?: (range: { start: number; end: number }) => void;
-      }).measureRange;
-      if (typeof maybeMeasureRange === 'function') {
-        maybeMeasureRange.call(virtualizer, { start, end });
-      } else {
-        virtualizer.measure();
-      }
-    };
-
-    if (needsFullMeasure) {
-      highestMeasuredRowRef.current = -1;
-      lastMeasuredColsRef.current = cols;
-      try {
-        // Column changes can shift anchor positions; keep the restore flow accurate by
-        // forcing a full re-measure so scroll restoration stays aligned.
-        runMeasureRange(0, maxIndex);
-        highestMeasuredRowRef.current = maxIndex;
-      } catch { /* ignore */ }
-      return;
-    }
-
-    if (lastMeasured >= maxIndex) {
-      highestMeasuredRowRef.current = maxIndex;
-      return;
-    }
-
-    const start = lastMeasured + 1;
-    const end = maxIndex;
-    if (start <= end) {
-      try {
-        runMeasureRange(start, end);
-        highestMeasuredRowRef.current = end;
-      } catch { /* ignore */ }
-    }
-  }, [rowCount, cols, virtualizer]);
+  const layoutReady = positionReady && containerWidth > 0 && colsReadyRef.current;
 
   useEffect(() => {
     if (restoringRef.current) return;
@@ -907,6 +987,8 @@ function ListVirtualizedFeed({
     storageKeyPrefix,
     initialPage,
     cols,
+    layoutReady,
+    userIntentRef,
     virtualizer,
     loadMore,
     hasMoreRef,
@@ -921,7 +1003,7 @@ function ListVirtualizedFeed({
   });
 
   useEffect(() => {
-    if (!enablePaging) return;
+    if (!enablePaging || !layoutReady) return;
     if (restoringRef.current) return;
     if (urlBootstrapDoneRef.current) return;
     urlBootstrapDoneRef.current = true;
@@ -933,10 +1015,15 @@ function ListVirtualizedFeed({
     if (target <= 1) return;
 
     let cancelled = false;
+    const initialIntent = userIntentRef.current;
+    const isCancelled = () => cancelled || userIntentRef.current !== initialIntent;
+    const prevScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+    restoringRef.current = true;
     const waitFrames = (n: number) => new Promise<void>((res) => {
       let i = 0;
       const step = () => {
-        if (cancelled) return;
+        if (isCancelled()) return res();
         if (++i >= n) return res();
         requestAnimationFrame(step);
       };
@@ -944,11 +1031,14 @@ function ListVirtualizedFeed({
     });
 
     const run = async () => {
-      const prevScrollBehavior = document.documentElement.style.scrollBehavior;
-      document.documentElement.style.scrollBehavior = 'auto';
-
-      while (pageRef.current < target && hasMoreRef.current && !cancelled) {
+      try {
+      while (pageRef.current < target && hasMoreRef.current && !isCancelled()) {
         await loadMore();
+        await waitFrames(1);
+      }
+      const requestedId = Array.from(postIdToPageNumRef.current).find(([, page]) => page === target)?.[0];
+      for (let attempt = 0; requestedId && attempt < 60 && !isCancelled(); attempt++) {
+        if (visiblePostsRef.current.some(post => post.id === requestedId)) break;
         await waitFrames(1);
       }
 
@@ -974,28 +1064,37 @@ function ListVirtualizedFeed({
 
       let anchorId: string | null = findAnchorOnTarget();
       let guard = 0;
-      while (!anchorId && hasMoreRef.current && guard < 4 && !cancelled) {
+      while (!anchorId && hasMoreRef.current && guard < 4 && !isCancelled()) {
         guard++;
         await loadMore();
         await waitFrames(1);
         anchorId = findAnchorOnTarget();
       }
+      if (isCancelled()) return;
 
       if (anchorId) {
         const idx = visiblePostsRef.current.findIndex((p) => p.id === anchorId);
         if (idx >= 0) {
-          const rowIndex = Math.floor(idx / Math.max(1, cols));
+          const rowIndex = Math.floor(idx / Math.max(1, colsRef.current));
           try {
-            virtualizer.scrollToIndex(rowIndex, { align: 'start' } as Parameters<typeof virtualizer.scrollToIndex>[1]);
+            scrollToFeedRow(virtualizer, rowIndex);
           } catch { /* ignore */ }
           await waitFrames(1);
         }
-        const el = document.getElementById(`post-${anchorId}`) as HTMLElement | null;
+        if (isCancelled()) return;
+        let el: HTMLElement | null = null;
+        for (let attempt = 0; attempt < 60 && !isCancelled(); attempt++) {
+          el = findFeedAnchorElement(rootRef.current, `post-${anchorId}`);
+          if (el) break;
+          await waitFrames(1);
+        }
+        if (isCancelled()) return;
         if (el) {
           el.scrollIntoView({ behavior: 'auto', block: 'start' });
         }
         await ensureBelowBufferRows(anchorId);
       }
+      if (isCancelled()) return;
 
       try {
         const setPageInUrl = (n: number) => {
@@ -1012,15 +1111,21 @@ function ListVirtualizedFeed({
           setPageInUrl(target);
         }
       } catch { /* ignore */ }
-      finally {
-        document.documentElement.style.scrollBehavior = prevScrollBehavior || '';
-        restoringRef.current = false;
+      } finally {
+        if (!cancelled) {
+          document.documentElement.style.scrollBehavior = prevScrollBehavior || '';
+          restoringRef.current = false;
+        }
       }
     };
 
-    run();
-    return () => { cancelled = true; };
-  }, [enablePaging, loadMore, cols, virtualizer, restoringRef, urlBootstrapDoneRef, pageRef, hasMoreRef, ensureBelowBufferRows, postIdToPageNumRef, visiblePostsRef]);
+    void run().catch(error => dlog('page-restore:error', error instanceof Error ? error.message : String(error)));
+    return () => {
+      cancelled = true;
+      document.documentElement.style.scrollBehavior = prevScrollBehavior || '';
+      restoringRef.current = false;
+    };
+  }, [enablePaging, layoutReady, loadMore, virtualizer, restoringRef, rootRef, urlBootstrapDoneRef, pageRef, hasMoreRef, ensureBelowBufferRows, postIdToPageNumRef, userIntentRef, visiblePostsRef]);
 
   return (
     <>
@@ -1073,7 +1178,7 @@ function ListVirtualizedFeed({
           .post-anchor.restore-glow::after, .post-anchor.restore-glow::before { animation: none !important; opacity: 0 !important; }
         }
       `}</style>
-      <div ref={rootRef}>
+      <div ref={rootRef} data-virtual-feed data-scroll-margin={effectiveScrollMargin} data-layout-ready={layoutReady}>
         <div style={{ height: virtualizer.getTotalSize(), width: '100%', position: 'relative' }}>
           {items.map((vi) => {
             const start = vi.index * cols;
@@ -1084,7 +1189,7 @@ function ListVirtualizedFeed({
                 key={`row-${vi.index}-${rowPosts[0].id}`}
                 ref={virtualizer.measureElement}
                 data-index={vi.index}
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translate3d(0, ${vi.start}px, 0)`, willChange: 'transform' }}
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translate3d(0, ${virtualRowOffset(vi.start, effectiveScrollMargin)}px, 0)`, willChange: 'transform' }}
               >
                 <div
                   className="grid gap-4"
@@ -1130,9 +1235,7 @@ function ListVirtualizedFeed({
         {isFetching && hasMore && (
           <div className="text-center text-gray-400 py-4">불러오는 중...</div>
         )}
-        {!hasMore && (
-          <div className="text-center text-gray-400 py-4">더 이상 글이 없습니다.</div>
-        )}
+        {pagingNotice}
       </div>
     </>
   );
@@ -1140,6 +1243,7 @@ function ListVirtualizedFeed({
 
 interface InfinitePostListProps {
   initialPosts: Post[];
+  excludedPostIds?: string[];
   initialPage?: number;
   layout?: "list" | "grid";
   jsonBase?: string;
@@ -1189,6 +1293,7 @@ interface InfinitePostListProps {
 
 export default function InfinitePostList({
   initialPosts,
+  excludedPostIds,
   initialPage = 1,
   layout = "list",
   jsonBase,
@@ -1203,7 +1308,7 @@ export default function InfinitePostList({
   loadAheadRows,
   virtualOverscan,
   readFilter = 'all',
-  windowScrollMargin: windowScrollMarginProp = 0,
+  windowScrollMargin: windowScrollMarginProp = 'auto',
 }: InfinitePostListProps) {
   const { addPostsToSection, replacePostsForSection } = usePostCache();
   const searchParams = useSearchParams();
@@ -1258,7 +1363,14 @@ export default function InfinitePostList({
   // --- State & Refs ---
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [page, setPage] = useState(initialPage);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(Boolean(enablePaging && jsonBase));
+  const [newVersionAvailable, setNewVersionAvailable] = useState(false);
+  const newVersionAvailableRef = useRef(false);
+  const [loadError, setLoadError] = useState(false);
+  const excludedIdsRef = useRef(new Set(excludedPostIds));
+  const loadedGenerationRef = useRef<string | null>(null);
+  const seedPostsRef = useRef(initialPosts);
+  const seedIdsRef = useRef(new Set(initialPosts.map(post => post.id)));
   // --- Live postsRef for up-to-date list ---
   const postsRef = useRef(posts);
   useEffect(() => { postsRef.current = posts; }, [posts]);
@@ -1303,13 +1415,24 @@ export default function InfinitePostList({
     [jsonBase, storageKeyPrefix]
   );
   const prevSectionKeyRef = useRef(sectionKey);
+  const sectionEpochRef = useRef(0);
   const currentAbortRef = useRef<AbortController | null>(null);
   const manifestRef = useRef<ManifestSnapshot | null>(null);
   const manifestFetchTimeRef = useRef<number | null>(null);
   const prefetchingRef = useRef<Set<string>>(new Set());
+  useEffect(() => () => {
+    sectionEpochRef.current += 1;
+    fetchTokenRef.current += 1;
+    currentAbortRef.current?.abort();
+    isFetchingRef.current = false;
+    lastLoadTriggerRef.current = { rowCount: -1, page: -1 };
+  }, []);
 
   const maybeRefreshManifest = useCallback(
     async (base: string | null | undefined) => {
+      const epoch = sectionEpochRef.current;
+      const isCurrent = () => sectionEpochRef.current === epoch && prevSectionKeyRef.current === sectionKey;
+      if (!isCurrent()) return { manifest: null, versionChanged: false };
       if (!base) {
         return { manifest: manifestRef.current, versionChanged: false };
       }
@@ -1322,6 +1445,7 @@ export default function InfinitePostList({
       }
 
       const manifest = await cacheGetManifest(base);
+      if (!isCurrent()) return { manifest: null, versionChanged: false };
       const fetchedAt = Date.now();
       manifestFetchTimeRef.current = fetchedAt;
       const maybeLastPage = (manifest as Record<string, unknown>)?.lastPage;
@@ -1330,6 +1454,8 @@ export default function InfinitePostList({
         const next = {
           generatedAt: manifest.generatedAt,
           lastPage: typeof maybeLastPage === "number" ? maybeLastPage : undefined,
+          hasMore: typeof manifest.hasMore === 'boolean' ? manifest.hasMore : undefined,
+          seedPolicy: typeof manifest.seedPolicy === 'string' ? manifest.seedPolicy : undefined,
           fetchedAt,
         };
         const versionChanged = !prev || prev.generatedAt !== next.generatedAt;
@@ -1341,18 +1467,56 @@ export default function InfinitePostList({
       manifestRef.current = null;
       return { manifest: null, versionChanged };
     },
-    [],
+    [sectionKey],
   );
 
-  useEffect(() => {
-    replacePostsForSection(sectionKey, initialPosts);
+  const stopForNewGeneration = useCallback(() => {
+    newVersionAvailableRef.current = true;
+    setNewVersionAvailable(true);
+    hasMoreRef.current = false;
+    setHasMore(false);
+  }, []);
 
+  useLayoutEffect(() => {
     const prevKey = prevSectionKeyRef.current;
     if (prevKey === sectionKey) {
+      const nextExcluded = new Set(excludedPostIds);
+      if (loadedGenerationRef.current && !areSetsEqual(excludedIdsRef.current, nextExcluded)) {
+        stopForNewGeneration();
+        return;
+      }
+      excludedIdsRef.current = nextExcluded;
+      if (seedPostsRef.current !== initialPosts) {
+        const changedIds = seedPostsRef.current.length !== initialPosts.length || seedPostsRef.current.some((post, index) => post.id !== initialPosts[index]?.id);
+        if (loadedGenerationRef.current && changedIds) {
+          stopForNewGeneration();
+          return;
+        }
+        const next = reconcileFeedSeed({
+          currentPosts: postsRef.current,
+          previousSeedIds: seedIdsRef.current,
+          nextSeed: initialPosts,
+          postIdToPageNum: postIdToPageNumRef.current,
+          currentPage: pageRef.current,
+          currentHasMore: hasMoreRef.current,
+          initialPage,
+        });
+        seedPostsRef.current = initialPosts;
+        seedIdsRef.current = next.seedIds;
+        seenIdsRef.current = next.seenIds;
+        postIdToPageNumRef.current = next.postIdToPageNum;
+        postsRef.current = next.posts;
+        setPosts(next.posts);
+        replacePostsForSection(sectionKey, next.posts);
+        lastLoadTriggerRef.current = { rowCount: -1, page: -1 };
+      } else {
+        replacePostsForSection(sectionKey, postsRef.current);
+      }
       return;
     }
 
     prevSectionKeyRef.current = sectionKey;
+    sectionEpochRef.current += 1;
 
     dlog("section-change", {
       from: prevKey,
@@ -1366,14 +1530,22 @@ export default function InfinitePostList({
     fetchTokenRef.current += 1;
 
     manifestRef.current = null;
+    loadedGenerationRef.current = null;
+    excludedIdsRef.current = new Set(excludedPostIds);
+    newVersionAvailableRef.current = false;
+    setNewVersionAvailable(false);
+    setLoadError(false);
     manifestFetchTimeRef.current = null;
     prefetchingRef.current = new Set();
     recentFailRef.current = new Map();
     missingStreakRef.current = 0;
 
     const baselinePosts = [...initialPosts];
+    seedPostsRef.current = initialPosts;
+    seedIdsRef.current = new Set(initialPosts.map(post => post.id));
     postsRef.current = baselinePosts;
     setPosts(baselinePosts);
+    replacePostsForSection(sectionKey, baselinePosts);
 
     const baselinePage = initialPage;
     pageRef.current = baselinePage;
@@ -1393,11 +1565,13 @@ export default function InfinitePostList({
     urlBootstrapDoneRef.current = false;
   }, [
     enablePaging,
+    excludedPostIds,
     initialPage,
     initialPosts,
     jsonBase,
     replacePostsForSection,
     sectionKey,
+    stopForNewGeneration,
   ]);
 
   useEffect(() => {
@@ -1416,7 +1590,7 @@ export default function InfinitePostList({
         const { manifest, versionChanged } = await maybeRefreshManifest(jsonBase);
         if (signal.aborted) return;
 
-        if (manifest?.generatedAt) {
+        if (manifest?.generatedAt && manifest.hasMore !== false && manifest.lastPage !== 1) {
           let cached: ClientPost[] | null = null;
           if (!versionChanged) {
             try {
@@ -1434,6 +1608,7 @@ export default function InfinitePostList({
 
               const data = await res.json();
               if (signal.aborted) return;
+              if ((manifest.seedPolicy === 'live-seed-dedupe' || typeof data.generatedAt === 'string') && data.generatedAt !== manifest.generatedAt) return;
 
               const arr = (Array.isArray(data.posts) ? data.posts : []) as Post[];
               const normalized = arr.map((p: Post & { community?: string; site?: string }) => ({
@@ -1498,6 +1673,9 @@ export default function InfinitePostList({
   // --- Core Data Fetching ---
   const loadPage = useCallback(
     async (pageNum: number, signal?: AbortSignal): Promise<LoadResult> => {
+      const epoch = sectionEpochRef.current;
+      const isCurrent = () => !signal?.aborted && sectionEpochRef.current === epoch && prevSectionKeyRef.current === sectionKey;
+      if (!isCurrent()) return { status: 'error', newPosts: [] };
       // Community does not affect network base; it is a pure client-side filter.
       const base = jsonBase;
       if (!base) return { status: "missing", newPosts: [] };
@@ -1505,18 +1683,26 @@ export default function InfinitePostList({
 
       const url = `${base}/page-${pageNum}.json`;
 
-      const { versionChanged } = await maybeRefreshManifest(base);
+      const { manifest, versionChanged } = await maybeRefreshManifest(base);
+      if (!isCurrent()) return { status: 'error', newPosts: [] };
+      const generation = manifest?.generatedAt;
+      if (loadedGenerationRef.current && generation && loadedGenerationRef.current !== generation) {
+        stopForNewGeneration();
+        return { status: 'error', newPosts: [] };
+      }
 
       if (Date.now() - (recentFailRef.current.get(pageNum) ?? 0) < FAILED_PAGE_RETRY_WINDOW) {
         return { status: "error", newPosts: [] };
       }
 
       // 1) Try IndexedDB cache (if manifest/version available)
-      if (manifestRef.current?.generatedAt && !versionChanged) {
+      if (generation && !versionChanged) {
         try {
-          const cached = await cacheReadPage(base, pageNum, manifestRef.current.generatedAt);
+          const cached = await cacheReadPage(base, pageNum, generation);
+          if (!isCurrent()) return { status: 'error', newPosts: [] };
           if (cached && cached.length >= 0) {
-            const uniques = cached.filter((p) => !seenIdsRef.current.has(p.id));
+            loadedGenerationRef.current = generation ?? loadedGenerationRef.current;
+            const uniques = cached.filter((p) => !seenIdsRef.current.has(p.id) && !excludedIdsRef.current.has(p.id));
             dlog("loadPage:cache-hit", { pageNum, cachedCount: cached.length, uniques: uniques.length });
             return { status: uniques.length > 0 ? "ok-new" : "ok-dup", newPosts: uniques as unknown as Post[] };
           }
@@ -1527,6 +1713,7 @@ export default function InfinitePostList({
       for (let i = 0; i <= RETRY_BACKOFFS.length; i++) {
         try {
           const res = await fetch(url, { signal });
+          if (!isCurrent()) return { status: 'error', newPosts: [] };
           if (res.status === 404) {
             dlog("loadPage:404", { pageNum });
             recentFailRef.current.set(pageNum, Date.now());
@@ -1535,6 +1722,11 @@ export default function InfinitePostList({
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
           const data = await res.json();
+          if (!isCurrent()) return { status: 'error', newPosts: [] };
+          if (generation && (manifest.seedPolicy === 'live-seed-dedupe' || typeof data.generatedAt === 'string') && data.generatedAt !== generation) {
+            stopForNewGeneration();
+            return { status: 'error', newPosts: [] };
+          }
           const incomingRaw = (Array.isArray(data.posts) ? data.posts : []) as Post[];
           // Normalize community fields for filtering/display
           const incoming = incomingRaw.map((p: Post & { community?: string; site?: string }) => ({
@@ -1542,32 +1734,32 @@ export default function InfinitePostList({
             communityId: p.communityId || p.community || p.site || undefined,
             communityLabel: p.communityLabel || p.community || p.site || undefined,
           })) as Post[];
+          loadedGenerationRef.current = generation ?? loadedGenerationRef.current;
           // Write-through to cache (best-effort)
           try {
-            const ver = manifestRef.current?.generatedAt
-              || (await maybeRefreshManifest(base)).manifest?.generatedAt;
+            const ver = generation;
             if (ver) await cacheWritePage(base, pageNum, ver, incoming as unknown as ClientPost[]);
           } catch { /* ignore */ }
+          if (!isCurrent()) return { status: 'error', newPosts: [] };
           // Prefetch next page in background
           try {
             const next = pageNum + 1;
             const key = `${base}|${next}`;
-            if (!prefetchingRef.current.has(key)) {
+            if ((manifest?.lastPage === undefined || next <= manifest.lastPage) && !prefetchingRef.current.has(key)) {
               prefetchingRef.current.add(key);
               (async () => {
                 try {
-                  await maybeRefreshManifest(base);
                   const r = await fetch(`${base}/page-${next}.json`, { cache: 'no-store' });
                   if (r.ok) {
                     const d = await r.json();
+                    if (generation && (manifest.seedPolicy === 'live-seed-dedupe' || typeof d.generatedAt === 'string') && d.generatedAt !== generation) return;
                     const arr = (Array.isArray(d.posts) ? d.posts : []) as Post[];
                     const norm = arr.map((p: Post & { community?: string; site?: string }) => ({
                       ...p,
                       communityId: p.communityId || p.community || p.site || undefined,
                       communityLabel: p.communityLabel || p.community || p.site || undefined,
                     })) as Post[];
-                    const ver2 = manifestRef.current?.generatedAt
-                      || (await maybeRefreshManifest(base)).manifest?.generatedAt;
+                    const ver2 = generation;
                     if (ver2) await cacheWritePage(base, next, ver2, norm as unknown as ClientPost[]);
                   }
                 } catch { /* ignore */ }
@@ -1577,7 +1769,7 @@ export default function InfinitePostList({
           } catch { /* ignore */ }
           const sampleIds = incoming.slice(0, 5).map((p) => p.id);
           dlog("loadPage:ok", { pageNum, incomingCount: incoming.length, sampleIds });
-          const uniques = incoming.filter((p) => !seenIdsRef.current.has(p.id));
+          const uniques = incoming.filter((p) => !seenIdsRef.current.has(p.id) && !excludedIdsRef.current.has(p.id));
           dlog("loadPage:dedup", {
             pageNum,
             uniquesCount: uniques.length,
@@ -1590,8 +1782,7 @@ export default function InfinitePostList({
         } catch (e: unknown) {
           const message = e instanceof Error ? e.message : String(e);
           dlog("loadPage:error", { pageNum, attempt: i, message, aborted: signal?.aborted });
-          if (signal?.aborted) {
-            recentFailRef.current.set(pageNum, Date.now());
+          if (!isCurrent()) {
             return { status: "error", newPosts: [] };
           }
           if (i === RETRY_BACKOFFS.length) {
@@ -1604,42 +1795,52 @@ export default function InfinitePostList({
       }
       return { status: "error", newPosts: [] };
     },
-    [jsonBase, maybeRefreshManifest]
+    [jsonBase, maybeRefreshManifest, sectionKey, stopForNewGeneration]
   );
 
   const loadMore = useCallback(async () => {
+    // A caller may retain an exported navigation API after the section changes.
+    // Reject it before it can abort or lock the new section's active request.
+    if (prevSectionKeyRef.current !== sectionKey) return;
     if (isFetchingRef.current || !hasMoreRef.current) return;
+    const epoch = sectionEpochRef.current;
+    const ac = new AbortController();
+    currentAbortRef.current?.abort();
+    currentAbortRef.current = ac;
+    const myToken = ++fetchTokenRef.current;
+    const isCurrent = () => fetchTokenRef.current === myToken && sectionEpochRef.current === epoch && prevSectionKeyRef.current === sectionKey;
+    isFetchingRef.current = true;
+    setIsFetching(true);
+    try {
 
     // Pre-flight check: if manifest is missing, assume no pages and stop.
     if (!manifestRef.current) {
       const base = jsonBase;
       if (base) {
         const { manifest } = await maybeRefreshManifest(base);
+        if (!isCurrent()) return;
         if (manifest?.generatedAt) {
           // manifestRef updated by helper
         } else {
           setHasMore(false);
+          hasMoreRef.current = false;
+          setLoadError(true);
           return;
         }
       } else {
         // no jsonBase, no paging
         setHasMore(false);
+        hasMoreRef.current = false;
         return;
       }
     }
 
-    isFetchingRef.current = true;
-    setIsFetching(true);
     dlog(`loadMore:start (instance #${instanceIdRef.current})`, { 
       page: pageRef.current, 
       hasMore: hasMoreRef.current, 
       firstJson: FIRST_JSON_PAGE, 
       streak: missingStreakRef.current 
     });
-    const ac = new AbortController();
-    currentAbortRef.current?.abort();
-    currentAbortRef.current = ac;
-    const myToken = ++fetchTokenRef.current;
 
     let currentPage = pageRef.current;
     const collected: Post[] = [];
@@ -1669,11 +1870,7 @@ export default function InfinitePostList({
         missingStreak: missingStreakRef.current,
       });
 
-      if (fetchTokenRef.current !== myToken) {
-        isFetchingRef.current = false;
-        setIsFetching(false);
-        return;
-      }
+      if (!isCurrent()) return;
 
       if (status === "ok-new") {
         collected.push(...newPosts);
@@ -1688,6 +1885,12 @@ export default function InfinitePostList({
         missingStreakRef.current = 0;
         dlog("loadMore:ok-dup", { page: currentPage, lastSuccessfulPage });
       } else if (status === "missing") {
+        if (manifestRef.current?.seedPolicy === 'live-seed-dedupe') {
+          setHasMore(false);
+          hasMoreRef.current = false;
+          hadError = true;
+          break;
+        }
         if (manifestRef.current?.lastPage && currentPage >= manifestRef.current.lastPage) {
           setHasMore(false);
           hasMoreRef.current = false; // Sync ref immediately
@@ -1701,6 +1904,13 @@ export default function InfinitePostList({
           for (let k = 1; k <= MISSING_LOOKAHEAD; k++) {
             const probePage = currentPage + k;
             const probe = await loadPage(probePage, ac.signal);
+            if (!isCurrent()) return;
+            if (probe.status === 'error') {
+              hadError = true;
+              hasMoreRef.current = false;
+              setHasMore(false);
+              break;
+            }
             if (probe.status !== "missing") {
               dlog("loadMore:lookahead-hit", { probePage, probeStatus: probe.status, newCount: probe.newPosts.length });
               foundAhead = true;
@@ -1721,6 +1931,7 @@ export default function InfinitePostList({
             dlog("loadMore:lookahead-exhausted", { fromPage: currentPage, lookahead: MISSING_LOOKAHEAD });
             setHasMore(false);
             hasMoreRef.current = false; // Sync ref immediately
+            hadError = true;
             break;
           }
         }
@@ -1734,37 +1945,42 @@ export default function InfinitePostList({
     }
     dlog("loadMore:loop-end", { appendedCount, lastSuccessfulPage, prevPage: pageRef.current });
     if (collected.length > 0) {
-      addPostsToSection(sectionKey, collected);
-      // Commit visibility before rendering
-      collectedPairs.forEach(({ post, pageNum }) => {
+      const uniquePairs = collectedPairs.filter(({ post }) => {
+        if (seenIdsRef.current.has(post.id) || excludedIdsRef.current.has(post.id)) return false;
         seenIdsRef.current.add(post.id);
+        return true;
+      });
+      const uniquePosts = uniquePairs.map(({ post }) => post);
+      addPostsToSection(sectionKey, uniquePosts);
+      // Commit visibility before rendering
+      uniquePairs.forEach(({ post, pageNum }) => {
         postIdToPageNumRef.current.set(post.id, pageNum);
       });
-      setPosts((prev) => [...prev, ...collected]);
-    } else if (pagesTried > 0) {
-      // We tried fetching but got no new posts (all duplicates or missing)
-      // so stop trying.
-      setHasMore(false);
-      hasMoreRef.current = false; // Sync ref immediately
+      const nextPosts = [...postsRef.current, ...uniquePosts];
+      postsRef.current = nextPosts;
+      setPosts(nextPosts);
     }
     // Even if nothing new was appended (ok-dup), advance the page pointer when we successfully traversed pages
     if (lastSuccessfulPage > pageRef.current) {
       setPage(lastSuccessfulPage);
       pageRef.current = lastSuccessfulPage; // Update ref immediately to prevent duplicate calls
     }
+    if (manifestRef.current?.lastPage !== undefined && lastSuccessfulPage >= manifestRef.current.lastPage) {
+      hasMoreRef.current = false;
+      setHasMore(false);
+    }
 
-    isFetchingRef.current = false;
-    setIsFetching(false);
     dlog("loadMore:end", { newPage: lastSuccessfulPage > pageRef.current ? lastSuccessfulPage : pageRef.current, hasMore: hasMoreRef.current });
 
     if (hadError) {
+      if (!newVersionAvailableRef.current) setLoadError(true);
       return;
     }
 
     // --- Auto-prime the tail after a programmatic jump/restore ---
-    // Only auto-prime if we actually appended content
-    // This prevents unnecessary loadMore calls when all content is duplicates
-    if (appendedCount > 0) {
+    // A duplicate-only batch still consumed pages. Continue from that cursor
+    // when near the tail, without re-requesting the same pages indefinitely.
+    if (appendedCount > 0 || lastSuccessfulPage > 0 && pagesTried > 0) {
       try {
         const doc = document.documentElement;
         const scrollTop = (doc.scrollTop || window.scrollY || 0);
@@ -1780,13 +1996,26 @@ export default function InfinitePostList({
         if ((needFill || nearBottom) && hasMoreRef.current) {
           // Defer to next tick to re-check gates
           setTimeout(() => {
-            if (!isFetchingRef.current && hasMoreRef.current) {
-              loadMore();
+            if (sectionEpochRef.current === epoch && prevSectionKeyRef.current === sectionKey && !isFetchingRef.current && hasMoreRef.current) {
+              void loadMore();
             }
           }, 0);
         }
       } catch {
         // no-op
+      }
+    }
+    } catch (error) {
+      if (isCurrent()) {
+        dlog('loadMore:error', String(error));
+        hasMoreRef.current = false;
+        setHasMore(false);
+        if (!newVersionAvailableRef.current) setLoadError(true);
+      }
+    } finally {
+      if (isCurrent()) {
+        isFetchingRef.current = false;
+        setIsFetching(false);
       }
     }
   }, [loadPage, addPostsToSection, jsonBase, maybeRefreshManifest, sectionKey]);
@@ -1848,7 +2077,7 @@ export default function InfinitePostList({
   }, [communityFilteredPosts, readFilter, readPostIds]);
   // Keep a ref to always point to the latest visiblePosts
   const visiblePostsRef = useRef<Post[]>(visiblePosts);
-  useEffect(() => { visiblePostsRef.current = visiblePosts; }, [visiblePosts]);
+  useLayoutEffect(() => { visiblePostsRef.current = visiblePosts; }, [visiblePosts]);
 
   // --- Feed metrics (read/unread counts) broadcast ---
   type FeedMetrics = { key: string; total: number; read: number; unread: number };
@@ -1942,6 +2171,7 @@ export default function InfinitePostList({
     const io = new IntersectionObserver((entries) => {
       if (raf) cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
+        if (restoringRef.current) return;
         try {
           // Choose the sentinel closest to a top anchor (≈18% from top)
           const anchorY = Math.round((typeof window !== 'undefined' ? window.innerHeight : 0) * 0.18);
@@ -1979,15 +2209,64 @@ export default function InfinitePostList({
       threshold: 0,
     });
 
-    const els = Array.from(root.querySelectorAll('[data-page-sentinel]')) as HTMLElement[];
-    els.forEach((el) => io.observe(el));
+    const observed = new Set<Element>();
+    const syncSentinels = () => {
+      const current = new Set(root.querySelectorAll('[data-page-sentinel]'));
+      for (const element of observed) {
+        if (!current.has(element)) {
+          io.unobserve(element);
+          observed.delete(element);
+        }
+      }
+      for (const element of current) {
+        if (!observed.has(element)) {
+          io.observe(element);
+          observed.add(element);
+        }
+      }
+    };
+    syncSentinels();
+    const mutation = new MutationObserver(syncSentinels);
+    mutation.observe(root, { childList: true, subtree: true });
 
-    return () => { io.disconnect(); if (raf) cancelAnimationFrame(raf); };
+    return () => { mutation.disconnect(); io.disconnect(); if (raf) cancelAnimationFrame(raf); };
   }, [enablePaging, visiblePosts]);
+
+  const pagingNotice = !enablePaging || hasMore ? null : newVersionAvailable ? (
+    <div role="status" className="col-span-full flex items-center justify-center gap-3 py-4 text-sm text-muted-foreground">
+      <span>새 글 목록이 업데이트되었습니다.</span>
+      <button type="button" className="underline underline-offset-4" onClick={() => {
+        readAndClearRestore(storageKeyPrefix);
+        const url = new URL(window.location.href);
+        url.searchParams.delete('page');
+        window.scrollTo({ top: 0, behavior: 'auto' });
+        window.location.replace(url.href);
+      }}>새로고침</button>
+    </div>
+  ) : loadError ? (
+    <div role="status" className="col-span-full flex items-center justify-center gap-3 py-4 text-sm text-muted-foreground">
+      <span>다음 글을 불러오지 못했습니다.</span>
+      <button type="button" className="underline underline-offset-4" onClick={() => {
+        recentFailRef.current.clear();
+        missingStreakRef.current = 0;
+        manifestRef.current = null;
+        manifestFetchTimeRef.current = null;
+        setLoadError(false);
+        hasMoreRef.current = true;
+        setHasMore(true);
+        lastLoadTriggerRef.current = { rowCount: -1, page: -1 };
+        void loadMore();
+      }}>다시 시도</button>
+    </div>
+  ) : (
+    <div className="col-span-full text-center text-gray-400 py-4">더 이상 글이 없습니다.</div>
+  );
 
   if (layout === 'list') {
     return (
+      <>
       <ListVirtualizedFeed
+        key={sectionKey}
         initialPosts={initialPosts}
         visiblePosts={visiblePosts}
         layout={layout}
@@ -2018,8 +2297,10 @@ export default function InfinitePostList({
         lastLoadTriggerRef={lastLoadTriggerRef}
         isFetchingRef={isFetchingRef}
         readPostIds={readPostIds}
-        windowScrollMargin={typeof windowScrollMarginProp === 'number' ? windowScrollMarginProp : 0}
+        windowScrollMargin={windowScrollMarginProp}
+        pagingNotice={pagingNotice}
       />
+      </>
     );
   }
 
@@ -2090,9 +2371,7 @@ export default function InfinitePostList({
         {isFetching && hasMore && (
           <div className="text-center text-gray-400 py-4 col-span-full">불러오는 중...</div>
         )}
-        {!hasMore && (
-          <div className="text-center text-gray-400 py-4 col-span-full">더 이상 글이 없습니다.</div>
-        )}
+        {pagingNotice}
       </div>
     </>
   );

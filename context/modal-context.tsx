@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, ReactNode, useCallback, useRef } from 'react';
+import { readAndClearRestore } from '@/lib/restore-session';
 
 interface ModalContextType {
   isOpen: boolean;
@@ -19,8 +20,13 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   const [postId, setPostId] = useState<string | null>(null);
   const [postIds, setPostIds] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
+  const modalRestoreKeyRef = useRef<string | null>(null);
 
   const openModal = useCallback((id: string, ids: string[]) => {
+    try {
+      const key = sessionStorage.getItem('lastSectionKey/latest');
+      modalRestoreKeyRef.current = key && sessionStorage.getItem(`anchorPostId-${key}/latest`) === id ? key : null;
+    } catch { modalRestoreKeyRef.current = null; }
     setPostIds(ids);
     const index = ids.findIndex(i => i === id);
     setPostId(id);
@@ -29,6 +35,8 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const closeModal = useCallback(() => {
+    if (modalRestoreKeyRef.current) readAndClearRestore(modalRestoreKeyRef.current);
+    modalRestoreKeyRef.current = null;
     setIsOpen(false);
     setPostId(null);
     setPostIds([]);

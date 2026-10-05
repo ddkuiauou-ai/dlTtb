@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-05",
+  "command": "FEED_TEST_BASE_URL=http://127.0.0.1:5007 pnpm test:browser --grep 'a stale captured base A'",
+  "sourceAggregateSha256": "02ff6fb50bf3093360dc29e7e65344673651cd199d3e392b9648de3bf8dde71b",
+  "result": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "durationMs": 25344.319
+  },
+  "assertion": "B should append at least80 IDs after saved A callback followed by current B requestLoadMore",
+  "actual": {
+    "loadedCount": 40,
+    "hasMore": true,
+    "scrollY": 0
+  },
+  "error": "Error: expect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 80\nReceived:    40\n\nCall Log:\n- Timeout 20000ms exceeded while waiting on the predicate",
+  "evidenceDirectory": "/private/tmp/feed-e2e-stale-api-red-20261005"
+}

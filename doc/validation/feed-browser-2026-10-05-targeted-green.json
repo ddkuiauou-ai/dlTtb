@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-05",
+  "sourceAggregateSha256": "04fa18f2f277687efd583d58dbc9a4f521e940f33cf16b826b3b86fd5f712796",
+  "browserVersion": "151.0.7922.34",
+  "runs": [
+    {
+      "command": "FEED_TEST_BASE_URL=http://127.0.0.1:5007 pnpm test:browser --grep 'a detail return marker|detail restoration chooses' --repeat-each=5",
+      "evidenceDirectory": "/private/tmp/feed-e2e-detail-commit-green-20261005",
+      "total": 10,
+      "uniqueCases": 2,
+      "passed": 10,
+      "failed": 0,
+      "durationMs": 16924.786,
+      "caseNames": [
+        "a detail return marker runs the actual restore hook and consumes its session keys",
+        "detail restoration chooses the active feed card when an upper section has the same post ID"
+      ],
+      "duplicateIdProofs": [
+        {
+          "activeFeedTop": 126,
+          "upperCopyTop": -4127,
+          "expectedAlignment": 126,
+          "documentLookupChoosesUpper": true,
+          "sourceLookupScope": "active feed root"
+        },
+        {
+          "activeFeedTop": 126,
+          "upperCopyTop": -4127,
+          "expectedAlignment": 126,
+          "documentLookupChoosesUpper": true,
+          "sourceLookupScope": "active feed root"
+        },
+        {
+          "activeFeedTop": 126,
+          "upperCopyTop": -4127,
+          "expectedAlignment": 126,
+          "documentLookupChoosesUpper": true,
+          "sourceLookupScope": "active feed root"
+        },
+        {
+          "activeFeedTop": 126,
+          "upperCopyTop": -4127,
+          "expectedAlignment": 126,
+          "documentLookupChoosesUpper": true,
+          "sourceLookupScope": "active feed root"
+        },
+        {
+          "activeFeedTop": 126,
+          "upperCopyTop": -4127,
+          "expectedAlignment": 126,
+          "documentLookupChoosesUpper": true,
+          "sourceLookupScope": "active feed root"
+        }
+      ]
+    },
+    {
+      "command": "FEED_TEST_BASE_URL=http://127.0.0.1:5007 pnpm test:browser --grep 'a late manifest from base A|a stale captured base A|wheel intent cancels a pending detail'",
+      "evidenceDirectory": "/private/tmp/feed-e2e-stale-api-green-20261005",
+      "total": 3,
+      "uniqueCases": 3,
+      "passed": 3,
+      "failed": 0,
+      "durationMs": 6142.704,
+      "caseNames": [
+        "a late manifest from base A cannot replace base B generation or fetching state",
+        "a stale captured base A navigation callback cannot lock base B loading",
+        "wheel intent cancels a pending detail restoration before a delayed page arrives"
+      ],
+      "duplicateIdProofs": []
+    }
+  ],
+  "redEvidence": [
+    "doc/validation/feed-browser-2026-10-05-full32-detail-race.json",
+    "doc/validation/feed-browser-2026-10-05-stale-api-red.json"
+  ],
+  "countScope": "These 13 passed executions are separate targeted runs and must not be added to the unique final full33 case count."
+}

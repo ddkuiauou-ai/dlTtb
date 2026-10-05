@@ -1082,6 +1082,7 @@ export async function getClusterTopPosts({
       SELECT ct.cluster_id, MAX(ct.hot_score) AS hot, MAX(ct.window_end) AS last_end
       FROM cluster_trends ct
       WHERE ct.window_end >= NOW() - INTERVAL \'${sql.raw(intervalLiteral)}\'
+        AND ct.window_end <= NOW()
       GROUP BY ct.cluster_id
     ),
     filtered AS (

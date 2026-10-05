@@ -176,6 +176,7 @@ export default async function Home() {
                   layout="list"
                   mode="fresh"
                   initialPosts={fresh}
+                  excludedPostIds={Array.from(used)}
                   jsonBase={`/data/home/v1/${selectedRange}/fresh`}
                   enablePaging={true}
                 />

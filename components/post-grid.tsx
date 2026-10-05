@@ -32,6 +32,7 @@ interface PostGridProps {
   cardLayoutOverride?: 'grid' | 'list';
   threeColAt?: 'lg' | 'xl';
   readFilter?: string;
+  excludedPostIds?: string[];
 }
 
 export default function PostGrid({
@@ -55,6 +56,7 @@ export default function PostGrid({
   cardLayoutOverride,
   threeColAt,
   readFilter,
+  excludedPostIds,
 }: PostGridProps) {
   // For the "최신" section, enforce fresh mode; for both "최신" and "지금 주목" display range in the title.
   const isLatestTimeline = title.includes("최신");
@@ -139,6 +141,7 @@ export default function PostGrid({
             cardLayoutOverride={cardLayoutOverride}
             threeColAt={threeColAt}
             readFilter={readFilter}
+            excludedPostIds={excludedPostIds}
           />
         </PostListProvider>
       )}

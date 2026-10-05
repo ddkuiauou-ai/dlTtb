@@ -296,22 +296,24 @@ export const mvPostTrends30m = pgMaterializedView("mv_post_trends_30m", {
   hotScore: doublePrecision("hot_score"),
   latestViews: integer("latest_views"),
 }).as(sql`
-  WITH snap AS (
-    SELECT *
-    FROM post_snapshots
-    WHERE timestamp >= NOW() - INTERVAL '30 minutes'
+  WITH is_fixed_window_bounds AS (
+    SELECT to_timestamp(floor(extract(epoch FROM now()) / 600) * 600) AS window_end
+  ), snap AS (
+    SELECT s.* FROM post_snapshots s, is_fixed_window_bounds b
+    WHERE s.timestamp > b.window_end - INTERVAL '30 minutes'
+      AND s.timestamp <= b.window_end
   ),
   latest AS (
     SELECT DISTINCT ON (post_id)
            post_id, view_count, comment_count, like_count, dislike_count
     FROM   snap
-    ORDER  BY post_id, timestamp DESC
+    ORDER  BY post_id, timestamp DESC, id DESC
   ),
   earliest AS (
     SELECT DISTINCT ON (post_id)
            post_id, view_count, comment_count, like_count, dislike_count
     FROM   snap
-    ORDER  BY post_id, timestamp ASC
+    ORDER  BY post_id, timestamp ASC, id ASC
   )
   SELECT  p.id              AS post_id,
           p.title,
@@ -322,11 +324,10 @@ export const mvPostTrends30m = pgMaterializedView("mv_post_trends_30m", {
           (latest.view_count   - earliest.view_count)
         + (latest.comment_count - earliest.comment_count) * 3
         + (latest.like_count   - earliest.like_count)   * 2 AS hot_score,
-          MAX(latest.view_count) AS latest_views
+          latest.view_count AS latest_views
   FROM    latest
   JOIN    earliest USING (post_id)
   JOIN    posts p ON p.id = latest.post_id
-  GROUP BY p.id, p.title, view_delta, comment_delta, like_delta, dislike_delta, hot_score
 `);
 
 /*
@@ -363,7 +364,9 @@ export const mvPostTrendsAgg = pgMaterializedView("mv_post_trends_agg", {
   hotScore: doublePrecision("hot_score"),
   windowEnd: timestamp("window_end", { withTimezone: true }),
 }).as(sql`
-  WITH ranges AS (
+  WITH is_fixed_window_bounds AS (
+    SELECT to_timestamp(floor(extract(epoch FROM now()) / 600) * 600) AS window_end
+  ), ranges AS (
     SELECT '3h'::text AS range_label, INTERVAL '3 hours' AS iv
     UNION ALL SELECT '6h',  INTERVAL '6 hours'
     UNION ALL SELECT '24h', INTERVAL '24 hours'
@@ -379,8 +382,10 @@ export const mvPostTrendsAgg = pgMaterializedView("mv_post_trends_agg", {
     SUM(pt.hot_score)      AS hot_score,
     MAX(pt.window_end)     AS window_end
   FROM post_trends pt
-  JOIN ranges r
-    ON pt.window_end >= NOW() - r.iv
+  CROSS JOIN ranges r
+  CROSS JOIN is_fixed_window_bounds b
+  WHERE pt.window_end >= b.window_end - r.iv
+    AND pt.window_end <= b.window_end
   GROUP BY r.range_label, pt.post_id
 `);
 

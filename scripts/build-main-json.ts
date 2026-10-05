@@ -3,7 +3,8 @@
  * - /public/data/home/v1/{range}/{section}/page-2.json, ...
  *
  * 규칙
- *  - 1페이지는 getMainPagePosts({ perSite: 6, hours: 24*7 })와 동일 파라미터로 재계산해 중복 제거
+ *  - 첫 페이지는 live SSR. 실제 seed/상단 노출 ID 중복은 클라이언트에서 제거.
+ *  - JSON은 전체 최신 후보에서 만들고 한 generatedAt의 후속 페이지로 공개.
  *  - 썸네일 우선순위: postImages.url → postEmbeds(type='youtube').thumbnail → '/placeholder.svg'
  *  - 날짜 포맷: post-grid.tsx가 만드는 문자열과 완전 동일(ko-KR, Y년 M월 D일 HH:MM)
  */
@@ -15,9 +16,8 @@ import path from "path";
 import { db } from "../lib/db";
 import { posts, postImages, postEmbeds, clusterTrends, clusters, clusterPosts, sites, postEnrichment, postComments } from "../lib/schema";
 import { and, desc, eq, inArray, gt } from "drizzle-orm";
-import { getMainPagePosts, getClusterTopPosts } from "../lib/queries";
 import { sql } from "drizzle-orm";
-import { manifestFsPathForBaseFromPublic } from "./utils/manifest";
+import { createHomeFeedManifest, createHomeFeedStagingDirectory, publishHomeFeedGeneration } from "./utils/home-feed-generation";
 
 // ===== 설정 =====
 const PAGE_SIZE = Number(process.env.PAGE_SIZE ?? 20);
@@ -161,18 +161,7 @@ function interleaveProportionalCap(rows: RankedRow[], pageSize: number, perSiteC
   return out;
 }
 
-// post-grid.tsx와 동일
-const MAIN_PER_SITE = 6;
-
 // ===== 유틸 =====
-function ensureDir(p: string) {
-  // 디렉터리를 삭제하고 다시 생성하여 오래된 파일을 정리합니다.
-  if (fs.existsSync(p)) {
-    fs.rmSync(p, { recursive: true, force: true });
-  }
-  fs.mkdirSync(p, { recursive: true });
-}
-
 function atomicWriteJson(filepath: string, data: unknown) {
   const tmp = `${filepath}.tmp`;
   fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
@@ -283,6 +272,7 @@ function mapToClientPost(
     comments: Number(row.commentCount ?? 0),
     upvotes: Number(row.likeCount ?? 0),
     viewCount: Number(row.viewCount ?? 0),
+    timestamp: new Date(row.timestamp).toISOString(),
     timeAgo: toGridTimeString(row.timestamp),
     thumbnail: ytMap.get(row.id) || imagesMap.get(row.id) || "/placeholder.svg",
     content: row.content ?? "",
@@ -428,8 +418,7 @@ async function fetchFreshScorePage(offset: number, siteId?: string) {
 }
 
 // ===== 빌드 로직 =====
-async function buildGlobalPages(excludeIds: Set<string>) {
-  ensureDir(OUT_DIR);
+async function buildGlobalPages(excludeIds: Set<string>, outputDirectory: string, generatedAt: string) {
   let page = 2;
   let offset = 0;
 
@@ -446,8 +435,9 @@ async function buildGlobalPages(excludeIds: Set<string>) {
       const mapped = augmented.map((r) => mapToClientPost(r, imagesMap, ytMap, ytUrlMap, mp4UrlMap, xMap));
       const filtered = mapped.filter((r: any) => !excludeIds.has(r.id));
       if (filtered.length === 0) { offset += PAGE_SIZE; continue; }
-      const payload = { page, pageSize: PAGE_SIZE, range: RANGE, section: SECTION, posts: filtered };
-      atomicWriteJson(path.join(OUT_DIR, `page-${page}.json`), payload);
+      const payload = { page, pageSize: PAGE_SIZE, range: RANGE, section: SECTION, generatedAt, posts: filtered };
+      atomicWriteJson(path.join(outputDirectory, `page-${page}.json`), payload);
+      filtered.forEach((post) => excludeIds.add(post.id));
       page += 1; offset += PAGE_SIZE; continue;
     }
 
@@ -478,8 +468,9 @@ async function buildGlobalPages(excludeIds: Set<string>) {
       const { imagesMap, ytMap, ytUrlMap, mp4UrlMap, xMap } = await hydrateThumbnails(joined);
       const mapped = joined.map((r) => mapToClientPost(r, imagesMap, ytMap, ytUrlMap, mp4UrlMap, xMap));
 
-      const payload = { page, pageSize: PAGE_SIZE, range: RANGE, section: SECTION, posts: mapped };
-      atomicWriteJson(path.join(OUT_DIR, `page-${page}.json`), payload);
+      const payload = { page, pageSize: PAGE_SIZE, range: RANGE, section: SECTION, generatedAt, posts: mapped };
+      atomicWriteJson(path.join(outputDirectory, `page-${page}.json`), payload);
+      mapped.forEach((post) => excludeIds.add(post.id));
       page += 1; offset += PAGE_SIZE; continue;
     }
 
@@ -488,40 +479,16 @@ async function buildGlobalPages(excludeIds: Set<string>) {
     if (mapped.length === 0) break;
     const filtered = mapped.filter((r: any) => !excludeIds.has(r.id));
     if (filtered.length === 0) { offset += PAGE_SIZE; continue; }
-    const payload = { page, pageSize: PAGE_SIZE, range: RANGE, section: SECTION, posts: filtered };
-    atomicWriteJson(path.join(OUT_DIR, `page-${page}.json`), payload);
+    const payload = { page, pageSize: PAGE_SIZE, range: RANGE, section: SECTION, generatedAt, posts: filtered };
+    atomicWriteJson(path.join(outputDirectory, `page-${page}.json`), payload);
+    filtered.forEach((post: { id: string }) => excludeIds.add(post.id));
 
     page += 1;
     offset += PAGE_SIZE;
   }
+  return page - 1;
 }
 
-
-// compute ids from what page-1 would show for this RANGE/SECTION
-async function computePage1Ids(): Promise<string[]> {
-  const size = MAIN_PER_SITE * 12;
-  if (MODE === "fresh") {
-    // Exclude all items which would have already appeared on the SSR home page
-    // sections for this RANGE: rising(3h ranked), spotlight(RANGE ranked), clusters(24h/1w), and page-1 of fresh(RANGE)
-    const [rank3h, rankR, top24h, top1w, freshR] = await Promise.all([
-      getMainPagePosts({ range: "3h" as any, perSiteCap: MAIN_PER_SITE, pageSize: size, mode: "ranked", excludeIds: [] }),
-      getMainPagePosts({ range: RANGE as any, perSiteCap: MAIN_PER_SITE, pageSize: size, mode: "ranked", excludeIds: [] }),
-      getClusterTopPosts({ range: "24h" as any, perSiteCap: MAIN_PER_SITE, pageSize: size, excludeIds: [] }),
-      getClusterTopPosts({ range: "1w" as any, perSiteCap: MAIN_PER_SITE, pageSize: size, excludeIds: [] }),
-      getMainPagePosts({ range: RANGE as any, perSiteCap: MAIN_PER_SITE, pageSize: size, mode: "fresh", excludeIds: [] }),
-    ]);
-    const ids = new Set<string>();
-    for (const a of [rank3h, rankR, top24h, top1w, freshR]) for (const p of (a || [])) ids.add(p.id);
-    return Array.from(ids);
-  }
-  if (MODE === "ranked") {
-    const base = await fetchRankedCandidates(size * 2);
-    const page1 = interleaveProportionalCap(base, size, MAIN_PER_SITE);
-    return page1.map(r => r.id);
-  }
-  const first = await fetchClusterPage(0);
-  return first.map((p: any) => p.id);
-}
 
 async function main() {
   // 실제로 무한 스크롤이 사용되는 것은 fresh|24h 최신 밖에 없음
@@ -530,21 +497,27 @@ async function main() {
     return;
   }
 
-  const exclude = new Set(await computePage1Ids());
-  await buildGlobalPages(exclude);
-
-  const manifestPath = path.join(OUT_DIR, 'manifest.json');
-  atomicWriteJson(manifestPath, {
-    generatedAt: new Date().toISOString(),
-    pageSize: PAGE_SIZE,
-    maxPages: MAX_PAGES,
-    range: RANGE,
-    section: SECTION,
-    mode: MODE,
-    windowMinutes: WINDOW_MINUTES,
-    baseDir: OUT_DIR.replace(process.cwd(), ""),
-    excludedFromPage1: exclude.size,
-  });
+  if (!Number.isInteger(PAGE_SIZE) || PAGE_SIZE < 1 || !Number.isInteger(MAX_PAGES) || MAX_PAGES < 1) {
+    throw new Error("PAGE_SIZE and MAX_PAGES must be positive integers");
+  }
+  // Live SSR selection and its random upper sections cannot be predicted here.
+  // Include every continuation candidate; the client deduplicates its actual seed IDs.
+  const exclude = new Set<string>();
+  const generatedAt = new Date().toISOString();
+  const stagingDirectory = createHomeFeedStagingDirectory(OUT_DIR);
+  try {
+    const lastPage = await buildGlobalPages(exclude, stagingDirectory, generatedAt);
+    atomicWriteJson(path.join(stagingDirectory, "manifest.json"), {
+      ...createHomeFeedManifest({ generatedAt, pageSize: PAGE_SIZE, maxPages: MAX_PAGES, lastPage, range: RANGE, section: SECTION }),
+      mode: MODE,
+      windowMinutes: WINDOW_MINUTES,
+      baseDir: OUT_DIR.replace(process.cwd(), ""),
+      excludedFromPage1: 0,
+    });
+    publishHomeFeedGeneration(stagingDirectory, OUT_DIR);
+  } finally {
+    fs.rmSync(stagingDirectory, { recursive: true, force: true });
+  }
 
   console.log("✅ 2페이지 이후 JSON 생성 완료 (post-grid.tsx와 동일 포맷)");
 }

@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-05",
+  "scope": "isolated source, read-only fixture DB; no business writes",
+  "nextVersion": "15.5.4",
+  "buildExitCode": 0,
+  "staticPages": 22,
+  "lintErrors": 0,
+  "existingLintWarnings": 14,
+  "runtimeSourceAggregateSha256": "04fa18f2f277687efd583d58dbc9a4f521e940f33cf16b826b3b86fd5f712796",
+  "runtimeFilesMatchBrowserAndWorkspace": 12,
+  "productionFixtureHttpStatus": {
+    "/test-feed/": 404,
+    "/api/test-feed/normal/manifest.json/": 404
+  }
+}

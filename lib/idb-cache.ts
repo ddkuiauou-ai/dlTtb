@@ -1,9 +1,12 @@
 // Client-only IndexedDB cache for paged post JSON with manifest-based invalidation.
 // - Stores:
 //   - manifests: key = manifestKey (derived from base), value = { generatedAt, pageSize?, pages?, baseDir?, fetchedAt }
-//   - posts: key = post.id, value = Post card shape used by client
-//   - pages: key = `${base}|${page}`, value = { version: string, postIds: string[], storedAt: number, lastAccess: number }
+//   - posts: legacy ID-only payload store; retained for database compatibility
+//   - pages: key = `${base}|${page}`, value includes the complete generation's ordered posts
 // - LRU: limit number of page-entries globally (default 3000). Oldest lastAccess are evicted.
+
+import { createCachedPostPage, readCachedPostPage } from './page-cache-entry';
+import type { CachedPostPage } from './page-cache-entry';
 
 export type ClientPost = {
   id: string;
@@ -15,6 +18,7 @@ export type ClientPost = {
   upvotes: number;
   viewCount: number;
   timeAgo: string;
+  timestamp?: string;
   thumbnail: string;
   content: string;
   hoverPlayerKind?: 'youtube' | 'mp4' | 'x' | null;
@@ -30,6 +34,9 @@ export type Manifest = {
   pageSize?: number;
   pages?: number;      // for category
   maxPages?: number;   // for home
+  lastPage?: number;   // includes the SSR first page; 1 means no JSON tail
+  hasMore?: boolean;   // whether this generation has pages after the SSR page
+  seedPolicy?: 'live-seed-dedupe'; // live SSR IDs are deduplicated by the client
   range?: string;
   section?: string;
   mode?: string;
@@ -44,7 +51,7 @@ const STORE_POSTS = 'posts';
 const STORE_PAGES = 'pages';
 const LRU_LIMIT_PAGES = 3000; // global cap across bases
 
-type PageEntry = { version: string; postIds: string[]; storedAt: number; lastAccess: number; base: string; page: number };
+type PageEntry = CachedPostPage<ClientPost>;
 
 function hasIDB() { return typeof window !== 'undefined' && !!window.indexedDB; }
 
@@ -58,7 +65,9 @@ async function openDB(): Promise<IDBDatabase | null> {
       if (!db.objectStoreNames.contains(STORE_POSTS)) db.createObjectStore(STORE_POSTS);
       if (!db.objectStoreNames.contains(STORE_PAGES)) db.createObjectStore(STORE_PAGES);
     };
-    req.onsuccess = () => resolve(req.result);
+    let blocked = false;
+    req.onblocked = () => { blocked = true; resolve(null); };
+    req.onsuccess = () => { if (blocked) req.result.close(); else resolve(req.result); };
     req.onerror = () => reject(req.error);
   });
 }
@@ -75,7 +84,7 @@ function deriveManifestRoot(base: string): { manifestUrl: string; manifestKey: s
 
 export async function getManifest(base: string): Promise<Manifest | null> {
   if (!base) return null;
-  const db = await openDB();
+  const dbPromise = openDB().catch(() => null);
   const { manifestUrl, manifestKey } = deriveManifestRoot(base);
 
   // Try network first to learn freshest generatedAt; fallback to cache
@@ -83,65 +92,62 @@ export async function getManifest(base: string): Promise<Manifest | null> {
     const res = await fetch(manifestUrl, { cache: 'no-cache' });
     if (res.ok) {
       const m = (await res.json()) as Manifest;
-      if (db) {
-        const t = tx(db, 'readwrite', STORE_MANIFESTS);
-        t.objectStore(STORE_MANIFESTS).put({ ...m, fetchedAt: Date.now() }, manifestKey);
-      }
+      // Storage is optional; denial or a blocked IDB connection must not delay the network result.
+      void dbPromise.then(db => {
+        if (!db) return;
+        try {
+          const t = tx(db, 'readwrite', STORE_MANIFESTS);
+          t.objectStore(STORE_MANIFESTS).put({ ...m, fetchedAt: Date.now() }, manifestKey);
+        } catch { /* ignore */ }
+      });
       return m;
     }
   } catch { /* ignore */ }
 
+  const db = await dbPromise;
   if (!db) return null;
   return new Promise((resolve) => {
-    const t = tx(db, 'readonly', STORE_MANIFESTS);
-    const req = t.objectStore(STORE_MANIFESTS).get(manifestKey);
-    req.onsuccess = () => resolve((req.result as Manifest) || null);
-    req.onerror = () => resolve(null);
+    try {
+      const t = tx(db, 'readonly', STORE_MANIFESTS);
+      const req = t.objectStore(STORE_MANIFESTS).get(manifestKey);
+      req.onsuccess = () => resolve((req.result as Manifest) || null);
+      req.onerror = () => resolve(null);
+      t.onabort = () => resolve(null);
+    } catch { resolve(null); }
   });
 }
 
 export async function readPage(base: string, page: number, version: string): Promise<ClientPost[] | null> {
-  const db = await openDB();
+  const db = await openDB().catch(() => null);
   if (!db) return null;
   const key = `${base}|${page}`;
   return new Promise((resolve) => {
-    const t = tx(db, 'readwrite', STORE_PAGES, STORE_POSTS);
+    const t = tx(db, 'readwrite', STORE_PAGES);
     const pages = t.objectStore(STORE_PAGES);
-    const posts = t.objectStore(STORE_POSTS);
     const req = pages.get(key);
-    req.onsuccess = async () => {
+    req.onsuccess = () => {
       const entry = req.result as PageEntry | undefined;
-      if (!entry || entry.version !== version) { resolve(null); return; }
+      const payload = readCachedPostPage<ClientPost>(entry, base, page, version);
+      if (!entry || payload === null) { resolve(null); return; }
       // touch LRU
       entry.lastAccess = Date.now();
       pages.put(entry, key);
-      // hydrate posts
-      const out: ClientPost[] = [];
-      let remaining = entry.postIds.length;
-      if (remaining === 0) { resolve(out); return; }
-      entry.postIds.forEach((id) => {
-        const r = posts.get(id);
-        r.onsuccess = () => { if (r.result) out.push(r.result as ClientPost); if (--remaining === 0) resolve(out); };
-        r.onerror = () => { if (--remaining === 0) resolve(out); };
-      });
+      resolve(payload);
     };
     req.onerror = () => resolve(null);
+    t.onabort = () => resolve(null);
   });
 }
 
 export async function writePage(base: string, page: number, version: string, items: ClientPost[]): Promise<void> {
-  const db = await openDB();
+  const db = await openDB().catch(() => null);
   if (!db) return;
   const key = `${base}|${page}`;
   const now = Date.now();
   await new Promise<void>((resolve) => {
-    const t = tx(db, 'readwrite', STORE_PAGES, STORE_POSTS);
+    const t = tx(db, 'readwrite', STORE_PAGES);
     const pages = t.objectStore(STORE_PAGES);
-    const posts = t.objectStore(STORE_POSTS);
-    // write posts
-    for (const p of items) posts.put(p, p.id);
-    // write page entry
-    const entry: PageEntry = { version, postIds: items.map(p => p.id), storedAt: now, lastAccess: now, base, page };
+    const entry = createCachedPostPage(base, page, version, items, now);
     pages.put(entry, key);
     t.oncomplete = () => resolve();
     t.onerror = () => resolve();
@@ -184,4 +190,3 @@ export const idbCache = {
 };
 
 export default idbCache;
-

@@ -1,0 +1,15 @@
+{
+  "completedAt": "2026-10-05T03:45:13.189469+00:00",
+  "ownedServersStopped": {
+    "5007": true,
+    "5010": true,
+    "55442": true
+  },
+  "fixtureRowsBeforeStop": {
+    "pipeline_fixture_nonstandard_schemas": 0,
+    "pipeline_fixture_public_tables_and_views": 0,
+    "iss_web_fixture_posts": 0
+  },
+  "originalDev5005AndTemporalServerWorkerUntouched": true,
+  "operationalScheduleChanges": 0
+}
