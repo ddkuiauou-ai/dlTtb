@@ -1,5 +1,7 @@
 # Specification: Pagination & Infinite Scroll
 
+> **문서 상태 — 2026-10-04:** 아래에는 초기 설계와 예시 코드가 포함돼 있으며 현재 App Router·JSON 구조와 다른 부분이 있습니다. [프로젝트 README](../README.md), [웹 구현 현황](WEB_IMPLEMENTATION.md), [문서 싱크 차이](DOCUMENTATION_DRIFT.md)를 함께 읽으세요. 본문의 현행화는 후속 라이브러리 업데이트 이후 진행할 작업입니다.
+
 이 문서는 정적 페이지와 클라이언트 사이드 로딩을 결합한 아키텍처를 정의합니다.
 
 ## 1. SSG 설정 (Next.js)

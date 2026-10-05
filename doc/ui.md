@@ -1,5 +1,7 @@
 # UI: Pagination & Infinite Scroll
 
+> **문서 상태 — 2026-10-04:** 아래 설계 예시의 훅·라이브러리·가상화 상수는 현재 구현과 다른 부분이 있습니다. [프로젝트 README](../README.md), [웹 구현 현황](WEB_IMPLEMENTATION.md), [문서 싱크 차이](DOCUMENTATION_DRIFT.md)를 함께 읽으세요. 본문의 현행화는 후속 라이브러리 업데이트 이후 진행할 작업입니다.
+
 이 문서는 사용자에게 게시물 목록을 효율적으로 제공하기 위한 UI 컴포넌트와 훅을 설명합니다.
 
 ## 1. Pagination 컴포넌트

@@ -545,7 +545,7 @@ $$ LANGUAGE plpgsql;
 INSERT INTO sites (id, board, name, board_name, url)
 VALUES
     ('etoland','hit', '이토랜드', '히트게시판', 'https://www.etoland.co.kr/bbs/hit.php'),
-    ('slrclub','hot', 'SLR클럽', '인기글', 'https://www.slrclub.com/bbs/zboard.php?id=hot_article'),
+    ('slrclub','hot_article', 'SLR클럽', '인기글', 'https://www.slrclub.com/bbs/zboard.php?id=hot_article'),
     ('humoruniv','humor', '웃긴대학', '오늘의베스트', 'https://web.humoruniv.com/board/humor/list.html?table=pds&st=day'),
     ('theqoo','hot', '더쿠', '핫게시판', 'https://theqoo.net/hot'),
     ('damoang','free', '다모앙', '자유게시판', 'https://damoang.net/free'),
@@ -559,6 +559,7 @@ VALUES
     ('bobae','best', '보배드림', '베스트글', 'https://www.bobaedream.co.kr/list?code=best'),
     ('82cook','hot', '82쿡', '자유게시판', 'https://www.82cook.com/entiz/enti.php?bn=15'),
     ('instiz','hot', '인스티즈', '이슈', 'https://www.instiz.net/hot.htm?sid=pt'),
+    ('dogdrip','dogdrip', '개드립', '이슈', 'https://www.dogdrip.com/hot.htm?sid=pt'),
 ON CONFLICT (id, board)                -- 중복키(=id+board)가 있으면
 DO UPDATE SET
     name = EXCLUDED.name,

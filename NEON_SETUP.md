@@ -1,5 +1,7 @@
 # Neon PostgreSQL 설정 가이드 (권장)
 
+> **문서 상태 — 2026-10-04:** 이 문서는 Neon 전환 가이드이며, 현재 웹 코드에 Neon 자동 전환이 적용됐다는 의미는 아닙니다. [프로젝트 README](README.md)와 [문서 싱크 차이](doc/DOCUMENTATION_DRIFT.md)를 함께 읽으세요. 채택 여부와 본문의 현행화는 후속 작업에서 확인합니다.
+
 Neon은 서버리스 PostgreSQL로, Edge Runtime을 완벽 지원하며 **기존 Drizzle ORM 코드를 거의 그대로 사용 가능**합니다.
 
 ## 왜 Neon인가?

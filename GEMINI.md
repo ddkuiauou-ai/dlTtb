@@ -1,5 +1,7 @@
 # GEMINI.md - Project Context
 
+> **문서 상태 — 2026-10-04:** 이 문서에는 현재 코드와 다른 배포·빌드 설명이 남아 있습니다. 프로젝트 파악은 [README](README.md), 업데이트 작업은 [업그레이드 인수인계](doc/UPGRADE_HANDOFF.md), 차이 확인은 [문서 싱크 차이](doc/DOCUMENTATION_DRIFT.md)부터 시작하세요. 아래 본문의 전체 현행화는 후속 라이브러리 업데이트 이후 진행할 작업입니다.
+
 This file provides context for AI assistants to understand and effectively assist with this project.
 
 ## Project Overview

@@ -1,4 +1,7 @@
 # IS Project — Roadmap & Design Doc
+
+> **문서 상태 — 2026-10-04:** 아래는 이전 설계·로드맵 기록이며 완료 표시·자산 이름·시간 범위·공식에 현재 코드와 다른 부분이 있습니다. 현재 조사 기준은 [프로젝트 README](../README.md), [데이터 파이프라인](DATA_PIPELINE.md), [문서 싱크 차이](DOCUMENTATION_DRIFT.md)를 참고하세요. 본문의 전체 현행화는 후속 라이브러리 업데이트 이후 진행할 작업입니다.
+
 _Last updated: 2025-08-12 13:52 UTC_
 
 ## 0) TL;DR

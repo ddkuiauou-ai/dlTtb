@@ -1,5 +1,7 @@
 # PostgREST + Cloudflare Tunnel 설정 가이드
 
+> **문서 상태 — 2026-10-04:** 이 문서는 대안 연결 방식의 가이드이며, 현재 웹 코드에 PostgREST가 연동됐다는 의미는 아닙니다. [프로젝트 README](README.md)와 [문서 싱크 차이](doc/DOCUMENTATION_DRIFT.md)를 함께 읽으세요. 채택 여부와 본문의 현행화는 후속 작업에서 확인합니다.
+
 이 가이드는 로컬 PostgreSQL을 PostgREST로 HTTP API화하고, Cloudflare Tunnel로 인터넷에 노출하여 Cloudflare Pages에서 접근하는 방법을 설명합니다.
 
 ## 1. PostgREST 설치
