@@ -6,7 +6,8 @@ import MiniSearch, { type SearchResult } from 'minisearch';
 import { Button } from '@/components/ui/button';
 import { DialogTitle } from "@/components/ui/dialog";
 import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
-import { File } from 'lucide-react';
+import { File, Search } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 // Define the structure of the documents we stored in the index
 interface SearchDocument {
@@ -15,7 +16,7 @@ interface SearchDocument {
   image?: string;
 }
 
-export function SearchBar() {
+export function SearchBar({ compact = false }: { compact?: boolean }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -77,14 +78,24 @@ export function SearchBar() {
     <>
       <Button
         variant="outline"
-        className="relative h-8 w-full justify-start rounded-[0.5rem] bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12"
+        className={cn(
+          "relative h-8 w-full rounded-[0.5rem] bg-background text-sm font-normal text-muted-foreground shadow-none",
+          compact ? "justify-center px-0" : "justify-start sm:pr-12",
+        )}
+        aria-label="게시물 검색"
+        aria-haspopup="dialog"
+        aria-expanded={open}
         onClick={() => setOpen(true)}
       >
-        <span className="hidden lg:inline-flex">게시물 검색...</span>
-        <span className="inline-flex lg:hidden">검색...</span>
-        <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-          <span className="text-xs">⌘</span>K
-        </kbd>
+        {compact ? <Search aria-hidden="true" /> : (
+          <>
+            <span className="hidden lg:inline-flex">게시물 검색...</span>
+            <span className="inline-flex lg:hidden">검색...</span>
+            <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+              <span className="text-xs">⌘</span>K
+            </kbd>
+          </>
+        )}
       </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>

@@ -6,7 +6,6 @@ import { motion, LayoutGroup } from 'motion/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AvatarGroup, AvatarGroupTooltip } from '@/components/animate-ui/components/avatar-group';
 import { cn } from '@/lib/utils';
-import { Dock, DockIcon } from "@/components/ui/dock";
 import { TooltipProvider } from "@/components/animate-ui/components/tooltip";
 
 // Types and Constants
@@ -24,6 +23,7 @@ export interface CommunityPresenceSelectorProps {
   size?: 'sm' | 'md' | 'lg';
   value?: string[] | null;
   onChange?: (selected: string[] | null) => void;
+  onExpansionChange?: (expanded: boolean) => void;
   tooltipSide?: 'top' | 'bottom' | 'left' | 'right';
   tooltipOffset?: number;
   overlap?: 'tight' | 'normal';
@@ -32,7 +32,7 @@ export interface CommunityPresenceSelectorProps {
 
 const AVATAR_MOTION_TRANSITION = { type: 'spring' as const, stiffness: 200, damping: 25 };
 const GROUP_CONTAINER_TRANSITION = { type: 'spring' as const, stiffness: 150, damping: 20 };
-const ANIMATION_DURATION = 500; // ms
+const COLLAPSE_DURATION = 500; // Keep search compact until the avatars settle.
 
 // Helper Components
 // =================================================================
@@ -85,24 +85,6 @@ const CollapsedView = React.memo(({ selected, items, dims }: { selected: Communi
 });
 CollapsedView.displayName = 'CollapsedView';
 
-const DockView = React.memo(({ items, unselected, toggle, dims }: { items: CommunityItem[], unselected: CommunityItem[], toggle: (id: string) => void, dims: { s: string, b: string } }) => (
-  <div className="flex items-center justify-center h-full">
-    <Dock direction="middle" iconSize={32} iconMagnification={48} className="border-none bg-transparent p-0 shadow-none backdrop-blur-none">
-      {items.reverse().map((c: CommunityItem) => (
-        <DockIcon key={c.id}>
-          <motion.div layoutId={`avatar-${c.id}`} className="cursor-pointer" onClick={() => toggle(c.id)}>
-            <Avatar className={cn(dims.s, dims.b, "border-neutral-300 dark:border-neutral-700", unselected.some((u: CommunityItem) => u.id === c.id) && "grayscale")}>
-              {c.iconUrl ? <AvatarImage src={c.iconUrl} /> : null}
-              <AvatarFallback>{fallbackText(c.label)}</AvatarFallback>
-            </Avatar>
-          </motion.div>
-        </DockIcon>
-      ))}
-    </Dock>
-  </div>
-));
-DockView.displayName = 'DockView';
-
 const ExpandedView = React.memo(({ selected, unselected, toggle, dims, space, hoverLift, tooltipSide, tooltipOffset, togglingGroup, className }: { 
   selected: CommunityItem[];
   unselected: CommunityItem[];
@@ -153,30 +135,34 @@ ExpandedView.displayName = 'ExpandedView';
 // Main Component
 // =================================================================
 
-export default function CommunityPresenceSelector({ items, className, size = 'md', value, onChange, tooltipSide = 'top', tooltipOffset = 14, overlap = 'normal', hoverLift }: CommunityPresenceSelectorProps) {
+export default function CommunityPresenceSelector({ items, className, size = 'md', value, onChange, onExpansionChange, tooltipSide = 'top', tooltipOffset = 14, overlap = 'normal', hoverLift }: CommunityPresenceSelectorProps) {
   const controlled = value !== undefined;
   const [internalSelectedIds, setInternalSelectedIds] = React.useState<string[]>(() => items.map(i => i.id));
   const [togglingGroup, setTogglingGroup] = React.useState<'selected' | 'unselected' | null>(null);
   const [isHovered, setIsHovered] = React.useState(false);
-  const [isAnimating, setIsAnimating] = React.useState(false);
-  const animationTimer = React.useRef<NodeJS.Timeout | undefined>(undefined);
+  const collapseTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const layoutGroupId = React.useId();
 
-  // Start transitions only when the pointer enters or leaves the selector.
+  // Reserve search space in the same render as expansion, including the exit motion.
   const handleHoverChange = React.useCallback((hovered: boolean) => {
-    if (animationTimer.current) clearTimeout(animationTimer.current);
+    if (collapseTimer.current) clearTimeout(collapseTimer.current);
     setIsHovered(hovered);
-    setIsAnimating(true);
-    animationTimer.current = setTimeout(() => {
-      setIsAnimating(false);
-      animationTimer.current = undefined;
-    }, ANIMATION_DURATION);
-  }, []);
+    if (hovered) {
+      onExpansionChange?.(true);
+    } else {
+      collapseTimer.current = setTimeout(() => {
+        onExpansionChange?.(false);
+        collapseTimer.current = undefined;
+      }, COLLAPSE_DURATION);
+    }
+  }, [onExpansionChange]);
 
   React.useEffect(() => {
     return () => {
-      if (animationTimer.current) clearTimeout(animationTimer.current);
+      if (collapseTimer.current) clearTimeout(collapseTimer.current);
+      onExpansionChange?.(false);
     };
-  }, []);
+  }, [onExpansionChange]);
 
   // Sync state with props
   const effectiveSelectedIds: string[] = React.useMemo(() => {
@@ -218,20 +204,10 @@ export default function CommunityPresenceSelector({ items, className, size = 'md
   }, [effectiveSelectedIds, items, onChange, controlled]);
 
   const renderContent = () => {
-    const showDock = isAnimating;
-    const showExpanded = isHovered && !isAnimating;
-    const showCollapsed = !isHovered && !isAnimating;
-
-    if (showDock) {
-      return <DockView items={[...selected, ...unselected]} unselected={unselected} toggle={toggle} dims={dims} />;
+    if (isHovered) {
+      return <ExpandedView selected={selected} unselected={unselected} toggle={toggle} dims={dims} space={space} hoverLift={hoverLift} tooltipSide={tooltipSide} tooltipOffset={tooltipOffset} togglingGroup={togglingGroup} />;
     }
-    if (showExpanded) {
-      return <ExpandedView selected={selected} unselected={unselected} toggle={toggle} dims={dims} space={space} hoverLift={hoverLift} tooltipSide={tooltipSide} tooltipOffset={tooltipOffset} togglingGroup={togglingGroup} className={className} />;
-    }
-    if (showCollapsed) {
-      return <CollapsedView selected={selected} items={[...selected, ...unselected]} dims={dims} />;
-    }
-    return null;
+    return <CollapsedView selected={selected} items={[...selected, ...unselected]} dims={dims} />;
   };
 
   return (
@@ -241,7 +217,7 @@ export default function CommunityPresenceSelector({ items, className, size = 'md
         onMouseEnter={() => handleHoverChange(true)}
         onMouseLeave={() => handleHoverChange(false)}
       >
-        <LayoutGroup>{renderContent()}</LayoutGroup>
+        <LayoutGroup id={layoutGroupId}>{renderContent()}</LayoutGroup>
       </div>
     </TooltipProvider>
   );

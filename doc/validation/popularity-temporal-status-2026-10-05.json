@@ -1,0 +1,643 @@
+{
+  "observed_at_kst": "2026-10-05T14:51:58.676693+09:00",
+  "scope": "Read-only local Temporal queries and local execution-report reads. No schedule mutation, workflow start, server mutation, business database reads or writes.",
+  "namespace": "cd-dev",
+  "endpoint": "127.0.0.1:7233",
+  "is_schedules": [
+    {
+      "schedule_id": "is-clusters-build-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:54.833237+09:00",
+      "updated_kst": "2026-10-05T07:19:50.521933+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_analytics_job",
+      "stages": [
+        "clusters_build"
+      ],
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-clusters-merge-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:55.340029+09:00",
+      "updated_kst": "2026-10-05T07:19:50.866936+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_analytics_job",
+      "stages": [
+        "clusters_merge"
+      ],
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-discovery-t0-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:51.755288+09:00",
+      "updated_kst": "2026-10-05T07:19:48.055043+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_discovery_job",
+      "stages": null,
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-discovery-t1-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:52.172189+09:00",
+      "updated_kst": "2026-10-05T07:19:48.393886+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_discovery_job",
+      "stages": null,
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-discovery-t2-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:52.583271+09:00",
+      "updated_kst": "2026-10-05T07:19:48.738822+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_discovery_job",
+      "stages": null,
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-enrichment-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:55.749103+09:00",
+      "updated_kst": "2026-10-05T07:19:51.216714+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_enrichment_job",
+      "stages": null,
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-fusion-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:56.132436+09:00",
+      "updated_kst": "2026-10-05T07:19:51.552827+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_enrichment_job",
+      "stages": null,
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-keywords-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:53.989961+09:00",
+      "updated_kst": "2026-10-05T07:19:49.755789+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_analytics_job",
+      "stages": [
+        "keywords"
+      ],
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-rotation-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:54.436187+09:00",
+      "updated_kst": "2026-10-05T07:19:50.182416+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_analytics_job",
+      "stages": [
+        "rotation"
+      ],
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-snapshots-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:53.002943+09:00",
+      "updated_kst": "2026-10-05T07:19:49.086900+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_snapshot_job",
+      "stages": null,
+      "queue": "is-live-control"
+    },
+    {
+      "schedule_id": "is-trends-live",
+      "paused": true,
+      "note": "Prepared; operator cutover required",
+      "num_actions": 0,
+      "recent_actions_count": 0,
+      "running_workflows_count": 0,
+      "created_kst": "2026-10-05T04:28:53.414184+09:00",
+      "updated_kst": "2026-10-05T07:19:49.412413+09:00",
+      "timezone": "Asia/Seoul",
+      "job_kind": "is_analytics_job",
+      "stages": [
+        "trends",
+        "mv"
+      ],
+      "queue": "is-live-control"
+    }
+  ],
+  "all_is_schedules_paused": true,
+  "all_is_schedule_actions": 0,
+  "worker_control_queue": {
+    "reachability": null,
+    "pollers": [
+      {
+        "buildId": "UNVERSIONED",
+        "taskQueueType": "workflow",
+        "identity": "64960@MacBookPro",
+        "ratePerSecond": 100000,
+        "lastAccessTimeKST": "2026-10-05T14:51:10.144940+09:00"
+      },
+      {
+        "buildId": "UNVERSIONED",
+        "taskQueueType": "activity",
+        "identity": "64960@MacBookPro",
+        "ratePerSecond": 100000,
+        "lastAccessTimeKST": "2026-10-05T14:51:38.746061+09:00"
+      }
+    ],
+    "stats": [
+      {
+        "buildId": "UNVERSIONED",
+        "taskQueueType": "activity",
+        "approximateBacklogCount": 0,
+        "approximateBacklogAge": "0s",
+        "backlogIncreaseRate": 0,
+        "tasksAddRate": 0,
+        "tasksDispatchRate": 0
+      },
+      {
+        "buildId": "UNVERSIONED",
+        "taskQueueType": "workflow",
+        "approximateBacklogCount": 0,
+        "approximateBacklogAge": "0s",
+        "backlogIncreaseRate": 0,
+        "tasksAddRate": 0,
+        "tasksDispatchRate": 0
+      }
+    ]
+  },
+  "worker_analytics_queue": {
+    "reachability": null,
+    "pollers": [
+      {
+        "buildId": "UNVERSIONED",
+        "taskQueueType": "activity",
+        "identity": "64960@MacBookPro",
+        "ratePerSecond": 100000,
+        "lastAccessTimeKST": "2026-10-05T14:51:31.134689+09:00"
+      }
+    ],
+    "stats": [
+      {
+        "buildId": "UNVERSIONED",
+        "taskQueueType": "workflow",
+        "approximateBacklogCount": 0,
+        "approximateBacklogAge": "0s",
+        "backlogIncreaseRate": 0,
+        "tasksAddRate": 0,
+        "tasksDispatchRate": 0
+      },
+      {
+        "buildId": "UNVERSIONED",
+        "taskQueueType": "activity",
+        "approximateBacklogCount": 0,
+        "approximateBacklogAge": "0s",
+        "backlogIncreaseRate": 0,
+        "tasksAddRate": 0,
+        "tasksDispatchRate": 0
+      }
+    ]
+  },
+  "live_pipeline_jobs": [
+    {
+      "workflow_id": "is-arca-bounded-detail-recovery-live-20261005-v3",
+      "run_id": "01a108da-01e4-7918-a703-034c002c5dcc",
+      "job_kind": "is_snapshot_job",
+      "temporal_status": "WORKFLOW_EXECUTION_STATUS_COMPLETED",
+      "started_kst": "2026-10-05T06:37:47.492597+09:00",
+      "finished_kst": "2026-10-05T06:37:57.071290+09:00",
+      "business_result_status": "passed",
+      "units": 1,
+      "failed_units": 0,
+      "report_path": "/Users/craigchoi/tem/data/is-artifacts/objects/2c/2c9ef45ba2d97e3468619b3e3a8a990317f26871e1337334da8e4c7bc0421507.json",
+      "ingested_posts": 1,
+      "unit_results": [
+        {
+          "unit_key": "arca.hotdeal.explicit",
+          "status": "passed",
+          "error_code": null,
+          "ingested_posts": 1,
+          "snapshots": 1,
+          "partial": 1,
+          "unknown_metrics": {
+            "comment_count": 1,
+            "dislike_count": 1,
+            "like_count": 1,
+            "view_count": 1
+          }
+        }
+      ]
+    },
+    {
+      "workflow_id": "is-fmk-short-snapshot-live-20261005-v3",
+      "run_id": "01a108b7-40d0-7799-8eea-f1be6f2ec5bc",
+      "job_kind": "is_snapshot_job",
+      "temporal_status": "WORKFLOW_EXECUTION_STATUS_COMPLETED",
+      "started_kst": "2026-10-05T05:59:49.840500+09:00",
+      "finished_kst": "2026-10-05T06:00:00.854221+09:00",
+      "business_result_status": "passed",
+      "units": 1,
+      "failed_units": 0,
+      "report_path": "/Users/craigchoi/tem/data/is-artifacts/objects/4a/4a67c243757f59d73e8756a5c83a3b1eeec1af2900fadca63ffa884ec90a044c.json",
+      "ingested_posts": 2,
+      "unit_results": [
+        {
+          "unit_key": "fmkorea.best.explicit",
+          "status": "passed",
+          "error_code": null,
+          "ingested_posts": 2,
+          "snapshots": 2,
+          "partial": 2,
+          "unknown_metrics": {
+            "dislike_count": 2
+          }
+        }
+      ]
+    },
+    {
+      "workflow_id": "is-fmk-docker-live-20261005-v2",
+      "run_id": "01a10894-0416-7a9e-bcab-472a1f3a540b",
+      "job_kind": "is_snapshot_job",
+      "temporal_status": "WORKFLOW_EXECUTION_STATUS_COMPLETED",
+      "started_kst": "2026-10-05T05:21:20.534698+09:00",
+      "finished_kst": "2026-10-05T05:21:31.999834+09:00",
+      "business_result_status": "passed",
+      "units": 1,
+      "failed_units": 0,
+      "report_path": "/Users/craigchoi/tem/data/is-artifacts/objects/e7/e7047cd5260a69789c911a19984f5568784e68c07c1905be98633501ec636dae.json",
+      "ingested_posts": 2,
+      "unit_results": [
+        {
+          "unit_key": "fmkorea.best.explicit",
+          "status": "passed",
+          "error_code": null,
+          "ingested_posts": 2,
+          "snapshots": 2,
+          "partial": 2,
+          "unknown_metrics": {
+            "comment_count": 2,
+            "dislike_count": 2
+          }
+        }
+      ]
+    },
+    {
+      "workflow_id": "is-one-artifact-repeat-20261005-v2",
+      "run_id": "01a1088d-17ae-75e7-923d-cff066f8b1af",
+      "job_kind": "is_ingest_job",
+      "temporal_status": "WORKFLOW_EXECUTION_STATUS_COMPLETED",
+      "started_kst": "2026-10-05T05:13:46.798389+09:00",
+      "finished_kst": "2026-10-05T05:13:50.228477+09:00",
+      "business_result_status": "passed",
+      "units": 1,
+      "failed_units": 0,
+      "report_path": "/Users/craigchoi/tem/data/is-artifacts/objects/08/0844190938fa50c684bd1fba9255a5daf139d049a47a89f13efddfb101c8f4bd.json",
+      "ingested_posts": 0,
+      "unit_results": [
+        {
+          "unit_key": "is-one-artifact-repeat-20261005-v2",
+          "status": "passed",
+          "error_code": null,
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        }
+      ]
+    },
+    {
+      "workflow_id": "is-damoang-free-original-recovery-20261005-v1",
+      "run_id": "01a10874-6bd2-7514-94af-8936d85eab7f",
+      "job_kind": "is_discovery_job",
+      "temporal_status": "WORKFLOW_EXECUTION_STATUS_COMPLETED",
+      "started_kst": "2026-10-05T04:46:49.938335+09:00",
+      "finished_kst": "2026-10-05T04:47:02.409847+09:00",
+      "business_result_status": "partial_failure",
+      "units": 1,
+      "failed_units": 1,
+      "report_path": "/Users/craigchoi/tem/data/is-artifacts/objects/15/1554b6b8c177572d52daf84dc1c2ada6f5f2ad91ad2751be37a13d2e5601959b.json",
+      "ingested_posts": 0,
+      "unit_results": [
+        {
+          "unit_key": "damoang.free",
+          "status": "failed",
+          "error_code": "ARTIFACT_QUALITY_FAILED",
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        }
+      ]
+    },
+    {
+      "workflow_id": "is-17-boards-live-20261005-v1",
+      "run_id": "01a1086a-e463-7061-bd30-ab7b7280ba23",
+      "job_kind": "is_discovery_job",
+      "temporal_status": "WORKFLOW_EXECUTION_STATUS_COMPLETED",
+      "started_kst": "2026-10-05T04:36:25.443028+09:00",
+      "finished_kst": "2026-10-05T04:42:21.027825+09:00",
+      "business_result_status": "partial_failure",
+      "units": 17,
+      "failed_units": 17,
+      "report_path": "/Users/craigchoi/tem/data/is-artifacts/objects/46/46add252699c0f8d8034f4f7b1082e90de70b67bc752f202cdae4b14ac540e4a.json",
+      "ingested_posts": 30,
+      "unit_results": [
+        {
+          "unit_key": "82cook.free",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3,
+            "like_count": 3
+          }
+        },
+        {
+          "unit_key": "arca.hotdeal",
+          "status": "failed",
+          "error_code": "ARTIFACT_QUALITY_FAILED",
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        },
+        {
+          "unit_key": "bobae.best",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3
+          }
+        },
+        {
+          "unit_key": "clien.park",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3
+          }
+        },
+        {
+          "unit_key": "damoang.free",
+          "status": "failed",
+          "error_code": "DOMAIN_BUSY",
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        },
+        {
+          "unit_key": "damoang.new",
+          "status": "failed",
+          "error_code": "ARTIFACT_QUALITY_FAILED",
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        },
+        {
+          "unit_key": "dogdrip.dogdrip",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3,
+            "view_count": 3
+          }
+        },
+        {
+          "unit_key": "etoland.hit",
+          "status": "failed",
+          "error_code": "ARTIFACT_QUALITY_FAILED",
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        },
+        {
+          "unit_key": "fmkorea.best",
+          "status": "failed",
+          "error_code": "ARTIFACT_QUALITY_FAILED",
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        },
+        {
+          "unit_key": "gasengi.general",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        },
+        {
+          "unit_key": "humoruniv.pds-day",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3
+          }
+        },
+        {
+          "unit_key": "instiz.hot",
+          "status": "failed",
+          "error_code": "ARTIFACT_QUALITY_FAILED",
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        },
+        {
+          "unit_key": "inven.open_issue_gallery",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3
+          }
+        },
+        {
+          "unit_key": "ppomppu.hot",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3,
+            "view_count": 1
+          }
+        },
+        {
+          "unit_key": "ruliweb.best_all",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3
+          }
+        },
+        {
+          "unit_key": "slrclub.hot_article",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3
+          }
+        },
+        {
+          "unit_key": "theqoo.hot",
+          "status": "partial_failure",
+          "error_code": null,
+          "ingested_posts": 3,
+          "snapshots": 3,
+          "partial": 3,
+          "unknown_metrics": {
+            "comment_count": 3,
+            "like_count": 3
+          }
+        }
+      ]
+    },
+    {
+      "workflow_id": "is-bootstrap-20261005-v2",
+      "run_id": "01a1085d-f30f-7785-a50c-4b72b811a053",
+      "job_kind": "is_bootstrap_job",
+      "temporal_status": "WORKFLOW_EXECUTION_STATUS_COMPLETED",
+      "started_kst": "2026-10-05T04:22:17.231496+09:00",
+      "finished_kst": "2026-10-05T04:22:33.352965+09:00",
+      "business_result_status": "passed",
+      "units": 1,
+      "failed_units": 0,
+      "report_path": "/Users/craigchoi/tem/data/is-artifacts/objects/07/077e22088b03955e18f5aa8125b20c0083cac7a7d652ab2fe3ad24f33f8c3a7e.json",
+      "ingested_posts": 0,
+      "unit_results": [
+        {
+          "unit_key": "is-bootstrap-20261005-v2",
+          "status": "passed",
+          "error_code": null,
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        }
+      ]
+    },
+    {
+      "workflow_id": "is-bootstrap-20261005-v1",
+      "run_id": "01a10858-cd17-75d0-b906-041d155fadbe",
+      "job_kind": "is_bootstrap_job",
+      "temporal_status": "WORKFLOW_EXECUTION_STATUS_COMPLETED",
+      "started_kst": "2026-10-05T04:16:39.831573+09:00",
+      "finished_kst": "2026-10-05T04:17:07.869164+09:00",
+      "business_result_status": "passed",
+      "units": 1,
+      "failed_units": 0,
+      "report_path": "/Users/craigchoi/tem/data/is-artifacts/objects/a5/a549ca7103fc3fdad6857d19b4dcfddfb9c134d287f6b15b1b5d85c315bfa76c.json",
+      "ingested_posts": 0,
+      "unit_results": [
+        {
+          "unit_key": "is-bootstrap-20261005-v1",
+          "status": "passed",
+          "error_code": null,
+          "ingested_posts": 0,
+          "snapshots": 0,
+          "partial": 0,
+          "unknown_metrics": {}
+        }
+      ]
+    }
+  ],
+  "live_analytics_pipeline_jobs": [],
+  "live_analytics_jobs_count": 0,
+  "workflow_root_query_limit": 1000,
+  "workflow_root_results": 68,
+  "limitations": [
+    "Temporal COMPLETED means the workflow returned a result; business partial_failure is reported separately.",
+    "Paused futureActionTimes are cached planned timestamps and do not prove scheduling or execution.",
+    "No live aggregation attempt or failure was found; fixture analytics workflows are validation runs."
+  ],
+  "existing_recovery_validation": {
+    "path": "/Users/craigchoi/tem/reports/is-feed-recovery-verification.json",
+    "observed_at_kst": "2026-10-05T11:44:20.063591+09:00",
+    "business_public_applied": false,
+    "worker_restarts": 0,
+    "schedule_updates_resumes_triggers": 0,
+    "new_code_trends_stages": [
+      "trends",
+      "mv",
+      "rotation"
+    ],
+    "stored_trends_stages": [
+      "trends",
+      "mv"
+    ]
+  }
+}

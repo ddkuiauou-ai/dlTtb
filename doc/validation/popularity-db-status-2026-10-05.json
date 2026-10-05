@@ -1,0 +1,214 @@
+{
+  "checkedAt": "2026-10-05T05:50:05.443Z",
+  "readOnly": true,
+  "clock": [
+    {
+      "db_now": "2026-10-05T05:50:05.643Z",
+      "schema": "public",
+      "timezone": "GMT",
+      "read_only": "on"
+    }
+  ],
+  "columns": [
+    {
+      "table_name": "cluster_rotation",
+      "columns": "cluster_id:uuid, window_label:character varying, consecutive_hits:integer, last_shown_at:timestamp with time zone, suppressed_until:timestamp with time zone, last_score:double precision"
+    },
+    {
+      "table_name": "cluster_trends",
+      "columns": "cluster_id:uuid, window_start:timestamp with time zone, window_end:timestamp with time zone, view_delta:integer, comment_delta:integer, like_delta:integer, dislike_delta:integer, hot_score:double precision, rank:integer"
+    },
+    {
+      "table_name": "is_trend_coverage",
+      "columns": "post_id:text, window_end:timestamp with time zone, observations:integer, sufficient:boolean, metric_coverage:jsonb"
+    },
+    {
+      "table_name": "is_work_receipts",
+      "columns": "work_key:text, job_kind:text, finished_at:timestamp with time zone, report:jsonb"
+    },
+    {
+      "table_name": "post_rotation",
+      "columns": "post_id:text, window_label:character varying, consecutive_hits:integer, last_shown_at:timestamp with time zone, suppressed_until:timestamp with time zone, last_score:double precision"
+    },
+    {
+      "table_name": "post_snapshots",
+      "columns": "id:uuid, post_id:text, timestamp:timestamp with time zone, view_count:integer, like_count:integer, dislike_count:integer, comment_count:integer"
+    },
+    {
+      "table_name": "post_trends",
+      "columns": "post_id:text, window_start:timestamp with time zone, window_end:timestamp with time zone, view_delta:integer, comment_delta:integer, like_delta:integer, dislike_delta:integer, hot_score:double precision, rank:integer"
+    },
+    {
+      "table_name": "posts",
+      "columns": "id:text, post_id:text, site:character varying, board:character varying, url:text, title:text, author:text, avatar:text, timestamp:timestamp with time zone, content:text, content_html:text, content_hash:text, category:text, tags:jsonb, view_count:integer, like_count:integer, dislike_count:integer, comment_count:integer, image_count:integer, embed_count:integer, crawled_at:timestamp with time zone, updated_at:timestamp with time zone, is_deleted:boolean"
+    }
+  ],
+  "posts": [
+    {
+      "total": "15571",
+      "active_24h": "29",
+      "active_3h": "0",
+      "latest_post": "2026-10-04T19:28:45.000Z",
+      "latest_crawl": "2026-10-04T21:37:48.825Z"
+    }
+  ],
+  "snapshots": [
+    {
+      "total": "64212",
+      "rows_24h": "35",
+      "rows_3h": "0",
+      "rows_30m": "0",
+      "latest": "2026-10-04T21:37:48.825Z"
+    }
+  ],
+  "trends": [
+    {
+      "total": "148615",
+      "posts": "15519",
+      "rows_24h": "0",
+      "rows_3h": "0",
+      "latest": "2025-10-06T03:40:00.000Z"
+    }
+  ],
+  "agg": [
+    {
+      "range_label": "24h",
+      "rows": "3946",
+      "in_window": "0",
+      "latest": "2025-10-06T03:40:00.000Z"
+    },
+    {
+      "range_label": "6h",
+      "rows": "848",
+      "in_window": "0",
+      "latest": "2025-10-06T03:40:00.000Z"
+    },
+    {
+      "range_label": "1w",
+      "rows": "6363",
+      "in_window": "0",
+      "latest": "2025-10-06T03:40:00.000Z"
+    },
+    {
+      "range_label": "3h",
+      "rows": "623",
+      "in_window": "0",
+      "latest": "2025-10-06T03:40:00.000Z"
+    }
+  ],
+  "mv30": [
+    {
+      "rows": "152",
+      "positive_hot": "45"
+    }
+  ],
+  "clusters": [
+    {
+      "total": "114",
+      "with_representative": "114",
+      "latest": "2025-09-28T07:16:08.706Z"
+    }
+  ],
+  "cluster_trends": [
+    {
+      "total": "0",
+      "rows_24h": "0",
+      "rows_3h": "0",
+      "rows_1w": "0",
+      "latest": null
+    }
+  ],
+  "rotations": [
+    {
+      "kind": "post",
+      "window_label": "24h",
+      "rows": "2357",
+      "suppressed": "0",
+      "latest_shown": "2025-10-05T07:41:38.899Z"
+    },
+    {
+      "kind": "post",
+      "window_label": "6h",
+      "rows": "1058",
+      "suppressed": "0",
+      "latest_shown": "2025-09-29T00:25:28.722Z"
+    },
+    {
+      "kind": "post",
+      "window_label": "1w",
+      "rows": "216",
+      "suppressed": "0",
+      "latest_shown": "2025-09-29T05:18:09.720Z"
+    },
+    {
+      "kind": "post",
+      "window_label": "3h",
+      "rows": "3548",
+      "suppressed": "0",
+      "latest_shown": "2025-10-05T07:41:38.372Z"
+    },
+    {
+      "kind": "cluster",
+      "window_label": "24h",
+      "rows": "50",
+      "suppressed": "0",
+      "latest_shown": "2025-09-29T11:45:40.500Z"
+    },
+    {
+      "kind": "cluster",
+      "window_label": "6h",
+      "rows": "13",
+      "suppressed": "0",
+      "latest_shown": "2025-09-28T11:32:33.821Z"
+    },
+    {
+      "kind": "cluster",
+      "window_label": "1w",
+      "rows": "7",
+      "suppressed": "0",
+      "latest_shown": "2025-09-29T05:18:06.463Z"
+    },
+    {
+      "kind": "cluster",
+      "window_label": "3h",
+      "rows": "56",
+      "suppressed": "0",
+      "latest_shown": "2025-09-28T17:43:27.277Z"
+    }
+  ],
+  "receipts": [
+    {
+      "job_kind": "is_queue_producers",
+      "rows": "2",
+      "latest": "2026-10-04T21:37:55.262Z"
+    },
+    {
+      "job_kind": "is_signatures_job",
+      "rows": "3",
+      "latest": "2026-10-04T21:37:55.017Z"
+    }
+  ],
+  "analytics_receipts": [],
+  "trend_coverage": [
+    {
+      "latest": null,
+      "rows_24h": "0",
+      "sufficient_24h": "0"
+    }
+  ],
+  "views": [
+    {
+      "matviewname": "mv_post_trends_30m",
+      "ispopulated": true,
+      "definition": " WITH snap AS (\n         SELECT post_snapshots.id,\n            post_snapshots.post_id,\n            post_snapshots.\"timestamp\",\n            post_snapshots.view_count,\n            post_snapshots.like_count,\n            post_snapshots.dislike_count,\n            post_snapshots.comment_count\n           FROM post_snapshots\n          WHERE (post_snapshots.\"timestamp\" >= (now() - '00:30:00'::interval))\n        ), latest AS (\n         SELECT DISTINCT ON (snap.post_id) snap.post_id,\n            snap.view_count,\n            snap.comment_count,\n            snap.like_count,\n            snap.dislike_count\n           FROM snap\n          ORDER BY snap.post_id, snap.\"timestamp\" DESC\n        ), earliest AS (\n         SELECT DISTINCT ON (snap.post_id) snap.post_id,\n            snap.view_count,\n            snap.comment_count,\n            snap.like_count,\n            snap.dislike_count\n           FROM snap\n          ORDER BY snap.post_id, snap.\"timestamp\"\n        )\n SELECT p.id AS post_id,\n    p.title,\n    (latest.view_count - earliest.view_count) AS view_delta,\n    (latest.comment_count - earliest.comment_count) AS comment_delta,\n    (latest.like_count - earliest.like_count) AS like_delta,\n    (latest.dislike_count - earliest.dislike_count) AS dislike_delta,\n    (((latest.view_count - earliest.view_count) + ((latest.comment_count - earliest.comment_count) * 3)) + ((latest.like_count - earliest.like_count) * 2)) AS hot_score,\n    max(latest.view_count) AS latest_views\n   FROM ((latest\n     JOIN earliest USING (post_id))\n     JOIN posts p ON ((p.id = latest.post_id)))\n  GROUP BY p.id, p.title, (latest.view_count - earliest.view_count), (latest.comment_count - earliest.comment_count), (latest.like_count - earliest.like_count), (latest.dislike_count - earliest.dislike_count), (((latest.view_count - earliest.view_count) + ((latest.comment_count - earliest.comment_count) * 3)) + ((latest.like_count - earliest.like_count) * 2));"
+    },
+    {
+      "matviewname": "mv_post_trends_agg",
+      "ispopulated": true,
+      "definition": " WITH ranges AS (\n         SELECT '3h'::text AS range_label,\n            '03:00:00'::interval AS iv\n        UNION ALL\n         SELECT '6h'::text,\n            '06:00:00'::interval AS \"interval\"\n        UNION ALL\n         SELECT '24h'::text,\n            '24:00:00'::interval AS \"interval\"\n        UNION ALL\n         SELECT '1w'::text,\n            '7 days'::interval AS \"interval\"\n        )\n SELECT r.range_label,\n    pt.post_id,\n    sum(pt.view_delta) AS view_delta,\n    sum(pt.comment_delta) AS comment_delta,\n    sum(pt.like_delta) AS like_delta,\n    sum(pt.dislike_delta) AS dislike_delta,\n    sum(pt.hot_score) AS hot_score,\n    max(pt.window_end) AS window_end\n   FROM (post_trends pt\n     JOIN ranges r ON ((pt.window_end >= (now() - r.iv))))\n  GROUP BY r.range_label, pt.post_id;"
+    }
+  ],
+  "consumer_contracts": {
+    "error": "42P01"
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "checkedAt": "2026-10-05T05:52:02.403Z",
+  "readOnly": true,
+  "clock": [
+    {
+      "db_now": "2026-10-05T05:52:02.617Z",
+      "read_only": "on"
+    }
+  ],
+  "source_summary": [
+    {
+      "site": "82cook",
+      "board": "free",
+      "posts_24h": "3",
+      "snapshots_24h": "3",
+      "signatures": "3",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "arca",
+      "board": "hotdeal",
+      "posts_24h": "1",
+      "snapshots_24h": "1",
+      "signatures": "1",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "bobae",
+      "board": "best",
+      "posts_24h": "3",
+      "snapshots_24h": "3",
+      "signatures": "3",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "clien",
+      "board": "park",
+      "posts_24h": "3",
+      "snapshots_24h": "3",
+      "signatures": "3",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "dogdrip",
+      "board": "dogdrip",
+      "posts_24h": "3",
+      "snapshots_24h": "3",
+      "signatures": "3",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "fmkorea",
+      "board": "best",
+      "posts_24h": "1",
+      "snapshots_24h": "2",
+      "signatures": "1",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "inven",
+      "board": "open_issue_gallery",
+      "posts_24h": "3",
+      "snapshots_24h": "3",
+      "signatures": "3",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "ppomppu",
+      "board": "hot",
+      "posts_24h": "3",
+      "snapshots_24h": "3",
+      "signatures": "3",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "ruliweb",
+      "board": "best_all",
+      "posts_24h": "3",
+      "snapshots_24h": "3",
+      "signatures": "3",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "slrclub",
+      "board": "hot_article",
+      "posts_24h": "3",
+      "snapshots_24h": "3",
+      "signatures": "3",
+      "clustered_posts": "0"
+    },
+    {
+      "site": "theqoo",
+      "board": "hot",
+      "posts_24h": "3",
+      "snapshots_24h": "3",
+      "signatures": "3",
+      "clustered_posts": "0"
+    }
+  ],
+  "snapshot_coverage": [
+    {
+      "posts": "33",
+      "single_observation": "31",
+      "repeated": "2",
+      "repeated_within_30m": "0",
+      "first_observation": "2026-10-04T19:36:27.521Z",
+      "last_observation": "2026-10-04T21:37:48.825Z"
+    }
+  ],
+  "expected_historical_trends": [
+    {
+      "potential_trend_rows": "105",
+      "posts": "33",
+      "rows_with_known_view_delta": "0",
+      "first_window": "2026-10-04T19:40:00.000Z",
+      "last_nonempty_window": "2026-10-04T22:00:00.000Z"
+    }
+  ],
+  "current_window_input": [
+    {
+      "w": "2026-10-05T05:50:00.000Z",
+      "snapshots": "0",
+      "posts": "0"
+    }
+  ],
+  "ranked_filter_counts": [
+    {
+      "range_label": "24h",
+      "mv_total": "3946",
+      "time_eligible": "0",
+      "after_delete_and_post_cooldown": "0"
+    },
+    {
+      "range_label": "6h",
+      "mv_total": "848",
+      "time_eligible": "0",
+      "after_delete_and_post_cooldown": "0"
+    },
+    {
+      "range_label": "1w",
+      "mv_total": "6363",
+      "time_eligible": "0",
+      "after_delete_and_post_cooldown": "0"
+    },
+    {
+      "range_label": "3h",
+      "mv_total": "623",
+      "time_eligible": "0",
+      "after_delete_and_post_cooldown": "0"
+    }
+  ],
+  "cluster_current_inputs": [
+    {
+      "members": "556",
+      "clusters": "114",
+      "recent_members": "0"
+    }
+  ],
+  "bootstrap_migrations": [
+    {
+      "name": "001_business_contract.sql",
+      "state": "adopted_existing"
+    },
+    {
+      "name": "002_runtime_state.sql",
+      "state": "adopted_existing"
+    },
+    {
+      "name": "003_views.sql",
+      "state": "adopted_existing"
+    },
+    {
+      "name": "004_board_identity_and_coverage.sql",
+      "state": "adopted_existing"
+    },
+    {
+      "name": "005_snapshot_delivery_coverage.sql",
+      "state": "adopted_existing"
+    },
+    {
+      "name": "006_media_signature_outbox.sql",
+      "state": "applied"
+    }
+  ]
+}

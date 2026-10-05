@@ -1,7 +1,7 @@
 'use client'
 import { Show, SignInButton, UserButton } from "@clerk/react";
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { emitCommunity, emitCommunities } from "@/lib/communityFilter"
@@ -11,6 +11,7 @@ import { LogIn } from "@/components/animate-ui/icons/log-in";
 import { AnimateIcon } from "@/components/animate-ui/icons/icon";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface Site {
   id: string;
@@ -28,6 +29,11 @@ export function HeaderClient({ sites }: HeaderClientProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showKeyHint, setShowKeyHint] = useState(false)
   const pathname = usePathname();
+  const [expandedCommunityPath, setExpandedCommunityPath] = useState<string | null>(null);
+  const communityExpanded = expandedCommunityPath !== null && expandedCommunityPath === pathname;
+  const handleCommunityExpansion = useCallback((expanded: boolean) => {
+    setExpandedCommunityPath(current => expanded ? pathname : current === pathname ? null : current);
+  }, [pathname]);
 
   // Show the keyboard hint banner once, then hide for a period
   const KEYHINT_KEY = 'isshoo:keyhint:dismissedAt:v1';
@@ -104,22 +110,19 @@ export function HeaderClient({ sites }: HeaderClientProps) {
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
       <div className="w-full max-w-screen-xl mx-auto px-4">
-        <div className="flex items-center h-16">
+        <div className="flex items-center gap-4 h-16">
           {/* Left: Logo */}
-          <div className="flex-1 flex items-center space-x-4">
-            <Link href="/" className="focus:outline-hidden">
+          <div className="flex flex-1 md:flex-none shrink-0 items-center gap-6 whitespace-nowrap">
+            <Link href="/" className="shrink-0 focus:outline-hidden">
               <h1 className="text-2xl font-bold text-blue-600 cursor-pointer hover:opacity-80 transition">
                 Isshoo <span className="text-xs text-gray-500 align-top">이슈</span>
               </h1>
             </Link>
-            <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">인기글 모아보기</span>
+            <span className="shrink-0 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">인기글 모아보기</span>
           </div>
 
-          {/* Center: Community Selector - REMOVED */}
-          <div className="hidden md:flex justify-center"></div>
-
           {/* Right: Search Bar & Community Selector */}
-          <div className="flex-1 hidden md:flex items-center justify-end space-x-2">
+          <div className="min-w-0 flex-1 hidden md:flex items-center justify-end gap-2">
             <CommunityPresenceSelector
               key={pathname}
               items={communitiesAll}
@@ -129,6 +132,8 @@ export function HeaderClient({ sites }: HeaderClientProps) {
               tooltipSide="bottom"
               tooltipOffset={10}
               hoverLift="-20%"
+              className="shrink-0"
+              onExpansionChange={handleCommunityExpansion}
               onChange={(idsOrAll) => {
                 if (idsOrAll == null) {
                   try { localStorage.setItem(COMM_KEY, JSON.stringify(communitiesAll.map(c => c.id))); } catch { }
@@ -150,8 +155,11 @@ export function HeaderClient({ sites }: HeaderClientProps) {
                 }
               }}
             />
-            <div className="w-80">
-              <SearchBar />
+            <div className={cn(
+              "min-w-8 shrink-0",
+              communityExpanded ? "w-8" : "w-80",
+            )}>
+              <SearchBar compact={communityExpanded} />
             </div>
             <Show when="signed-out">
               <SignInButton>

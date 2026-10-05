@@ -1,0 +1,257 @@
+{
+  "started_at": "2026-10-05T06:17:31.330682+00:00",
+  "queue_prefix": "is-live-manual-agg-20261005",
+  "namespace": "cd-dev",
+  "schema": "public",
+  "backup_directory": "/Users/craigchoi/tem/reports/is-manual-aggregation-20261005/backups",
+  "observation_timestamps_preserved": true,
+  "new_crawls": 0,
+  "new_model_calls": 0,
+  "schedule_mutations": 0,
+  "after": {
+    "posts": 15571,
+    "snapshots": 64212,
+    "trends_24h": [
+      105,
+      33,
+      0,
+      "2026-10-04 22:00:00+00:00"
+    ],
+    "agg": [
+      [
+        "1w",
+        33,
+        0,
+        "2026-10-04 22:00:00+00:00"
+      ],
+      [
+        "24h",
+        33,
+        0,
+        "2026-10-04 22:00:00+00:00"
+      ]
+    ],
+    "cluster_trends_24h": [
+      0,
+      0,
+      null
+    ],
+    "coverage": [
+      105,
+      0
+    ]
+  },
+  "status": "passed",
+  "finished_at": "2026-10-05T06:18:18.373629+00:00",
+  "manual_worker_stopped": true,
+  "workflow_count": 14,
+  "workflows": [
+    {
+      "label": "clusters",
+      "workflow_id": "is-manual-agg-clusters-20261005T061732580135",
+      "run_id": "01a10ab5-daba-70b3-824a-f225021795f8",
+      "status": "passed",
+      "stages": [
+        "clusters_build"
+      ],
+      "window_end": "2026-10-05T06:10:00+00:00"
+    },
+    {
+      "label": "history-01",
+      "workflow_id": "is-manual-agg-history-01-20261005T061736008320",
+      "run_id": "01a10ab5-e80b-780a-8b0f-666bc3f14fe7",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T19:40:00+00:00"
+    },
+    {
+      "label": "history-02",
+      "workflow_id": "is-manual-agg-history-02-20261005T061739470755",
+      "run_id": "01a10ab5-f593-7203-9f56-b1b990de2138",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T19:50:00+00:00"
+    },
+    {
+      "label": "history-03",
+      "workflow_id": "is-manual-agg-history-03-20261005T061742791635",
+      "run_id": "01a10ab6-028c-724d-9615-6b62b57e115e",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T20:00:00+00:00"
+    },
+    {
+      "label": "history-04",
+      "workflow_id": "is-manual-agg-history-04-20261005T061746105255",
+      "run_id": "01a10ab6-0f7e-7441-a6c5-45c580eafe52",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T20:30:00+00:00"
+    },
+    {
+      "label": "history-05",
+      "workflow_id": "is-manual-agg-history-05-20261005T061749261698",
+      "run_id": "01a10ab6-1bd1-769f-8615-164046bc66bc",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T20:40:00+00:00"
+    },
+    {
+      "label": "history-06",
+      "workflow_id": "is-manual-agg-history-06-20261005T061752274746",
+      "run_id": "01a10ab6-2796-7e0d-bd7a-64ebe3d58c5f",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T20:50:00+00:00"
+    },
+    {
+      "label": "history-07",
+      "workflow_id": "is-manual-agg-history-07-20261005T061755533259",
+      "run_id": "01a10ab6-3453-7753-acd0-d7491f8381dd",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T21:00:00+00:00"
+    },
+    {
+      "label": "history-08",
+      "workflow_id": "is-manual-agg-history-08-20261005T061758720755",
+      "run_id": "01a10ab6-40c9-756e-a26b-46adbe4bfa59",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T21:10:00+00:00"
+    },
+    {
+      "label": "history-09",
+      "workflow_id": "is-manual-agg-history-09-20261005T061801770248",
+      "run_id": "01a10ab6-4cb0-7115-8521-71884cb95091",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T21:20:00+00:00"
+    },
+    {
+      "label": "history-10",
+      "workflow_id": "is-manual-agg-history-10-20261005T061805018801",
+      "run_id": "01a10ab6-595f-7c8e-a099-3b7449738e36",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T21:40:00+00:00"
+    },
+    {
+      "label": "history-11",
+      "workflow_id": "is-manual-agg-history-11-20261005T061808314474",
+      "run_id": "01a10ab6-6640-7dc3-8f1f-b31dc81e46f3",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T21:50:00+00:00"
+    },
+    {
+      "label": "history-12",
+      "workflow_id": "is-manual-agg-history-12-20261005T061811422228",
+      "run_id": "01a10ab6-7263-7e15-9fff-b74bc1b3e0ea",
+      "status": "passed",
+      "stages": [
+        "trends"
+      ],
+      "window_end": "2026-10-04T22:00:00+00:00"
+    },
+    {
+      "label": "publish-1",
+      "workflow_id": "is-manual-agg-publish-1-20261005T061814711456",
+      "run_id": "01a10ab6-7f3f-7c44-936c-d2ed588384bb",
+      "status": "passed",
+      "stages": [
+        "trends",
+        "mv",
+        "rotation"
+      ],
+      "window_end": "2026-10-05T06:10:00+00:00"
+    }
+  ],
+  "temporal_reverification": {
+    "checked_at": "2026-10-05T15:23:32+09:00",
+    "expected_workflows": 14,
+    "completed_workflows": 14,
+    "missing_or_incomplete": 0,
+    "live_schedules": 11,
+    "paused_live_schedules": 11,
+    "manual_worker_process_present": false,
+    "manual_queue_poller_present": false
+  },
+  "browser": {
+    "checked_at": "2026-10-05T06:23:21.675Z",
+    "url": "http://127.0.0.1:5005/",
+    "sections": [
+      {
+        "title": "급상승 (최근 3시간 급상승)",
+        "visible_cards": 0
+      },
+      {
+        "title": "지금 주목 (24시간 랭킹)",
+        "visible_cards": 4
+      },
+      {
+        "title": "오늘의 이슈 (24시간 이슈 묶음)",
+        "visible_cards": 0
+      },
+      {
+        "title": "이번주 (1주 이슈 묶음)",
+        "visible_cards": 0
+      },
+      {
+        "title": "최신 (24시간)",
+        "visible_cards": 6
+      }
+    ],
+    "console_error_count": 0,
+    "screenshot": "/Users/craigchoi/silla/is/doc/validation/popularity-manual-2026-10-05.jpg"
+  },
+  "migration_result": {
+    "status": "passed",
+    "migration": "007_fixed_consumer_windows.sql",
+    "sha256": "87a93b8c1a9ec1976d583cec4211d8ebc84cc7d18b43a534d3672b67de288363",
+    "contracts": [
+      [
+        "mv_post_trends_30m",
+        "is-fixed-window-v1",
+        true
+      ],
+      [
+        "mv_post_trends_agg",
+        "is-fixed-window-v1",
+        true
+      ]
+    ],
+    "source_counts_preserved": true,
+    "backup_directory": "/tmp/isshoo-popularity-audit/manual"
+  },
+  "migration_reverification": {
+    "status": "passed",
+    "checked_at": "2026-10-05T15:26:09+09:00",
+    "view_count": 2,
+    "owner_effective_privileges_existing_indexes_comment_columns_preserved": true,
+    "contract_hash_and_previous_definition_match": true,
+    "evidence": "/Users/craigchoi/tem/reports/is-manual-aggregation-20261005/final-migration-verification.json"
+  }
+}
